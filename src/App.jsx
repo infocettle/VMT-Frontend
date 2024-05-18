@@ -20,6 +20,12 @@ import {
   Zone,
   State,
   LGA,
+  Ward,
+  FinancialInstitution,
+  Type,
+  License,
+  PensionFund,
+  Banks,
 } from "./pages/PublicRegistry";
 
 const queryClient = new QueryClient();
@@ -102,6 +108,36 @@ const router = createBrowserRouter([
           {
             path: "lga",
             element: <LGA />,
+          },
+          {
+            path: "ward",
+            element: <Ward />,
+          },
+        ],
+      },
+      {
+        path: "financial_institution/*",
+        element: <FinancialInstitution />,
+        children: [
+          {
+            path: "",
+            element: <Banks />,
+          },
+          {
+            path: "banks",
+            element: <Banks />,
+          },
+          {
+            path: "type",
+            element: <Type />,
+          },
+          {
+            path: "license",
+            element: <License />,
+          },
+          {
+            path: "pension_fund",
+            element: <PensionFund />,
           },
         ],
       },

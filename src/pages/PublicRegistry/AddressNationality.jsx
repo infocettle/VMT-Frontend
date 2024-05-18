@@ -1,9 +1,5 @@
 import { Outlet, useRoutes } from "react-router-dom";
-import Continent from "./Continent";
-import Country from "./Country";
-import Zone from "./Zone";
-import State from "./State";
-import LGA from "./LGA";
+import { Ward, LGA, State, Zone, Country, Continent } from ".";
 
 const AddressNationality = () => {
   const routes = useRoutes([
@@ -12,7 +8,7 @@ const AddressNationality = () => {
     { path: "zone", element: <Zone /> },
     { path: "state", element: <State /> },
     { path: "lga", element: <LGA /> },
-    // { path: "ward", element: <Ward /> },
+    { path: "ward", element: <Ward /> },
   ]);
 
   return routes || <Outlet />;

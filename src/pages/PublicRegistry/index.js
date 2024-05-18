@@ -14,6 +14,12 @@ import Zone from "./Zone";
 import State from "./State";
 import LGA from "./LGA";
 import AddressNationality from "./AddressNationality";
+import Ward from "./Ward";
+import FinancialInstitution from "./FinancialInstitution";
+import Type from "./Type";
+import License from "./License";
+import PensionFund from "./PensionFund";
+import Banks from "./Banks";
 
 export {
   PublicReg,
@@ -32,4 +38,10 @@ export {
   Zone,
   State,
   LGA,
+  Ward,
+  FinancialInstitution,
+  Type,
+  License,
+  PensionFund,
+  Banks,
 };

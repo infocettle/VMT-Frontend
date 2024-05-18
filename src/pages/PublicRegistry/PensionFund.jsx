@@ -354,11 +354,11 @@ const PensionFund = () => {
                     <input
                       type="text"
                       placeholder={"Enter short name"}
-                      {...pfaForm.register("short_name")}
+                      {...pfcForm.register("short_name")}
                       className="border border-gray-100 focus:outline-none rounded-md p-2"
                     />
                     <p className="text-red-500 text-sm">
-                      {pfaForm.formState.errors.short_name?.message}
+                      {pfcForm.formState.errors.short_name?.message}
                     </p>
                   </div>
                   <div className="w-full gap-2 flex flex-col ">

@@ -20,7 +20,10 @@ import Type from "./Type";
 import License from "./License";
 import PensionFund from "./PensionFund";
 import Banks from "./Banks";
-
+import TaxAuthority from "./TaxAuthority";
+import Sectors from "./Sectors";
+import SubSectors from "./SubSectors";
+import Business from "./Business";
 export {
   PublicReg,
   Title,
@@ -44,4 +47,8 @@ export {
   License,
   PensionFund,
   Banks,
+  TaxAuthority,
+  Business,
+  Sectors,
+  SubSectors,
 };

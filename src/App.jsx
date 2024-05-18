@@ -26,6 +26,10 @@ import {
   License,
   PensionFund,
   Banks,
+  TaxAuthority,
+  Business,
+  Sectors,
+  SubSectors,
 } from "./pages/PublicRegistry";
 
 const queryClient = new QueryClient();
@@ -138,6 +142,28 @@ const router = createBrowserRouter([
           {
             path: "pension_fund",
             element: <PensionFund />,
+          },
+        ],
+      },
+      {
+        path: "tax_authority",
+        element: <TaxAuthority />,
+      },
+      {
+        path: "business/*",
+        element: <Business />,
+        children: [
+          {
+            path: "",
+            element: <Sectors />,
+          },
+          {
+            path: "sectors",
+            element: <Sectors />,
+          },
+          {
+            path: "sub_sectors",
+            element: <SubSectors />,
           },
         ],
       },

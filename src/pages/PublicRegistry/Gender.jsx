@@ -18,6 +18,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, Printer, Share2, Upload, View } from "lucide-react";
+import { genderColumns } from "@/components/typings";
+import { ReusableTable } from "@/components/ReusableTable";
+import { genders } from "@/texts/TableValues";
 
 const ReportLinks = [
   { id: 1, name: "View Report", icon: <View size={14} /> },
@@ -66,7 +69,7 @@ const Gender = () => {
     <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
       {/* Second header */}
 
-      <div className="flex justify-between w-full items-center">
+      <div className="flex justify-between w-full items-center pt-5">
         <div className="flex w-auto items-center px-2 space-x-5">
           <h2 className="uppercase font-light text-base">gender</h2>
           <div className="flex w-auto p-2 border border-black bg-white items-center">
@@ -171,6 +174,7 @@ const Gender = () => {
       </div>
 
       {/* Table */}
+      <ReusableTable columns={genderColumns} data={genders} />
     </div>
   );
 };

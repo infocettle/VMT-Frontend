@@ -18,6 +18,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, Printer, Share2, Upload, View } from "lucide-react";
+import { titleColumns } from "@/components/typings";
+import { ReusableTable } from "@/components/ReusableTable";
+import { titles } from "@/texts/TableValues";
 
 const ReportLinks = [
   { id: 1, name: "View Report", icon: <View size={14} /> },
@@ -58,7 +61,7 @@ const Title = () => {
       {/* Second header */}
 
       <div className="flex justify-between w-full items-center">
-        <div className="flex w-auto items-center px-2 space-x-5">
+        <div className="flex w-auto items-center px-2 space-x-5 mt-5">
           <h2 className="uppercase font-light text-base">title</h2>
           <div className="flex w-auto p-2 border border-black bg-white items-center">
             <h3 className="text-sm">
@@ -72,7 +75,7 @@ const Title = () => {
           </div>
         </div>
 
-        <div className="flex items-center w-auto px-2 space-x-4">
+        <div className="flex items-center w-auto px-2 space-x-4 mt-5">
           <Dialog>
             <DialogTrigger asChild>
               <Button className="bg-vmtblue" size="sm">
@@ -147,6 +150,7 @@ const Title = () => {
       </div>
 
       {/* Table */}
+      <ReusableTable columns={titleColumns} data={titles} />
     </div>
   );
 };

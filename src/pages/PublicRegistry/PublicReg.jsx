@@ -25,7 +25,7 @@ const PublicReg = () => {
   // const navigate = useNavigate();
 
   return (
-    <div className="w-full flex items-center">
+    <div className="w-full flex items-start">
       <div className="w-auto h-auto border border-gray-200">
         <Collapsible
           open={isOpen}
@@ -43,7 +43,10 @@ const PublicReg = () => {
           >
             <div className="flex items-center space-x-3">
               <Earth color="#0B6ED0" size={15} />
-              <Link to={"/public_reg/personal_details"}>
+              <Link
+                onClick={() => setModule("Personal Details")}
+                to={"/public_reg/personal_details"}
+              >
                 <h3 className="capitalize text-vmtblue text-lg font-sans">
                   public registry
                 </h3>

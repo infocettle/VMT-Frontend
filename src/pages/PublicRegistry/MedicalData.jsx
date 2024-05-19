@@ -19,6 +19,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, Printer, Share2, Upload, View } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ReusableTable } from "@/components/ReusableTable";
+import {
+  ailmentColumns,
+  bloodGroupGenotypeColumns,
+} from "@/components/typings";
+import { ailments, bloodGroup, genotype } from "@/texts/TableValues";
 
 const ReportLinks = [
   { id: 1, name: "View Report", icon: <View size={14} /> },
@@ -266,7 +272,7 @@ const MedicalData = () => {
 
       <div className="w-full h-auto bg-white my-10">
         {/* Sub Group */}
-        <div className="w-auto p-3 flex items-center space-x-3">
+        <div className="w-auto px-5 pt-10 flex items-center space-x-3">
           <button
             onClick={() => {
               setSubGroup("blood group");
@@ -342,6 +348,18 @@ const MedicalData = () => {
         </div>
 
         {/* Table */}
+        {subGroup == "blood group" && (
+          <ReusableTable
+            columns={bloodGroupGenotypeColumns}
+            data={bloodGroup}
+          />
+        )}
+        {subGroup == "genotype" && (
+          <ReusableTable columns={bloodGroupGenotypeColumns} data={genotype} />
+        )}
+        {subGroup == "ailments" && (
+          <ReusableTable columns={ailmentColumns} data={ailments} />
+        )}
       </div>
     </div>
   );

@@ -18,6 +18,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, Printer, Share2, Upload, View } from "lucide-react";
+import { ReusableTable } from "@/components/ReusableTable";
+import { relationshipColumns } from "@/components/typings";
+import { relationshipStatus } from "@/texts/TableValues";
 
 const ReportLinks = [
   { id: 1, name: "View Report", icon: <View size={14} /> },
@@ -146,6 +149,7 @@ const Relationship = () => {
       </div>
 
       {/* Table */}
+      <ReusableTable columns={relationshipColumns} data={relationshipStatus} />
     </div>
   );
 };

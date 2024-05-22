@@ -1,0 +1,162 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.sub-container{
+    width: 100%;
+}
+.sub-form-overall-container{
+    width: 100%;
+    background: #F6F6F9;
+    padding-bottom: 4rem;
+    
+}
+.sub-header-container{
+    width: 100%;
+    margin: 0.5rem auto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 15px 0px 15px 40px;
+    background-color: white;
+}
+.sub-header-text{
+    font-family: Open Sans;
+font-size: 20px;
+font-weight: 600;
+line-height: 30px;
+text-align: left;
+color: #212134;
+}
+.sub-form-container{
+    width: 100%;
+    background: #F6F6F9;
+
+
+}
+.sub-form{
+    width: 75%;
+    margin: 0rem auto;
+    padding: 20px;
+    background: white;
+    
+    border-radius: 8px;
+}
+.sub-form-header{
+
+font-family: Open Sans;
+font-size: 24px;
+font-weight: 600;
+line-height: 30px;
+text-align: left;
+color: #181826;
+}
+.sub-form-header-key{
+
+    font-family: Open Sans;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    text-align: left;
+    color: #181826;
+}
+.sub-form-header-grid{
+    display: grid;
+grid-template-columns: 200px 1fr;
+grid-template-rows: repeat(4, 1fr);
+grid-column-gap: 0px;
+grid-row-gap: 12px;
+margin-top: 1rem;
+
+}
+.sub-form-header-date{
+  
+        color: #212134;
+        font-family: Open Sans;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        text-align: left;
+        
+    
+}
+.table-header_text{
+    color: #212134;
+  font-family: Open Sans;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  text-align: left;
+  
+    }
+    .table-rule{
+      border-bottom: 1px solid #C0C0CF;
+      border-top: 1px solid #C0C0CF;
+    
+    }
+    .table-rule td{
+      padding: 10px 0px;
+      font-family: Open Sans;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  text-align: left;
+  color: #181826;
+    }
+   tr th{
+      padding-bottom: 7px;
+   }
+   .table-text{
+      font-family: Open Sans;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  text-align: left;
+  color: #181826;
+   }
+   .total_amount_text{
+     color: #181826;
+  font-family: Open Sans;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  text-align: left;
+  
+   }
+   .total_amount{
+      color: #181826;
+      font-family: Open Sans;
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 30px;
+      text-align: left;
+      
+  
+   }
+   .react-select{
+    width: 15%;
+   }
+   .subscription-terms{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 1rem;
+   }
+   .subscription-terms-text{
+    font-family: Open Sans;
+font-size: 14px;
+font-weight: 400;
+line-height: 20px;
+text-align: left;
+color: #181826;
+   }
+   .subscription-terms span{
+    font-family: Open Sans;
+font-size: 14px;
+font-weight: 400;
+line-height: 20px;
+text-align: left;
+color:  #0B6ED0;
+
+   }

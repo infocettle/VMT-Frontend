@@ -26,6 +26,9 @@ function UserSignUp({setFormType}) {
   const handleContinue = () => {
     setFormType("user-subscriber")
   };
+  const handleLogin = () => {
+    setFormType("login-user")
+  };
 console.log(checkedIndex)
   return (
     <div className="auth-form-container">
@@ -112,7 +115,9 @@ console.log(checkedIndex)
         <div className="auth-button-text">Continue</div>
       </div>
       <div className="auth-already mt-5">Already have a ValueMine account?</div>
-      <div className="auth-button-white mt-5">
+
+
+      <div className="auth-button-white mt-5" onClick={handleLogin}>
         <div className="auth-button-white-text">Login to your account</div>
       </div>
     </div>

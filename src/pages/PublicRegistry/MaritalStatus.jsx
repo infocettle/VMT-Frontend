@@ -21,47 +21,22 @@ import { ChevronDown, Printer, Share2, Upload, View } from "lucide-react";
 import { ReusableTable } from "@/components/ReusableTable";
 import { maritalStatusColumns } from "@/components/typings";
 import { maritalStatuses } from "@/texts/TableValues";
+import { GenericForm } from "@/components/GenericForm";
+import { FormInput } from "@/components/FormInput";
+import { ReportLinks } from "@/components/ReportLinks";
+import SecondHeader from "@/components/SecondHeader";
+import { maritalFormSchema } from "@/utils/zodSchema";
 
-const ReportLinks = [
-  { id: 1, name: "View Report", icon: <View size={14} /> },
-  { id: 2, name: "Export", icon: <Upload size={14} /> },
-  { id: 3, name: "Share", icon: <Share2 size={14} /> },
-  { id: 4, name: "Print", icon: <Printer size={14} /> },
-];
-const maritalFormSchema = z.object({
-  code: z
-    .string({
-      invalid_type_error: "code must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "code cannot be empty")
-    .max(30, "code must be maximum 30 character")
-    .trim(),
-  title: z
-    .string({
-      invalid_type_error: "title must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "title cannot be empty")
-    .max(30, "title must be maximum 30 characters")
-    .trim(),
-});
+export const maritalRequiredForm = maritalFormSchema.required();
 
-const requiredForm = maritalFormSchema.required();
+export const maritalDefaultValues = {
+  title: "",
+  code: "",
+};
 
 const MaritalStatus = () => {
-  // 1. Define your form.
-  const form = useForm({
-    resolver: zodResolver(requiredForm),
-    defaultValues: {
-      title: "",
-      code: "",
-    },
-  });
-
   async function onSubmit(values) {
     console.log(values);
-    form.reset();
   }
 
   return (
@@ -69,19 +44,7 @@ const MaritalStatus = () => {
       {/* Second header */}
 
       <div className="flex justify-between w-full items-center pt-5">
-        <div className="flex w-auto items-center px-2 space-x-5">
-          <h2 className="uppercase font-light text-base">marital status</h2>
-          <div className="flex w-auto p-2 border border-black bg-white items-center">
-            <h3 className="text-sm">
-              A<sup>-</sup>
-            </h3>
-          </div>
-          <div className="flex w-auto p-2 border border-black bg-white items-center">
-            <h3 className="text-sm">
-              A<sup>+</sup>
-            </h3>
-          </div>
-        </div>
+        <SecondHeader title={"Marital Status"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
           <Dialog>
@@ -95,57 +58,14 @@ const MaritalStatus = () => {
                 <DialogTitle>Add New Marital Status</DialogTitle>
               </DialogHeader>
               <hr className="border border-gray-100 w-full h-[1px]" />
-              <form
-                className="w-full flex flex-col space-y-3"
-                onSubmit={form.handleSubmit(onSubmit)}
+              <GenericForm
+                defaultValues={maritalDefaultValues}
+                validationSchema={maritalRequiredForm}
+                onSubmit={onSubmit}
               >
-                <div className="w-full gap-2 flex flex-col ">
-                  <label className="text-sm font-light" htmlFor={"code"}>
-                    Code
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter code"
-                    {...form.register("code")}
-                    className="border border-gray-100 focus:outline-none rounded-md p-2"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.code?.message}
-                  </p>
-                </div>
-
-                <div className="w-full gap-2 flex flex-col ">
-                  <label className="text-sm font-light" htmlFor={"title"}>
-                    Title
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter Marital Title"
-                    {...form.register("title")}
-                    className="border border-gray-100 focus:outline-none rounded-md p-2"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.title?.message}
-                  </p>
-                </div>
-                <DialogFooter>
-                  <div className="w-full flex justify-between items-center">
-                    <div
-                      className="w-auto border border-gray-300 rounded-md h-10 flex items-center p-2 cursor-pointer"
-                      onClick={() => form.reset()}
-                    >
-                      Cancel
-                    </div>
-                    <Button
-                      className="bg-vmtblue w-auto"
-                      variant="default"
-                      type="submit"
-                    >
-                      Submit
-                    </Button>
-                  </div>
-                </DialogFooter>
-              </form>
+                <FormInput name="code" label="Code" />
+                <FormInput name="title" label="Title" />
+              </GenericForm>
             </DialogContent>
           </Dialog>
 

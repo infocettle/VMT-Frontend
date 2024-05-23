@@ -1,6 +1,24 @@
 import { cn } from "@/lib/utils";
 import { PencilIcon, Trash2Icon, ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { GenericForm } from "@/components/GenericForm";
+import { FormInput } from "@/components/FormInput";
+import { requiredForm, defaultValues } from "@/pages/PublicRegistry/Title";
+import {
+  genderDefaultValues,
+  genderRequiredForm,
+} from "@/pages/PublicRegistry/Gender";
+import {
+  maritalDefaultValues,
+  maritalRequiredForm,
+} from "@/pages/PublicRegistry/MaritalStatus";
 
 export const titleColumns = [
   {
@@ -91,17 +109,38 @@ export const titleColumns = [
     cell: ({ row }) => {
       const title = row.original;
 
+      async function onSubmit(values) {
+        console.log(values);
+      }
+
       return (
         <div
           align="center"
           className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
         >
-          <PencilIcon
-            className="cursor-pointer"
-            color="#0B6ED0"
-            size={20}
-            onClick={() => navigator.clipboard.writeText(String(title.id))}
-          />
+          <Dialog>
+            <DialogTrigger asChild>
+              <PencilIcon
+                className="cursor-pointer"
+                color="#0B6ED0"
+                size={20}
+              />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit Title</DialogTitle>
+              </DialogHeader>
+              <hr className="border border-gray-100 w-full h-[1px]" />
+
+              <GenericForm
+                defaultValues={defaultValues}
+                validationSchema={requiredForm}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="title" label="Title" />
+              </GenericForm>
+            </DialogContent>
+          </Dialog>
 
           <Trash2Icon
             className="text-red-700 cursor-pointer"
@@ -211,17 +250,39 @@ export const genderColumns = [
     cell: ({ row }) => {
       const title = row.original;
 
+      async function onSubmit(values) {
+        console.log(values);
+      }
+
       return (
         <div
           align="center"
           className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
         >
-          <PencilIcon
-            className="cursor-pointer"
-            color="#0B6ED0"
-            size={20}
-            onClick={() => navigator.clipboard.writeText(String(title.id))}
-          />
+          <Dialog>
+            <DialogTrigger asChild>
+              <PencilIcon
+                className="cursor-pointer"
+                color="#0B6ED0"
+                size={20}
+              />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit Gender</DialogTitle>
+              </DialogHeader>
+              <hr className="border border-gray-100 w-full h-[1px]" />
+
+              <GenericForm
+                defaultValues={genderDefaultValues}
+                validationSchema={genderRequiredForm}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="title" label="Title" />
+                <FormInput name="alias" label="Alias" />
+              </GenericForm>
+            </DialogContent>
+          </Dialog>
 
           <Trash2Icon
             className="text-red-700 cursor-pointer"
@@ -331,17 +392,39 @@ export const maritalStatusColumns = [
     cell: ({ row }) => {
       const title = row.original;
 
+      async function onSubmit(values) {
+        console.log(values);
+      }
+
       return (
         <div
           align="center"
           className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
         >
-          <PencilIcon
-            className="cursor-pointer"
-            color="#0B6ED0"
-            size={20}
-            onClick={() => navigator.clipboard.writeText(String(title.id))}
-          />
+          <Dialog>
+            <DialogTrigger asChild>
+              <PencilIcon
+                className="cursor-pointer"
+                color="#0B6ED0"
+                size={20}
+              />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit Marital Status</DialogTitle>
+              </DialogHeader>
+              <hr className="border border-gray-100 w-full h-[1px]" />
+
+              <GenericForm
+                defaultValues={maritalDefaultValues}
+                validationSchema={maritalRequiredForm}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="code" label="Code" />
+                <FormInput name="title" label="Title" />
+              </GenericForm>
+            </DialogContent>
+          </Dialog>
 
           <Trash2Icon
             className="text-red-700 cursor-pointer"

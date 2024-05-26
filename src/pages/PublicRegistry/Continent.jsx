@@ -17,40 +17,43 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Printer, Share2, Upload, View } from "lucide-react";
+import { ChevronDown } from "lucide-react";
+import { continentColumns } from "@/components/typings";
+import { ReusableTable } from "@/components/ReusableTable";
+import { GenericForm } from "@/components/GenericForm";
+import { FormInput } from "@/components/FormInput";
+import { continentFormSchema } from "@/utils/zodSchema";
+import { ReportLinks } from "@/components/ReportLinks";
+import SecondHeader from "@/components/SecondHeader";
+import useFetchData from "@/hooks/useFetchData";
+import { baseUrl } from "@/App";
+import usePostData from "@/hooks/usePostData";
 
-const ReportLinks = [
-  { id: 1, name: "View Report", icon: <View size={14} /> },
-  { id: 2, name: "Export", icon: <Upload size={14} /> },
-  { id: 3, name: "Share", icon: <Share2 size={14} /> },
-  { id: 4, name: "Print", icon: <Printer size={14} /> },
-];
-
-const titleFormSchema = z.object({
-  name: z
-    .string({
-      invalid_type_error: "title must be a string",
-      required_error: "This field is required",
-    })
-    .min(3, "Title must be minimum 2 characters")
-    .max(10, "Title must be maximum 10 characters")
-    .trim(),
-});
-
-const requiredForm = titleFormSchema.required();
+export const continentRequiredForm = continentFormSchema.required();
+export const continentDefaultValues = {
+  name: "",
+};
 
 const Continent = () => {
-  // 1. Define your form.
-  const form = useForm({
-    resolver: zodResolver(requiredForm),
-    defaultValues: {
-      name: "",
-    },
+  const continentUrl = `${baseUrl}public-registry/address/continent`;
+
+  const { data, isPending } = useFetchData(continentUrl, "continent");
+  const postMutation = usePostData({
+    queryKey: ["continent"],
+    url: continentUrl,
+    title: "continent",
   });
 
   async function onSubmit(values) {
-    console.log(values);
-    form.reset();
+    const body = {
+      name: values.name,
+    };
+
+    postMutation.mutateAsync(body);
+  }
+
+  if (isPending) {
+    return <span>Loading...</span>;
   }
 
   return (
@@ -58,19 +61,7 @@ const Continent = () => {
       {/* Second header */}
 
       <div className="flex justify-between w-full items-center">
-        <div className="flex w-auto items-center px-2 space-x-5">
-          <h2 className="uppercase font-light text-base">continent</h2>
-          <div className="flex w-auto p-2 border border-black bg-white items-center">
-            <h3 className="text-sm">
-              A<sup>-</sup>
-            </h3>
-          </div>
-          <div className="flex w-auto p-2 border border-black bg-white items-center">
-            <h3 className="text-sm">
-              A<sup>+</sup>
-            </h3>
-          </div>
-        </div>
+        <SecondHeader title={"Continent"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
           <Dialog>
@@ -84,42 +75,13 @@ const Continent = () => {
                 <DialogTitle>Add New Continent</DialogTitle>
               </DialogHeader>
               <hr className="border border-gray-100 w-full h-[1px]" />
-              <form
-                className="w-full flex flex-col space-y-3"
-                onSubmit={form.handleSubmit(onSubmit)}
+              <GenericForm
+                defaultValues={continentDefaultValues}
+                validationSchema={continentRequiredForm}
+                onSubmit={onSubmit}
               >
-                <div className="w-full gap-2 flex flex-col ">
-                  <label className="text-sm font-light" htmlFor={"name"}>
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter continent name"
-                    {...form.register("name")}
-                    className="border border-gray-100 focus:outline-none rounded-md p-2"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.name?.message}
-                  </p>
-                </div>
-                <DialogFooter>
-                  <div className="w-full flex justify-between items-center">
-                    <div
-                      className="w-auto border border-gray-300 rounded-md h-10 flex items-center p-2 cursor-pointer"
-                      onClick={() => form.reset()}
-                    >
-                      Cancel
-                    </div>
-                    <Button
-                      className="bg-vmtblue w-auto"
-                      variant="default"
-                      type="submit"
-                    >
-                      Submit
-                    </Button>
-                  </div>
-                </DialogFooter>
-              </form>
+                <FormInput name="name" label="Name" />
+              </GenericForm>
             </DialogContent>
           </Dialog>
 
@@ -147,6 +109,7 @@ const Continent = () => {
       </div>
 
       {/* Table */}
+      <ReusableTable columns={continentColumns} data={data} />
     </div>
   );
 };

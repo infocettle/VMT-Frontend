@@ -49,6 +49,10 @@ import {
   currencyDefaultValues,
   currencyRequiredForm,
 } from "@/pages/PublicRegistry/Currency";
+import {
+  continentDefaultValues,
+  continentRequiredForm,
+} from "@/pages/PublicRegistry/Continent";
 
 export const titleColumns = [
   {
@@ -1361,6 +1365,7 @@ export const qualificationColumns = [
     },
   },
 ];
+
 export const currencyColumns = [
   {
     accessorKey: "alphabetCode",
@@ -1527,7 +1532,7 @@ export const currencyColumns = [
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
-                <DialogTitle>Edit Qualification</DialogTitle>
+                <DialogTitle>Edit Currency</DialogTitle>
               </DialogHeader>
               <hr className="border border-gray-100 w-full h-[1px]" />
 
@@ -1540,6 +1545,181 @@ export const currencyColumns = [
                 <FormInput name="number_code" label="Number Code" />
                 <FormInput name="currency_name" label="Currency Name" />
                 <FormInput name="decimal" label="Decimal" />
+              </GenericForm>
+            </DialogContent>
+          </Dialog>
+
+          <Trash2Icon
+            className="text-red-700 cursor-pointer"
+            size={20}
+            onClick={async () => await deleteMutation.mutateAsync()}
+          />
+        </div>
+      );
+    },
+  },
+];
+
+export const continentColumns = [
+  {
+    accessorKey: "name",
+    header: "NAME",
+    cell: ({ row }) => {
+      const formatted = row.getValue("name");
+      return <div className=" ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "dateCreated",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Date Created
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateCreated");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "createdBy",
+    header: () => {
+      return <h2 className={"ml-6 uppercase"}>created by</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("createdBy");
+      return <div className="ml-10 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "modifiedBy",
+    header: () => {
+      return <h2 className={"ml-6 uppercase"}>modified by</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("modifiedBy");
+      return <div className="ml-10 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "dateModified",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Date Modified
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateModified");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Status
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("status");
+      // const formatted = new Intl.NumberFormat("en-US", {
+      //   style: "currency",
+      //   currency: "USD",
+      // }).format(amount);
+
+      return (
+        <div
+          className={cn(
+            `${
+              formatted == undefined
+                ? "bg-red-50 border border-red-500 text-red-900"
+                : formatted == "Pending"
+                ? "bg-orange-50 text-orange-900 border border-orange-500"
+                : "bg-green-50 text-green-900 border border-green-500"
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+          )}
+        >
+          {String(formatted)}
+        </div>
+      );
+    },
+  },
+  {
+    header: () => <div className="ml-5 uppercase">Actions</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const title = row.original;
+
+      const Url = `${baseUrl}public-registry/address/continent/${title._id}`;
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["continent"],
+        url: Url,
+        title: "continent",
+      });
+
+      const editMutation = useEditData({ queryKey: ["continent"], url: Url });
+
+      async function onSubmit(values) {
+        console.log(values);
+
+        const body = {
+          name: values.name,
+        };
+
+        editMutation.mutateAsync(body);
+      }
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <Dialog>
+            <DialogTrigger asChild>
+              <PencilIcon
+                className="cursor-pointer"
+                color="#0B6ED0"
+                size={20}
+              />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit Continent</DialogTitle>
+              </DialogHeader>
+              <hr className="border border-gray-100 w-full h-[1px]" />
+
+              <GenericForm
+                defaultValues={continentDefaultValues}
+                validationSchema={continentRequiredForm}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="name" label="Name" />
               </GenericForm>
             </DialogContent>
           </Dialog>

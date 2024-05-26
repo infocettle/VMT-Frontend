@@ -146,3 +146,14 @@ export const currencyFormSchema = z.object({
     })
     .max(1, "decimal cannot be more than 1 character"),
 });
+
+export const continentFormSchema = z.object({
+  name: z
+    .string({
+      invalid_type_error: "title must be a string",
+      required_error: "This field is required",
+    })
+    .min(3, "Title must be minimum 2 characters")
+    .max(10, "Title must be maximum 10 characters")
+    .trim(),
+});

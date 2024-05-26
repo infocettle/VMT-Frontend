@@ -48,3 +48,72 @@ export const maritalFormSchema = z.object({
     .max(30, "title must be maximum 30 characters")
     .trim(),
 });
+
+export const relationshiptitleFormSchema = z.object({
+  title: z
+    .string({
+      invalid_type_error: "relationship title must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "relationship title cannot be empty")
+    .trim(),
+});
+
+export const bGFormSchema = z.object({
+  code: z
+    .string({
+      invalid_type_error: "code must be a string",
+      required_error: "This field is required",
+    })
+    .min(2, "code cannot be less than 2 characters")
+    .max(30, "code must be maximum 30 character")
+    .trim(),
+  name: z
+    .string({
+      invalid_type_error: "title must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "name cannot be empty")
+    .max(30, "name must be maximum 30 characters")
+    .trim(),
+});
+export const AilFormSchema = z.object({
+  name: z
+    .string({
+      invalid_type_error: "ailment name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "ailment name cannot be empty")
+    .max(30, "ailment name must be maximum 30 characters")
+    .trim(),
+});
+
+export const BodyDataFormSchema = z.object({
+  name: z
+    .string({
+      invalid_type_error: "ailment name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "ailment name cannot be empty")
+    .max(30, "ailment name must be maximum 30 characters")
+    .trim(),
+});
+
+export const qualificationFormSchema = z.object({
+  code: z
+    .string({
+      invalid_type_error: "code must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "code cannot be empty")
+    .max(30, "code must be maximum 30 character")
+    .trim(),
+  name: z
+    .string({
+      invalid_type_error: "name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "name cannot be empty")
+    .max(30, "name must be maximum 30 characters")
+    .trim(),
+});

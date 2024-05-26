@@ -17,27 +17,26 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Printer, Share2, Upload, View } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { GenericForm } from "@/components/GenericForm";
+import { FormInput } from "@/components/FormInput";
+import { ReportLinks } from "@/components/ReportLinks";
+import SecondHeader from "@/components/SecondHeader";
+import { BodyDataFormSchema } from "@/utils/zodSchema";
+import { bodyDataColumns } from "@/components/typings";
+import {
+  eyeColorData,
+  hairColorData,
+  noseShapeData,
+  skinToneData,
+} from "@/texts/TableValues";
+import { ReusableTable } from "@/components/ReusableTable";
 
-const ReportLinks = [
-  { id: 1, name: "View Report", icon: <View size={14} /> },
-  { id: 2, name: "Export", icon: <Upload size={14} /> },
-  { id: 3, name: "Share", icon: <Share2 size={14} /> },
-  { id: 4, name: "Print", icon: <Printer size={14} /> },
-];
-const FormSchema = z.object({
-  name: z
-    .string({
-      invalid_type_error: "ailment name must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "ailment name cannot be empty")
-    .max(30, "ailment name must be maximum 30 characters")
-    .trim(),
-});
-
-const RequiredForm = FormSchema.required();
+export const bodyDataRequiredForm = BodyDataFormSchema.required();
+export const bodyDataDefaultValues = {
+  name: "",
+};
 
 const BodyData = () => {
   const [subGroup, setSubGroup] = useState("eye color");
@@ -47,19 +46,10 @@ const BodyData = () => {
   const [noseColor, setNoseColor] = useState(true);
   const [skinColor, setSkinColor] = useState(false);
 
-  // 1. Define your form.
-  const Form = useForm({
-    resolver: zodResolver(RequiredForm),
-    defaultValues: {
-      name: "",
-    },
-  });
-
   async function onSubmit(values) {
     console.log(values);
     console.log(apiUrl);
     console.log(subGroup);
-    Form.reset();
   }
 
   return (
@@ -67,19 +57,7 @@ const BodyData = () => {
       {/* Second header */}
 
       <div className="flex justify-between w-full items-center">
-        <div className="flex w-auto items-center px-2 space-x-5">
-          <h2 className="uppercase font-light text-base">body data</h2>
-          <div className="flex w-auto p-2 border border-black bg-white items-center">
-            <h3 className="text-sm">
-              A<sup>-</sup>
-            </h3>
-          </div>
-          <div className="flex w-auto p-2 border border-black bg-white items-center">
-            <h3 className="text-sm">
-              A<sup>+</sup>
-            </h3>
-          </div>
-        </div>
+        <SecondHeader title={"Body Data"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
           <Dialog>
@@ -101,51 +79,13 @@ const BodyData = () => {
                 </DialogTitle>
               </DialogHeader>
               <hr className="border border-gray-100 w-full h-[1px]" />
-              <form
-                className="w-full flex flex-col space-y-3"
-                onSubmit={Form.handleSubmit(onSubmit)}
+              <GenericForm
+                defaultValues={bodyDataDefaultValues}
+                validationSchema={bodyDataRequiredForm}
+                onSubmit={onSubmit}
               >
-                <div className="w-full gap-2 flex flex-col ">
-                  <label className="text-sm font-light" htmlFor={"name"}>
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    placeholder={
-                      subGroup == "eye color"
-                        ? "Enter eye color"
-                        : subGroup == "hair color"
-                        ? "Enter hair color"
-                        : subGroup == "nose shape"
-                        ? "Enter nose shape"
-                        : "Enter Skin Tone"
-                    }
-                    {...Form.register("name")}
-                    className="border border-gray-100 focus:outline-none rounded-md p-2"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {Form.formState.errors.name?.message}
-                  </p>
-                </div>
-
-                <DialogFooter>
-                  <div className="w-full flex justify-between items-center">
-                    <div
-                      className="w-auto border border-gray-300 rounded-md h-10 flex items-center p-2 cursor-pointer"
-                      onClick={() => Form.reset()}
-                    >
-                      Cancel
-                    </div>
-                    <Button
-                      className="bg-vmtblue w-auto"
-                      variant="default"
-                      type="submit"
-                    >
-                      Submit
-                    </Button>
-                  </div>
-                </DialogFooter>
-              </form>
+                <FormInput name="name" label="Name" />
+              </GenericForm>
             </DialogContent>
           </Dialog>
 
@@ -278,6 +218,18 @@ const BodyData = () => {
         </div>
 
         {/* Table */}
+        {subGroup == "eye color" && (
+          <ReusableTable columns={bodyDataColumns} data={eyeColorData} />
+        )}
+        {subGroup == "skin tone" && (
+          <ReusableTable columns={bodyDataColumns} data={skinToneData} />
+        )}
+        {subGroup == "nose shape" && (
+          <ReusableTable columns={bodyDataColumns} data={noseShapeData} />
+        )}
+        {subGroup == "hair color" && (
+          <ReusableTable columns={bodyDataColumns} data={hairColorData} />
+        )}
       </div>
     </div>
   );

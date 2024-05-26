@@ -26,6 +26,9 @@ import { FormInput } from "@/components/FormInput";
 import { ReportLinks } from "@/components/ReportLinks";
 import SecondHeader from "@/components/SecondHeader";
 import { maritalFormSchema } from "@/utils/zodSchema";
+import useFetchData from "@/hooks/useFetchData";
+import { baseUrl } from "@/App";
+import usePostData from "@/hooks/usePostData";
 
 export const maritalRequiredForm = maritalFormSchema.required();
 
@@ -35,8 +38,26 @@ export const maritalDefaultValues = {
 };
 
 const MaritalStatus = () => {
+  const maritalStatusUrl = `${baseUrl}public-registry/personal-details/marital-status`;
+
+  const { data, isPending } = useFetchData(maritalStatusUrl, "maritalStatus");
+  const postMutation = usePostData({
+    queryKey: ["maritalStatus"],
+    url: maritalStatusUrl,
+    title: "marital status",
+  });
+
   async function onSubmit(values) {
-    console.log(values);
+    const body = {
+      maritalStatus: values.title,
+      code: values.code,
+    };
+
+    postMutation.mutateAsync(body);
+  }
+
+  if (isPending) {
+    return <span>Loading...</span>;
   }
 
   return (
@@ -93,7 +114,7 @@ const MaritalStatus = () => {
       </div>
 
       {/* Table */}
-      <ReusableTable columns={maritalStatusColumns} data={maritalStatuses} />
+      <ReusableTable columns={maritalStatusColumns} data={data} />
     </div>
   );
 };

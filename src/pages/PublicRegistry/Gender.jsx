@@ -1,12 +1,7 @@
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { FC } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -21,11 +16,13 @@ import { ChevronDown } from "lucide-react";
 import { genderColumns } from "@/components/typings";
 import { ReusableTable } from "@/components/ReusableTable";
 import { genderFormSchema } from "@/utils/zodSchema";
-import { genders } from "@/texts/TableValues";
 import { GenericForm } from "@/components/GenericForm";
 import { FormInput } from "@/components/FormInput";
 import { ReportLinks } from "@/components/ReportLinks";
 import SecondHeader from "@/components/SecondHeader";
+import useFetchData from "@/hooks/useFetchData";
+import { baseUrl } from "@/App";
+import usePostData from "@/hooks/usePostData";
 
 export const genderRequiredForm = genderFormSchema.required();
 
@@ -35,8 +32,26 @@ export const genderDefaultValues = {
 };
 
 const Gender = () => {
+  const genderUrl = `${baseUrl}public-registry/personal-details/gender`;
+
+  const { data, isPending } = useFetchData(genderUrl, "gender");
+  const postMutation = usePostData({
+    queryKey: ["gender"],
+    url: genderUrl,
+    title: "gender",
+  });
+
   async function onSubmit(values) {
-    console.log(values);
+    const body = {
+      gender: values.title,
+      alias: values.alias,
+    };
+
+    postMutation.mutateAsync(body);
+  }
+
+  if (isPending) {
+    return <span>Loading...</span>;
   }
 
   return (
@@ -94,7 +109,7 @@ const Gender = () => {
       </div>
 
       {/* Table */}
-      <ReusableTable columns={genderColumns} data={genders} />
+      <ReusableTable columns={genderColumns} data={data} />
     </div>
   );
 };

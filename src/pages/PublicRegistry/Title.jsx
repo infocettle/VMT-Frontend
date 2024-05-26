@@ -15,12 +15,15 @@ import {
 import { ChevronDown } from "lucide-react";
 import { titleColumns } from "@/components/typings";
 import { ReusableTable } from "@/components/ReusableTable";
-import { titles } from "@/texts/TableValues";
+import { useNavigate } from "react-router-dom";
 import { GenericForm } from "@/components/GenericForm";
 import { FormInput } from "@/components/FormInput";
 import { titleFormSchema } from "@/utils/zodSchema";
 import { ReportLinks } from "@/components/ReportLinks";
 import SecondHeader from "@/components/SecondHeader";
+import useFetchData from "@/hooks/useFetchData";
+import { baseUrl } from "@/App";
+import usePostData from "@/hooks/usePostData";
 
 export const requiredForm = titleFormSchema.required();
 
@@ -29,8 +32,25 @@ export const defaultValues = {
 };
 
 const Title = () => {
+  const titleUrl = `${baseUrl}public-registry/personal-details/title`;
+
+  const { data, isPending } = useFetchData(titleUrl, "title");
+  const postMutation = usePostData({
+    queryKey: ["title"],
+    url: titleUrl,
+    title: "title",
+  });
+
   async function onSubmit(values) {
-    console.log(values);
+    const body = {
+      title: values.title,
+    };
+
+    postMutation.mutateAsync(body);
+  }
+
+  if (isPending) {
+    return <span>Loading...</span>;
   }
 
   return (
@@ -87,7 +107,7 @@ const Title = () => {
       </div>
 
       {/* Table */}
-      <ReusableTable columns={titleColumns} data={titles} />
+      <ReusableTable columns={titleColumns} data={data} />
     </div>
   );
 };

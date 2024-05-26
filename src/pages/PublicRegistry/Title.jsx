@@ -15,7 +15,6 @@ import {
 import { ChevronDown } from "lucide-react";
 import { titleColumns } from "@/components/typings";
 import { ReusableTable } from "@/components/ReusableTable";
-import { useNavigate } from "react-router-dom";
 import { GenericForm } from "@/components/GenericForm";
 import { FormInput } from "@/components/FormInput";
 import { titleFormSchema } from "@/utils/zodSchema";

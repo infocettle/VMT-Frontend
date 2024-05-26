@@ -117,3 +117,32 @@ export const qualificationFormSchema = z.object({
     .max(30, "name must be maximum 30 characters")
     .trim(),
 });
+
+export const currencyFormSchema = z.object({
+  alphabet_code: z
+    .string({
+      invalid_type_error: "alphabet code must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "alphabet code cannot be empty")
+    .max(5, "alphabet code must be maximum 5 characters")
+    .trim(),
+  number_code: z.string({
+    invalid_type_error: "number code must be a number",
+    required_error: "This field is required",
+  }),
+  currency_name: z
+    .string({
+      invalid_type_error: "currency name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "currency name cannot be empty")
+    .max(30, "currency name must be maximum 30 characters")
+    .trim(),
+  decimal: z
+    .string({
+      invalid_type_error: "decimal must be a number",
+      required_error: "This field is required",
+    })
+    .max(1, "decimal cannot be more than 1 character"),
+});

@@ -45,6 +45,11 @@ import {
   qualificationDefaultValues,
 } from "@/pages/PublicRegistry/Qualification";
 
+import {
+  currencyDefaultValues,
+  currencyRequiredForm,
+} from "@/pages/PublicRegistry/Currency";
+
 export const titleColumns = [
   {
     accessorKey: "title",
@@ -1342,6 +1347,199 @@ export const qualificationColumns = [
               >
                 <FormInput name="name" label="Name" />
                 <FormInput name="code" label="Code" />
+              </GenericForm>
+            </DialogContent>
+          </Dialog>
+
+          <Trash2Icon
+            className="text-red-700 cursor-pointer"
+            size={20}
+            onClick={async () => await deleteMutation.mutateAsync()}
+          />
+        </div>
+      );
+    },
+  },
+];
+export const currencyColumns = [
+  {
+    accessorKey: "alphabetCode",
+    header: () => {
+      return <h2 className={" uppercase"}>Alphabet Code</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("alphabetCode");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "numberCode",
+    header: () => {
+      return <h2 className={"uppercase"}>number Code</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("numberCode");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "currencyName",
+    header: () => {
+      return <h2 className={"uppercase"}>currency Name</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("currencyName");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "decimal",
+    header: () => {
+      return <h2 className={"uppercase"}>decimal</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("decimal");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "dateCreated",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Date Created
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateCreated");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "dateModified",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Date Modified
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateModified");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Status
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("status");
+      // const formatted = new Intl.NumberFormat("en-US", {
+      //   style: "currency",
+      //   currency: "USD",
+      // }).format(amount);
+
+      return (
+        <div
+          className={cn(
+            `${
+              formatted == "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : "bg-green-50 text-green-900 border border-green-500"
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+          )}
+        >
+          {String(formatted)}
+        </div>
+      );
+    },
+  },
+  {
+    header: () => <div className="ml-5 uppercase">Actions</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const title = row.original;
+
+      const currencyUrl = `${baseUrl}public-registry/currency/${title._id}`;
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["currency"],
+        url: currencyUrl,
+        title: "currency",
+      });
+
+      const editMutation = useEditData({
+        queryKey: ["currency"],
+        url: currencyUrl,
+      });
+
+      async function onSubmit(values) {
+        console.log(values);
+
+        const body = {
+          alphabetCode: values.alphabet_code,
+          numberCode: values.number_code,
+          currencyName: values.currency_name,
+          decimal: values.decimal,
+        };
+
+        editMutation.mutateAsync(body);
+      }
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <Dialog>
+            <DialogTrigger asChild>
+              <PencilIcon
+                className="cursor-pointer"
+                color="#0B6ED0"
+                size={20}
+              />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit Qualification</DialogTitle>
+              </DialogHeader>
+              <hr className="border border-gray-100 w-full h-[1px]" />
+
+              <GenericForm
+                defaultValues={currencyDefaultValues}
+                validationSchema={currencyRequiredForm}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="alphabet_code" label="Alphabet Code" />
+                <FormInput name="number_code" label="Number Code" />
+                <FormInput name="currency_name" label="Currency Name" />
+                <FormInput name="decimal" label="Decimal" />
               </GenericForm>
             </DialogContent>
           </Dialog>

@@ -275,3 +275,119 @@ export const ailments = [
     status: "active",
   },
 ];
+
+export const eyeColorData = [
+  {
+    id: 1,
+    tablename: "eyeColor",
+    name: "gray",
+    dateCreated: "1-sep-2014",
+    dateModified: "10-sep-2016",
+    status: "active",
+  },
+  {
+    id: 2,
+    tablename: "eyeColor",
+    name: "brown",
+    dateCreated: "1-sep-2014",
+    dateModified: "10-sep-2016",
+    status: "active",
+  },
+  {
+    id: 3,
+    tablename: "eyeColor",
+    name: "blue",
+    dateCreated: "1-sep-2014",
+    dateModified: "10-sep-2016",
+    status: "pending",
+  },
+];
+
+export const hairColorData = [
+  {
+    id: 1,
+    tablename: "hairColor",
+    name: "black",
+    dateCreated: "1-sep-2014",
+    dateModified: "10-sep-2016",
+    status: "active",
+  },
+  {
+    id: 2,
+    tablename: "hairColor",
+    name: "brown",
+    dateCreated: "1-sep-2014",
+    dateModified: "10-sep-2016",
+    status: "active",
+  },
+  {
+    id: 3,
+    tablename: "hairColor",
+    name: "white",
+    dateCreated: "1-sep-2014",
+    dateModified: "10-sep-2016",
+    status: "pending",
+  },
+];
+
+export const skinToneData = [
+  {
+    id: 1,
+    tablename: "skinTone",
+    name: "fair",
+    dateCreated: "1-sep-2014",
+    dateModified: "10-sep-2016",
+    status: "active",
+  },
+  {
+    id: 2,
+    tablename: "skinTone",
+    name: "light",
+    dateCreated: "1-sep-2014",
+    dateModified: "10-sep-2016",
+    status: "active",
+  },
+  {
+    id: 3,
+    tablename: "skinTone",
+    name: "dark",
+    dateCreated: "1-sep-2014",
+    dateModified: "10-sep-2016",
+    status: "pending",
+  },
+];
+
+export const noseShapeData = [
+  {
+    id: 1,
+    tablename: "noseShape",
+    name: "turned-up",
+    dateCreated: "1-sep-2014",
+    dateModified: "10-sep-2016",
+    status: "active",
+  },
+  {
+    id: 2,
+    tablename: "noseShape",
+    name: "hawk",
+    dateCreated: "1-sep-2014",
+    dateModified: "10-sep-2016",
+    status: "active",
+  },
+  {
+    id: 3,
+    tablename: "noseShape",
+    name: "greek",
+    dateCreated: "1-sep-2014",
+    dateModified: "10-sep-2016",
+    status: "pending",
+  },
+  {
+    id: 4,
+    tablename: "noseShape",
+    name: "bumpy",
+    dateCreated: "1-sep-2014",
+    dateModified: "10-sep-2016",
+    status: "active",
+  },
+];

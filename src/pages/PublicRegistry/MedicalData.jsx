@@ -25,76 +25,90 @@ import {
   bloodGroupGenotypeColumns,
 } from "@/components/typings";
 import { ailments, bloodGroup, genotype } from "@/texts/TableValues";
+import { GenericForm } from "@/components/GenericForm";
+import { FormInput } from "@/components/FormInput";
+import { ReportLinks } from "@/components/ReportLinks";
+import SecondHeader from "@/components/SecondHeader";
+import { bGFormSchema, AilFormSchema } from "@/utils/zodSchema";
+import useFetchData from "@/hooks/useFetchData";
+import { baseUrl } from "@/App";
+import usePostData from "@/hooks/usePostData";
 
-const ReportLinks = [
-  { id: 1, name: "View Report", icon: <View size={14} /> },
-  { id: 2, name: "Export", icon: <Upload size={14} /> },
-  { id: 3, name: "Share", icon: <Share2 size={14} /> },
-  { id: 4, name: "Print", icon: <Printer size={14} /> },
-];
-const bGFormSchema = z.object({
-  code: z
-    .string({
-      invalid_type_error: "code must be a string",
-      required_error: "This field is required",
-    })
-    .min(3, "code cannot be less than 3 characters")
-    .max(30, "code must be maximum 30 character")
-    .trim(),
-  name: z
-    .string({
-      invalid_type_error: "title must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "name cannot be empty")
-    .max(30, "name must be maximum 30 characters")
-    .trim(),
-});
-const AilFormSchema = z.object({
-  name: z
-    .string({
-      invalid_type_error: "ailment name must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "ailment name cannot be empty")
-    .max(30, "ailment name must be maximum 30 characters")
-    .trim(),
-});
+export const bGRequiredForm = bGFormSchema.required();
+export const bgDefaultValues = {
+  name: "",
+  code: "",
+};
 
-const bGRequiredForm = bGFormSchema.required();
-const ailRequiredForm = AilFormSchema.required();
+export const ailRequiredForm = AilFormSchema.required();
+export const ailDefaultValues = {
+  name: "",
+};
 
 const MedicalData = () => {
   const [subGroup, setSubGroup] = useState("blood group");
-  const [apiUrl, setApiUrl] = useState("http://bloodcolor");
   const [bloodColor, setBloodColor] = useState(true);
   const [genoColor, setGenoColor] = useState(false);
   const [ailColor, setAilColor] = useState(false);
 
-  // 1. Define your form.
-  const bgForm = useForm({
-    resolver: zodResolver(bGRequiredForm),
-    defaultValues: {
-      name: "",
-      code: "",
-    },
-  });
+  const bloodUrl = `${baseUrl}public-registry/personal-details/blood-group/`;
+  const genotypeUrl = `${baseUrl}public-registry/personal-details/genotype/`;
+  const ailUrl = `${baseUrl}public-registry/personal-details/ailment/`;
 
-  const ailForm = useForm({
-    resolver: zodResolver(ailRequiredForm),
-    defaultValues: {
-      name: "",
-    },
+  const { data, isPending } = useFetchData(
+    subGroup == "blood group"
+      ? bloodUrl
+      : subGroup == "genotype"
+      ? genotypeUrl
+      : ailUrl,
+    subGroup == "blood group"
+      ? "bloodGroup"
+      : subGroup == "genotype"
+      ? "genotype"
+      : "ailment"
+  );
+
+  const postMutation = usePostData({
+    queryKey: [
+      subGroup == "blood group"
+        ? "bloodGroup"
+        : subGroup == "genotype"
+        ? "genotype"
+        : "ailment",
+    ],
+    url:
+      subGroup == "blood group"
+        ? bloodUrl
+        : subGroup == "genotype"
+        ? genotypeUrl
+        : ailUrl,
+    title:
+      subGroup == "blood group"
+        ? "blood group"
+        : subGroup == "genotype"
+        ? "genotype"
+        : "ailments",
   });
 
   async function onSubmit(values) {
+    let body = {};
+
     if (subGroup == "blood group" || subGroup == "genotype") {
-      console.log(values, apiUrl);
-      bgForm.reset();
+      body = {
+        name: values.name,
+        code: values.code,
+      };
     } else {
-      console.log(values, apiUrl);
-      ailForm.reset();
+      body = {
+        name: values.name,
+      };
     }
+
+    postMutation.mutateAsync(body);
+  }
+
+  if (isPending) {
+    return <span>Loading...</span>;
   }
 
   return (
@@ -102,19 +116,7 @@ const MedicalData = () => {
       {/* Second header */}
 
       <div className="flex justify-between w-full items-center">
-        <div className="flex w-auto items-center px-2 space-x-5">
-          <h2 className="uppercase font-light text-base">medical data</h2>
-          <div className="flex w-auto p-2 border border-black bg-white items-center">
-            <h3 className="text-sm">
-              A<sup>-</sup>
-            </h3>
-          </div>
-          <div className="flex w-auto p-2 border border-black bg-white items-center">
-            <h3 className="text-sm">
-              A<sup>+</sup>
-            </h3>
-          </div>
-        </div>
+        <SecondHeader title={"Medical Data"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
           {subGroup == "blood group" || subGroup == "genotype" ? (
@@ -133,65 +135,14 @@ const MedicalData = () => {
                   </DialogTitle>
                 </DialogHeader>
                 <hr className="border border-gray-100 w-full h-[1px]" />
-                <form
-                  className="w-full flex flex-col space-y-3"
-                  onSubmit={bgForm.handleSubmit(onSubmit)}
+                <GenericForm
+                  defaultValues={bgDefaultValues}
+                  validationSchema={bGRequiredForm}
+                  onSubmit={onSubmit}
                 >
-                  <div className="w-full gap-2 flex flex-col ">
-                    <label className="text-sm font-light" htmlFor={"code"}>
-                      Code
-                    </label>
-                    <input
-                      type="text"
-                      placeholder={
-                        subGroup == "blood group"
-                          ? "Enter code"
-                          : "Enter genotype code"
-                      }
-                      {...bgForm.register("code")}
-                      className="border border-gray-100 focus:outline-none rounded-md p-2"
-                    />
-                    <p className="text-red-500 text-sm">
-                      {bgForm.formState.errors.code?.message}
-                    </p>
-                  </div>
-
-                  <div className="w-full gap-2 flex flex-col ">
-                    <label className="text-sm font-light" htmlFor={"name"}>
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      placeholder={
-                        subGroup == "blood group"
-                          ? "Enter blood group name"
-                          : "Enter genotype type"
-                      }
-                      {...bgForm.register("name")}
-                      className="border border-gray-100 focus:outline-none rounded-md p-2"
-                    />
-                    <p className="text-red-500 text-sm">
-                      {bgForm.formState.errors.name?.message}
-                    </p>
-                  </div>
-                  <DialogFooter>
-                    <div className="w-full flex justify-between items-center">
-                      <div
-                        className="w-auto border border-gray-300 rounded-md h-10 flex items-center p-2 cursor-pointer"
-                        onClick={() => bgForm.reset()}
-                      >
-                        Cancel
-                      </div>
-                      <Button
-                        className="bg-vmtblue w-auto"
-                        variant="default"
-                        type="submit"
-                      >
-                        Submit
-                      </Button>
-                    </div>
-                  </DialogFooter>
-                </form>
+                  <FormInput name="name" label="Name" />
+                  <FormInput name="code" label="Code" />
+                </GenericForm>
               </DialogContent>
             </Dialog>
           ) : (
@@ -206,43 +157,13 @@ const MedicalData = () => {
                   <DialogTitle>Add New Ailment</DialogTitle>
                 </DialogHeader>
                 <hr className="border border-gray-100 w-full h-[1px]" />
-                <form
-                  className="w-full flex flex-col space-y-3"
-                  onSubmit={ailForm.handleSubmit(onSubmit)}
+                <GenericForm
+                  defaultValues={ailDefaultValues}
+                  validationSchema={ailRequiredForm}
+                  onSubmit={onSubmit}
                 >
-                  <div className="w-full gap-2 flex flex-col ">
-                    <label className="text-sm font-light" htmlFor={"name"}>
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter medical ailment name"
-                      {...ailForm.register("name")}
-                      className="border border-gray-100 focus:outline-none rounded-md p-2"
-                    />
-                    <p className="text-red-500 text-sm">
-                      {ailForm.formState.errors.name?.message}
-                    </p>
-                  </div>
-
-                  <DialogFooter>
-                    <div className="w-full flex justify-between items-center">
-                      <div
-                        className="w-auto border border-gray-300 rounded-md h-10 flex items-center p-2 cursor-pointer"
-                        onClick={() => ailForm.reset()}
-                      >
-                        Cancel
-                      </div>
-                      <Button
-                        className="bg-vmtblue w-auto"
-                        variant="default"
-                        type="submit"
-                      >
-                        Submit
-                      </Button>
-                    </div>
-                  </DialogFooter>
-                </form>
+                  <FormInput name="name" label="Name" />
+                </GenericForm>
               </DialogContent>
             </Dialog>
           )}
@@ -276,7 +197,6 @@ const MedicalData = () => {
           <button
             onClick={() => {
               setSubGroup("blood group");
-              setApiUrl("http://bloodcolor");
               setBloodColor(true);
               setGenoColor(false);
               setAilColor(false);
@@ -300,7 +220,6 @@ const MedicalData = () => {
           <button
             onClick={() => {
               setSubGroup("genotype");
-              setApiUrl("http://genotype");
               setGenoColor(true);
               setAilColor(false);
               setBloodColor(false);
@@ -324,7 +243,6 @@ const MedicalData = () => {
           <button
             onClick={() => {
               setSubGroup("ailments");
-              setApiUrl("http://ailments");
               setAilColor(true);
               setBloodColor(false);
               setGenoColor(false);
@@ -349,16 +267,13 @@ const MedicalData = () => {
 
         {/* Table */}
         {subGroup == "blood group" && (
-          <ReusableTable
-            columns={bloodGroupGenotypeColumns}
-            data={bloodGroup}
-          />
+          <ReusableTable columns={bloodGroupGenotypeColumns} data={data} />
         )}
         {subGroup == "genotype" && (
-          <ReusableTable columns={bloodGroupGenotypeColumns} data={genotype} />
+          <ReusableTable columns={bloodGroupGenotypeColumns} data={data} />
         )}
         {subGroup == "ailments" && (
-          <ReusableTable columns={ailmentColumns} data={ailments} />
+          <ReusableTable columns={ailmentColumns} data={data} />
         )}
       </div>
     </div>

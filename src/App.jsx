@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import Auth from "./pages/Auth/Auth";
 import {
@@ -37,6 +38,8 @@ import AdminAuthUser from "./pages/Auth/Admin/AdminUser";
 
 const queryClient = new QueryClient();
 
+export const baseUrl = "https://vmt-server.onrender.com/api/";
+
 const router = createBrowserRouter([
   {
     path: "/auth",
@@ -52,8 +55,8 @@ const router = createBrowserRouter([
   },
 
   {
-    path:"/subscription",
-    element:<Subscription />,
+    path: "/subscription",
+    element: <Subscription />,
   },
   {
     path: "/public_reg",
@@ -190,6 +193,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <ToastContainer />
       <RouterProvider router={router} />
     </QueryClientProvider>
   );

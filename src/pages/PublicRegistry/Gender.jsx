@@ -1,12 +1,7 @@
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { FC } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -17,52 +12,46 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Printer, Share2, Upload, View } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { genderColumns } from "@/components/typings";
 import { ReusableTable } from "@/components/ReusableTable";
-import { genders } from "@/texts/TableValues";
+import { genderFormSchema } from "@/utils/zodSchema";
+import { GenericForm } from "@/components/GenericForm";
+import { FormInput } from "@/components/FormInput";
+import { ReportLinks } from "@/components/ReportLinks";
+import SecondHeader from "@/components/SecondHeader";
+import useFetchData from "@/hooks/useFetchData";
+import { baseUrl } from "@/App";
+import usePostData from "@/hooks/usePostData";
 
-const ReportLinks = [
-  { id: 1, name: "View Report", icon: <View size={14} /> },
-  { id: 2, name: "Export", icon: <Upload size={14} /> },
-  { id: 3, name: "Share", icon: <Share2 size={14} /> },
-  { id: 4, name: "Print", icon: <Printer size={14} /> },
-];
+export const genderRequiredForm = genderFormSchema.required();
 
-const genderFormSchema = z.object({
-  title: z
-    .string({
-      invalid_type_error: "gender must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "Gender must be minimum 1 character")
-    .max(30, "Gender must be maximum 30 characters")
-    .trim(),
-  alias: z
-    .string({
-      invalid_type_error: "alias must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "Alias cannot be empty")
-    .max(30, "Alias must be maximum 30 characters")
-    .trim(),
-});
-
-const requiredForm = genderFormSchema.required();
+export const genderDefaultValues = {
+  title: "",
+  alias: "",
+};
 
 const Gender = () => {
-  // 1. Define your form.
-  const form = useForm({
-    resolver: zodResolver(requiredForm),
-    defaultValues: {
-      title: "",
-      alias: "",
-    },
+  const genderUrl = `${baseUrl}public-registry/personal-details/gender`;
+
+  const { data, isPending } = useFetchData(genderUrl, "gender");
+  const postMutation = usePostData({
+    queryKey: ["gender"],
+    url: genderUrl,
+    title: "gender",
   });
 
   async function onSubmit(values) {
-    console.log(values);
-    form.reset();
+    const body = {
+      gender: values.title,
+      alias: values.alias,
+    };
+
+    postMutation.mutateAsync(body);
+  }
+
+  if (isPending) {
+    return <span>Loading...</span>;
   }
 
   return (
@@ -70,19 +59,7 @@ const Gender = () => {
       {/* Second header */}
 
       <div className="flex justify-between w-full items-center pt-5">
-        <div className="flex w-auto items-center px-2 space-x-5">
-          <h2 className="uppercase font-light text-base">gender</h2>
-          <div className="flex w-auto p-2 border border-black bg-white items-center">
-            <h3 className="text-sm">
-              A<sup>-</sup>
-            </h3>
-          </div>
-          <div className="flex w-auto p-2 border border-black bg-white items-center">
-            <h3 className="text-sm">
-              A<sup>+</sup>
-            </h3>
-          </div>
-        </div>
+        <SecondHeader title={"Gender"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
           <Dialog>
@@ -96,57 +73,15 @@ const Gender = () => {
                 <DialogTitle>Add New Gender</DialogTitle>
               </DialogHeader>
               <hr className="border border-gray-100 w-full h-[1px]" />
-              <form
-                className="w-full flex flex-col space-y-3"
-                onSubmit={form.handleSubmit(onSubmit)}
-              >
-                <div className="w-full gap-2 flex flex-col ">
-                  <label className="text-sm font-light" htmlFor={"title"}>
-                    Title
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter gender title"
-                    {...form.register("title")}
-                    className="border border-gray-100 focus:outline-none rounded-md p-2"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.title?.message}
-                  </p>
-                </div>
 
-                <div className="w-full gap-2 flex flex-col ">
-                  <label className="text-sm font-light" htmlFor={"alias"}>
-                    Alias
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter alias"
-                    {...form.register("alias")}
-                    className="border border-gray-100 focus:outline-none rounded-md p-2"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.alias?.message}
-                  </p>
-                </div>
-                <DialogFooter>
-                  <div className="w-full flex justify-between items-center">
-                    <div
-                      className="w-auto border border-gray-300 rounded-md h-10 flex items-center p-2 cursor-pointer"
-                      onClick={() => form.reset()}
-                    >
-                      Cancel
-                    </div>
-                    <Button
-                      className="bg-vmtblue w-auto"
-                      variant="default"
-                      type="submit"
-                    >
-                      Submit
-                    </Button>
-                  </div>
-                </DialogFooter>
-              </form>
+              <GenericForm
+                defaultValues={genderDefaultValues}
+                validationSchema={genderRequiredForm}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="title" label="Title" />
+                <FormInput name="alias" label="Alias" />
+              </GenericForm>
             </DialogContent>
           </Dialog>
 
@@ -174,7 +109,7 @@ const Gender = () => {
       </div>
 
       {/* Table */}
-      <ReusableTable columns={genderColumns} data={genders} />
+      <ReusableTable columns={genderColumns} data={data} />
     </div>
   );
 };

@@ -1,6 +1,58 @@
 import { cn } from "@/lib/utils";
+import useDeleteData from "@/hooks/useDeleteData";
+import useEditData from "@/hooks/useEditHook";
+import { baseUrl } from "@/App";
 import { PencilIcon, Trash2Icon, ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { GenericForm } from "@/components/GenericForm";
+import { FormInput } from "@/components/FormInput";
+import { requiredForm, defaultValues } from "@/pages/PublicRegistry/Title";
+import {
+  genderDefaultValues,
+  genderRequiredForm,
+} from "@/pages/PublicRegistry/Gender";
+import {
+  maritalDefaultValues,
+  maritalRequiredForm,
+} from "@/pages/PublicRegistry/MaritalStatus";
+
+import {
+  relationshipDefaultValues,
+  relationshipRequiredForm,
+} from "@/pages/PublicRegistry/Relationship";
+
+import {
+  bGRequiredForm,
+  ailRequiredForm,
+  bgDefaultValues,
+  ailDefaultValues,
+} from "@/pages/PublicRegistry/MedicalData";
+
+import {
+  bodyDataRequiredForm,
+  bodyDataDefaultValues,
+} from "@/pages/PublicRegistry/BodyData";
+
+import {
+  qualificationRequiredForm,
+  qualificationDefaultValues,
+} from "@/pages/PublicRegistry/Qualification";
+
+import {
+  currencyDefaultValues,
+  currencyRequiredForm,
+} from "@/pages/PublicRegistry/Currency";
+import {
+  continentDefaultValues,
+  continentRequiredForm,
+} from "@/pages/PublicRegistry/Continent";
 
 export const titleColumns = [
   {
@@ -27,7 +79,9 @@ export const titleColumns = [
     },
     cell: ({ row }) => {
       const formatted = row.getValue("dateCreated");
-      return <div className="ml-6 uppercase">{String(formatted)}</div>;
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
     },
   },
   {
@@ -46,7 +100,9 @@ export const titleColumns = [
     },
     cell: ({ row }) => {
       const formatted = row.getValue("dateModified");
-      return <div className="ml-6 uppercase">{String(formatted)}</div>;
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
     },
   },
   {
@@ -74,7 +130,7 @@ export const titleColumns = [
         <div
           className={cn(
             `${
-              formatted == "pending"
+              formatted == "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
                 : "bg-green-50 text-green-900 border border-green-500"
             } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
@@ -91,22 +147,59 @@ export const titleColumns = [
     cell: ({ row }) => {
       const title = row.original;
 
+      const Url = `${baseUrl}public-registry/personal-details/title/${title._id}`;
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["title"],
+        url: Url,
+        title: "title",
+      });
+
+      const editMutation = useEditData({ queryKey: ["title"], url: Url });
+
+      async function onSubmit(values) {
+        console.log(values);
+
+        const body = {
+          title: values.title,
+        };
+
+        editMutation.mutateAsync(body);
+      }
+
       return (
         <div
           align="center"
           className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
         >
-          <PencilIcon
-            className="cursor-pointer"
-            color="#0B6ED0"
-            size={20}
-            onClick={() => navigator.clipboard.writeText(String(title.id))}
-          />
+          <Dialog>
+            <DialogTrigger asChild>
+              <PencilIcon
+                className="cursor-pointer"
+                color="#0B6ED0"
+                size={20}
+              />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit Title</DialogTitle>
+              </DialogHeader>
+              <hr className="border border-gray-100 w-full h-[1px]" />
+
+              <GenericForm
+                defaultValues={defaultValues}
+                validationSchema={requiredForm}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="title" label="Title" />
+              </GenericForm>
+            </DialogContent>
+          </Dialog>
 
           <Trash2Icon
             className="text-red-700 cursor-pointer"
             size={20}
-            onClick={() => navigator.clipboard.writeText(String(title.id))}
+            onClick={async () => await deleteMutation.mutateAsync()}
           />
         </div>
       );
@@ -147,7 +240,9 @@ export const genderColumns = [
     },
     cell: ({ row }) => {
       const formatted = row.getValue("dateCreated");
-      return <div className="ml-6 uppercase">{String(formatted)}</div>;
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
     },
   },
   {
@@ -166,7 +261,9 @@ export const genderColumns = [
     },
     cell: ({ row }) => {
       const formatted = row.getValue("dateModified");
-      return <div className="ml-6 uppercase">{String(formatted)}</div>;
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
     },
   },
   {
@@ -194,7 +291,7 @@ export const genderColumns = [
         <div
           className={cn(
             `${
-              formatted == "pending"
+              formatted == "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
                 : "bg-green-50 text-green-900 border border-green-500"
             } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
@@ -211,22 +308,61 @@ export const genderColumns = [
     cell: ({ row }) => {
       const title = row.original;
 
+      const Url = `${baseUrl}public-registry/personal-details/gender/${title._id}`;
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["gender"],
+        url: Url,
+        title: "gender",
+      });
+
+      const editMutation = useEditData({ queryKey: ["gender"], url: Url });
+
+      async function onSubmit(values) {
+        console.log(values);
+
+        const body = {
+          gender: values.title,
+          alias: values.alias,
+        };
+
+        editMutation.mutateAsync(body);
+      }
+
       return (
         <div
           align="center"
           className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
         >
-          <PencilIcon
-            className="cursor-pointer"
-            color="#0B6ED0"
-            size={20}
-            onClick={() => navigator.clipboard.writeText(String(title.id))}
-          />
+          <Dialog>
+            <DialogTrigger asChild>
+              <PencilIcon
+                className="cursor-pointer"
+                color="#0B6ED0"
+                size={20}
+              />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit Gender</DialogTitle>
+              </DialogHeader>
+              <hr className="border border-gray-100 w-full h-[1px]" />
+
+              <GenericForm
+                defaultValues={genderDefaultValues}
+                validationSchema={genderRequiredForm}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="title" label="Title" />
+                <FormInput name="alias" label="Alias" />
+              </GenericForm>
+            </DialogContent>
+          </Dialog>
 
           <Trash2Icon
             className="text-red-700 cursor-pointer"
             size={20}
-            onClick={() => navigator.clipboard.writeText(String(title.id))}
+            onClick={async () => await deleteMutation.mutateAsync()}
           />
         </div>
       );
@@ -267,7 +403,9 @@ export const maritalStatusColumns = [
     },
     cell: ({ row }) => {
       const formatted = row.getValue("dateCreated");
-      return <div className="ml-6 uppercase">{String(formatted)}</div>;
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
     },
   },
   {
@@ -286,7 +424,9 @@ export const maritalStatusColumns = [
     },
     cell: ({ row }) => {
       const formatted = row.getValue("dateModified");
-      return <div className="ml-6 uppercase">{String(formatted)}</div>;
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
     },
   },
   {
@@ -314,7 +454,7 @@ export const maritalStatusColumns = [
         <div
           className={cn(
             `${
-              formatted == "pending"
+              formatted == "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
                 : "bg-green-50 text-green-900 border border-green-500"
             } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
@@ -331,22 +471,64 @@ export const maritalStatusColumns = [
     cell: ({ row }) => {
       const title = row.original;
 
+      const Url = `${baseUrl}public-registry/personal-details/marital-status/${title._id}`;
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["maritalStatus"],
+        url: Url,
+        title: "marital status",
+      });
+
+      const editMutation = useEditData({
+        queryKey: ["maritalStatus"],
+        url: Url,
+      });
+
+      async function onSubmit(values) {
+        console.log(values);
+
+        const body = {
+          maritalStatus: values.title,
+          code: values.code,
+        };
+
+        editMutation.mutateAsync(body);
+      }
+
       return (
         <div
           align="center"
           className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
         >
-          <PencilIcon
-            className="cursor-pointer"
-            color="#0B6ED0"
-            size={20}
-            onClick={() => navigator.clipboard.writeText(String(title.id))}
-          />
+          <Dialog>
+            <DialogTrigger asChild>
+              <PencilIcon
+                className="cursor-pointer"
+                color="#0B6ED0"
+                size={20}
+              />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit Marital Status</DialogTitle>
+              </DialogHeader>
+              <hr className="border border-gray-100 w-full h-[1px]" />
+
+              <GenericForm
+                defaultValues={maritalDefaultValues}
+                validationSchema={maritalRequiredForm}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="code" label="Code" />
+                <FormInput name="title" label="Title" />
+              </GenericForm>
+            </DialogContent>
+          </Dialog>
 
           <Trash2Icon
             className="text-red-700 cursor-pointer"
             size={20}
-            onClick={() => navigator.clipboard.writeText(String(title.id))}
+            onClick={async () => await deleteMutation.mutateAsync()}
           />
         </div>
       );
@@ -379,7 +561,9 @@ export const relationshipColumns = [
     },
     cell: ({ row }) => {
       const formatted = row.getValue("dateCreated");
-      return <div className="ml-6 uppercase">{String(formatted)}</div>;
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
     },
   },
   {
@@ -398,7 +582,9 @@ export const relationshipColumns = [
     },
     cell: ({ row }) => {
       const formatted = row.getValue("dateModified");
-      return <div className="ml-6 uppercase">{String(formatted)}</div>;
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
     },
   },
   {
@@ -426,7 +612,7 @@ export const relationshipColumns = [
         <div
           className={cn(
             `${
-              formatted == "pending"
+              formatted == "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
                 : "bg-green-50 text-green-900 border border-green-500"
             } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
@@ -445,22 +631,62 @@ export const relationshipColumns = [
     cell: ({ row }) => {
       const title = row.original;
 
+      const Url = `${baseUrl}public-registry/personal-details/relationship/${title._id}`;
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["gender"],
+        url: Url,
+        title: "relationship",
+      });
+
+      const editMutation = useEditData({
+        queryKey: ["relationship"],
+        url: Url,
+      });
+
+      async function onSubmit(values) {
+        console.log(values);
+
+        const body = {
+          relationship: values.title,
+        };
+
+        editMutation.mutateAsync(body);
+      }
+
       return (
         <div
           align="center"
           className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
         >
-          <PencilIcon
-            className="cursor-pointer"
-            color="#0B6ED0"
-            size={20}
-            onClick={() => navigator.clipboard.writeText(String(title.id))}
-          />
+          <Dialog>
+            <DialogTrigger asChild>
+              <PencilIcon
+                className="cursor-pointer"
+                color="#0B6ED0"
+                size={20}
+              />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit Relationship</DialogTitle>
+              </DialogHeader>
+              <hr className="border border-gray-100 w-full h-[1px]" />
+
+              <GenericForm
+                defaultValues={relationshipDefaultValues}
+                validationSchema={relationshipRequiredForm}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="title" label="Title" />
+              </GenericForm>
+            </DialogContent>
+          </Dialog>
 
           <Trash2Icon
             className="text-red-700 cursor-pointer"
             size={20}
-            onClick={() => navigator.clipboard.writeText(String(title.id))}
+            onClick={async () => await deleteMutation.mutateAsync()}
           />
         </div>
       );
@@ -508,7 +734,9 @@ export const bloodGroupGenotypeColumns = [
     },
     cell: ({ row }) => {
       const formatted = row.getValue("dateCreated");
-      return <div className="ml-8 uppercase">{String(formatted)}</div>;
+      return (
+        <div className="ml-8 uppercase">{String(formatted).split("T")[0]}</div>
+      );
     },
   },
   {
@@ -516,7 +744,7 @@ export const bloodGroupGenotypeColumns = [
     header: "CREATED BY",
     cell: ({ row }) => {
       const formatted = row.getValue("createdBy");
-      return <div className="-ml-3 uppercase">{String(formatted)}</div>;
+      return <div className="uppercase">{String(formatted)}</div>;
     },
   },
   {
@@ -529,13 +757,15 @@ export const bloodGroupGenotypeColumns = [
           className={"uppercase"}
         >
           Date Modified
-          <ChevronsUpDown className="ml-2 h-4 w-4" />
+          <ChevronsUpDown className="ml-4 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => {
       const formatted = row.getValue("dateModified");
-      return <div className="ml-6 uppercase">{String(formatted)}</div>;
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
     },
   },
   {
@@ -563,7 +793,7 @@ export const bloodGroupGenotypeColumns = [
         <div
           className={cn(
             `${
-              formatted == "pending"
+              formatted == "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
                 : "bg-green-50 text-green-900 border border-green-500"
             } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
@@ -580,22 +810,69 @@ export const bloodGroupGenotypeColumns = [
     cell: ({ row }) => {
       const title = row.original;
 
+      const nameLen = title.name.length;
+
+      const bloodUrl = `${baseUrl}public-registry/personal-details/blood-group/${title._id}`;
+      const genotypeUrl = `${baseUrl}public-registry/personal-details/genotype/${title._id}`;
+
+      const deleteMutation = useDeleteData({
+        queryKey: [nameLen > 2 ? "bloodGroup" : "genotype"],
+        url: nameLen > 2 ? bloodUrl : genotypeUrl,
+        title: nameLen > 2 ? "blood group" : "genotype",
+      });
+
+      const editMutation = useEditData({
+        queryKey: [nameLen > 2 ? "bloodGroup" : "genotype"],
+        url: nameLen > 2 ? bloodUrl : genotypeUrl,
+      });
+
+      async function onSubmit(values) {
+        console.log(values);
+
+        const body = {
+          name: values.name,
+          code: values.code,
+        };
+
+        editMutation.mutateAsync(body);
+      }
+
       return (
         <div
           align="center"
           className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
         >
-          <PencilIcon
-            className="cursor-pointer"
-            color="#0B6ED0"
-            size={20}
-            onClick={() => navigator.clipboard.writeText(String(title.id))}
-          />
+          <Dialog>
+            <DialogTrigger asChild>
+              <PencilIcon
+                className="cursor-pointer"
+                color="#0B6ED0"
+                size={20}
+              />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>
+                  {nameLen > 2 ? "Edit Blood Group" : "Edit Genotype"}
+                </DialogTitle>
+              </DialogHeader>
+              <hr className="border border-gray-100 w-full h-[1px]" />
+
+              <GenericForm
+                defaultValues={bgDefaultValues}
+                validationSchema={bGRequiredForm}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="name" label="Name" />
+                <FormInput name="code" label="Code" />
+              </GenericForm>
+            </DialogContent>
+          </Dialog>
 
           <Trash2Icon
             className="text-red-700 cursor-pointer"
             size={20}
-            onClick={() => navigator.clipboard.writeText(String(title.id))}
+            onClick={async () => await deleteMutation.mutateAsync()}
           />
         </div>
       );
@@ -630,7 +907,9 @@ export const ailmentColumns = [
     },
     cell: ({ row }) => {
       const formatted = row.getValue("dateCreated");
-      return <div className="ml-6 uppercase">{String(formatted)}</div>;
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
     },
   },
   {
@@ -640,7 +919,7 @@ export const ailmentColumns = [
     },
     cell: ({ row }) => {
       const formatted = row.getValue("createdBy");
-      return <div className="uppercase">{String(formatted)}</div>;
+      return <div className="ml-10 uppercase">{String(formatted)}</div>;
     },
   },
   {
@@ -659,7 +938,9 @@ export const ailmentColumns = [
     },
     cell: ({ row }) => {
       const formatted = row.getValue("dateModified");
-      return <div className="ml-6 uppercase">{String(formatted)}</div>;
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
     },
   },
   {
@@ -687,7 +968,7 @@ export const ailmentColumns = [
         <div
           className={cn(
             `${
-              formatted == "pending"
+              formatted == "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
                 : "bg-green-50 text-green-900 border border-green-500"
             } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
@@ -704,22 +985,749 @@ export const ailmentColumns = [
     cell: ({ row }) => {
       const title = row.original;
 
+      const ailUrl = `${baseUrl}public-registry/personal-details/ailment/${title._id}`;
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["ailment"],
+        url: ailUrl,
+        title: "ailments",
+      });
+
+      const editMutation = useEditData({
+        queryKey: ["ailment"],
+        url: ailUrl,
+      });
+
+      async function onSubmit(values) {
+        console.log(values);
+
+        const body = {
+          name: values.name,
+        };
+
+        editMutation.mutateAsync(body);
+      }
+
       return (
         <div
           align="center"
           className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
         >
-          <PencilIcon
-            className="cursor-pointer"
-            color="#0B6ED0"
+          <Dialog>
+            <DialogTrigger asChild>
+              <PencilIcon
+                className="cursor-pointer"
+                color="#0B6ED0"
+                size={20}
+              />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit Ailments</DialogTitle>
+              </DialogHeader>
+              <hr className="border border-gray-100 w-full h-[1px]" />
+
+              <GenericForm
+                defaultValues={ailDefaultValues}
+                validationSchema={ailRequiredForm}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="name" label="Name" />
+              </GenericForm>
+            </DialogContent>
+          </Dialog>
+
+          <Trash2Icon
+            className="text-red-700 cursor-pointer"
             size={20}
-            onClick={() => navigator.clipboard.writeText(String(title.id))}
+            onClick={async () => await deleteMutation.mutateAsync()}
           />
+        </div>
+      );
+    },
+  },
+];
+
+export const bodyDataColumns = [
+  {
+    accessorKey: "name",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Name</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("name");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "dateCreated",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Date Created
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateCreated");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+
+  {
+    accessorKey: "dateModified",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Date Modified
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateModified");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Status
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("status");
+      // const formatted = new Intl.NumberFormat("en-US", {
+      //   style: "currency",
+      //   currency: "USD",
+      // }).format(amount);
+
+      return (
+        <div
+          className={cn(
+            `${
+              formatted == "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : "bg-green-50 text-green-900 border border-green-500"
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+          )}
+        >
+          {String(formatted)}
+        </div>
+      );
+    },
+  },
+  {
+    header: () => <div className="ml-5 uppercase">Actions</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const title = row.original;
+
+      async function onSubmit(values) {
+        console.log(values);
+      }
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <Dialog>
+            <DialogTrigger asChild>
+              <PencilIcon
+                className="cursor-pointer"
+                color="#0B6ED0"
+                size={20}
+              />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>
+                  {title.tablename == "eyeColor"
+                    ? "Edit Eye Color"
+                    : title.tablename == "hairColor"
+                    ? "Edit Hair Color"
+                    : title.tablename == "noseShape"
+                    ? "Edit Nose Shape"
+                    : "Edit Skin Tone"}
+                </DialogTitle>
+              </DialogHeader>
+              <hr className="border border-gray-100 w-full h-[1px]" />
+
+              <GenericForm
+                defaultValues={bodyDataDefaultValues}
+                validationSchema={bodyDataRequiredForm}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="name" label="Name" />
+              </GenericForm>
+            </DialogContent>
+          </Dialog>
 
           <Trash2Icon
             className="text-red-700 cursor-pointer"
             size={20}
             onClick={() => navigator.clipboard.writeText(String(title.id))}
+          />
+        </div>
+      );
+    },
+  },
+];
+
+export const qualificationColumns = [
+  {
+    accessorKey: "code",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Code</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("code");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "name",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Name</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("name");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "dateCreated",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Date Created
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateCreated");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "dateModified",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Date Modified
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateModified");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Status
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("status");
+      // const formatted = new Intl.NumberFormat("en-US", {
+      //   style: "currency",
+      //   currency: "USD",
+      // }).format(amount);
+
+      return (
+        <div
+          className={cn(
+            `${
+              formatted == "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : "bg-green-50 text-green-900 border border-green-500"
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+          )}
+        >
+          {String(formatted)}
+        </div>
+      );
+    },
+  },
+  {
+    header: () => <div className="ml-5 uppercase">Actions</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const title = row.original;
+
+      const qualificationUrl = `${baseUrl}public-registry/personal-details/qualification/${title._id}`;
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["qualification"],
+        url: qualificationUrl,
+        title: "qualification",
+      });
+
+      const editMutation = useEditData({
+        queryKey: ["qualification"],
+        url: qualificationUrl,
+      });
+
+      async function onSubmit(values) {
+        console.log(values);
+
+        const body = {
+          name: values.name,
+          code: values.code,
+        };
+
+        editMutation.mutateAsync(body);
+      }
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <Dialog>
+            <DialogTrigger asChild>
+              <PencilIcon
+                className="cursor-pointer"
+                color="#0B6ED0"
+                size={20}
+              />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit Qualification</DialogTitle>
+              </DialogHeader>
+              <hr className="border border-gray-100 w-full h-[1px]" />
+
+              <GenericForm
+                defaultValues={qualificationDefaultValues}
+                validationSchema={qualificationRequiredForm}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="name" label="Name" />
+                <FormInput name="code" label="Code" />
+              </GenericForm>
+            </DialogContent>
+          </Dialog>
+
+          <Trash2Icon
+            className="text-red-700 cursor-pointer"
+            size={20}
+            onClick={async () => await deleteMutation.mutateAsync()}
+          />
+        </div>
+      );
+    },
+  },
+];
+
+export const currencyColumns = [
+  {
+    accessorKey: "alphabetCode",
+    header: () => {
+      return <h2 className={" uppercase"}>Alphabet Code</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("alphabetCode");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "numberCode",
+    header: () => {
+      return <h2 className={"uppercase"}>number Code</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("numberCode");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "currencyName",
+    header: () => {
+      return <h2 className={"uppercase"}>currency Name</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("currencyName");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "decimal",
+    header: () => {
+      return <h2 className={"uppercase"}>decimal</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("decimal");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "dateCreated",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Date Created
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateCreated");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "dateModified",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Date Modified
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateModified");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Status
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("status");
+      // const formatted = new Intl.NumberFormat("en-US", {
+      //   style: "currency",
+      //   currency: "USD",
+      // }).format(amount);
+
+      return (
+        <div
+          className={cn(
+            `${
+              formatted == "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : "bg-green-50 text-green-900 border border-green-500"
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+          )}
+        >
+          {String(formatted)}
+        </div>
+      );
+    },
+  },
+  {
+    header: () => <div className="ml-5 uppercase">Actions</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const title = row.original;
+
+      const currencyUrl = `${baseUrl}public-registry/currency/${title._id}`;
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["currency"],
+        url: currencyUrl,
+        title: "currency",
+      });
+
+      const editMutation = useEditData({
+        queryKey: ["currency"],
+        url: currencyUrl,
+      });
+
+      async function onSubmit(values) {
+        console.log(values);
+
+        const body = {
+          alphabetCode: values.alphabet_code,
+          numberCode: values.number_code,
+          currencyName: values.currency_name,
+          decimal: values.decimal,
+        };
+
+        editMutation.mutateAsync(body);
+      }
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <Dialog>
+            <DialogTrigger asChild>
+              <PencilIcon
+                className="cursor-pointer"
+                color="#0B6ED0"
+                size={20}
+              />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit Currency</DialogTitle>
+              </DialogHeader>
+              <hr className="border border-gray-100 w-full h-[1px]" />
+
+              <GenericForm
+                defaultValues={currencyDefaultValues}
+                validationSchema={currencyRequiredForm}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="alphabet_code" label="Alphabet Code" />
+                <FormInput name="number_code" label="Number Code" />
+                <FormInput name="currency_name" label="Currency Name" />
+                <FormInput name="decimal" label="Decimal" />
+              </GenericForm>
+            </DialogContent>
+          </Dialog>
+
+          <Trash2Icon
+            className="text-red-700 cursor-pointer"
+            size={20}
+            onClick={async () => await deleteMutation.mutateAsync()}
+          />
+        </div>
+      );
+    },
+  },
+];
+
+export const continentColumns = [
+  {
+    accessorKey: "name",
+    header: "NAME",
+    cell: ({ row }) => {
+      const formatted = row.getValue("name");
+      return <div className=" ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "dateCreated",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Date Created
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateCreated");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "createdBy",
+    header: () => {
+      return <h2 className={"ml-6 uppercase"}>created by</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("createdBy");
+      return <div className="ml-10 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "modifiedBy",
+    header: () => {
+      return <h2 className={"ml-6 uppercase"}>modified by</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("modifiedBy");
+      return <div className="ml-10 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "dateModified",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Date Modified
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateModified");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Status
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("status");
+      // const formatted = new Intl.NumberFormat("en-US", {
+      //   style: "currency",
+      //   currency: "USD",
+      // }).format(amount);
+
+      return (
+        <div
+          className={cn(
+            `${
+              formatted == undefined
+                ? "bg-red-50 border border-red-500 text-red-900"
+                : formatted == "Pending"
+                ? "bg-orange-50 text-orange-900 border border-orange-500"
+                : "bg-green-50 text-green-900 border border-green-500"
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+          )}
+        >
+          {String(formatted)}
+        </div>
+      );
+    },
+  },
+  {
+    header: () => <div className="ml-5 uppercase">Actions</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const title = row.original;
+
+      const Url = `${baseUrl}public-registry/address/continent/${title._id}`;
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["continent"],
+        url: Url,
+        title: "continent",
+      });
+
+      const editMutation = useEditData({ queryKey: ["continent"], url: Url });
+
+      async function onSubmit(values) {
+        console.log(values);
+
+        const body = {
+          name: values.name,
+        };
+
+        editMutation.mutateAsync(body);
+      }
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <Dialog>
+            <DialogTrigger asChild>
+              <PencilIcon
+                className="cursor-pointer"
+                color="#0B6ED0"
+                size={20}
+              />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit Continent</DialogTitle>
+              </DialogHeader>
+              <hr className="border border-gray-100 w-full h-[1px]" />
+
+              <GenericForm
+                defaultValues={continentDefaultValues}
+                validationSchema={continentRequiredForm}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="name" label="Name" />
+              </GenericForm>
+            </DialogContent>
+          </Dialog>
+
+          <Trash2Icon
+            className="text-red-700 cursor-pointer"
+            size={20}
+            onClick={async () => await deleteMutation.mutateAsync()}
           />
         </div>
       );

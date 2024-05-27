@@ -1,12 +1,7 @@
-import { FC } from "react";
 import { Button } from "@/components/ui/button";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -17,48 +12,46 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Printer, Share2, Upload, View } from "lucide-react";
+import { ChevronDown } from "lucide-react";
+import { qualificationFormSchema } from "@/utils/zodSchema";
+import { GenericForm } from "@/components/GenericForm";
+import { FormInput } from "@/components/FormInput";
+import { ReportLinks } from "@/components/ReportLinks";
+import SecondHeader from "@/components/SecondHeader";
+import useFetchData from "@/hooks/useFetchData";
+import { baseUrl } from "@/App";
+import usePostData from "@/hooks/usePostData";
+import { qualificationColumns } from "@/components/typings";
+import { ReusableTable } from "@/components/ReusableTable";
 
-const ReportLinks = [
-  { id: 1, name: "View Report", icon: <View size={14} /> },
-  { id: 2, name: "Export", icon: <Upload size={14} /> },
-  { id: 3, name: "Share", icon: <Share2 size={14} /> },
-  { id: 4, name: "Print", icon: <Printer size={14} /> },
-];
-const FormSchema = z.object({
-  code: z
-    .string({
-      invalid_type_error: "code must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "code cannot be empty")
-    .max(30, "code must be maximum 30 character")
-    .trim(),
-  name: z
-    .string({
-      invalid_type_error: "name must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "name cannot be empty")
-    .max(30, "name must be maximum 30 characters")
-    .trim(),
-});
+export const qualificationRequiredForm = qualificationFormSchema.required();
 
-const requiredForm = FormSchema.required();
+export const qualificationDefaultValues = {
+  name: "",
+  code: "",
+};
 
 const Qualification = () => {
-  // 1. Define your form.
-  const form = useForm({
-    resolver: zodResolver(requiredForm),
-    defaultValues: {
-      name: "",
-      code: "",
-    },
+  const qualificationUrl = `${baseUrl}public-registry/personal-details/qualification`;
+
+  const { data, isPending } = useFetchData(qualificationUrl, "qualification");
+  const postMutation = usePostData({
+    queryKey: ["qualification"],
+    url: qualificationUrl,
+    title: "qualification",
   });
 
   async function onSubmit(values) {
-    console.log(values);
-    form.reset();
+    const body = {
+      name: values.name,
+      code: values.code,
+    };
+
+    postMutation.mutateAsync(body);
+  }
+
+  if (isPending) {
+    return <span>Loading...</span>;
   }
 
   return (
@@ -66,19 +59,7 @@ const Qualification = () => {
       {/* Second header */}
 
       <div className="flex justify-between w-full items-center">
-        <div className="flex w-auto items-center px-2 space-x-5">
-          <h2 className="uppercase font-light text-base">qualification</h2>
-          <div className="flex w-auto p-2 border border-black bg-white items-center">
-            <h3 className="text-sm">
-              A<sup>-</sup>
-            </h3>
-          </div>
-          <div className="flex w-auto p-2 border border-black bg-white items-center">
-            <h3 className="text-sm">
-              A<sup>+</sup>
-            </h3>
-          </div>
-        </div>
+        <SecondHeader title={"Qualification"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
           <Dialog>
@@ -92,57 +73,14 @@ const Qualification = () => {
                 <DialogTitle>Add New Qualification</DialogTitle>
               </DialogHeader>
               <hr className="border border-gray-100 w-full h-[1px]" />
-              <form
-                className="w-full flex flex-col space-y-3"
-                onSubmit={form.handleSubmit(onSubmit)}
+              <GenericForm
+                defaultValues={qualificationDefaultValues}
+                validationSchema={qualificationRequiredForm}
+                onSubmit={onSubmit}
               >
-                <div className="w-full gap-2 flex flex-col ">
-                  <label className="text-sm font-light" htmlFor={"code"}>
-                    Qualification Code
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter qualification"
-                    {...form.register("code")}
-                    className="border border-gray-100 focus:outline-none rounded-md p-2"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.code?.message}
-                  </p>
-                </div>
-
-                <div className="w-full gap-2 flex flex-col ">
-                  <label className="text-sm font-light" htmlFor={"name"}>
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter qualification name"
-                    {...form.register("name")}
-                    className="border border-gray-100 focus:outline-none rounded-md p-2"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.name?.message}
-                  </p>
-                </div>
-                <DialogFooter>
-                  <div className="w-full flex justify-between items-center">
-                    <div
-                      className="w-auto border border-gray-300 rounded-md h-10 flex items-center p-2 cursor-pointer"
-                      onClick={() => form.reset()}
-                    >
-                      Cancel
-                    </div>
-                    <Button
-                      className="bg-vmtblue w-auto"
-                      variant="default"
-                      type="submit"
-                    >
-                      Submit
-                    </Button>
-                  </div>
-                </DialogFooter>
-              </form>
+                <FormInput name="name" label="Name" />
+                <FormInput name="code" label="Code" />
+              </GenericForm>
             </DialogContent>
           </Dialog>
 
@@ -170,6 +108,7 @@ const Qualification = () => {
       </div>
 
       {/* Table */}
+      <ReusableTable columns={qualificationColumns} data={data} />
     </div>
   );
 };

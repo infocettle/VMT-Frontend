@@ -9,6 +9,9 @@ import UserCreatePassword from './SignUp/UserCreatePassword';
 import UserLogin from './Login/UserLogin';
 import OTP from './Login/OTP';
 import Governance from './Login/Governance';
+import ResetPassword from './Login/ResetPassword';
+import VerifyEmail from './Login/VerifyEmail';
+import NewPassword from './Login/NewPassword';
 
 
 function Auth() {
@@ -30,6 +33,9 @@ function Auth() {
             {formType === 'login-user' && <UserLogin setFormType={setFormType} onSubmit={handleSubmit} />}
             {formType === 'otp' && <OTP setFormType={setFormType} onSubmit={handleSubmit} />}
             {formType === 'governance-page' && <Governance setFormType={setFormType} onSubmit={handleSubmit} />}
+            {formType === 'reset-password' && <ResetPassword setFormType={setFormType} onSubmit={handleSubmit} />}
+            {formType === 'verify-email' && <VerifyEmail setFormType={setFormType} onSubmit={handleSubmit} />}
+            {formType === 'new-password' && <NewPassword setFormType={setFormType} onSubmit={handleSubmit} />}
                
             </div>
 

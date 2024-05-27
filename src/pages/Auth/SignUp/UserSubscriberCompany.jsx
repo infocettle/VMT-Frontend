@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ReactFlagsSelect from "react-flags-select";
 import Select from "react-select";
 import { IoIosArrowRoundBack } from "react-icons/io";
-
+import MobileLogo from "../../../assets/img/MobileLogo.svg";
 function UserSubscriberCompany({ setFormType }) {
   const [selectedCountry, setSelectedCountry] = useState("NG");
   const [countryCode, setCountryCode] = useState("+234");
@@ -49,6 +49,9 @@ function UserSubscriberCompany({ setFormType }) {
 
   return (
     <div className="auth-form-container">
+         <div className="auth-logo-two">
+     <img src={MobileLogo} alt="image"/>
+</div> 
       <div className="auth-header-text">Welcome to ValueMine</div>
       <div className="auth-subheader-text mt-3">
         Manage your financial and non-financial workflows seamlessly on the go

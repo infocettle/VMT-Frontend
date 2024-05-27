@@ -32,6 +32,8 @@ import {
   SubSectors,
 } from "./pages/PublicRegistry";
 import Subscription from "./pages/Auth/Subscription/Subscription";
+import AdminAuth from "./pages/Auth/Admin/Admin";
+import AdminAuthUser from "./pages/Auth/Admin/AdminUser";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +41,14 @@ const router = createBrowserRouter([
   {
     path: "/auth",
     element: <Auth />,
+  },
+  {
+    path: "/admin",
+    element: <AdminAuth />,
+  },
+  {
+    path: "/admin-user",
+    element: <AdminAuthUser />,
   },
 
   {

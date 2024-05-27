@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import MobileLogo from "../../../assets/img/MobileLogo.svg";
 import { HiOutlineUsers, HiOutlineUser } from "react-icons/hi2";
 function UserSignUp({setFormType}) {
   const [showPartnerType, setShowPartnerType] = useState(false);
@@ -32,6 +32,10 @@ function UserSignUp({setFormType}) {
 console.log(checkedIndex)
   return (
     <div className="auth-form-container">
+<div className="auth-logo-two">
+     <img src={MobileLogo} alt="image"/>
+</div>
+       
       <div className="auth-header-text">Welcome to ValueMine</div>
       <div className="auth-subheader-text mt-3">
         Manage your financial and non-financial workflows seamlessly on the go
@@ -120,6 +124,7 @@ console.log(checkedIndex)
       <div className="auth-button-white mt-5" onClick={handleLogin}>
         <div className="auth-button-white-text">Login to your account</div>
       </div>
+      <div className="image-auth-text-two">ERP for Micro, Small and Medium Entities</div>
     </div>
   );
 }

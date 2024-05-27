@@ -80,7 +80,8 @@ const Table = ({setTotalAmountPayable}) => {
   };
 
   return (
-    <table style={{width:"100%",marginTop:"2rem"}}>
+    <div className="table-container">
+         <table style={{width:"100%",marginTop:"2rem"}}>
       <thead>
         <tr>
           <th align="left">Item</th>
@@ -200,7 +201,9 @@ const Table = ({setTotalAmountPayable}) => {
           <td>{totalAmountPayable.toFixed(2)}</td>
         </tr>
       </tfoot> */}
-    </table>
+    </table> 
+    </div>
+  
   );
 };
 

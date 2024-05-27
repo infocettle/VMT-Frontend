@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
-
+import MobileLogo from "../../../assets/img/MobileLogo.svg";
 function UserCreatePassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -94,6 +94,9 @@ function UserCreatePassword() {
   };
   return (
     <div className="auth-form-container">
+         <div className="auth-logo-two">
+     <img src={MobileLogo} alt="image"/>
+</div> 
       <div className="auth-header-text">Secure your account</div>
 
       <div className="auth-label mt-4">Password</div>

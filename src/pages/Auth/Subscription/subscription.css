@@ -81,6 +81,14 @@ margin-top: 1rem;
         
     
 }
+.table-container{
+  
+    overflow-x: auto; /* Enable horizontal scrolling */
+}
+table{
+    width: 100%; /* Make the table occupy full width */
+    border-collapse: collapse; /* Remove default table spacing */
+}
 .table-header_text{
     color: #212134;
   font-family: Open Sans;
@@ -159,4 +167,19 @@ line-height: 20px;
 text-align: left;
 color:  #0B6ED0;
 
+   }
+   @media screen and (max-width: 768px) {
+    .sub-form{
+        width: 92%;
+    }
+    .sub-form-header-grid{
+        grid-template-columns: 100px 1fr;
+    }
+    .flex{
+        flex-wrap: wrap;
+    }
+    th, td {
+        text-align: left;
+        padding: 20px !important;
+      }
    }

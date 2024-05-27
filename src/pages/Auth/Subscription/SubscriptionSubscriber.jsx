@@ -141,7 +141,7 @@ function SubscriptionSubscriber({setSubscriptionType}) {
             </div>
           </div>
 
-          <div className="auth-form-flex mt-10 justify-between">
+          <div className="auth-form-flex mt-10 justify-between flex-row">
             <div
             className="auth-button "
             style={{ width: "fit-content", padding:"10px" }}

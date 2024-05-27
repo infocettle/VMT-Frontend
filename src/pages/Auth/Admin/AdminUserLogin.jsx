@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
-
-function UserLogin({ setFormType }) {
+import Logo from "../../../assets/img/Logo.svg";
+import { useNavigate } from "react-router-dom";
+function AdminUserLogin({ setFormType }) {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-
+const navigate = useNavigate()
   
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -24,26 +25,27 @@ function UserLogin({ setFormType }) {
       };
     
   const handleContinue = () => {
-    setFormType("otp");
+    setFormType('admin-user-verify-login')
   };
   const handleReset = () => {
-    setFormType("reset-password");
+    setFormType("admin-user-reset-password");
   };
-  const handleSignUp = () => {
-    setFormType("signup");
-  };
+ 
 
   return (
     <div className="auth-form-container">
-      <div className="auth-header-text">Welcome to ValueMine</div>
-      <div className="auth-subheader-text mt-3">
-        Manage your financial and non-financial workflows seamlessly on the go
-      </div>
+        <div className="flex justify-center items-center w-full mb-10">
+      
+<img src={Logo} alt="image" className="" />      
+        </div>
+
+      <div className="auth-header-text text-center w-full mb-4">Admin User Login</div>
+    
      
 
       <div className="auth-form-flex">
         <div className="flex flex-col gap-2 w-full">
-          <div className="auth-label">Email </div>
+          <div className="auth-label">Email Address </div>
           <input
             type="text"
             className="auth-input"
@@ -86,13 +88,9 @@ function UserLogin({ setFormType }) {
       <div className="auth-button mt-10" onClick={handleContinue}>
         <div className="auth-button-text">Login</div>
       </div>
-      <div className="auth-already mt-5">New to ValueMine</div>
-
-      <div className="auth-button-white mt-5" onClick={handleSignUp}>
-        <div className="auth-button-white-text">Register an account</div>
-      </div>
+     
     </div>
   );
 }
 
-export default UserLogin;
+export default AdminUserLogin;

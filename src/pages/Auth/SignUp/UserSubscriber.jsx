@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import MobileLogo from "../../../assets/img/MobileLogo.svg";
 import { HiOutlineBuildingOffice2, HiOutlineUser } from "react-icons/hi2";
 function UserSubscriber({setFormType}) {
   const [showPartnerType, setShowPartnerType] = useState(false);
@@ -44,6 +44,9 @@ function UserSubscriber({setFormType}) {
 console.log(checkedIndex)
   return (
     <div className="auth-form-container">
+       <div className="auth-logo-two">
+     <img src={MobileLogo} alt="image"/>
+</div> 
       <div className="auth-header-text">Welcome to ValueMine</div>
       <div className="auth-subheader-text mt-3">
         Manage your financial and non-financial workflows seamlessly on the go

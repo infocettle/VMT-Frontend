@@ -1,75 +1,59 @@
-import { FC } from "react";
 import { Button } from "@/components/ui/button";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Form } from "@/components/ui/form";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Printer, Share2, Upload, View } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
+import { ChevronDown } from "lucide-react";
+import { typeColumns } from "@/components/typings";
+import { ReusableTable } from "@/components/ReusableTable";
+import { GenericForm } from "@/components/GenericForm";
+import { FormInput } from "@/components/FormInput";
+import { typeFormSchema } from "@/utils/zodSchema";
+import { ReportLinks } from "@/components/ReportLinks";
+import SecondHeader from "@/components/SecondHeader";
+import useFetchData from "@/hooks/useFetchData";
+import { baseUrl } from "@/App";
+import usePostData from "@/hooks/usePostData";
 
-const ReportLinks = [
-  { id: 1, name: "View Report", icon: <View size={14} /> },
-  { id: 2, name: "Export", icon: <Upload size={14} /> },
-  { id: 3, name: "Share", icon: <Share2 size={14} /> },
-  { id: 4, name: "Print", icon: <Printer size={14} /> },
-];
-const FormSchema = z.object({
-  type_code: z
-    .string({
-      invalid_type_error: "type code must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "type code cannot be empty")
-    .max(30, "type code must be maximum 30 character")
-    .trim(),
-  name: z
-    .string({
-      invalid_type_error: "name must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "name cannot be empty")
-    .max(100, "name must be maximum 100 characters")
-    .trim(),
-  description: z
-    .string({
-      invalid_type_error: "description must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "description cannot be empty")
-    .max(3000, "description must be maximum 3000 character")
-    .trim(),
-});
+export const typeRequiredForm = typeFormSchema.required();
 
-const requiredForm = FormSchema.required();
+export const typeDefaultValues = {
+  type_code: "",
+  name: "",
+  description: "",
+};
 
 const Type = () => {
-  // 1. Define your form.
-  const form = useForm({
-    resolver: zodResolver(requiredForm),
-    defaultValues: {
-      type_code: "",
-      name: "",
-      description: "",
-    },
+  const typeUrl = `${baseUrl}public-registry/business/financial-institutions/type`;
+
+  const { data, isPending } = useFetchData(typeUrl, "type");
+  const postMutation = usePostData({
+    queryKey: ["type"],
+    url: typeUrl,
+    title: "type",
   });
 
   async function onSubmit(values) {
-    console.log(values);
-    form.reset();
+    const body = {
+      code: values.type_code,
+      name: values.name,
+      description: values.description,
+    };
+
+    postMutation.mutateAsync(body);
+  }
+
+  if (isPending) {
+    return <span>Loading...</span>;
   }
 
   return (
@@ -77,19 +61,7 @@ const Type = () => {
       {/* Second header */}
 
       <div className="flex justify-between w-full items-center">
-        <div className="flex w-auto items-center px-2 space-x-5">
-          <h2 className="uppercase font-light text-base">type</h2>
-          <div className="flex w-auto p-2 border border-black bg-white items-center">
-            <h3 className="text-sm">
-              A<sup>-</sup>
-            </h3>
-          </div>
-          <div className="flex w-auto p-2 border border-black bg-white items-center">
-            <h3 className="text-sm">
-              A<sup>+</sup>
-            </h3>
-          </div>
-        </div>
+        <SecondHeader title={"TYPE"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
           <Dialog>
@@ -103,79 +75,16 @@ const Type = () => {
                 <DialogTitle>Add New Institution Type</DialogTitle>
               </DialogHeader>
               <hr className="border border-gray-100 w-full h-[1px]" />
-              <Form {...form}>
-                <form
-                  className="w-full flex flex-col space-y-3"
-                  onSubmit={form.handleSubmit(onSubmit)}
-                >
-                  <div className="w-full gap-2 flex flex-col ">
-                    <label className="text-sm font-light" htmlFor={"type_code"}>
-                      Type Code
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter institution type code"
-                      {...form.register("type_code")}
-                      className="border border-gray-100 focus:outline-none rounded-md p-2"
-                    />
-                    <p className="text-red-500 text-sm">
-                      {form.formState.errors.type_code?.message}
-                    </p>
-                  </div>
-
-                  <div className="w-full gap-2 flex flex-col ">
-                    <label className="text-sm font-light" htmlFor={"name"}>
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter type name"
-                      {...form.register("name")}
-                      className="border border-gray-100 focus:outline-none rounded-md p-2"
-                    />
-                    <p className="text-red-500 text-sm">
-                      {form.formState.errors.name?.message}
-                    </p>
-                  </div>
-
-                  <div className="w-full gap-2 flex flex-col ">
-                    <label
-                      className="text-sm font-light"
-                      htmlFor={"description"}
-                    >
-                      Description
-                    </label>
-                    <Textarea
-                      placeholder="Enter description"
-                      id="message"
-                      {...form.register("description")}
-                      className="border border-gray-100 focus:outline-none rounded-md p-2"
-                    />
-
-                    <p className="text-red-500 text-sm">
-                      {form.formState.errors.description?.message}
-                    </p>
-                  </div>
-
-                  <DialogFooter>
-                    <div className="w-full flex justify-between items-center">
-                      <div
-                        className="w-auto border border-gray-300 rounded-md h-10 flex items-center p-2 cursor-pointer"
-                        onClick={() => form.reset()}
-                      >
-                        Cancel
-                      </div>
-                      <Button
-                        className="bg-vmtblue w-auto"
-                        variant="default"
-                        type="submit"
-                      >
-                        Submit
-                      </Button>
-                    </div>
-                  </DialogFooter>
-                </form>
-              </Form>
+              <GenericForm
+                defaultValues={typeDefaultValues}
+                validationSchema={typeRequiredForm}
+                long={false}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="type_code" label="type code" />
+                <FormInput name="name" label="type name" />
+                <FormInput name="description" label="description" />
+              </GenericForm>
             </DialogContent>
           </Dialog>
 
@@ -203,6 +112,7 @@ const Type = () => {
       </div>
 
       {/* Table */}
+      <ReusableTable columns={typeColumns} data={data} />
     </div>
   );
 };

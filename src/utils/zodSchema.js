@@ -351,3 +351,118 @@ export const lgaFormSchema = z.object({
     .max(30, "zone name must be maximum 30 characters")
     .trim(),
 });
+
+export const wardFormSchema = z.object({
+  ward_code: z
+    .string({
+      invalid_type_error: "lga code must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "lga code cannot be empty")
+    .max(30, "lga code must be maximum 30 character")
+    .trim(),
+  ward_name: z
+    .string({
+      invalid_type_error: "lga name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "lga name cannot be empty")
+    .max(30, "lga name must be maximum 30 character")
+    .trim(),
+  country: z
+    .string({
+      invalid_type_error: "country must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "country cannot be empty"),
+  state: z
+    .string({
+      invalid_type_error: "state must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "state cannot be empty"),
+  zone_name: z
+    .string({
+      invalid_type_error: "zone name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "zone name cannot be empty")
+    .max(30, "zone name must be maximum 30 characters")
+    .trim(),
+  lga: z
+    .string({
+      invalid_type_error: "lga name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "LGA name cannot be empty")
+    .max(30, "LGA name must be maximum 30 characters")
+    .trim(),
+});
+
+export const bankFormSchema = z.object({
+  bank_code: z
+    .string({
+      invalid_type_error: "bank code must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "bank code cannot be empty")
+    .max(30, "bank code must be maximum 30 character")
+    .trim(),
+  bank_name: z
+    .string({
+      invalid_type_error: "bank name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "bank name cannot be empty")
+    .max(100, "bank name must be maximum 100 characters")
+    .trim(),
+  bank_alias: z
+    .string({
+      invalid_type_error: "bank alias must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "bank alias cannot be empty")
+    .max(30, "bank alias must be maximum 30 character")
+    .trim(),
+  type: z
+    .string({
+      invalid_type_error: "bank type must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "bank type cannot be empty")
+    .max(50, "bank type must be maximum 50 character")
+    .trim(),
+  license: z
+    .string({
+      invalid_type_error: "license must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "License type is required"),
+});
+
+export const typeFormSchema = z.object({
+  type_code: z
+    .string({
+      invalid_type_error: "type code must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "type code cannot be empty")
+    .max(30, "type code must be maximum 30 character")
+    .trim(),
+  name: z
+    .string({
+      invalid_type_error: "name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "name cannot be empty")
+    .max(100, "name must be maximum 100 characters")
+    .trim(),
+  description: z
+    .string({
+      invalid_type_error: "description must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "description cannot be empty")
+    .max(3000, "description must be maximum 3000 character")
+    .trim(),
+});

@@ -1,12 +1,7 @@
-import { FC } from "react";
 import { Button } from "@/components/ui/button";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -17,75 +12,51 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Printer, Share2, Upload, View } from "lucide-react";
-import { CountrySelect } from "react-country-state-city";
-import "react-country-state-city/dist/react-country-state-city.css";
+import { ChevronDown } from "lucide-react";
+import { stateColumns } from "@/components/typings";
+import { ReusableTable } from "@/components/ReusableTable";
+import { GenericForm } from "@/components/GenericForm";
+import { FormInput } from "@/components/FormInput";
+import { stateFormSchema } from "@/utils/zodSchema";
+import { ReportLinks } from "@/components/ReportLinks";
+import SecondHeader from "@/components/SecondHeader";
+import useFetchData from "@/hooks/useFetchData";
+import { baseUrl } from "@/App";
+import usePostData from "@/hooks/usePostData";
 
-const ReportLinks = [
-  { id: 1, name: "View Report", icon: <View size={14} /> },
-  { id: 2, name: "Export", icon: <Upload size={14} /> },
-  { id: 3, name: "Share", icon: <Share2 size={14} /> },
-  { id: 4, name: "Print", icon: <Printer size={14} /> },
-];
-const FormSchema = z.object({
-  state_code: z
-    .string({
-      invalid_type_error: "code must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "state code cannot be empty")
-    .max(30, "state code must be maximum 30 character")
-    .trim(),
-  state_name: z
-    .string({
-      invalid_type_error: "state name must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "state name cannot be empty")
-    .max(30, "state name must be maximum 30 character")
-    .trim(),
-  capital_city: z
-    .string({
-      invalid_type_error: "capital city must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "capital city cannot be empty")
-    .max(30, "capital city must be maximum 30 characters")
-    .trim(),
-  country: z
-    .string({
-      invalid_type_error: "country must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "country cannot be empty"),
-  zone_name: z
-    .string({
-      invalid_type_error: "zone name must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "zone name cannot be empty")
-    .max(30, "zone name must be maximum 30 characters")
-    .trim(),
-});
-
-const requiredForm = FormSchema.required();
+export const stateRequiredForm = stateFormSchema.required();
+export const stateDefaultValues = {
+  zone_name: "",
+  state_code: "",
+  country: "",
+  state_name: "",
+  capital_city: "",
+};
 
 const State = () => {
-  // 1. Define your form.
-  const form = useForm({
-    resolver: zodResolver(requiredForm),
-    defaultValues: {
-      zone_name: "",
-      state_code: "",
-      country: "",
-      state_name: "",
-      capital_city: "",
-    },
+  const stateUrl = `${baseUrl}public-registry/address/state`;
+
+  const { data, isPending } = useFetchData(stateUrl, "state");
+  const postMutation = usePostData({
+    queryKey: ["state"],
+    url: stateUrl,
+    title: "state",
   });
 
   async function onSubmit(values) {
-    console.log(values);
-    form.reset();
+    const body = {
+      code: values.state_code,
+      name: values.state_name,
+      city: values.capital_city,
+      zone: values.zone_name,
+      country: values.country,
+    };
+
+    postMutation.mutateAsync(body);
+  }
+
+  if (isPending) {
+    return <span>Loading...</span>;
   }
 
   return (
@@ -93,19 +64,7 @@ const State = () => {
       {/* Second header */}
 
       <div className="flex justify-between w-full items-center">
-        <div className="flex w-auto items-center px-2 space-x-5">
-          <h2 className="uppercase font-light text-base">state</h2>
-          <div className="flex w-auto p-2 border border-black bg-white items-center">
-            <h3 className="text-sm">
-              A<sup>-</sup>
-            </h3>
-          </div>
-          <div className="flex w-auto p-2 border border-black bg-white items-center">
-            <h3 className="text-sm">
-              A<sup>+</sup>
-            </h3>
-          </div>
-        </div>
+        <SecondHeader title={"State"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
           <Dialog>
@@ -119,105 +78,18 @@ const State = () => {
                 <DialogTitle>Add New State</DialogTitle>
               </DialogHeader>
               <hr className="border border-gray-100 w-full h-[1px]" />
-              <form
-                className="w-full flex flex-col space-y-3"
-                onSubmit={form.handleSubmit(onSubmit)}
+              <GenericForm
+                defaultValues={stateDefaultValues}
+                validationSchema={stateRequiredForm}
+                long={false}
+                onSubmit={onSubmit}
               >
-                <div className="w-full gap-2 flex flex-col ">
-                  <label className="text-sm font-light" htmlFor={"state_code"}>
-                    State code
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter state code"
-                    {...form.register("state_code")}
-                    className="border border-gray-100 focus:outline-none rounded-md p-2"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.state_code?.message}
-                  </p>
-                </div>
-
-                <div className="w-full gap-2 flex flex-col ">
-                  <label className="text-sm font-light" htmlFor={"state_name"}>
-                    State name
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter state name"
-                    {...form.register("state_name")}
-                    className="border border-gray-100 focus:outline-none rounded-md p-2"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.state_name?.message}
-                  </p>
-                </div>
-
-                <div className="w-full gap-2 flex flex-col ">
-                  <label
-                    className="text-sm font-light"
-                    htmlFor={"capital_city"}
-                  >
-                    Capital city
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter capital city"
-                    {...form.register("capital_city")}
-                    className="border border-gray-100 focus:outline-none rounded-md p-2"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.capital_city?.message}
-                  </p>
-                </div>
-
-                <div className="w-full gap-2 flex flex-col ">
-                  <label className="text-sm font-light" htmlFor={"country"}>
-                    Country
-                  </label>
-                  <CountrySelect
-                    onChange={(e) => {
-                      form.setValue("country", e.name);
-                    }}
-                    placeHolder="Select Country"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.country?.message}
-                  </p>
-                </div>
-
-                <div className="w-full gap-2 flex flex-col ">
-                  <label className="text-sm font-light" htmlFor={"zone_name"}>
-                    Zone
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter zone"
-                    {...form.register("zone_name")}
-                    className="border border-gray-100 focus:outline-none rounded-md p-2"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.zone_name?.message}
-                  </p>
-                </div>
-                <DialogFooter>
-                  <div className="w-full flex justify-between items-center">
-                    <div
-                      className="w-auto border border-gray-300 rounded-md h-10 flex items-center p-2 cursor-pointer"
-                      onClick={() => form.reset()}
-                    >
-                      Cancel
-                    </div>
-                    <Button
-                      className="bg-vmtblue w-auto"
-                      variant="default"
-                      type="submit"
-                    >
-                      Submit
-                    </Button>
-                  </div>
-                </DialogFooter>
-              </form>
+                <FormInput name="state_code" label="state code" />
+                <FormInput name="state_name" label="state name" />
+                <FormInput name="capital_city" label="capital city" />
+                <FormInput name="zone_name" label="zone name" />
+                <FormInput name="country" label="country" />
+              </GenericForm>
             </DialogContent>
           </Dialog>
 
@@ -245,6 +117,7 @@ const State = () => {
       </div>
 
       {/* Table */}
+      <ReusableTable columns={stateColumns} data={data} />
     </div>
   );
 };

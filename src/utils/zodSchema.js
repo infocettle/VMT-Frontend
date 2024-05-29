@@ -466,3 +466,160 @@ export const typeFormSchema = z.object({
     .max(3000, "description must be maximum 3000 character")
     .trim(),
 });
+
+export const licenseFormSchema = z.object({
+  license_code: z
+    .string({
+      invalid_type_error: "license code must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "license code cannot be empty")
+    .max(30, "license code must be maximum 30 character")
+    .trim(),
+  name: z
+    .string({
+      invalid_type_error: "name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "name cannot be empty")
+    .max(100, "name must be maximum 100 characters")
+    .trim(),
+  description: z
+    .string({
+      invalid_type_error: "description must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "description cannot be empty")
+    .max(3000, "description must be maximum 3000 character")
+    .trim(),
+});
+
+export const taxFormSchema = z.object({
+  state_code: z
+    .string({
+      invalid_type_error: "code must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "state code cannot be empty")
+    .max(30, "state code must be maximum 30 character")
+    .trim(),
+  irs_name: z
+    .string({
+      invalid_type_error: "state name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "irs name cannot be empty")
+    .max(30, "irs name must be maximum 30 character")
+    .trim(),
+  irs_short_name: z
+    .string({
+      invalid_type_error: "capital city must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "irs short name cannot be empty")
+    .max(30, "irs short name must be maximum 30 characters")
+    .trim(),
+  bank: z
+    .string({
+      invalid_type_error: "bank must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "bank cannot be empty"),
+  bank_account_name: z
+    .string({
+      invalid_type_error: "bank account name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "bank account name cannot be empty"),
+  bank_account_number: z
+    .string({
+      invalid_type_error: "bank account number must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "bank account number cannot be empty")
+    .max(10, "bank account number must not exceed 10 characters"),
+  bank_alias: z
+    .string({
+      invalid_type_error: "bank alais number must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "bank alias number cannot be empty"),
+  payment_code: z
+    .string({
+      invalid_type_error: "payment code must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "payment code cannot be empty")
+    .max(30, "payment code must be maximum 30 characters")
+    .trim(),
+  payment_type: z
+    .string({
+      invalid_type_error: "payment type must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "payment type cannot be empty")
+    .max(30, "payment type must be maximum 30 characters")
+    .trim(),
+});
+
+export const sectorFormSchema = z.object({
+  sector_code: z
+    .string({
+      invalid_type_error: "type code must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "type code cannot be empty")
+    .max(30, "type code must be maximum 30 character")
+    .trim(),
+  name: z
+    .string({
+      invalid_type_error: "name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "name cannot be empty")
+    .max(100, "name must be maximum 100 characters")
+    .trim(),
+  description: z
+    .string({
+      invalid_type_error: "description must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "description cannot be empty")
+    .max(3000, "description must be maximum 3000 character")
+    .trim(),
+});
+
+export const subSectorFormSchema = z.object({
+  sub_sector_code: z
+    .string({
+      invalid_type_error: "type code must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "type code cannot be empty")
+    .max(30, "type code must be maximum 30 character")
+    .trim(),
+  sub_sector_name: z
+    .string({
+      invalid_type_error: "name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "name cannot be empty")
+    .max(100, "name must be maximum 100 characters")
+    .trim(),
+  sector_name: z
+    .string({
+      invalid_type_error: "name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "sector name cannot be empty")
+    .max(100, "sector name must be maximum 100 characters")
+    .trim(),
+  description: z
+    .string({
+      invalid_type_error: "description must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "description cannot be empty")
+    .max(3000, "description must be maximum 3000 character")
+    .trim(),
+});

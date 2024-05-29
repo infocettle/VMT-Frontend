@@ -14,6 +14,7 @@ import {
 import { GenericForm } from "@/components/GenericForm";
 import { FormInput } from "@/components/FormInput";
 import { FormSelect } from "@/components/FormSelect";
+import { FormTextArea } from "./FormTextArea";
 import { requiredForm, defaultValues } from "@/pages/PublicRegistry/Title";
 import {
   genderDefaultValues,
@@ -80,6 +81,22 @@ import {
   typeDefaultValues,
   typeRequiredForm,
 } from "@/pages/PublicRegistry/Type";
+import {
+  licenseDefaultValues,
+  licenseRequiredForm,
+} from "@/pages/PublicRegistry/License";
+import {
+  taxDefaultValues,
+  taxRequiredForm,
+} from "@/pages/PublicRegistry/TaxAuthority";
+import {
+  sectorDefaultValues,
+  sectorRequiredForm,
+} from "@/pages/PublicRegistry/Sectors";
+import {
+  subSectorDefaultValues,
+  subSectorRequiredForm,
+} from "@/pages/PublicRegistry/SubSectors";
 
 export const titleColumns = [
   {
@@ -3306,6 +3323,803 @@ export const typeColumns = [
                 <FormInput name="type_code" label="type code" />
                 <FormInput name="name" label="bank name" />
                 <FormInput name="description" label="description" />
+              </GenericForm>
+            </DialogContent>
+          </Dialog>
+
+          <Trash2Icon
+            className="text-red-700 cursor-pointer"
+            size={20}
+            onClick={async () => await deleteMutation.mutateAsync()}
+          />
+        </div>
+      );
+    },
+  },
+];
+
+export const licenseColumns = [
+  {
+    accessorKey: "code",
+    header: "CODE",
+    cell: ({ row }) => {
+      const formatted = row.getValue("code");
+      return <div className=" ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "name",
+    header: "NAME",
+    cell: ({ row }) => {
+      const formatted = row.getValue("name");
+      return <div className=" ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "description",
+    header: "DESCRIPTION",
+    cell: ({ row }) => {
+      const formatted = row.getValue("description");
+      return <div className=" ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "dateCreated",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Date Created
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateCreated");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "createdBy",
+    header: () => {
+      return <h2 className={"ml-6 uppercase"}>created by</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("createdBy");
+      return <div className="ml-10 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "modifiedBy",
+    header: () => {
+      return <h2 className={"ml-6 uppercase"}>modified by</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("modifiedBy");
+      return <div className="ml-10 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "dateModified",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Date Modified
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateModified");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Status
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("status");
+      // const formatted = new Intl.NumberFormat("en-US", {
+      //   style: "currency",
+      //   currency: "USD",
+      // }).format(amount);
+
+      return (
+        <div
+          className={cn(
+            `${
+              formatted == undefined
+                ? "bg-red-50 border border-red-500 text-red-900"
+                : formatted == "Pending"
+                ? "bg-orange-50 text-orange-900 border border-orange-500"
+                : "bg-green-50 text-green-900 border border-green-500"
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+          )}
+        >
+          {String(formatted)}
+        </div>
+      );
+    },
+  },
+  {
+    header: () => <div className="ml-5 uppercase">Actions</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const title = row.original;
+
+      const Url = `${baseUrl}public-registry/business/financial-institutions/licence/${title._id}`;
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["licence"],
+        url: Url,
+        title: "licence",
+      });
+
+      const editMutation = useEditData({ queryKey: ["licence"], url: Url });
+
+      async function onSubmit(values) {
+        console.log(values);
+
+        const body = {
+          code: values.license_code,
+          name: values.name,
+          description: values.description,
+        };
+
+        editMutation.mutateAsync(body);
+      }
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <Dialog>
+            <DialogTrigger asChild>
+              <PencilIcon
+                className="cursor-pointer"
+                color="#0B6ED0"
+                size={20}
+              />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit License</DialogTitle>
+              </DialogHeader>
+              <hr className="border border-gray-100 w-full h-[1px]" />
+
+              <GenericForm
+                defaultValues={licenseDefaultValues}
+                validationSchema={licenseRequiredForm}
+                long={false}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="license_code" label="license code" />
+                <FormInput name="name" label="bank name" />
+                <FormInput name="description" label="description" />
+              </GenericForm>
+            </DialogContent>
+          </Dialog>
+
+          <Trash2Icon
+            className="text-red-700 cursor-pointer"
+            size={20}
+            onClick={async () => await deleteMutation.mutateAsync()}
+          />
+        </div>
+      );
+    },
+  },
+];
+
+export const taxColumns = [
+  {
+    accessorKey: "state",
+    header: "STATE",
+    cell: ({ row }) => {
+      const formatted = row.getValue("state");
+      return <div className=" ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "irsShort",
+    header: "IRS SHORT NAME",
+    cell: ({ row }) => {
+      const formatted = row.getValue("irsShort");
+      return <div className=" ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "irsLong",
+    header: "IRS NAME",
+    cell: ({ row }) => {
+      const formatted = row.getValue("irsLong");
+      return <div className=" ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "bankCode",
+    header: "BANK CODE",
+    cell: ({ row }) => {
+      const formatted = row.getValue("bankCode");
+      return <div className=" ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "bankAccountName",
+    header: "BANK ACCOUNT NAME",
+    cell: ({ row }) => {
+      const formatted = row.getValue("bankAccountName");
+      return <div className=" ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "bankAccountNumber",
+    header: "BANK ACCOUNT NUMBER",
+    cell: ({ row }) => {
+      const formatted = row.getValue("bankAccountNumber");
+      return <div className=" ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "bankAlias",
+    header: "BANK ALIAS",
+    cell: ({ row }) => {
+      const formatted = row.getValue("bankAlias");
+      return <div className=" ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "paymentType",
+    header: "PAYMENT TYPE",
+    cell: ({ row }) => {
+      const formatted = row.getValue("paymentType");
+      return <div className=" ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "paymentCode",
+    header: "PAYMENT CODE",
+    cell: ({ row }) => {
+      const formatted = row.getValue("paymentCode");
+      return <div className=" ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "dateCreated",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Date Created
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateCreated");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "dateModified",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Date Modified
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateModified");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Status
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("status");
+      // const formatted = new Intl.NumberFormat("en-US", {
+      //   style: "currency",
+      //   currency: "USD",
+      // }).format(amount);
+
+      return (
+        <div
+          className={cn(
+            `${
+              formatted == undefined
+                ? "bg-red-50 border border-red-500 text-red-900"
+                : formatted == "Pending"
+                ? "bg-orange-50 text-orange-900 border border-orange-500"
+                : "bg-green-50 text-green-900 border border-green-500"
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+          )}
+        >
+          {String(formatted)}
+        </div>
+      );
+    },
+  },
+  {
+    header: () => <div className="ml-5 uppercase">Actions</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const title = row.original;
+
+      const Url = `${baseUrl}public-registry/tax-authority/${title._id}`;
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["tax"],
+        url: Url,
+        title: "tax",
+      });
+
+      const editMutation = useEditData({ queryKey: ["tax"], url: Url });
+
+      async function onSubmit(values) {
+        console.log(values);
+
+        const body = {
+          state: values.state_code,
+          irsShort: values.irs_short_name,
+          irsLong: values.irs_name,
+          bankCode: values.bank,
+          bankAccountName: values.bank_account_name,
+          bankAccountNumber: values.bank_account_number,
+          bankAlias: values.bank_alias,
+          paymentCode: values.payment_code,
+          paymentType: values.payment_type,
+        };
+
+        editMutation.mutateAsync(body);
+      }
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <Dialog>
+            <DialogTrigger asChild>
+              <PencilIcon
+                className="cursor-pointer"
+                color="#0B6ED0"
+                size={20}
+              />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit Tax Authority</DialogTitle>
+              </DialogHeader>
+              <hr className="border border-gray-100 w-full h-[1px]" />
+
+              <GenericForm
+                defaultValues={taxDefaultValues}
+                validationSchema={taxRequiredForm}
+                long={true}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="state_code" label="state code" />
+                <FormInput name="irs_name" label="IRS name" />
+                <FormInput name="irs_short_name" label="IRS short-name" />
+                <FormInput name="bank" label="Bank Code" />
+                <FormInput name="bank_account_name" label="bank account name" />
+                <FormInput
+                  name="bank_account_number"
+                  label="bank account number"
+                />
+                <FormInput name="bank_alias" label="bank alias" />
+                <FormInput name="payment_code" label="payment code" />
+                <FormInput name="payment_type" label="payment type" />
+              </GenericForm>
+            </DialogContent>
+          </Dialog>
+
+          <Trash2Icon
+            className="text-red-700 cursor-pointer"
+            size={20}
+            onClick={async () => await deleteMutation.mutateAsync()}
+          />
+        </div>
+      );
+    },
+  },
+];
+
+export const sectorColumns = [
+  {
+    accessorKey: "code",
+    header: "CODE",
+    cell: ({ row }) => {
+      const formatted = row.getValue("code");
+      return <div className=" ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "name",
+    header: "NAME",
+    cell: ({ row }) => {
+      const formatted = row.getValue("name");
+      return <div className=" ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "description",
+    header: "DESCRIPTION",
+    cell: ({ row }) => {
+      const formatted = row.getValue("description");
+      return <div className=" ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "dateCreated",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Date Created
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateCreated");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "dateModified",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Date Modified
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateModified");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Status
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("status");
+      // const formatted = new Intl.NumberFormat("en-US", {
+      //   style: "currency",
+      //   currency: "USD",
+      // }).format(amount);
+
+      return (
+        <div
+          className={cn(
+            `${
+              formatted == undefined
+                ? "bg-red-50 border border-red-500 text-red-900"
+                : formatted == "Pending"
+                ? "bg-orange-50 text-orange-900 border border-orange-500"
+                : "bg-green-50 text-green-900 border border-green-500"
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+          )}
+        >
+          {String(formatted)}
+        </div>
+      );
+    },
+  },
+  {
+    header: () => <div className="ml-5 uppercase">Actions</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const title = row.original;
+
+      const Url = `${baseUrl}public-registry/business/sector/${title._id}`;
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["sector"],
+        url: Url,
+        title: "sector",
+      });
+
+      const editMutation = useEditData({ queryKey: ["sector"], url: Url });
+
+      async function onSubmit(values) {
+        console.log(values);
+
+        const body = {
+          code: values.sector_code,
+          name: values.name,
+          description: values.description,
+        };
+
+        editMutation.mutateAsync(body);
+      }
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <Dialog>
+            <DialogTrigger asChild>
+              <PencilIcon
+                className="cursor-pointer"
+                color="#0B6ED0"
+                size={20}
+              />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit Sector</DialogTitle>
+              </DialogHeader>
+              <hr className="border border-gray-100 w-full h-[1px]" />
+
+              <GenericForm
+                defaultValues={sectorDefaultValues}
+                validationSchema={sectorRequiredForm}
+                long={false}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="sector_code" label="sector code" />
+                <FormInput name="name" label="sector name" />
+                <FormTextArea name="description" label="description" />
+              </GenericForm>
+            </DialogContent>
+          </Dialog>
+
+          <Trash2Icon
+            className="text-red-700 cursor-pointer"
+            size={20}
+            onClick={async () => await deleteMutation.mutateAsync()}
+          />
+        </div>
+      );
+    },
+  },
+];
+
+export const subSectorColumns = [
+  {
+    accessorKey: "code",
+    header: "CODE",
+    cell: ({ row }) => {
+      const formatted = row.getValue("code");
+      return <div className=" ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "name",
+    header: "NAME",
+    cell: ({ row }) => {
+      const formatted = row.getValue("name");
+      return <div className=" ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "sector",
+    header: "SECTOR",
+    cell: ({ row }) => {
+      const formatted = row.getValue("sector");
+      return <div className=" ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "description",
+    header: "DESCRIPTION",
+    cell: ({ row }) => {
+      const formatted = row.getValue("description");
+      return <div className=" ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "dateCreated",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Date Created
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateCreated");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "dateModified",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Date Modified
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateModified");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Status
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("status");
+      // const formatted = new Intl.NumberFormat("en-US", {
+      //   style: "currency",
+      //   currency: "USD",
+      // }).format(amount);
+
+      return (
+        <div
+          className={cn(
+            `${
+              formatted == undefined
+                ? "bg-red-50 border border-red-500 text-red-900"
+                : formatted == "Pending"
+                ? "bg-orange-50 text-orange-900 border border-orange-500"
+                : "bg-green-50 text-green-900 border border-green-500"
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+          )}
+        >
+          {String(formatted)}
+        </div>
+      );
+    },
+  },
+  {
+    header: () => <div className="ml-5 uppercase">Actions</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const title = row.original;
+
+      const Url = `${baseUrl}public-registry/business/sub-sector/${title._id}`;
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["sub-sector"],
+        url: Url,
+        title: "sub sector",
+      });
+
+      const editMutation = useEditData({ queryKey: ["sub-sector"], url: Url });
+
+      async function onSubmit(values) {
+        console.log(values);
+
+        const body = {
+          code: values.sub_sector_code,
+          name: values.sub_sector_name,
+          description: values.description,
+          sector: values.sector_name,
+        };
+
+        editMutation.mutateAsync(body);
+      }
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <Dialog>
+            <DialogTrigger asChild>
+              <PencilIcon
+                className="cursor-pointer"
+                color="#0B6ED0"
+                size={20}
+              />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit Sector</DialogTitle>
+              </DialogHeader>
+              <hr className="border border-gray-100 w-full h-[1px]" />
+
+              <GenericForm
+                defaultValues={subSectorDefaultValues}
+                validationSchema={subSectorRequiredForm}
+                long={false}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="sub_sector_code" label="sub-sector code" />
+                <FormInput name="sub_sector_name" label="sub-sector name" />
+                <FormInput name="sector_name" label="sector name" />
+                <FormTextArea name="description" label="description" />
               </GenericForm>
             </DialogContent>
           </Dialog>

@@ -1,11 +1,3 @@
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +7,7 @@ import {
 import { ChevronDown } from "lucide-react";
 import { lgaColumns } from "@/components/typings";
 import { ReusableTable } from "@/components/ReusableTable";
-import { GenericForm } from "@/components/GenericForm";
+import ReuseDialog from "@/components/ReuseDialog";
 import { FormInput } from "@/components/FormInput";
 import { lgaFormSchema } from "@/utils/zodSchema";
 import { ReportLinks } from "@/components/ReportLinks";
@@ -23,10 +15,11 @@ import SecondHeader from "@/components/SecondHeader";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
 import usePostData from "@/hooks/usePostData";
+import { useState } from "react";
 
 export const lgaRequiredForm = lgaFormSchema.required();
 
-export const lgaDefaultValues = {
+const lgaDefaultValues = {
   zone_name: "",
   state: "",
   country: "",
@@ -36,6 +29,8 @@ export const lgaDefaultValues = {
 };
 
 const LGA = () => {
+  const [open, setIsOpen] = useState(false);
+
   const lgaUrl = `${baseUrl}public-registry/address/lga`;
 
   const { data, isPending } = useFetchData(lgaUrl, "lga");
@@ -56,6 +51,7 @@ const LGA = () => {
     };
 
     postMutation.mutateAsync(body);
+    setIsOpen(false);
   }
 
   if (isPending) {
@@ -70,32 +66,24 @@ const LGA = () => {
         <SecondHeader title={"LGA"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="bg-vmtblue" size="sm">
-                Create new
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add New Local Government</DialogTitle>
-              </DialogHeader>
-              <hr className="border border-gray-100 w-full h-[1px]" />
-              <GenericForm
-                defaultValues={lgaDefaultValues}
-                validationSchema={lgaRequiredForm}
-                long={false}
-                onSubmit={onSubmit}
-              >
-                <FormInput name="lga_code" label="lga code" />
-                <FormInput name="lga_name" label="lga name" />
-                <FormInput name="headquarter" label="headquarter" />
-                <FormInput name="zone_name" label="zone name" />
-                <FormInput name="country" label="country" />
-                <FormInput name="state" label="state" />
-              </GenericForm>
-            </DialogContent>
-          </Dialog>
+          <ReuseDialog
+            isEdit={false}
+            open={open}
+            onOpenChange={setIsOpen}
+            onClick={() => setIsOpen(true)}
+            dialogTitle={"Add New LGA"}
+            defaultValues={lgaDefaultValues}
+            validationSchema={lgaRequiredForm}
+            onSubmit={onSubmit}
+            long={false}
+          >
+            <FormInput name="lga_code" label="LGA code" />
+            <FormInput name="lga_name" label="LGA name" />
+            <FormInput name="headquarter" label="Headquarter" />
+            <FormInput name="zone_name" label="Zone Name" />
+            <FormInput name="country" label="Country" />
+            <FormInput name="state" label="State" />
+          </ReuseDialog>
 
           <DropdownMenu>
             <DropdownMenuTrigger>

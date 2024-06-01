@@ -23,9 +23,10 @@ import SecondHeader from "@/components/SecondHeader";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
 import usePostData from "@/hooks/usePostData";
+import { useState } from "react";
 
 export const stateRequiredForm = stateFormSchema.required();
-export const stateDefaultValues = {
+const stateDefaultValues = {
   zone_name: "",
   state_code: "",
   country: "",
@@ -34,6 +35,8 @@ export const stateDefaultValues = {
 };
 
 const State = () => {
+  const [open, setIsOpen] = useState(false);
+
   const stateUrl = `${baseUrl}public-registry/address/state`;
 
   const { data, isPending } = useFetchData(stateUrl, "state");
@@ -53,6 +56,7 @@ const State = () => {
     };
 
     postMutation.mutateAsync(body);
+    setIsOpen(false);
   }
 
   if (isPending) {
@@ -67,9 +71,13 @@ const State = () => {
         <SecondHeader title={"State"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
-          <Dialog>
+          <Dialog open={open} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-vmtblue" size="sm">
+              <Button
+                className="bg-vmtblue"
+                size="sm"
+                onClick={() => setIsOpen(true)}
+              >
                 Create new
               </Button>
             </DialogTrigger>
@@ -84,11 +92,11 @@ const State = () => {
                 long={false}
                 onSubmit={onSubmit}
               >
-                <FormInput name="state_code" label="state code" />
-                <FormInput name="state_name" label="state name" />
-                <FormInput name="capital_city" label="capital city" />
-                <FormInput name="zone_name" label="zone name" />
-                <FormInput name="country" label="country" />
+                <FormInput name="state_code" label="State Code" />
+                <FormInput name="state_name" label="State Name" />
+                <FormInput name="capital_city" label="Capital City" />
+                <FormInput name="zone_name" label="Zone Name" />
+                <FormInput name="country" label="Country" />
               </GenericForm>
             </DialogContent>
           </Dialog>

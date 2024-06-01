@@ -1,11 +1,4 @@
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +8,7 @@ import {
 import { ChevronDown } from "lucide-react";
 import { taxColumns } from "@/components/typings";
 import { ReusableTable } from "@/components/ReusableTable";
-import { GenericForm } from "@/components/GenericForm";
+import ReuseDialog from "@/components/ReuseDialog";
 import { FormInput } from "@/components/FormInput";
 import { taxFormSchema } from "@/utils/zodSchema";
 import { ReportLinks } from "@/components/ReportLinks";
@@ -26,7 +19,7 @@ import usePostData from "@/hooks/usePostData";
 
 export const taxRequiredForm = taxFormSchema.required();
 
-export const taxDefaultValues = {
+const taxDefaultValues = {
   state_code: "",
   irs_name: "",
   irs_short_name: "",
@@ -39,6 +32,8 @@ export const taxDefaultValues = {
 };
 
 const TaxAuthority = () => {
+  const [open, setIsOpen] = useState(false);
+
   const taxUrl = `${baseUrl}public-registry/tax-authority`;
 
   const { data, isPending } = useFetchData(taxUrl, "tax");
@@ -62,6 +57,7 @@ const TaxAuthority = () => {
     };
 
     postMutation.mutateAsync(body);
+    setIsOpen(false);
   }
 
   if (isPending) {
@@ -76,38 +72,27 @@ const TaxAuthority = () => {
         <SecondHeader title={"TAX AUTHORITHY"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="bg-vmtblue" size="sm">
-                Create new
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add New Tax Authorities</DialogTitle>
-              </DialogHeader>
-              <hr className="border border-gray-100 w-full h-[1px]" />
-              <GenericForm
-                defaultValues={taxDefaultValues}
-                validationSchema={taxRequiredForm}
-                long={true}
-                onSubmit={onSubmit}
-              >
-                <FormInput name="state_code" label="state code" />
-                <FormInput name="irs_name" label="IRS name" />
-                <FormInput name="irs_short_name" label="IRS short-name" />
-                <FormInput name="bank" label="Bank Code" />
-                <FormInput name="bank_account_name" label="bank account name" />
-                <FormInput
-                  name="bank_account_number"
-                  label="bank account number"
-                />
-                <FormInput name="bank_alias" label="bank alias" />
-                <FormInput name="payment_code" label="payment code" />
-                <FormInput name="payment_type" label="payment type" />
-              </GenericForm>
-            </DialogContent>
-          </Dialog>
+          <ReuseDialog
+            isEdit={false}
+            open={open}
+            onOpenChange={setIsOpen}
+            onClick={() => setIsOpen(true)}
+            dialogTitle={"Add New Tax Authorities"}
+            defaultValues={taxDefaultValues}
+            validationSchema={taxRequiredForm}
+            long={true}
+            onSubmit={onSubmit}
+          >
+            <FormInput name="state_code" label="state code" />
+            <FormInput name="irs_name" label="IRS name" />
+            <FormInput name="irs_short_name" label="IRS short name" />
+            <FormInput name="bank" label="Bank Code" />
+            <FormInput name="bank_account_name" label="bank account name" />
+            <FormInput name="bank_account_number" label="bank account number" />
+            <FormInput name="bank_alias" label="bank alias" />
+            <FormInput name="payment_code" label="payment code" />
+            <FormInput name="payment_type" label="payment type" />
+          </ReuseDialog>
 
           <DropdownMenu>
             <DropdownMenuTrigger>

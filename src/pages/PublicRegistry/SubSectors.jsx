@@ -1,11 +1,4 @@
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +8,7 @@ import {
 import { ChevronDown } from "lucide-react";
 import { subSectorColumns } from "@/components/typings";
 import { ReusableTable } from "@/components/ReusableTable";
-import { GenericForm } from "@/components/GenericForm";
+import ReuseDialog from "@/components/ReuseDialog";
 import { FormInput } from "@/components/FormInput";
 import { FormTextArea } from "@/components/FormTextArea";
 import { subSectorFormSchema } from "@/utils/zodSchema";
@@ -27,7 +20,7 @@ import usePostData from "@/hooks/usePostData";
 
 export const subSectorRequiredForm = subSectorFormSchema.required();
 
-export const subSectorDefaultValues = {
+const subSectorDefaultValues = {
   sub_sector_code: "",
   sub_sector_name: "",
   sector_name: "",
@@ -35,6 +28,8 @@ export const subSectorDefaultValues = {
 };
 
 const SubSectors = () => {
+  const [open, setIsOpen] = useState(false);
+
   const subSectorUrl = `${baseUrl}public-registry/business/sub-sector`;
 
   const { data, isPending } = useFetchData(subSectorUrl, "sub-sector");
@@ -53,6 +48,7 @@ const SubSectors = () => {
     };
 
     postMutation.mutateAsync(body);
+    setIsOpen(false);
   }
 
   if (isPending) {
@@ -67,30 +63,22 @@ const SubSectors = () => {
         <SecondHeader title={"SUB SECTOR"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="bg-vmtblue" size="sm">
-                Create new
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add New Sub-Sector</DialogTitle>
-              </DialogHeader>
-              <hr className="border border-gray-100 w-full h-[1px]" />
-              <GenericForm
-                defaultValues={subSectorDefaultValues}
-                validationSchema={subSectorRequiredForm}
-                long={false}
-                onSubmit={onSubmit}
-              >
-                <FormInput name="sub_sector_code" label="sub-sector code" />
-                <FormInput name="sub_sector_name" label="sub-sector name" />
-                <FormInput name="sector_name" label="sector name" />
-                <FormTextArea name="description" label="description" />
-              </GenericForm>
-            </DialogContent>
-          </Dialog>
+          <ReuseDialog
+            isEdit={false}
+            open={open}
+            onOpenChange={setIsOpen}
+            onClick={() => setIsOpen(true)}
+            dialogTitle={"Add New Business Sub-Sector"}
+            defaultValues={subSectorDefaultValues}
+            validationSchema={subSectorRequiredForm}
+            long={false}
+            onSubmit={onSubmit}
+          >
+            <FormInput name="sub_sector_code" label="sub-sector code" />
+            <FormInput name="sub_sector_name" label="sub-sector name" />
+            <FormInput name="sector_name" label="sector name" />
+            <FormTextArea name="description" label="description" />
+          </ReuseDialog>
 
           <DropdownMenu>
             <DropdownMenuTrigger>

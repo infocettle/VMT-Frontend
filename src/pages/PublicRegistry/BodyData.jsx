@@ -32,24 +32,84 @@ import {
   skinToneData,
 } from "@/texts/TableValues";
 import { ReusableTable } from "@/components/ReusableTable";
+import useFetchData from "@/hooks/useFetchData";
+import { baseUrl } from "@/App";
+import usePostData from "@/hooks/usePostData";
 
 export const bodyDataRequiredForm = BodyDataFormSchema.required();
-export const bodyDataDefaultValues = {
+const bodyDataDefaultValues = {
   name: "",
 };
 
 const BodyData = () => {
+  const [open, setIsOpen] = useState(false);
   const [subGroup, setSubGroup] = useState("eye color");
-  const [apiUrl, setApiUrl] = useState("http://eyecolor");
   const [eyeColor, setEyeColor] = useState(false);
   const [hairColor, setHairColor] = useState(false);
   const [noseColor, setNoseColor] = useState(true);
   const [skinColor, setSkinColor] = useState(false);
 
+  const eyeColorUrl = `${baseUrl}public-registry/personal-details/body-data/eye-color/`;
+  const hairColorUrl = `${baseUrl}public-registry/personal-details/body-data/hair-color/`;
+  const skinToneUrl = `${baseUrl}public-registry/personal-details/body-data/skin-tone/`;
+  const noseShapeUrl = `${baseUrl}public-registry/personal-details/body-data/nose-shape/`;
+
+  const { data, isPending } = useFetchData(
+    subGroup == "eye color"
+      ? eyeColorUrl
+      : subGroup == "hair color"
+      ? hairColorUrl
+      : subGroup == "nose shape"
+      ? noseShapeUrl
+      : skinToneUrl,
+    subGroup == "eye color"
+      ? "eyecolor"
+      : subGroup == "hair color"
+      ? "haircolor"
+      : subGroup == "nose shape"
+      ? "noseshape"
+      : "skintone"
+  );
+
+  const postMutation = usePostData({
+    queryKey: [
+      subGroup == "eye color"
+        ? "eyecolor"
+        : subGroup == "hair color"
+        ? "haircolor"
+        : subGroup == "nose shape"
+        ? "noseshape"
+        : "skintone",
+    ],
+    url:
+      subGroup == "eye color"
+        ? eyeColorUrl
+        : subGroup == "hair color"
+        ? hairColorUrl
+        : subGroup == "nose shape"
+        ? noseShapeUrl
+        : skinToneUrl,
+    title:
+      subGroup == "eye color"
+        ? "Eye Color"
+        : subGroup == "hair color"
+        ? "Hair Color"
+        : subGroup == "nose shape"
+        ? "Nose Shape"
+        : "Skin Tone",
+  });
+
   async function onSubmit(values) {
-    console.log(values);
-    console.log(apiUrl);
-    console.log(subGroup);
+    const body = {
+      name: values.name,
+    };
+
+    postMutation.mutateAsync(body);
+    setIsOpen(false);
+  }
+
+  if (isPending) {
+    return <span>Loading...</span>;
   }
 
   return (
@@ -60,9 +120,13 @@ const BodyData = () => {
         <SecondHeader title={"Body Data"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
-          <Dialog>
+          <Dialog open={open} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-vmtblue" size="sm">
+              <Button
+                className="bg-vmtblue"
+                size="sm"
+                onClick={() => setIsOpen(true)}
+              >
                 Create new
               </Button>
             </DialogTrigger>
@@ -118,7 +182,6 @@ const BodyData = () => {
           <button
             onClick={() => {
               setSubGroup("nose shape");
-              setApiUrl("http://noseshape");
               setNoseColor(true);
               setEyeColor(false);
               setHairColor(false);
@@ -143,7 +206,6 @@ const BodyData = () => {
           <button
             onClick={() => {
               setSubGroup("skin tone");
-              setApiUrl("http://skintone");
               setSkinColor(true);
               setNoseColor(false);
               setEyeColor(false);
@@ -168,7 +230,6 @@ const BodyData = () => {
           <button
             onClick={() => {
               setSubGroup("hair color");
-              setApiUrl("http://haircolor");
               setHairColor(true);
               setSkinColor(false);
               setNoseColor(false);
@@ -193,7 +254,6 @@ const BodyData = () => {
           <button
             onClick={() => {
               setSubGroup("eye color");
-              setApiUrl("http://eyecolor");
               setEyeColor(true);
               setSkinColor(false);
               setNoseColor(false);
@@ -219,16 +279,16 @@ const BodyData = () => {
 
         {/* Table */}
         {subGroup == "eye color" && (
-          <ReusableTable columns={bodyDataColumns} data={eyeColorData} />
+          <ReusableTable columns={bodyDataColumns} data={data} />
         )}
         {subGroup == "skin tone" && (
-          <ReusableTable columns={bodyDataColumns} data={skinToneData} />
+          <ReusableTable columns={bodyDataColumns} data={data} />
         )}
         {subGroup == "nose shape" && (
-          <ReusableTable columns={bodyDataColumns} data={noseShapeData} />
+          <ReusableTable columns={bodyDataColumns} data={data} />
         )}
         {subGroup == "hair color" && (
-          <ReusableTable columns={bodyDataColumns} data={hairColorData} />
+          <ReusableTable columns={bodyDataColumns} data={data} />
         )}
       </div>
     </div>

@@ -23,9 +23,10 @@ import SecondHeader from "@/components/SecondHeader";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
 import usePostData from "@/hooks/usePostData";
+import { useState } from "react";
 
 export const countryRequiredForm = countryFormSchema.required();
-export const countryDefaultValues = {
+const countryDefaultValues = {
   country_code: "",
   country_name: "",
   capital_city: "",
@@ -39,6 +40,8 @@ export const countryDefaultValues = {
 };
 
 const Country = () => {
+  const [open, setIsOpen] = useState(false);
+
   const countryUrl = `${baseUrl}public-registry/address/country`;
 
   const { data, isPending } = useFetchData(countryUrl, "country");
@@ -63,6 +66,7 @@ const Country = () => {
     };
 
     postMutation.mutateAsync(body);
+    setIsOpen(false);
   }
 
   if (isPending) {
@@ -77,9 +81,13 @@ const Country = () => {
         <SecondHeader title={"Country"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
-          <Dialog>
+          <Dialog open={open} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-vmtblue" size="sm">
+              <Button
+                className="bg-vmtblue"
+                size="sm"
+                onClick={() => setIsOpen(true)}
+              >
                 Create new
               </Button>
             </DialogTrigger>
@@ -94,15 +102,15 @@ const Country = () => {
                 long={true}
                 onSubmit={onSubmit}
               >
-                <FormInput name="country_code" label="country code" />
-                <FormInput name="country_name" label="country name" />
-                <FormInput name="capital_city" label="capital city" />
-                <FormInput name="continent" label="continent" />
-                <FormInput name="currency_code" label="currency code" />
-                <FormInput name="iso2" label="iso2" />
-                <FormInput name="iso3" label="iso3" />
-                <FormInput name="phone_code" label="phone code" />
-                <FormInput name="population" label="population" />
+                <FormInput name="country_code" label="Country Code" />
+                <FormInput name="country_name" label="Country Name" />
+                <FormInput name="capital_city" label="Capital City" />
+                <FormInput name="continent" label="Continent" />
+                <FormInput name="currency_code" label="Currency Code" />
+                <FormInput name="iso2" label="ISO2" />
+                <FormInput name="iso3" label="ISO3" />
+                <FormInput name="phone_code" label="Phone Code" />
+                <FormInput name="population" label="Population" />
                 <FormInput name="population_source" label="Population Source" />
               </GenericForm>
             </DialogContent>

@@ -1,11 +1,3 @@
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,22 +8,25 @@ import { ChevronDown } from "lucide-react";
 import { genderColumns } from "@/components/typings";
 import { ReusableTable } from "@/components/ReusableTable";
 import { genderFormSchema } from "@/utils/zodSchema";
-import { GenericForm } from "@/components/GenericForm";
+import ReuseDialog from "@/components/ReuseDialog";
 import { FormInput } from "@/components/FormInput";
 import { ReportLinks } from "@/components/ReportLinks";
 import SecondHeader from "@/components/SecondHeader";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
 import usePostData from "@/hooks/usePostData";
+import { useState } from "react";
 
 export const genderRequiredForm = genderFormSchema.required();
 
-export const genderDefaultValues = {
+const genderDefaultValues = {
   title: "",
   alias: "",
 };
 
 const Gender = () => {
+  const [open, setIsOpen] = useState(false);
+
   const genderUrl = `${baseUrl}public-registry/personal-details/gender`;
 
   const { data, isPending } = useFetchData(genderUrl, "gender");
@@ -48,6 +43,8 @@ const Gender = () => {
     };
 
     postMutation.mutateAsync(body);
+
+    setIsOpen(false);
   }
 
   if (isPending) {
@@ -62,28 +59,20 @@ const Gender = () => {
         <SecondHeader title={"Gender"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="bg-vmtblue" size="sm">
-                Create new
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add New Gender</DialogTitle>
-              </DialogHeader>
-              <hr className="border border-gray-100 w-full h-[1px]" />
-
-              <GenericForm
-                defaultValues={genderDefaultValues}
-                validationSchema={genderRequiredForm}
-                onSubmit={onSubmit}
-              >
-                <FormInput name="title" label="Title" />
-                <FormInput name="alias" label="Alias" />
-              </GenericForm>
-            </DialogContent>
-          </Dialog>
+          <ReuseDialog
+            isEdit={false}
+            open={open}
+            onOpenChange={setIsOpen}
+            onClick={() => setIsOpen(true)}
+            dialogTitle={"Add New Gender"}
+            defaultValues={genderDefaultValues}
+            validationSchema={genderRequiredForm}
+            onSubmit={onSubmit}
+            long={false}
+          >
+            <FormInput name="title" label="Title" />
+            <FormInput name="alias" label="Alias" />
+          </ReuseDialog>
 
           <DropdownMenu>
             <DropdownMenuTrigger>

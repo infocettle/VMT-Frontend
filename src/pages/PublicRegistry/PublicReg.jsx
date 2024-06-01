@@ -6,7 +6,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
-import { PublicRegLinks } from "@/texts/PublicRegLinks";
+import { PublicRegLinks, RegLinks } from "@/texts/PublicRegLinks";
 import { ChevronRight } from "lucide-react";
 import {
   DropdownMenu,
@@ -61,32 +61,33 @@ const PublicReg = () => {
             </CollapsibleTrigger>
           </div>
           <CollapsibleContent>
-            <div className="w-52 flex flex-col items-center space-y-2 px-3 py-2">
+            <div className="w-full flex flex-col items-center space-y-2 px-3 py-2">
               {PublicRegLinks.map((modules) => (
                 <div
                   key={modules.id}
                   className="flex items-center justify-between w-full"
                 >
-                  <Link
-                    onClick={() => setModule(modules.name)}
-                    to={modules.href}
-                  >
-                    <h3
-                      className={cn(
-                        `text-vmtpurple focus:text-vmtblue text-sm leading-relaxed`
-                      )}
-                    >
-                      {modules.name}
-                    </h3>
-                  </Link>
-
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      {modules.icon ? (
-                        <ChevronRight size={14} color="#666687" />
-                      ) : (
-                        ""
-                      )}
+                      <div className="w-full flex items-center justify-between">
+                        <div
+                          onClick={() => setModule(modules.name)}
+                          className="cursor-pointer"
+                        >
+                          <h3
+                            className={cn(
+                              `text-vmtpurple focus-within:text-vmtblue text-xs leading-relaxed`
+                            )}
+                          >
+                            {modules.name}
+                          </h3>
+                        </div>
+                        {modules.icon ? (
+                          <ChevronRight size={16} color="#666687" />
+                        ) : (
+                          ""
+                        )}
+                      </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuLabel>{modules.name}</DropdownMenuLabel>
@@ -110,13 +111,30 @@ const PublicReg = () => {
                   </DropdownMenu>
                 </div>
               ))}
+
+              {RegLinks.map((modules) => (
+                <Link
+                  onClick={() => setModule(modules.name)}
+                  className="self-start cursor-pointer"
+                  to={modules.href}
+                  key={modules.id}
+                >
+                  <h3
+                    className={cn(
+                      `text-vmtpurple focus-within:text-vmtblue text-xs leading-relaxed`
+                    )}
+                  >
+                    {modules.name}
+                  </h3>
+                </Link>
+              ))}
             </div>
           </CollapsibleContent>
         </Collapsible>
       </div>
 
       {/* The div that renders second flex */}
-      <div className="w-full h-auto border border-gray-200 flex flex-col items-center">
+      <div className="w-full h-auto border border-gray-200 flex flex-col items-center overflow-x-scroll">
         {/* Header Kinda */}
         <div className="w-full py-3 px-12 flex items-center justify-between">
           <h2 className="uppercase font-light text-base">{module}</h2>

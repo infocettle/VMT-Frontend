@@ -42,19 +42,7 @@ export const PublicRegLinks = [
       },
     ],
   },
-  {
-    id: 2,
-    name: "Currency",
-    href: "/public_reg/currency",
-    icon: false,
-    children: [
-      {
-        id: 1,
-        name: "",
-        href: "/public_reg/currency",
-      },
-    ],
-  },
+
   {
     id: 3,
     name: "Address / Nationality",
@@ -121,13 +109,7 @@ export const PublicRegLinks = [
       },
     ],
   },
-  {
-    id: 5,
-    name: "Tax Authority",
-    href: "/public_reg/tax_authority",
-    icon: false,
-    children: [],
-  },
+
   {
     id: 6,
     name: "Business",
@@ -145,5 +127,18 @@ export const PublicRegLinks = [
         href: "/public_reg/business/sub_sectors",
       },
     ],
+  },
+];
+
+export const RegLinks = [
+  {
+    id: 1,
+    name: "Currency",
+    href: "/public_reg/currency",
+  },
+  {
+    id: 2,
+    name: "Tax Authority",
+    href: "/public_reg/tax_authority",
   },
 ];

@@ -1,12 +1,8 @@
-import { FC, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -17,14 +13,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Printer, Share2, Upload, View } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ReusableTable } from "@/components/ReusableTable";
 import {
   ailmentColumns,
   bloodGroupGenotypeColumns,
 } from "@/components/typings";
-import { ailments, bloodGroup, genotype } from "@/texts/TableValues";
 import { GenericForm } from "@/components/GenericForm";
 import { FormInput } from "@/components/FormInput";
 import { ReportLinks } from "@/components/ReportLinks";
@@ -35,17 +30,18 @@ import { baseUrl } from "@/App";
 import usePostData from "@/hooks/usePostData";
 
 export const bGRequiredForm = bGFormSchema.required();
-export const bgDefaultValues = {
+const bgDefaultValues = {
   name: "",
   code: "",
 };
 
 export const ailRequiredForm = AilFormSchema.required();
-export const ailDefaultValues = {
+const ailDefaultValues = {
   name: "",
 };
 
 const MedicalData = () => {
+  const [open, setIsOpen] = useState(false);
   const [subGroup, setSubGroup] = useState("blood group");
   const [bloodColor, setBloodColor] = useState(true);
   const [genoColor, setGenoColor] = useState(false);
@@ -105,6 +101,7 @@ const MedicalData = () => {
     }
 
     postMutation.mutateAsync(body);
+    setIsOpen(false);
   }
 
   if (isPending) {
@@ -120,9 +117,13 @@ const MedicalData = () => {
 
         <div className="flex items-center w-auto px-2 space-x-4">
           {subGroup == "blood group" || subGroup == "genotype" ? (
-            <Dialog>
+            <Dialog open={open} onOpenChange={setIsOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-vmtblue" size="sm">
+                <Button
+                  className="bg-vmtblue"
+                  size="sm"
+                  onClick={() => setIsOpen(true)}
+                >
                   Create new
                 </Button>
               </DialogTrigger>
@@ -146,9 +147,13 @@ const MedicalData = () => {
               </DialogContent>
             </Dialog>
           ) : (
-            <Dialog>
+            <Dialog open={open} onOpenChange={setIsOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-vmtblue" size="sm">
+                <Button
+                  className="bg-vmtblue"
+                  size="sm"
+                  onClick={() => setIsOpen(true)}
+                >
                   Create new
                 </Button>
               </DialogTrigger>

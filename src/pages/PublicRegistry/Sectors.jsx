@@ -1,11 +1,4 @@
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +8,7 @@ import {
 import { ChevronDown } from "lucide-react";
 import { sectorColumns } from "@/components/typings";
 import { ReusableTable } from "@/components/ReusableTable";
-import { GenericForm } from "@/components/GenericForm";
+import ReuseDialog from "@/components/ReuseDialog";
 import { FormInput } from "@/components/FormInput";
 import { FormTextArea } from "@/components/FormTextArea";
 import { sectorFormSchema } from "@/utils/zodSchema";
@@ -27,13 +20,15 @@ import usePostData from "@/hooks/usePostData";
 
 export const sectorRequiredForm = sectorFormSchema.required();
 
-export const sectorDefaultValues = {
+const sectorDefaultValues = {
   sector_code: "",
   name: "",
   description: "",
 };
 
 const Sectors = () => {
+  const [open, setIsOpen] = useState(false);
+
   const sectorUrl = `${baseUrl}public-registry/business/sector`;
 
   const { data, isPending } = useFetchData(sectorUrl, "sector");
@@ -51,6 +46,7 @@ const Sectors = () => {
     };
 
     postMutation.mutateAsync(body);
+    setIsOpen(false);
   }
 
   if (isPending) {
@@ -65,29 +61,21 @@ const Sectors = () => {
         <SecondHeader title={"SECTOR"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="bg-vmtblue" size="sm">
-                Create new
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add New Business Sector</DialogTitle>
-              </DialogHeader>
-              <hr className="border border-gray-100 w-full h-[1px]" />
-              <GenericForm
-                defaultValues={sectorDefaultValues}
-                validationSchema={sectorRequiredForm}
-                long={false}
-                onSubmit={onSubmit}
-              >
-                <FormInput name="sector_code" label="sector code" />
-                <FormInput name="name" label="sector name" />
-                <FormTextArea name="description" label="description" />
-              </GenericForm>
-            </DialogContent>
-          </Dialog>
+          <ReuseDialog
+            isEdit={false}
+            open={open}
+            onOpenChange={setIsOpen}
+            onClick={() => setIsOpen(true)}
+            dialogTitle={"Add New Business Sector"}
+            defaultValues={sectorDefaultValues}
+            validationSchema={sectorRequiredForm}
+            long={false}
+            onSubmit={onSubmit}
+          >
+            <FormInput name="sector_code" label="sector code" />
+            <FormInput name="name" label="sector name" />
+            <FormTextArea name="description" label="description" />
+          </ReuseDialog>
 
           <DropdownMenu>
             <DropdownMenuTrigger>

@@ -28,9 +28,10 @@ import SecondHeader from "@/components/SecondHeader";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
 import usePostData from "@/hooks/usePostData";
+import { useState } from "react";
 
 export const currencyRequiredForm = currencyFormSchema.required();
-export const currencyDefaultValues = {
+const currencyDefaultValues = {
   alphabet_code: "",
   number_code: 0,
   currency_name: "",
@@ -38,6 +39,8 @@ export const currencyDefaultValues = {
 };
 
 const Currency = () => {
+  const [open, setIsOpen] = useState(false);
+
   const currencyUrl = `${baseUrl}public-registry/currency`;
 
   const { data, isPending } = useFetchData(currencyUrl, "currency");
@@ -56,6 +59,7 @@ const Currency = () => {
     };
 
     postMutation.mutateAsync(body);
+    setIsOpen(false);
   }
 
   if (isPending) {
@@ -70,9 +74,13 @@ const Currency = () => {
         <SecondHeader title={"Currency"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
-          <Dialog>
+          <Dialog open={open} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-vmtblue" size="sm">
+              <Button
+                className="bg-vmtblue"
+                size="sm"
+                onClick={() => setIsOpen(true)}
+              >
                 Create new
               </Button>
             </DialogTrigger>

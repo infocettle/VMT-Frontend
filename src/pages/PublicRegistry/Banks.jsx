@@ -1,11 +1,3 @@
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +7,7 @@ import {
 import { ChevronDown } from "lucide-react";
 import { bankColumns } from "@/components/typings";
 import { ReusableTable } from "@/components/ReusableTable";
-import { GenericForm } from "@/components/GenericForm";
+import ReuseDialog from "@/components/ReuseDialog";
 import { FormInput } from "@/components/FormInput";
 import { FormSelect } from "@/components/FormSelect";
 import { bankFormSchema } from "@/utils/zodSchema";
@@ -24,10 +16,11 @@ import SecondHeader from "@/components/SecondHeader";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
 import usePostData from "@/hooks/usePostData";
+import { useState } from "react";
 
 export const bankRequiredForm = bankFormSchema.required();
 
-export const bankDefaultValues = {
+const bankDefaultValues = {
   bank_code: "",
   bank_name: "",
   bank_alias: "",
@@ -36,6 +29,8 @@ export const bankDefaultValues = {
 };
 
 const Banks = () => {
+  const [open, setIsOpen] = useState(false);
+
   const bankUrl = `${baseUrl}public-registry/business/financial-institutions/bank`;
 
   const { data, isPending } = useFetchData(bankUrl, "bank");
@@ -55,6 +50,7 @@ const Banks = () => {
     };
 
     postMutation.mutateAsync(body);
+    setIsOpen(false);
   }
 
   if (isPending) {
@@ -69,50 +65,41 @@ const Banks = () => {
         <SecondHeader title={"BANK"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="bg-vmtblue" size="sm">
-                Create new
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add New Bank</DialogTitle>
-              </DialogHeader>
-              <hr className="border border-gray-100 w-full h-[1px]" />
-
-              <GenericForm
-                defaultValues={bankDefaultValues}
-                validationSchema={bankRequiredForm}
-                long={false}
-                onSubmit={onSubmit}
-              >
-                <FormInput name="bank_code" label="bank code" />
-                <FormInput name="bank_name" label="bank name" />
-                <FormInput name="bank_alias" label="bank alias" />
-                <FormSelect
-                  name="type"
-                  label="Bank Type"
-                  options={[
-                    { value: "central", label: "Central Banks" },
-                    { value: "retail", label: "Retail Banks" },
-                    { value: "commercial", label: "Commercial Banks" },
-                    { value: "shadow", label: "Shadow Banks" },
-                    { value: "investment", label: "Investment Banks" },
-                    { value: "cooperative", label: "Cooperative Banks" },
-                  ]}
-                />
-                <FormSelect
-                  name="license"
-                  label="License Type"
-                  options={[
-                    { value: "national", label: "National" },
-                    { value: "international", label: "International" },
-                  ]}
-                />
-              </GenericForm>
-            </DialogContent>
-          </Dialog>
+          <ReuseDialog
+            isEdit={false}
+            open={open}
+            onOpenChange={setIsOpen}
+            onClick={() => setIsOpen(true)}
+            dialogTitle={"Add New Bank"}
+            defaultValues={bankDefaultValues}
+            validationSchema={bankRequiredForm}
+            long={false}
+            onSubmit={onSubmit}
+          >
+            <FormInput name="bank_code" label="bank code" />
+            <FormInput name="bank_name" label="bank name" />
+            <FormInput name="bank_alias" label="bank alias" />
+            <FormSelect
+              name="type"
+              label="Bank Type"
+              options={[
+                { value: "central", label: "Central Banks" },
+                { value: "retail", label: "Retail Banks" },
+                { value: "commercial", label: "Commercial Banks" },
+                { value: "shadow", label: "Shadow Banks" },
+                { value: "investment", label: "Investment Banks" },
+                { value: "cooperative", label: "Cooperative Banks" },
+              ]}
+            />
+            <FormSelect
+              name="license"
+              label="License Type"
+              options={[
+                { value: "national", label: "National" },
+                { value: "international", label: "International" },
+              ]}
+            />
+          </ReuseDialog>
 
           <DropdownMenu>
             <DropdownMenuTrigger>

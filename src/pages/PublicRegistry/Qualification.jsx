@@ -23,15 +23,18 @@ import { baseUrl } from "@/App";
 import usePostData from "@/hooks/usePostData";
 import { qualificationColumns } from "@/components/typings";
 import { ReusableTable } from "@/components/ReusableTable";
+import { useState } from "react";
 
 export const qualificationRequiredForm = qualificationFormSchema.required();
 
-export const qualificationDefaultValues = {
+const qualificationDefaultValues = {
   name: "",
   code: "",
 };
 
 const Qualification = () => {
+  const [open, setIsOpen] = useState(false);
+
   const qualificationUrl = `${baseUrl}public-registry/personal-details/qualification`;
 
   const { data, isPending } = useFetchData(qualificationUrl, "qualification");
@@ -48,6 +51,7 @@ const Qualification = () => {
     };
 
     postMutation.mutateAsync(body);
+    setIsOpen(false);
   }
 
   if (isPending) {
@@ -62,9 +66,13 @@ const Qualification = () => {
         <SecondHeader title={"Qualification"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
-          <Dialog>
+          <Dialog open={open} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-vmtblue" size="sm">
+              <Button
+                className="bg-vmtblue"
+                size="sm"
+                onClick={() => setIsOpen(true)}
+              >
                 Create new
               </Button>
             </DialogTrigger>

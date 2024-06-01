@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
 import { ReusableTable } from "@/components/ReusableTable";
+import ReuseDialog from "@/components/ReuseDialog";
 import { relationshipColumns } from "@/components/typings";
 import { GenericForm } from "@/components/GenericForm";
 import { FormInput } from "@/components/FormInput";
@@ -23,14 +24,17 @@ import { relationshiptitleFormSchema } from "@/utils/zodSchema";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
 import usePostData from "@/hooks/usePostData";
+import { useState } from "react";
 
 export const relationshipRequiredForm = relationshiptitleFormSchema.required();
 
-export const relationshipDefaultValues = {
+const relationshipDefaultValues = {
   title: "",
 };
 
 const Relationship = () => {
+  const [open, setIsOpen] = useState(false);
+
   const relationshipUrl = `${baseUrl}public-registry/personal-details/relationship`;
 
   const { data, isPending } = useFetchData(relationshipUrl, "relationship");
@@ -46,6 +50,7 @@ const Relationship = () => {
     };
 
     postMutation.mutateAsync(body);
+    setIsOpen(false);
   }
 
   if (isPending) {
@@ -60,26 +65,19 @@ const Relationship = () => {
         <SecondHeader title={"Relationship"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="bg-vmtblue" size="sm">
-                Create new
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add New Relationship</DialogTitle>
-              </DialogHeader>
-              <hr className="border border-gray-100 w-full h-[1px]" />
-              <GenericForm
-                defaultValues={relationshipDefaultValues}
-                validationSchema={relationshipRequiredForm}
-                onSubmit={onSubmit}
-              >
-                <FormInput name="title" label="Title" />
-              </GenericForm>
-            </DialogContent>
-          </Dialog>
+          <ReuseDialog
+            isEdit={false}
+            open={open}
+            onOpenChange={setIsOpen}
+            onClick={() => setIsOpen(true)}
+            dialogTitle={"Add Relationship"}
+            defaultValues={relationshipDefaultValues}
+            validationSchema={relationshipRequiredForm}
+            onSubmit={onSubmit}
+            long={false}
+          >
+            <FormInput name="title" label="Title" />
+          </ReuseDialog>
 
           <DropdownMenu>
             <DropdownMenuTrigger>

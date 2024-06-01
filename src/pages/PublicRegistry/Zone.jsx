@@ -23,15 +23,18 @@ import SecondHeader from "@/components/SecondHeader";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
 import usePostData from "@/hooks/usePostData";
+import { useState } from "react";
 
 export const zoneRequiredForm = zoneFormSchema.required();
-export const zoneDefaultValues = {
+const zoneDefaultValues = {
   zone_name: "",
   code: "",
   country: "",
 };
 
 const Zone = () => {
+  const [open, setIsOpen] = useState(false);
+
   const zoneUrl = `${baseUrl}public-registry/address/zone`;
 
   const { data, isPending } = useFetchData(zoneUrl, "zone");
@@ -49,6 +52,7 @@ const Zone = () => {
     };
 
     postMutation.mutateAsync(body);
+    setIsOpen(false);
   }
 
   if (isPending) {
@@ -63,9 +67,13 @@ const Zone = () => {
         <SecondHeader title={"Zone"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
-          <Dialog>
+          <Dialog open={open} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-vmtblue" size="sm">
+              <Button
+                className="bg-vmtblue"
+                size="sm"
+                onClick={() => setIsOpen(true)}
+              >
                 Create new
               </Button>
             </DialogTrigger>
@@ -80,9 +88,9 @@ const Zone = () => {
                 onSubmit={onSubmit}
                 long={false}
               >
-                <FormInput name="code" label="code" />
-                <FormInput name="zone_name" label="zone name" />
-                <FormInput name="country" label="country" />
+                <FormInput name="code" label="Code" />
+                <FormInput name="zone_name" label="Zone Name" />
+                <FormInput name="country" label="Country" />
               </GenericForm>
             </DialogContent>
           </Dialog>

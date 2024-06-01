@@ -1,11 +1,3 @@
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +7,6 @@ import {
 import { ChevronDown } from "lucide-react";
 import { titleColumns } from "@/components/typings";
 import { ReusableTable } from "@/components/ReusableTable";
-import { GenericForm } from "@/components/GenericForm";
 import { FormInput } from "@/components/FormInput";
 import { titleFormSchema } from "@/utils/zodSchema";
 import { ReportLinks } from "@/components/ReportLinks";
@@ -23,14 +14,18 @@ import SecondHeader from "@/components/SecondHeader";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
 import usePostData from "@/hooks/usePostData";
+import { useState } from "react";
+import ReuseDialog from "@/components/ReuseDialog";
 
 export const requiredForm = titleFormSchema.required();
 
-export const defaultValues = {
+const defaultValues = {
   title: "",
 };
 
 const Title = () => {
+  const [open, setIsOpen] = useState(false);
+
   const titleUrl = `${baseUrl}public-registry/personal-details/title`;
 
   const { data, isPending } = useFetchData(titleUrl, "title");
@@ -46,6 +41,7 @@ const Title = () => {
     };
 
     postMutation.mutateAsync(body);
+    setIsOpen(false);
   }
 
   if (isPending) {
@@ -60,27 +56,19 @@ const Title = () => {
         <SecondHeader title={"Title"} />
 
         <div className="flex items-center w-auto px-2 space-x-4 mt-5">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="bg-vmtblue" size="sm">
-                Create new
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add New Title</DialogTitle>
-              </DialogHeader>
-              <hr className="border border-gray-100 w-full h-[1px]" />
-
-              <GenericForm
-                defaultValues={defaultValues}
-                validationSchema={requiredForm}
-                onSubmit={onSubmit}
-              >
-                <FormInput name="title" label="Title" />
-              </GenericForm>
-            </DialogContent>
-          </Dialog>
+          <ReuseDialog
+            isEdit={false}
+            open={open}
+            onOpenChange={setIsOpen}
+            onClick={() => setIsOpen(true)}
+            dialogTitle={"Add New Title"}
+            defaultValues={defaultValues}
+            validationSchema={requiredForm}
+            onSubmit={onSubmit}
+            long={false}
+          >
+            <FormInput name="title" label="Title" />
+          </ReuseDialog>
 
           <DropdownMenu>
             <DropdownMenuTrigger>
@@ -106,7 +94,7 @@ const Title = () => {
       </div>
 
       {/* Table */}
-      <ReusableTable columns={titleColumns} data={data} />
+      <ReusableTable columns={titleColumns} data={data} title={"New Title"} />
     </div>
   );
 };

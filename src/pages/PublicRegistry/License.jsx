@@ -1,11 +1,4 @@
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +8,7 @@ import {
 import { ChevronDown } from "lucide-react";
 import { licenseColumns } from "@/components/typings";
 import { ReusableTable } from "@/components/ReusableTable";
-import { GenericForm } from "@/components/GenericForm";
+import ReuseDialog from "@/components/ReuseDialog";
 import { FormInput } from "@/components/FormInput";
 import { licenseFormSchema } from "@/utils/zodSchema";
 import { ReportLinks } from "@/components/ReportLinks";
@@ -25,13 +18,15 @@ import { baseUrl } from "@/App";
 import usePostData from "@/hooks/usePostData";
 
 export const licenseRequiredForm = licenseFormSchema.required();
-export const licenseDefaultValues = {
+const licenseDefaultValues = {
   license_code: "",
   name: "",
   description: "",
 };
 
 const License = () => {
+  const [open, setIsOpen] = useState(false);
+
   const licenseUrl = `${baseUrl}public-registry/business/financial-institutions/licence`;
 
   const { data, isPending } = useFetchData(licenseUrl, "licence");
@@ -49,6 +44,7 @@ const License = () => {
     };
 
     postMutation.mutateAsync(body);
+    setIsOpen(false);
   }
 
   if (isPending) {
@@ -63,29 +59,21 @@ const License = () => {
         <SecondHeader title={"LICENSE"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="bg-vmtblue" size="sm">
-                Create new
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add New Institution License</DialogTitle>
-              </DialogHeader>
-              <hr className="border border-gray-100 w-full h-[1px]" />
-              <GenericForm
-                defaultValues={licenseDefaultValues}
-                validationSchema={licenseRequiredForm}
-                long={false}
-                onSubmit={onSubmit}
-              >
-                <FormInput name="license_code" label="license code" />
-                <FormInput name="name" label="license name" />
-                <FormInput name="description" label="description" />
-              </GenericForm>
-            </DialogContent>
-          </Dialog>
+          <ReuseDialog
+            isEdit={false}
+            open={open}
+            onOpenChange={setIsOpen}
+            onClick={() => setIsOpen(true)}
+            dialogTitle={"Add New Institution License"}
+            defaultValues={licenseDefaultValues}
+            validationSchema={licenseRequiredForm}
+            long={false}
+            onSubmit={onSubmit}
+          >
+            <FormInput name="license_code" label="license code" />
+            <FormInput name="name" label="license name" />
+            <FormInput name="description" label="description" />
+          </ReuseDialog>
 
           <DropdownMenu>
             <DropdownMenuTrigger>

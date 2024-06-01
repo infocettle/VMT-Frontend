@@ -1,27 +1,13 @@
-import { FC } from "react";
-import { Button } from "@/components/ui/button";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Printer, Share2, Upload, View } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { ReusableTable } from "@/components/ReusableTable";
 import { maritalStatusColumns } from "@/components/typings";
-import { maritalStatuses } from "@/texts/TableValues";
-import { GenericForm } from "@/components/GenericForm";
+import ReuseDialog from "@/components/ReuseDialog";
 import { FormInput } from "@/components/FormInput";
 import { ReportLinks } from "@/components/ReportLinks";
 import SecondHeader from "@/components/SecondHeader";
@@ -29,15 +15,18 @@ import { maritalFormSchema } from "@/utils/zodSchema";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
 import usePostData from "@/hooks/usePostData";
+import { useState } from "react";
 
 export const maritalRequiredForm = maritalFormSchema.required();
 
-export const maritalDefaultValues = {
+const maritalDefaultValues = {
   title: "",
   code: "",
 };
 
 const MaritalStatus = () => {
+  const [open, setIsOpen] = useState(false);
+
   const maritalStatusUrl = `${baseUrl}public-registry/personal-details/marital-status`;
 
   const { data, isPending } = useFetchData(maritalStatusUrl, "maritalStatus");
@@ -54,6 +43,7 @@ const MaritalStatus = () => {
     };
 
     postMutation.mutateAsync(body);
+    setIsOpen(false);
   }
 
   if (isPending) {
@@ -68,27 +58,20 @@ const MaritalStatus = () => {
         <SecondHeader title={"Marital Status"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="bg-vmtblue" size="sm">
-                Create new
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add New Marital Status</DialogTitle>
-              </DialogHeader>
-              <hr className="border border-gray-100 w-full h-[1px]" />
-              <GenericForm
-                defaultValues={maritalDefaultValues}
-                validationSchema={maritalRequiredForm}
-                onSubmit={onSubmit}
-              >
-                <FormInput name="code" label="Code" />
-                <FormInput name="title" label="Title" />
-              </GenericForm>
-            </DialogContent>
-          </Dialog>
+          <ReuseDialog
+            isEdit={false}
+            open={open}
+            onOpenChange={setIsOpen}
+            onClick={() => setIsOpen(true)}
+            dialogTitle={"Add New Marital Status"}
+            defaultValues={maritalDefaultValues}
+            validationSchema={maritalRequiredForm}
+            onSubmit={onSubmit}
+            long={false}
+          >
+            <FormInput name="code" label="Code" />
+            <FormInput name="title" label="Title" />
+          </ReuseDialog>
 
           <DropdownMenu>
             <DropdownMenuTrigger>

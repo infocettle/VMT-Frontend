@@ -1,11 +1,3 @@
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +6,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
 import { wardColumns } from "@/components/typings";
+import ReuseDialog from "@/components/ReuseDialog";
 import { ReusableTable } from "@/components/ReusableTable";
 import { GenericForm } from "@/components/GenericForm";
 import { FormInput } from "@/components/FormInput";
@@ -23,10 +16,11 @@ import SecondHeader from "@/components/SecondHeader";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
 import usePostData from "@/hooks/usePostData";
+import { useState } from "react";
 
 export const wardRequiredForm = wardFormSchema.required();
 
-export const wardDefaultValues = {
+const wardDefaultValues = {
   zone_name: "",
   state: "",
   country: "",
@@ -36,6 +30,8 @@ export const wardDefaultValues = {
 };
 
 const Ward = () => {
+  const [open, setIsOpen] = useState(false);
+
   const wardUrl = `${baseUrl}public-registry/address/ward`;
 
   const { data, isPending } = useFetchData(wardUrl, "ward");
@@ -56,6 +52,7 @@ const Ward = () => {
     };
 
     postMutation.mutateAsync(body);
+    setIsOpen(false);
   }
 
   if (isPending) {
@@ -70,32 +67,24 @@ const Ward = () => {
         <SecondHeader title={"WARD"} />
 
         <div className="flex items-center w-auto px-2 space-x-4">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="bg-vmtblue" size="sm">
-                Create new
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add New Ward</DialogTitle>
-              </DialogHeader>
-              <hr className="border border-gray-100 w-full h-[1px]" />
-              <GenericForm
-                defaultValues={wardDefaultValues}
-                validationSchema={wardRequiredForm}
-                long={false}
-                onSubmit={onSubmit}
-              >
-                <FormInput name="ward_code" label="ward code" />
-                <FormInput name="ward_name" label="ward name" />
-                <FormInput name="lga" label="lga" />
-                <FormInput name="zone_name" label="zone name" />
-                <FormInput name="country" label="country" />
-                <FormInput name="state" label="state" />
-              </GenericForm>
-            </DialogContent>
-          </Dialog>
+          <ReuseDialog
+            isEdit={false}
+            open={open}
+            onOpenChange={setIsOpen}
+            onClick={() => setIsOpen(true)}
+            dialogTitle={"Add New Ward"}
+            defaultValues={wardDefaultValues}
+            validationSchema={wardRequiredForm}
+            long={false}
+            onSubmit={onSubmit}
+          >
+            <FormInput name="ward_code" label="ward code" />
+            <FormInput name="ward_name" label="ward name" />
+            <FormInput name="lga" label="LGA" />
+            <FormInput name="zone_name" label="zone name" />
+            <FormInput name="country" label="country" />
+            <FormInput name="state" label="state" />
+          </ReuseDialog>
 
           <DropdownMenu>
             <DropdownMenuTrigger>

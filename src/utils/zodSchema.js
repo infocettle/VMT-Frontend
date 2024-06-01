@@ -623,3 +623,116 @@ export const subSectorFormSchema = z.object({
     .max(3000, "description must be maximum 3000 character")
     .trim(),
 });
+
+export const pfcFormSchema = z.object({
+  pfc_code: z
+    .string({
+      invalid_type_error: "code must be a string",
+      required_error: "This field is required",
+    })
+    .min(3, "pfc code cannot be less than 3 characters")
+    .max(30, "pfc code must be maximum 30 character")
+    .trim(),
+  pfc_name: z
+    .string({
+      invalid_type_error: "name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "pfc name cannot be empty")
+    .max(70, "pfc name must be maximum 70 characters")
+    .trim(),
+  short_name: z
+    .string({
+      invalid_type_error: "name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "short name cannot be empty")
+    .max(30, "short name must be maximum 30 characters")
+    .trim(),
+  parent_bank: z
+    .string({
+      invalid_type_error: "name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "parent bankcannot be empty")
+    .max(50, "parent bank must be maximum 50 characters")
+    .trim(),
+});
+
+export const pfaFormSchema = z.object({
+  pfa_code: z
+    .string({
+      invalid_type_error: "code must be a string",
+      required_error: "This field is required",
+    })
+    .min(3, "pfa code cannot be less than 3 characters")
+    .max(30, "pfa code must be maximum 30 character")
+    .trim(),
+  pfa_name: z
+    .string({
+      invalid_type_error: "ailment name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "pfa name cannot be empty")
+    .max(70, "pfa name must be maximum 70 characters")
+    .trim(),
+  short_name: z
+    .string({
+      invalid_type_error: "name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "short name cannot be empty")
+    .max(30, "short name must be maximum 30 characters")
+    .trim(),
+});
+
+export const pfaAcctFormSchema = z.object({
+  pfa_code: z
+    .string({
+      invalid_type_error: "code must be a string",
+      required_error: "This field is required",
+    })
+    .min(3, "pfa code cannot be less than 3 characters")
+    .max(30, "pfa code must be maximum 30 character")
+    .trim(),
+  pfc_code: z
+    .string({
+      invalid_type_error: "code must be a string",
+      required_error: "This field is required",
+    })
+    .min(3, "pfc code cannot be less than 3 characters")
+    .max(30, "pfc code must be maximum 30 character")
+    .trim(),
+  fund_code: z
+    .string({
+      invalid_type_error: "fund code must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "fund code cannot be empty")
+    .max(70, "fund code must be maximum 70 characters")
+    .trim(),
+  fund_name: z
+    .string({
+      invalid_type_error: "fund name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "fund name cannot be empty")
+    .max(70, "fund name must be maximum 70 characters")
+    .trim(),
+  bank_code: z
+    .string({
+      invalid_type_error: "bank code must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "bank code cannot be empty")
+    .max(30, "bank code must be maximum 30 characters")
+    .trim(),
+  bank_acct: z
+    .string({
+      invalid_type_error: "bank account number must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "bank account number cannot be empty")
+    .max(10, "bank account number must be maximum 30 characters")
+    .trim(),
+});

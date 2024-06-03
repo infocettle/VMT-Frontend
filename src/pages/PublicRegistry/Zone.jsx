@@ -1,11 +1,7 @@
 import { Button } from "@/components/ui/button";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -16,183 +12,118 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Printer, Share2, Upload, View } from "lucide-react";
-import { CountrySelect } from "react-country-state-city";
-import "react-country-state-city/dist/react-country-state-city.css";
+import { ChevronDown } from "lucide-react";
+import { zoneColumns } from "@/components/typings";
+import { ReusableTable } from "@/components/ReusableTable";
+import { GenericForm } from "@/components/GenericForm";
+import { FormInput } from "@/components/FormInput";
+import { zoneFormSchema } from "@/utils/zodSchema";
+import { ReportLinks } from "@/components/ReportLinks";
+import SecondHeader from "@/components/SecondHeader";
+import useFetchData from "@/hooks/useFetchData";
+import { baseUrl } from "@/App";
+import usePostData from "@/hooks/usePostData";
+import { useState } from "react";
+import SecondDiv from "@/components/SecondDiv";
 
-const ReportLinks = [
-  { id: 1, name: "View Report", icon: <View size={14} /> },
-  { id: 2, name: "Export", icon: <Upload size={14} /> },
-  { id: 3, name: "Share", icon: <Share2 size={14} /> },
-  { id: 4, name: "Print", icon: <Printer size={14} /> },
-];
-const FormSchema = z.object({
-  code: z
-    .string({
-      invalid_type_error: "code must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "code cannot be empty")
-    .max(30, "code must be maximum 30 character")
-    .trim(),
-  zone_name: z
-    .string({
-      invalid_type_error: "name must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "zone name cannot be empty")
-    .max(30, "zone name must be maximum 30 characters")
-    .trim(),
-  country: z
-    .string({
-      invalid_type_error: "country must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "country cannot be empty"),
-});
-
-const requiredForm = FormSchema.required();
+export const zoneRequiredForm = zoneFormSchema.required();
+const zoneDefaultValues = {
+  zone_name: "",
+  code: "",
+  country: "",
+};
 
 const Zone = () => {
-  // 1. Define your form.
-  const form = useForm({
-    resolver: zodResolver(requiredForm),
-    defaultValues: {
-      zone_name: "",
-      code: "",
-      country: "",
-    },
+  const [open, setIsOpen] = useState(false);
+
+  const zoneUrl = `${baseUrl}public-registry/address/zone`;
+
+  const { data, isPending } = useFetchData(zoneUrl, "zone");
+  const postMutation = usePostData({
+    queryKey: ["zone"],
+    url: zoneUrl,
+    title: "zone",
   });
 
   async function onSubmit(values) {
-    console.log(values);
-    form.reset();
+    const body = {
+      code: values.code,
+      zone: values.zone_name,
+      country: values.country,
+    };
+
+    postMutation.mutateAsync(body);
+    setIsOpen(false);
+  }
+
+  if (isPending) {
+    return <span>Loading...</span>;
   }
 
   return (
-    <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
-      {/* Second header */}
+    <div className="w-full">
+      <SecondDiv module={"Address / Nationality"} />
+      <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
+        {/* Second header */}
 
-      <div className="flex justify-between w-full items-center">
-        <div className="flex w-auto items-center px-2 space-x-5">
-          <h2 className="uppercase font-light text-base">zone</h2>
-          <div className="flex w-auto p-2 border border-black bg-white items-center">
-            <h3 className="text-sm">
-              A<sup>-</sup>
-            </h3>
-          </div>
-          <div className="flex w-auto p-2 border border-black bg-white items-center">
-            <h3 className="text-sm">
-              A<sup>+</sup>
-            </h3>
-          </div>
-        </div>
+        <div className="flex justify-between w-full items-center">
+          <SecondHeader title={"Zone"} />
 
-        <div className="flex items-center w-auto px-2 space-x-4">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="bg-vmtblue" size="sm">
-                Create new
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add New Zone</DialogTitle>
-              </DialogHeader>
-              <hr className="border border-gray-100 w-full h-[1px]" />
-              <form
-                className="w-full flex flex-col space-y-3"
-                onSubmit={form.handleSubmit(onSubmit)}
-              >
-                <div className="w-full gap-2 flex flex-col ">
-                  <label className="text-sm font-light" htmlFor={"code"}>
-                    Code
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter zone code"
-                    {...form.register("code")}
-                    className="border border-gray-100 focus:outline-none rounded-md p-2"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.code?.message}
-                  </p>
+          <div className="flex items-center w-auto px-2 space-x-4">
+            <Dialog open={open} onOpenChange={setIsOpen}>
+              <DialogTrigger asChild>
+                <Button
+                  className="bg-vmtblue"
+                  size="sm"
+                  onClick={() => setIsOpen(true)}
+                >
+                  Create new
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Add New Zone</DialogTitle>
+                </DialogHeader>
+                <hr className="border border-gray-100 w-full h-[1px]" />
+                <GenericForm
+                  defaultValues={zoneDefaultValues}
+                  validationSchema={zoneRequiredForm}
+                  onSubmit={onSubmit}
+                  long={false}
+                >
+                  <FormInput name="code" label="Code" />
+                  <FormInput name="zone_name" label="Zone Name" />
+                  <FormInput name="country" label="Country" />
+                </GenericForm>
+              </DialogContent>
+            </Dialog>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <div className="border w-auto h-9 border-black bg-white rounded-md flex items-center px-3 space-x-1">
+                  <h2 className="text-sm">Report</h2>
+                  <ChevronDown color="#000" size={13} />
                 </div>
-
-                <div className="w-full gap-2 flex flex-col ">
-                  <label className="text-sm font-light" htmlFor={"zone_name"}>
-                    Zone Name
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter zone name"
-                    {...form.register("zone_name")}
-                    className="border border-gray-100 focus:outline-none rounded-md p-2"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.zone_name?.message}
-                  </p>
-                </div>
-
-                <div className="w-full gap-2 flex flex-col ">
-                  <label className="text-sm font-light" htmlFor={"country"}>
-                    Country
-                  </label>
-                  <CountrySelect
-                    onChange={(e) => {
-                      form.setValue("country", e.name);
-                    }}
-                    placeHolder="Select Country"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.country?.message}
-                  </p>
-                </div>
-                <DialogFooter>
-                  <div className="w-full flex justify-between items-center">
-                    <div
-                      className="w-auto border border-gray-300 rounded-md h-10 flex items-center p-2 cursor-pointer"
-                      onClick={() => form.reset()}
-                    >
-                      Cancel
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {ReportLinks.map((link) => (
+                  <DropdownMenuItem key={link.id}>
+                    <div className="w-auto px-2 flex items-center space-x-3">
+                      {link.icon}
+                      <h3 className="text-black font-normal text-xs leading-relaxed">
+                        {link.name}
+                      </h3>
                     </div>
-                    <Button
-                      className="bg-vmtblue w-auto"
-                      variant="default"
-                      type="submit"
-                    >
-                      Submit
-                    </Button>
-                  </div>
-                </DialogFooter>
-              </form>
-            </DialogContent>
-          </Dialog>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <div className="border w-auto h-9 border-black bg-white rounded-md flex items-center px-3 space-x-1">
-                <h2 className="text-sm">Report</h2>
-                <ChevronDown color="#000" size={13} />
-              </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {ReportLinks.map((link) => (
-                <DropdownMenuItem key={link.id}>
-                  <div className="w-auto px-2 flex items-center space-x-3">
-                    {link.icon}
-                    <h3 className="text-black font-normal text-xs leading-relaxed">
-                      {link.name}
-                    </h3>
-                  </div>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
-      </div>
 
-      {/* Table */}
+        {/* Table */}
+        <ReusableTable columns={zoneColumns} data={data} />
+      </div>
     </div>
   );
 };

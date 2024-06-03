@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormContext, Controller } from "react-hook-form";
 
-export const FormInput = ({ name, label, type = "text" }) => {
+export const FormTextArea = ({ name, label, type = "text" }) => {
   const {
     control,
     formState: { errors },
@@ -17,7 +17,7 @@ export const FormInput = ({ name, label, type = "text" }) => {
         control={control}
         render={({ field }) => (
           <>
-            <input
+            <textarea
               className="border border-gray-100 focus:outline-none rounded-md p-2 mb-2"
               {...field}
               type={type}

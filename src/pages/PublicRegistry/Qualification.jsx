@@ -23,15 +23,19 @@ import { baseUrl } from "@/App";
 import {usePostData} from "@/hooks/usePostData";
 import { qualificationColumns } from "@/components/typings";
 import { ReusableTable } from "@/components/ReusableTable";
+import { useState } from "react";
+import SecondDiv from "@/components/SecondDiv";
 
 export const qualificationRequiredForm = qualificationFormSchema.required();
 
-export const qualificationDefaultValues = {
+const qualificationDefaultValues = {
   name: "",
   code: "",
 };
 
 const Qualification = () => {
+  const [open, setIsOpen] = useState(false);
+
   const qualificationUrl = `${baseUrl}public-registry/personal-details/qualification`;
 
   const { data, isPending } = useFetchData(qualificationUrl, "qualification");
@@ -48,6 +52,7 @@ const Qualification = () => {
     };
 
     postMutation.mutateAsync(body);
+    setIsOpen(false);
   }
 
   if (isPending) {
@@ -55,60 +60,67 @@ const Qualification = () => {
   }
 
   return (
-    <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
-      {/* Second header */}
+    <div className="w-full">
+      <SecondDiv module={"Personal Details"} />
+      <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
+        {/* Second header */}
 
-      <div className="flex justify-between w-full items-center">
-        <SecondHeader title={"Qualification"} />
+        <div className="flex justify-between w-full items-center">
+          <SecondHeader title={"Qualification"} />
 
-        <div className="flex items-center w-auto px-2 space-x-4">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="bg-vmtblue" size="sm">
-                Create new
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add New Qualification</DialogTitle>
-              </DialogHeader>
-              <hr className="border border-gray-100 w-full h-[1px]" />
-              <GenericForm
-                defaultValues={qualificationDefaultValues}
-                validationSchema={qualificationRequiredForm}
-                onSubmit={onSubmit}
-              >
-                <FormInput name="name" label="Name" />
-                <FormInput name="code" label="Code" />
-              </GenericForm>
-            </DialogContent>
-          </Dialog>
+          <div className="flex items-center w-auto px-2 space-x-4">
+            <Dialog open={open} onOpenChange={setIsOpen}>
+              <DialogTrigger asChild>
+                <Button
+                  className="bg-vmtblue"
+                  size="sm"
+                  onClick={() => setIsOpen(true)}
+                >
+                  Create new
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Add New Qualification</DialogTitle>
+                </DialogHeader>
+                <hr className="border border-gray-100 w-full h-[1px]" />
+                <GenericForm
+                  defaultValues={qualificationDefaultValues}
+                  validationSchema={qualificationRequiredForm}
+                  onSubmit={onSubmit}
+                >
+                  <FormInput name="name" label="Name" />
+                  <FormInput name="code" label="Code" />
+                </GenericForm>
+              </DialogContent>
+            </Dialog>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <div className="border w-auto h-9 border-black bg-white rounded-md flex items-center px-3 space-x-1">
-                <h2 className="text-sm">Report</h2>
-                <ChevronDown color="#000" size={13} />
-              </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {ReportLinks.map((link) => (
-                <DropdownMenuItem key={link.id}>
-                  <div className="w-auto px-2 flex items-center space-x-3">
-                    {link.icon}
-                    <h3 className="text-black font-normal text-xs leading-relaxed">
-                      {link.name}
-                    </h3>
-                  </div>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <div className="border w-auto h-9 border-black bg-white rounded-md flex items-center px-3 space-x-1">
+                  <h2 className="text-sm">Report</h2>
+                  <ChevronDown color="#000" size={13} />
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {ReportLinks.map((link) => (
+                  <DropdownMenuItem key={link.id}>
+                    <div className="w-auto px-2 flex items-center space-x-3">
+                      {link.icon}
+                      <h3 className="text-black font-normal text-xs leading-relaxed">
+                        {link.name}
+                      </h3>
+                    </div>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
-      </div>
 
-      {/* Table */}
-      <ReusableTable columns={qualificationColumns} data={data} />
+        {/* Table */}
+        <ReusableTable columns={qualificationColumns} data={data} />
+      </div>
     </div>
   );
 };

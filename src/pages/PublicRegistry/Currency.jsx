@@ -27,10 +27,12 @@ import { ReportLinks } from "@/components/ReportLinks";
 import SecondHeader from "@/components/SecondHeader";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
-import {usePostData} from "@/hooks/usePostData";
+import usePostData from "@/hooks/usePostData";
+import { useState } from "react";
+import SecondDiv from "@/components/SecondDiv";
 
 export const currencyRequiredForm = currencyFormSchema.required();
-export const currencyDefaultValues = {
+const currencyDefaultValues = {
   alphabet_code: "",
   number_code: 0,
   currency_name: "",
@@ -38,6 +40,8 @@ export const currencyDefaultValues = {
 };
 
 const Currency = () => {
+  const [open, setIsOpen] = useState(false);
+
   const currencyUrl = `${baseUrl}public-registry/currency`;
 
   const { data, isPending } = useFetchData(currencyUrl, "currency");
@@ -56,6 +60,7 @@ const Currency = () => {
     };
 
     postMutation.mutateAsync(body);
+    setIsOpen(false);
   }
 
   if (isPending) {
@@ -63,62 +68,69 @@ const Currency = () => {
   }
 
   return (
-    <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
-      {/* Second header */}
+    <div className="w-full">
+      <SecondDiv module={"Currency"} />
+      <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
+        {/* Second header */}
 
-      <div className="flex justify-between w-full items-center">
-        <SecondHeader title={"Currency"} />
+        <div className="flex justify-between w-full items-center">
+          <SecondHeader title={"Currency"} />
 
-        <div className="flex items-center w-auto px-2 space-x-4">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="bg-vmtblue" size="sm">
-                Create new
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add New Currency</DialogTitle>
-              </DialogHeader>
-              <hr className="border border-gray-100 w-full h-[1px]" />
-              <GenericForm
-                defaultValues={currencyDefaultValues}
-                validationSchema={currencyRequiredForm}
-                onSubmit={onSubmit}
-              >
-                <FormInput name="alphabet_code" label="Alphabet Code" />
-                <FormInput name="number_code" label="Number Code" />
-                <FormInput name="currency_name" label="Currency Name" />
-                <FormInput name="decimal" label="Decimal" />
-              </GenericForm>
-            </DialogContent>
-          </Dialog>
+          <div className="flex items-center w-auto px-2 space-x-4">
+            <Dialog open={open} onOpenChange={setIsOpen}>
+              <DialogTrigger asChild>
+                <Button
+                  className="bg-vmtblue"
+                  size="sm"
+                  onClick={() => setIsOpen(true)}
+                >
+                  Create new
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Add New Currency</DialogTitle>
+                </DialogHeader>
+                <hr className="border border-gray-100 w-full h-[1px]" />
+                <GenericForm
+                  defaultValues={currencyDefaultValues}
+                  validationSchema={currencyRequiredForm}
+                  onSubmit={onSubmit}
+                >
+                  <FormInput name="alphabet_code" label="Alphabet Code" />
+                  <FormInput name="number_code" label="Number Code" />
+                  <FormInput name="currency_name" label="Currency Name" />
+                  <FormInput name="decimal" label="Decimal" />
+                </GenericForm>
+              </DialogContent>
+            </Dialog>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <div className="border w-auto h-9 border-black bg-white rounded-md flex items-center px-3 space-x-1">
-                <h2 className="text-sm">Report</h2>
-                <ChevronDown color="#000" size={13} />
-              </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {ReportLinks.map((link) => (
-                <DropdownMenuItem key={link.id}>
-                  <div className="w-auto px-2 flex items-center space-x-3">
-                    {link.icon}
-                    <h3 className="text-black font-normal text-xs leading-relaxed">
-                      {link.name}
-                    </h3>
-                  </div>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <div className="border w-auto h-9 border-black bg-white rounded-md flex items-center px-3 space-x-1">
+                  <h2 className="text-sm">Report</h2>
+                  <ChevronDown color="#000" size={13} />
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {ReportLinks.map((link) => (
+                  <DropdownMenuItem key={link.id}>
+                    <div className="w-auto px-2 flex items-center space-x-3">
+                      {link.icon}
+                      <h3 className="text-black font-normal text-xs leading-relaxed">
+                        {link.name}
+                      </h3>
+                    </div>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
-      </div>
 
-      {/* Table */}
-      <ReusableTable columns={currencyColumns} data={data} />
+        {/* Table */}
+        <ReusableTable columns={currencyColumns} data={data} />
+      </div>
     </div>
   );
 };

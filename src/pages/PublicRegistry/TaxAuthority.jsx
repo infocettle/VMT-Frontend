@@ -1,330 +1,131 @@
-import { FC } from "react";
-import { Button } from "@/components/ui/button";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Printer, Share2, Upload, View } from "lucide-react";
+import { ChevronDown } from "lucide-react";
+import { taxColumns } from "@/components/typings";
+import { ReusableTable } from "@/components/ReusableTable";
+import ReuseDialog from "@/components/ReuseDialog";
+import { FormInput } from "@/components/FormInput";
+import { taxFormSchema } from "@/utils/zodSchema";
+import { ReportLinks } from "@/components/ReportLinks";
+import SecondHeader from "@/components/SecondHeader";
+import useFetchData from "@/hooks/useFetchData";
+import { baseUrl } from "@/App";
+import usePostData from "@/hooks/usePostData";
+import SecondDiv from "@/components/SecondDiv";
 
-const ReportLinks = [
-  { id: 1, name: "View Report", icon: <View size={14} /> },
-  { id: 2, name: "Export", icon: <Upload size={14} /> },
-  { id: 3, name: "Share", icon: <Share2 size={14} /> },
-  { id: 4, name: "Print", icon: <Printer size={14} /> },
-];
-const FormSchema = z.object({
-  state_code: z
-    .string({
-      invalid_type_error: "code must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "state code cannot be empty")
-    .max(30, "state code must be maximum 30 character")
-    .trim(),
-  irs_name: z
-    .string({
-      invalid_type_error: "state name must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "irs name cannot be empty")
-    .max(30, "irs name must be maximum 30 character")
-    .trim(),
-  irs_short_name: z
-    .string({
-      invalid_type_error: "capital city must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "irs short name cannot be empty")
-    .max(30, "irs short name must be maximum 30 characters")
-    .trim(),
-  bank: z
-    .string({
-      invalid_type_error: "bank must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "bank cannot be empty"),
-  bank_account_name: z
-    .string({
-      invalid_type_error: "bank account name must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "bank account name cannot be empty"),
-  bank_account_number: z
-    .string({
-      invalid_type_error: "bank account number must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "bank account number cannot be empty")
-    .max(10, "bank account number must not exceed 10 characters"),
-  payment_code: z
-    .string({
-      invalid_type_error: "payment code must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "payment code cannot be empty")
-    .max(30, "payment code must be maximum 30 characters")
-    .trim(),
-  payment_type: z
-    .string({
-      invalid_type_error: "payment type must be a string",
-      required_error: "This field is required",
-    })
-    .min(1, "payment type cannot be empty")
-    .max(30, "payment type must be maximum 30 characters")
-    .trim(),
-});
+export const taxRequiredForm = taxFormSchema.required();
 
-const requiredForm = FormSchema.required();
+const taxDefaultValues = {
+  state_code: "",
+  irs_name: "",
+  irs_short_name: "",
+  bank: "",
+  bank_account_name: "",
+  bank_account_number: "",
+  bank_alias: "",
+  payment_code: "",
+  payment_type: "",
+};
 
 const TaxAuthority = () => {
-  // 1. Define your form.
-  const form = useForm({
-    resolver: zodResolver(requiredForm),
-    defaultValues: {
-      state_code: "",
-      irs_name: "",
-      irs_short_name: "",
-      bank: "",
-      bank_account_name: "",
-      bank_account_number: "",
-      payment_code: "",
-      payment_type: "",
-    },
+  const [open, setIsOpen] = useState(false);
+
+  const taxUrl = `${baseUrl}public-registry/tax-authority`;
+
+  const { data, isPending } = useFetchData(taxUrl, "tax");
+  const postMutation = usePostData({
+    queryKey: ["tax"],
+    url: taxUrl,
+    title: "tax",
   });
 
   async function onSubmit(values) {
-    console.log(values);
-    form.reset();
+    const body = {
+      state: values.state_code,
+      irsShort: values.irs_short_name,
+      irsLong: values.irs_name,
+      bankCode: values.bank,
+      bankAccountName: values.bank_account_name,
+      bankAccountNumber: values.bank_account_number,
+      bankAlias: values.bank_alias,
+      paymentCode: values.payment_code,
+      paymentType: values.payment_type,
+    };
+
+    postMutation.mutateAsync(body);
+    setIsOpen(false);
+  }
+
+  if (isPending) {
+    return <span>Loading...</span>;
   }
 
   return (
-    <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
-      {/* Second header */}
+    <div className="w-full">
+      <SecondDiv module={"Tax Authority"} />
+      <div className="bg-gray-100 py-3 px-10 w-auto flex-col items-center">
+        {/* Second header */}
 
-      <div className="flex justify-between w-full items-center">
-        <div className="flex w-auto items-center px-2 space-x-5">
-          <h2 className="uppercase font-light text-base">tax authority</h2>
-          <div className="flex w-auto p-2 border border-black bg-white items-center">
-            <h3 className="text-sm">
-              A<sup>-</sup>
-            </h3>
-          </div>
-          <div className="flex w-auto p-2 border border-black bg-white items-center">
-            <h3 className="text-sm">
-              A<sup>+</sup>
-            </h3>
-          </div>
-        </div>
+        <div className="flex justify-between w-full items-center">
+          <SecondHeader title={"TAX AUTHORITHY"} />
 
-        <div className="flex items-center w-auto px-2 space-x-4">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="bg-vmtblue" size="sm">
-                Create new
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add New Tax Authorities</DialogTitle>
-              </DialogHeader>
-              <hr className="border border-gray-100 w-full h-[1px]" />
-              <form
-                className="w-full flex flex-col space-y-1"
-                onSubmit={form.handleSubmit(onSubmit)}
-              >
-                <div className="w-full gap-1 flex flex-col ">
-                  <label className="text-sm font-light" htmlFor={"state_code"}>
-                    State code
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter state code"
-                    {...form.register("state_code")}
-                    className="border border-gray-100 focus:outline-none rounded-md p-2"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.state_code?.message}
-                  </p>
+          <div className="flex items-center w-auto px-2 space-x-4">
+            <ReuseDialog
+              isEdit={false}
+              open={open}
+              onOpenChange={setIsOpen}
+              onClick={() => setIsOpen(true)}
+              dialogTitle={"Add New Tax Authorities"}
+              defaultValues={taxDefaultValues}
+              validationSchema={taxRequiredForm}
+              long={true}
+              onSubmit={onSubmit}
+            >
+              <FormInput name="state_code" label="state code" />
+              <FormInput name="irs_name" label="IRS name" />
+              <FormInput name="irs_short_name" label="IRS short name" />
+              <FormInput name="bank" label="Bank Code" />
+              <FormInput name="bank_account_name" label="bank account name" />
+              <FormInput
+                name="bank_account_number"
+                label="bank account number"
+              />
+              <FormInput name="bank_alias" label="bank alias" />
+              <FormInput name="payment_code" label="payment code" />
+              <FormInput name="payment_type" label="payment type" />
+            </ReuseDialog>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <div className="border w-auto h-9 border-black bg-white rounded-md flex items-center px-3 space-x-1">
+                  <h2 className="text-sm">Report</h2>
+                  <ChevronDown color="#000" size={13} />
                 </div>
-
-                <div className="w-full gap-1 flex flex-col ">
-                  <label className="text-sm font-light" htmlFor={"irs_name"}>
-                    IRS name
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter IRS name"
-                    {...form.register("irs_name")}
-                    className="border border-gray-100 focus:outline-none rounded-md p-2"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.irs_name?.message}
-                  </p>
-                </div>
-
-                <div className="w-full gap-1 flex flex-col ">
-                  <label
-                    className="text-sm font-light"
-                    htmlFor={"irs_short_name"}
-                  >
-                    IRS short-name
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter IRS short-name"
-                    {...form.register("irs_short_name")}
-                    className="border border-gray-100 focus:outline-none rounded-md p-2"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.irs_short_name?.message}
-                  </p>
-                </div>
-
-                <div className="w-full gap-1 flex flex-col ">
-                  <label className="text-sm font-light" htmlFor={"bank"}>
-                    Bank
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter bank name"
-                    {...form.register("bank")}
-                    className="border border-gray-100 focus:outline-none rounded-md p-2"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.bank?.message}
-                  </p>
-                </div>
-
-                <div className="w-full gap-1 flex flex-col ">
-                  <label
-                    className="text-sm font-light"
-                    htmlFor={"bank_account_name"}
-                  >
-                    Bank account name
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter bank account name"
-                    {...form.register("bank_account_name")}
-                    className="border border-gray-100 focus:outline-none rounded-md p-2"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.bank_account_name?.message}
-                  </p>
-                </div>
-
-                <div className="w-full gap-1 flex flex-col ">
-                  <label
-                    className="text-sm font-light"
-                    htmlFor={"bank_account_number"}
-                  >
-                    Bank account number
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter bank account number"
-                    {...form.register("bank_account_number")}
-                    className="border border-gray-100 focus:outline-none rounded-md p-2"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.bank_account_number?.message}
-                  </p>
-                </div>
-
-                <div className="w-full gap-1 flex flex-col ">
-                  <label
-                    className="text-sm font-light"
-                    htmlFor={"payment_code"}
-                  >
-                    Payment code
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter payment code"
-                    {...form.register("payment_code")}
-                    className="border border-gray-100 focus:outline-none rounded-md p-2"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.payment_code?.message}
-                  </p>
-                </div>
-
-                <div className="w-full gap-1 flex flex-col ">
-                  <label
-                    className="text-sm font-light"
-                    htmlFor={"payment_type"}
-                  >
-                    Payment type
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter payment type"
-                    {...form.register("payment_type")}
-                    className="border border-gray-100 focus:outline-none rounded-md p-2"
-                  />
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.payment_type?.message}
-                  </p>
-                </div>
-
-                <DialogFooter>
-                  <div className="w-full flex justify-between items-center">
-                    <div
-                      className="w-auto border border-gray-300 rounded-md h-10 flex items-center p-2 cursor-pointer"
-                      onClick={() => form.reset()}
-                    >
-                      Cancel
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {ReportLinks.map((link) => (
+                  <DropdownMenuItem key={link.id}>
+                    <div className="w-auto px-2 flex items-center space-x-3">
+                      {link.icon}
+                      <h3 className="text-black font-normal text-xs leading-relaxed">
+                        {link.name}
+                      </h3>
                     </div>
-                    <Button
-                      className="bg-vmtblue w-auto"
-                      variant="default"
-                      type="submit"
-                    >
-                      Submit
-                    </Button>
-                  </div>
-                </DialogFooter>
-              </form>
-            </DialogContent>
-          </Dialog>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <div className="border w-auto h-9 border-black bg-white rounded-md flex items-center px-3 space-x-1">
-                <h2 className="text-sm">Report</h2>
-                <ChevronDown color="#000" size={13} />
-              </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {ReportLinks.map((link) => (
-                <DropdownMenuItem key={link.id}>
-                  <div className="w-auto px-2 flex items-center space-x-3">
-                    {link.icon}
-                    <h3 className="text-black font-normal text-xs leading-relaxed">
-                      {link.name}
-                    </h3>
-                  </div>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
-      </div>
 
-      {/* Table */}
+        {/* Table */}
+        <ReusableTable columns={taxColumns} data={data} />
+      </div>
     </div>
   );
 };

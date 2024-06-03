@@ -1,12 +1,15 @@
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
 
 export const GenericForm = ({
   defaultValues,
   onSubmit,
   validationSchema,
   children,
+  long,
 }) => {
   const methods = useForm({
     defaultValues,
@@ -19,21 +22,27 @@ export const GenericForm = ({
   };
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(handleSubmit)}>
-        {children}
-        <div className="w-full flex justify-between items-center my-4">
-          <div
-            className="w-auto border border-gray-300 rounded-md h-10 flex items-center p-2 cursor-pointer"
-            onClick={() => methods.reset()}
-          >
-            Cancel
+    <ScrollArea className={cn(`${long ? "h-[90vh]" : "h-auto"}`)}>
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(handleSubmit)}>
+          {children}
+          <div className="w-full flex justify-between items-center my-4">
+            <div
+              className="w-auto border border-gray-300 rounded-md h-10 flex items-center p-2 cursor-pointer"
+              onClick={() => methods.reset()}
+            >
+              Cancel
+            </div>
+            <Button
+              className="bg-vmtblue w-auto"
+              variant="default"
+              type="submit"
+            >
+              Submit
+            </Button>
           </div>
-          <Button className="bg-vmtblue w-auto" variant="default" type="submit">
-            Submit
-          </Button>
-        </div>
-      </form>
-    </FormProvider>
+        </form>
+      </FormProvider>
+    </ScrollArea>
   );
 };

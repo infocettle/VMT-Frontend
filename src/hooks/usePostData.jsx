@@ -25,8 +25,9 @@ const postData = async ({ url, body, title }) => {
     throw new Error(errorBody.detail);
   }
 };
+
 export const sendData = async ({ url, body, title }) => {
-  console.log(body,url,title);
+  console.log(body, url, title);
   const headers = {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -34,7 +35,7 @@ export const sendData = async ({ url, body, title }) => {
 
   try {
     const { data } = await axios.post(url, body, { headers });
-    console.log(data)
+    console.log(data);
     toast.success(`${title} successfully`, {
       autoClose: 2000,
       theme: "light",
@@ -61,5 +62,3 @@ export const usePostData = ({ queryKey, url, title }) => {
     },
   });
 };
-
-

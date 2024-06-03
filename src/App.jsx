@@ -40,6 +40,7 @@ import System from "./pages/System/System";
 import { Provider } from "react-redux";
 import store, { persistor } from "./pages/Redux/store";
 import { PersistGate } from "redux-persist/integration/react";
+import { HeaderFooter } from "./pages/ProfileUpdate";
 
 const queryClient = new QueryClient();
 
@@ -71,6 +72,7 @@ const router = createBrowserRouter([
     path: "/main-dashboard/*",
     element: <MainDashboard />,
     children: [
+      // All children routes here
       {
         path: "public_reg/*",
         element: <PublicRoute />,
@@ -201,19 +203,31 @@ const router = createBrowserRouter([
           },
         ],
       },
+      // Add your children routes here
     ],
+  },
+
+  {
+    path: "/profile-update",
+    element: <HeaderFooter />,
+    // children: [
+    //   {
+    //     path: "company-subscriber/*",
+    //     element: <PersonalDetails />,
+    //   }
+    // ]
   },
 ]);
 
 function App() {
   return (
     <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-    <QueryClientProvider client={queryClient}>
-      <ToastContainer />
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-    </PersistGate>
+      <PersistGate loading={null} persistor={persistor}>
+        <QueryClientProvider client={queryClient}>
+          <ToastContainer />
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </PersistGate>
     </Provider>
   );
 }

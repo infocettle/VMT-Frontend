@@ -17,11 +17,11 @@ export const DashboardLinks = [
     name: "Access Control",
     component: <PublicReg />,
   },
-  // {
-  //   id: 5,
-  //   name: "Public Registry",
-  //   component: <PublicReg />,
-  // },
+  {
+    id: 5,
+    name: "Public Registry",
+    component: <PublicReg />,
+  },
   // {
   //   id: 6,
   //   name: "Services",

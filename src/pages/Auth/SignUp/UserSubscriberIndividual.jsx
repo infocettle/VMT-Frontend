@@ -3,13 +3,27 @@ import ReactFlagsSelect from "react-flags-select";
 import Select from "react-select";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import MobileLogo from "../../../assets/img/MobileLogo.svg";
+import { baseUrl } from "@/App";
+import { sendData } from "@/hooks/usePostData";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
 function UserSubscriberIndividual({ setFormType }) {
-  const [selectedCountry, setSelectedCountry] = useState("NG" );
-  const [countryCode, setCountryCode] = useState("+234");
-  const [selectedTitle, setSelectedTitle] = useState("");
-  const [selectedCustomFeature, setSelectedCustomFeature] = useState("");
-  const [selectedFind, setSelectedFind] = useState("");
+    const url = `${baseUrl}v1/subscriber/individual/auth/register`;
 
+    const [selectedCountry, setSelectedCountry] = useState("NG");
+    const [countryCode, setCountryCode] = useState("+234");
+    const [selectedTitle, setSelectedTitle] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [surname, setSurname] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [email, setEmail] = useState("");
+    const [nin, setNin] = useState("");
+    const [referalCode, setReferalCode] = useState("");
+    const [selectedFind, setSelectedFind] = useState("");
+
+
+    const dispatch = useDispatch();
   const handleCountryChange = (selectedCountry) => {
     setSelectedCountry(selectedCountry);
     // Here you can implement a mapping of country to country code
@@ -30,9 +44,57 @@ function UserSubscriberIndividual({ setFormType }) {
     const code = countryCodes[selectedCountry] || "";
     setCountryCode(code);
   };
+  const validateForm = () => {
+    if (!selectedTitle) {
+        toast.error("Title is required");
+        return false;
+    }
+    if (!firstName.trim()) {
+        toast.error("First name is required");
+        return false;
+    }
+    if (!surname.trim()) {
+        toast.error("Surname is required");
+        return false;
+    }
+    if (!phoneNumber.trim()) {
+        toast.error("Phone Number is required");
+        return false;
+    }
+    if (!email.trim()) {
+        toast.error("Email Address is required");
+        return false;
+    }
+    return true;
+};
 
-  const handleContinue = () => {
-    setFormType("individual-create-password");
+  const handleContinue = async () => {
+    if (!validateForm()) {
+      return;
+  }
+
+    const requestBody = {
+      title: selectedTitle.value,
+      heardAboutUs: selectedFind.value,
+      surname: surname,
+      firstName: firstName,
+      phoneNumber: `${countryCode}${phoneNumber}`,
+      email: email,
+      nin: nin,
+      referalCode: referalCode,
+    };
+
+    try {
+      const returnedData = await sendData({
+        url: url,
+        body: requestBody,
+        title: "Subscriber individual created",
+      });
+   dispatch(setUserSubscriber(returnedData.newUser)) 
+      setFormType("individual-create-password");
+    } catch (error) {
+      console.error("There was an error submitting the form!", error);
+    }
   };
 
   const handleGoback = () => {
@@ -41,21 +103,24 @@ function UserSubscriberIndividual({ setFormType }) {
   const customStyles = {
     control: (provided) => ({
       ...provided,
-      minHeight: '48px',
-      height: '48px',
+      minHeight: "48px",
+      height: "48px",
     }),
   };
 
   return (
     <div className="auth-form-container">
-         <div className="auth-logo-two">
-     <img src={MobileLogo} alt="image"/>
-</div> 
+      <div className="auth-logo-two">
+        <img src={MobileLogo} alt="image" />
+      </div>
       <div className="auth-header-text">Welcome to ValueMine</div>
       <div className="auth-subheader-text mt-3">
         Manage your financial and non-financial workflows seamlessly on the go
       </div>
-      <div className="auth-subheader-text mt-10">Fields labelled with "<span className="auth-mandatory">*</span>" are mandatory</div>
+      <div className="auth-subheader-text mt-10">
+        Fields labelled with "<span className="auth-mandatory">*</span>" are
+        mandatory
+      </div>
 
       <div className="auth-form-flex">
         <div className="flex flex-col gap-2 w-full">
@@ -78,7 +143,14 @@ function UserSubscriberIndividual({ setFormType }) {
           <div className="auth-label">
             First Name <span className="auth-mandatory">*</span>
           </div>
-          <input type="text" className="auth-input" placeholder="First Name" />
+          <input
+            type="text"
+            className="auth-input"
+            placeholder="First Name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            required
+          />
         </div>
       </div>
       <div className="auth-form-flex">
@@ -86,7 +158,13 @@ function UserSubscriberIndividual({ setFormType }) {
           <div className="auth-label">
             Surname <span className="auth-mandatory">*</span>
           </div>
-          <input type="text" className="auth-input" placeholder="Surname" />
+          <input
+            type="text"
+            className="auth-input"
+            placeholder="Surname"
+            value={surname}
+            onChange={(e) => setSurname(e.target.value)}
+          />
         </div>
         <div className="flex flex-col gap-2 w-full">
           <div className="auth-label">
@@ -114,8 +192,8 @@ function UserSubscriberIndividual({ setFormType }) {
             />
             <input
               type="text"
-              value={countryCode}
-              readOnly
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
               className="auth-input"
               style={{ width: "70%" }}
             />
@@ -124,41 +202,45 @@ function UserSubscriberIndividual({ setFormType }) {
       </div>
       <div className="auth-form-flex">
         <div className="flex flex-col gap-2 w-full">
-          <div className="auth-label">Email Address <span className="auth-mandatory">*</span></div>
-          <input type="text" className="auth-input" placeholder="Enter Email Address" />
+          <div className="auth-label">
+            Email Address <span className="auth-mandatory">*</span>
+          </div>
+          <input
+            type="text"
+            className="auth-input"
+            placeholder="Enter Email Address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </div>
         <div className="flex flex-col gap-2 w-full">
           <div className="auth-label">NIN</div>
-          <input type="text" className="auth-input" placeholder="Enter national identity number" />
-        </div>
-      </div>
-      <div className="auth-form-flex">
-        <div className="flex flex-col gap-2 w-full">
-          <div className="auth-label">Select applicable custom feature</div>
-          <Select
-            value={selectedCustomFeature}
-            placeholder="Select a custom feature"
-            onChange={(selectedOption) => setSelectedCustomFeature(selectedOption)}
-            options={[
-              { value: "A", label: "A" },
-              { value: "B", label: "B" },
-              { value: "C", label: "C" },
-            ]}
-            styles={customStyles}
+          <input
+            type="text"
+            className="auth-input"
+            placeholder="Enter national identity number"
+            value={nin}
+            onChange={(e) => setNin(e.target.value)}
           />
         </div>
       </div>
       <div className="auth-form-flex">
         <div className="flex flex-col gap-2 w-full">
           <div className="auth-label">Referral Code (optional)</div>
-          <input type="text" className="auth-input" placeholder="Enter referral code" />
+          <input
+            type="text"
+            className="auth-input"
+            placeholder="Enter referral code"
+            value={referalCode}
+            onChange={(e) => setReferalCode(e.target.value)}
+          />
         </div>
       </div>
       <div className="auth-form-flex">
         <div className="flex flex-col gap-2 w-full">
           <div className="auth-label">How did you hear about us?</div>
           <Select
-         styles={customStyles}
+            styles={customStyles}
             value={selectedFind}
             placeholder="How did you hear about us"
             onChange={(selectedOption) => setSelectedFind(selectedOption)}
@@ -174,8 +256,11 @@ function UserSubscriberIndividual({ setFormType }) {
         <div className="auth-button-text">Save & Continue</div>
       </div>
 
-      <div className="flex items-center w-full justify-center mt-5 cursor-pointer " onClick={handleGoback}>
-      <IoIosArrowRoundBack style={{fontSize:"1.3rem",color:"#0B6ED0"}} />
+      <div
+        className="flex items-center w-full justify-center mt-5 cursor-pointer"
+        onClick={handleGoback}
+      >
+        <IoIosArrowRoundBack style={{ fontSize: "1.3rem", color: "#0B6ED0" }} />
         <div className="auth-button-go-back">Go back</div>
       </div>
     </div>

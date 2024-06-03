@@ -35,6 +35,10 @@ import {
 import Subscription from "./pages/Auth/Subscription/Subscription";
 import AdminAuth from "./pages/Auth/Admin/Admin";
 import AdminAuthUser from "./pages/Auth/Admin/AdminUser";
+import System from "./pages/System/System";
+import { Provider } from "react-redux";
+import store, { persistor } from "./pages/Redux/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +61,10 @@ const router = createBrowserRouter([
   {
     path: "/subscription",
     element: <Subscription />,
+  },
+  {
+    path: "/",
+    element: <System />,
   },
   {
     path: "/public_reg",
@@ -192,10 +200,14 @@ const router = createBrowserRouter([
 
 function App() {
   return (
+    <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
     <QueryClientProvider client={queryClient}>
       <ToastContainer />
       <RouterProvider router={router} />
     </QueryClientProvider>
+    </PersistGate>
+    </Provider>
   );
 }
 

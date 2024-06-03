@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { sendData } from "@/hooks/usePostData";
 
-function UserCreatePassword() {
+function UserCompanyCreatePassword() {
   const profileData = useSelector((state) => state.auth);
   const newUserId = profileData?.newUser?._id;
   const url = `${baseUrl}v1/subscriber/individual/auth/set-password/${newUserId}`;
@@ -247,4 +247,4 @@ function UserCreatePassword() {
   );
 }
 
-export default UserCreatePassword;
+export default UserCompanyCreatePassword;

@@ -2,8 +2,15 @@ import React, { useState } from "react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
+import { toast } from "react-toastify";
+import { baseUrl } from "@/App";
+import { useSelector } from "react-redux";
 
-function NewPassword({setFormType}) {
+import { sendData } from "@/hooks/usePostData";
+function NewPassword({setFormType,userEmail}) {
+  const url = `${baseUrl}v1/subscriber/individual/auth/reset-password`;
+  const token = useSelector((state) => state.auth.token);
+ 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -43,13 +50,51 @@ function NewPassword({setFormType}) {
     }
   };
 
-  
-  const handleSuccessful = () => {
-    setSucessState(true);
+  const validateForm = () => {
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match!");
+      return false;
+    }
+   
+    return true;
   };
-  const handleContinue = () => {
+  const handleSuccessful = () => {
     setFormType("login-user");
   };
+  const handleContinue = async() => {
+    if (!validateForm()) {
+      return;
+    }
+    const body = {
+      email: userEmail,
+     password : password,
+     confirmPassword : confirmPassword
+
+    };
+ 
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const result = await response.json();
+    console.log(result)
+   
+      setSucessState(true);
+    } catch (error) {
+      console.error("error", error);
+    }
+  };
+  
 
   const handleGoback = () => {
     setFormType("verify-email");
@@ -95,7 +140,7 @@ function NewPassword({setFormType}) {
             </button>
             {/* {passwordMatchError && <p className="error-message">Passwords do not match</p>} */}
           </div>
-          <div className="auth-button mt-10" onClick={handleSuccessful}>
+          <div className="auth-button mt-10" onClick={handleContinue }>
             <div className="auth-button-text">Submit</div>
           </div>
           <div
@@ -112,7 +157,7 @@ function NewPassword({setFormType}) {
           <div className="auth-subheader-text mt-4 text-center">
           Your password reset was successful. Please contact our support team if you need any clarification
           </div>
-          <div className="auth-button mt-5" onClick={handleContinue}>
+          <div className="auth-button mt-5" onClick={handleSuccessful}>
             <div className="auth-button-text">Submit</div>
           </div>
       </div>

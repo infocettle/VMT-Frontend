@@ -1,18 +1,49 @@
+import { baseUrl } from "@/App";
+import { sendData } from "@/hooks/usePostData";
 import React, { useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
-
-function OTP({ setFormType }) {
-    const [password, setPassword] = useState("");
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+function OTP({ setFormType,userEmail }) {
+  const url = `${baseUrl}v1/subscriber/individual/auth/verify-email`;
+  const [otp, setOTP] = useState("");
+  const dispatch = useDispatch()
     const [showPassword, setShowPassword] = useState(false);
 
-  
+    const validateForm = () => {
+      if (!otp.trim()) {
+        toast.error("otp is required");
+        return false;
+      }
+      
+      return true;
+    };
    
-    
-  const handleContinue = () => {
-    setFormType("governance-page");
-  };
+   
+    const handleContinue = async () => {
+      if (!validateForm()) {
+        return;
+      }
+      const body = {
+        email: userEmail,
+        otp: otp
+      };
+  
+      try {
+        const returnedUser = await sendData({
+          url: url,
+          body: body,
+          title: "Login",
+        });
+        console.log(returnedUser)
+        // setFormType("governance-page");
+      } catch (error) {
+        console.error("error", error);
+      }
+    };
+
   const handleBack = () => {
-    setFormType("signup");
+    setFormType("login-user");
   };
 
   return (
@@ -30,6 +61,8 @@ function OTP({ setFormType }) {
             type="text"
             className="auth-input"
             placeholder="--- ---"
+            value={otp}
+            onChange={(e) => setOTP(e.target.value)}
           />
         </div>
       

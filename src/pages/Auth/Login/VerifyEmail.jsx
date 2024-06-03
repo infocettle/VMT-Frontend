@@ -1,15 +1,47 @@
+import { baseUrl } from "@/App";
+import { sendData } from "@/hooks/usePostData";
+import { setTokenSubscriber } from "@/pages/Redux/authSubscriber.slice";
 import React, { useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
-function VerifyEmail({ setFormType }) {
-    const [password, setPassword] = useState("");
+function VerifyEmail({ setFormType,userEmail }) {
+  const url = `${baseUrl}v1/subscriber/individual/auth/verify-otp`;
+    const [otp, setOTP] = useState("");
+    const dispatch = useDispatch()
     const [showPassword, setShowPassword] = useState(false);
 
-  
+    const validateForm = () => {
+      if (!otp.trim()) {
+        toast.error("otp is required");
+        return false;
+      }
+      
+      return true;
+    };
    
     
-  const handleContinue = () => {
-    setFormType("new-password");
+  const handleContinue = async () => {
+    if (!validateForm()) {
+      return;
+    }
+    const body = {
+      email: userEmail,
+      otp: otp
+    };
+
+    try {
+      const returnedToken = await sendData({
+        url: url,
+        body: body,
+        title: "OTP verification",
+      });
+      dispatch(setTokenSubscriber(returnedToken.resetToken))
+      setFormType("new-password");
+    } catch (error) {
+      console.error("error", error);
+    }
   };
   const handleBack = () => {
     setFormType("reset-password");
@@ -30,6 +62,8 @@ function VerifyEmail({ setFormType }) {
             type="text"
             className="auth-input"
             placeholder="--- ---"
+            value={otp}
+            onChange={(e) => setOTP(e.target.value)}
           />
         </div>
       

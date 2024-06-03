@@ -28,7 +28,7 @@ import { bodyDataColumns } from "@/components/typings";
 import { ReusableTable } from "@/components/ReusableTable";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
-import usePostData from "@/hooks/usePostData";
+import {usePostData} from "@/hooks/usePostData";
 import SecondDiv from "@/components/SecondDiv";
 
 export const bodyDataRequiredForm = BodyDataFormSchema.required();

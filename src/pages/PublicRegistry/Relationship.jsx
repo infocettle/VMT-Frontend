@@ -23,7 +23,7 @@ import SecondHeader from "@/components/SecondHeader";
 import { relationshiptitleFormSchema } from "@/utils/zodSchema";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
-import usePostData from "@/hooks/usePostData";
+import {usePostData} from "@/hooks/usePostData";
 import { useState } from "react";
 import SecondDiv from "@/components/SecondDiv";
 

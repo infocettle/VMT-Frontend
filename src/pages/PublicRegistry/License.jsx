@@ -15,7 +15,7 @@ import { ReportLinks } from "@/components/ReportLinks";
 import SecondHeader from "@/components/SecondHeader";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
-import usePostData from "@/hooks/usePostData";
+import {usePostData} from "@/hooks/usePostData";
 import SecondDiv from "@/components/SecondDiv";
 
 export const licenseRequiredForm = licenseFormSchema.required();

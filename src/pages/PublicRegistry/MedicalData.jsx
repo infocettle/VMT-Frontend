@@ -27,7 +27,7 @@ import SecondHeader from "@/components/SecondHeader";
 import { bGFormSchema, AilFormSchema } from "@/utils/zodSchema";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
-import usePostData from "@/hooks/usePostData";
+import {usePostData} from "@/hooks/usePostData";
 import SecondDiv from "@/components/SecondDiv";
 
 export const bGRequiredForm = bGFormSchema.required();

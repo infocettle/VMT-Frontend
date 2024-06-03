@@ -21,6 +21,7 @@ import SecondHeader from "@/components/SecondHeader";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
 import usePostData from "@/hooks/usePostData";
+import SecondDiv from "@/components/SecondDiv";
 
 export const pfcRequiredForm = pfcFormSchema.required();
 export const pfaRequiredForm = pfaFormSchema.required();
@@ -109,174 +110,177 @@ const PensionFund = () => {
   }
 
   return (
-    <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
-      {/* Second header */}
+    <div className="w-full">
+      <SecondDiv module={"Financial Institutions"} />
+      <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
+        {/* Second header */}
 
-      <div className="flex justify-between w-full items-center">
-        <SecondHeader title={"PENSION FUND"} />
+        <div className="flex justify-between w-full items-center">
+          <SecondHeader title={"PENSION FUND"} />
 
-        <div className="flex items-center w-auto px-2 space-x-4">
+          <div className="flex items-center w-auto px-2 space-x-4">
+            {subGroup == "pfa" && (
+              <ReuseDialog
+                isEdit={false}
+                open={open}
+                onOpenChange={setIsOpen}
+                onClick={() => setIsOpen(true)}
+                dialogTitle={"Add New PFA"}
+                defaultValues={pfaDefaultValues}
+                validationSchema={pfaRequiredForm}
+                long={false}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="pfa_code" label="PFA code" />
+                <FormInput name="pfa_name" label="PFA name" />
+                <FormInput name="short_name" label="short name" />
+              </ReuseDialog>
+            )}
+
+            {subGroup == "pfc" && (
+              <ReuseDialog
+                isEdit={false}
+                open={open}
+                onOpenChange={setIsOpen}
+                onClick={() => setIsOpen(true)}
+                dialogTitle={"Add New PFC"}
+                defaultValues={pfcDefaultValues}
+                validationSchema={pfcRequiredForm}
+                long={false}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="pfc_code" label="PFC code" />
+                <FormInput name="pfc_name" label="PFC name" />
+                <FormInput name="short_name" label="short name" />
+                <FormInput name="parent_bank" label="parent bank" />
+              </ReuseDialog>
+            )}
+
+            {subGroup == "pfa account" && (
+              <ReuseDialog
+                isEdit={false}
+                open={open}
+                onOpenChange={setIsOpen}
+                onClick={() => setIsOpen(true)}
+                dialogTitle={"Add New PFA Bank Account"}
+                defaultValues={pfaAcctDefaultValues}
+                validationSchema={pfaAcctRequiredForm}
+                long={false}
+                onSubmit={onSubmit}
+              >
+                <FormInput name="pfa_code" label="PFA code" />
+                <FormInput name="pfc_code" label="PFC code" />
+                <FormInput name="fund_code" label="fund code" />
+                <FormInput name="fund_name" label="fund name" />
+                <FormInput name="bank_code" label="bank code" />
+                <FormInput name="bank_acct" label="bank acct" />
+              </ReuseDialog>
+            )}
+
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <div className="border w-auto h-9 border-black bg-white rounded-md flex items-center px-3 space-x-1">
+                  <h2 className="text-sm">Report</h2>
+                  <ChevronDown color="#000" size={13} />
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {ReportLinks.map((link) => (
+                  <DropdownMenuItem key={link.id}>
+                    <div className="w-auto px-2 flex items-center space-x-3">
+                      {link.icon}
+                      <h3 className="text-black font-normal text-xs leading-relaxed">
+                        {link.name}
+                      </h3>
+                    </div>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+
+        <div className="w-full h-auto bg-white my-10">
+          {/* Sub Group */}
+          <div className="w-auto p-3 flex items-center space-x-3">
+            <button
+              onClick={() => {
+                setSubGroup("pfa");
+                setPFA(true);
+                setPFC(false);
+                setAcc(false);
+              }}
+              className={cn(
+                `border rounded-3xl ${
+                  isPFA ? "bg-green-600" : "bg-slate-200"
+                } flex items-center py-2 px-3`
+              )}
+            >
+              <p
+                className={cn(
+                  `${isPFA ? "text-white" : "text-black"} font-thin text-xs`
+                )}
+              >
+                PFA
+              </p>
+            </button>
+            <button
+              onClick={() => {
+                setSubGroup("pfc");
+                setPFC(true);
+                setAcc(false);
+                setPFA(false);
+              }}
+              className={cn(
+                `border rounded-3xl ${
+                  isPFC ? "bg-green-600" : "bg-slate-200"
+                } flex items-center py-2 px-3`
+              )}
+            >
+              <p
+                className={cn(
+                  `${isPFC ? "text-white" : "text-black"} font-thin text-xs`
+                )}
+              >
+                PFC
+              </p>
+            </button>
+            <button
+              onClick={() => {
+                setSubGroup("pfa account");
+                setAcc(true);
+                setPFA(false);
+                setPFC(false);
+              }}
+              className={cn(
+                `border rounded-3xl ${
+                  isAcc ? "bg-green-600" : "bg-slate-200"
+                } flex items-center p-2 `
+              )}
+            >
+              <p
+                className={cn(
+                  `capitalize ${
+                    isAcc ? "text-white" : "text-black"
+                  } font-thin text-xs`
+                )}
+              >
+                PFA Accounts
+              </p>
+            </button>
+          </div>
+
+          {/* Table */}
           {subGroup == "pfa" && (
-            <ReuseDialog
-              isEdit={false}
-              open={open}
-              onOpenChange={setIsOpen}
-              onClick={() => setIsOpen(true)}
-              dialogTitle={"Add New PFA"}
-              defaultValues={pfaDefaultValues}
-              validationSchema={pfaRequiredForm}
-              long={false}
-              onSubmit={onSubmit}
-            >
-              <FormInput name="pfa_code" label="PFA code" />
-              <FormInput name="pfa_name" label="PFA name" />
-              <FormInput name="short_name" label="short name" />
-            </ReuseDialog>
+            <ReusableTable columns={pfaColumns} data={data} />
           )}
-
           {subGroup == "pfc" && (
-            <ReuseDialog
-              isEdit={false}
-              open={open}
-              onOpenChange={setIsOpen}
-              onClick={() => setIsOpen(true)}
-              dialogTitle={"Add New PFC"}
-              defaultValues={pfcDefaultValues}
-              validationSchema={pfcRequiredForm}
-              long={false}
-              onSubmit={onSubmit}
-            >
-              <FormInput name="pfc_code" label="PFC code" />
-              <FormInput name="pfc_name" label="PFC name" />
-              <FormInput name="short_name" label="short name" />
-              <FormInput name="parent_bank" label="parent bank" />
-            </ReuseDialog>
+            <ReusableTable columns={pfcColumns} data={data} />
           )}
-
           {subGroup == "pfa account" && (
-            <ReuseDialog
-              isEdit={false}
-              open={open}
-              onOpenChange={setIsOpen}
-              onClick={() => setIsOpen(true)}
-              dialogTitle={"Add New PFA Bank Account"}
-              defaultValues={pfaAcctDefaultValues}
-              validationSchema={pfaAcctRequiredForm}
-              long={false}
-              onSubmit={onSubmit}
-            >
-              <FormInput name="pfa_code" label="PFA code" />
-              <FormInput name="pfc_code" label="PFC code" />
-              <FormInput name="fund_code" label="fund code" />
-              <FormInput name="fund_name" label="fund name" />
-              <FormInput name="bank_code" label="bank code" />
-              <FormInput name="bank_acct" label="bank acct" />
-            </ReuseDialog>
+            <ReusableTable columns={pfaAcctColumns} data={data} />
           )}
-
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <div className="border w-auto h-9 border-black bg-white rounded-md flex items-center px-3 space-x-1">
-                <h2 className="text-sm">Report</h2>
-                <ChevronDown color="#000" size={13} />
-              </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {ReportLinks.map((link) => (
-                <DropdownMenuItem key={link.id}>
-                  <div className="w-auto px-2 flex items-center space-x-3">
-                    {link.icon}
-                    <h3 className="text-black font-normal text-xs leading-relaxed">
-                      {link.name}
-                    </h3>
-                  </div>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
-      </div>
-
-      <div className="w-full h-auto bg-white my-10">
-        {/* Sub Group */}
-        <div className="w-auto p-3 flex items-center space-x-3">
-          <button
-            onClick={() => {
-              setSubGroup("pfa");
-              setPFA(true);
-              setPFC(false);
-              setAcc(false);
-            }}
-            className={cn(
-              `border rounded-3xl ${
-                isPFA ? "bg-green-600" : "bg-slate-200"
-              } flex items-center py-2 px-3`
-            )}
-          >
-            <p
-              className={cn(
-                `${isPFA ? "text-white" : "text-black"} font-thin text-xs`
-              )}
-            >
-              PFA
-            </p>
-          </button>
-          <button
-            onClick={() => {
-              setSubGroup("pfc");
-              setPFC(true);
-              setAcc(false);
-              setPFA(false);
-            }}
-            className={cn(
-              `border rounded-3xl ${
-                isPFC ? "bg-green-600" : "bg-slate-200"
-              } flex items-center py-2 px-3`
-            )}
-          >
-            <p
-              className={cn(
-                `${isPFC ? "text-white" : "text-black"} font-thin text-xs`
-              )}
-            >
-              PFC
-            </p>
-          </button>
-          <button
-            onClick={() => {
-              setSubGroup("pfa account");
-              setAcc(true);
-              setPFA(false);
-              setPFC(false);
-            }}
-            className={cn(
-              `border rounded-3xl ${
-                isAcc ? "bg-green-600" : "bg-slate-200"
-              } flex items-center p-2 `
-            )}
-          >
-            <p
-              className={cn(
-                `capitalize ${
-                  isAcc ? "text-white" : "text-black"
-                } font-thin text-xs`
-              )}
-            >
-              PFA Accounts
-            </p>
-          </button>
-        </div>
-
-        {/* Table */}
-        {subGroup == "pfa" && (
-          <ReusableTable columns={pfaColumns} data={data} />
-        )}
-        {subGroup == "pfc" && (
-          <ReusableTable columns={pfcColumns} data={data} />
-        )}
-        {subGroup == "pfa account" && (
-          <ReusableTable columns={pfaAcctColumns} data={data} />
-        )}
       </div>
     </div>
   );

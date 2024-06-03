@@ -16,6 +16,7 @@ import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
 import usePostData from "@/hooks/usePostData";
 import { useState } from "react";
+import SecondDiv from "@/components/SecondDiv";
 
 export const genderRequiredForm = genderFormSchema.required();
 
@@ -52,53 +53,56 @@ const Gender = () => {
   }
 
   return (
-    <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
-      {/* Second header */}
+    <div className="w-full">
+      <SecondDiv module={"Personal Details"} />
+      <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
+        {/* Second header */}
 
-      <div className="flex justify-between w-full items-center pt-5">
-        <SecondHeader title={"Gender"} />
+        <div className="flex justify-between w-full items-center pt-5">
+          <SecondHeader title={"Gender"} />
 
-        <div className="flex items-center w-auto px-2 space-x-4">
-          <ReuseDialog
-            isEdit={false}
-            open={open}
-            onOpenChange={setIsOpen}
-            onClick={() => setIsOpen(true)}
-            dialogTitle={"Add New Gender"}
-            defaultValues={genderDefaultValues}
-            validationSchema={genderRequiredForm}
-            onSubmit={onSubmit}
-            long={false}
-          >
-            <FormInput name="title" label="Title" />
-            <FormInput name="alias" label="Alias" />
-          </ReuseDialog>
+          <div className="flex items-center w-auto px-2 space-x-4">
+            <ReuseDialog
+              isEdit={false}
+              open={open}
+              onOpenChange={setIsOpen}
+              onClick={() => setIsOpen(true)}
+              dialogTitle={"Add New Gender"}
+              defaultValues={genderDefaultValues}
+              validationSchema={genderRequiredForm}
+              onSubmit={onSubmit}
+              long={false}
+            >
+              <FormInput name="title" label="Title" />
+              <FormInput name="alias" label="Alias" />
+            </ReuseDialog>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <div className="border w-auto h-9 border-black bg-white rounded-md flex items-center px-3 space-x-1">
-                <h2 className="text-sm">Report</h2>
-                <ChevronDown color="#000" size={13} />
-              </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {ReportLinks.map((link) => (
-                <DropdownMenuItem key={link.id}>
-                  <div className="w-auto px-2 flex items-center space-x-3">
-                    {link.icon}
-                    <h3 className="text-black font-normal text-xs leading-relaxed">
-                      {link.name}
-                    </h3>
-                  </div>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <div className="border w-auto h-9 border-black bg-white rounded-md flex items-center px-3 space-x-1">
+                  <h2 className="text-sm">Report</h2>
+                  <ChevronDown color="#000" size={13} />
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {ReportLinks.map((link) => (
+                  <DropdownMenuItem key={link.id}>
+                    <div className="w-auto px-2 flex items-center space-x-3">
+                      {link.icon}
+                      <h3 className="text-black font-normal text-xs leading-relaxed">
+                        {link.name}
+                      </h3>
+                    </div>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
-      </div>
 
-      {/* Table */}
-      <ReusableTable columns={genderColumns} data={data} />
+        {/* Table */}
+        <ReusableTable columns={genderColumns} data={data} />
+      </div>
     </div>
   );
 };

@@ -24,6 +24,7 @@ import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
 import usePostData from "@/hooks/usePostData";
 import { useState } from "react";
+import SecondDiv from "@/components/SecondDiv";
 
 export const countryRequiredForm = countryFormSchema.required();
 const countryDefaultValues = {
@@ -74,73 +75,79 @@ const Country = () => {
   }
 
   return (
-    <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
-      {/* Second header */}
+    <div className="w-full">
+      <SecondDiv module={"Address / Nationality"} />
+      <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
+        {/* Second header */}
 
-      <div className="flex justify-between w-full items-center">
-        <SecondHeader title={"Country"} />
+        <div className="flex justify-between w-full items-center">
+          <SecondHeader title={"Country"} />
 
-        <div className="flex items-center w-auto px-2 space-x-4">
-          <Dialog open={open} onOpenChange={setIsOpen}>
-            <DialogTrigger asChild>
-              <Button
-                className="bg-vmtblue"
-                size="sm"
-                onClick={() => setIsOpen(true)}
-              >
-                Create new
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-[425px] md:max-w-[768px]">
-              <DialogHeader>
-                <DialogTitle>Add New Country</DialogTitle>
-              </DialogHeader>
-              <hr className="border border-gray-100 w-full h-[1px]" />
-              <GenericForm
-                defaultValues={countryDefaultValues}
-                validationSchema={countryRequiredForm}
-                long={true}
-                onSubmit={onSubmit}
-              >
-                <FormInput name="country_code" label="Country Code" />
-                <FormInput name="country_name" label="Country Name" />
-                <FormInput name="capital_city" label="Capital City" />
-                <FormInput name="continent" label="Continent" />
-                <FormInput name="currency_code" label="Currency Code" />
-                <FormInput name="iso2" label="ISO2" />
-                <FormInput name="iso3" label="ISO3" />
-                <FormInput name="phone_code" label="Phone Code" />
-                <FormInput name="population" label="Population" />
-                <FormInput name="population_source" label="Population Source" />
-              </GenericForm>
-            </DialogContent>
-          </Dialog>
+          <div className="flex items-center w-auto px-2 space-x-4">
+            <Dialog open={open} onOpenChange={setIsOpen}>
+              <DialogTrigger asChild>
+                <Button
+                  className="bg-vmtblue"
+                  size="sm"
+                  onClick={() => setIsOpen(true)}
+                >
+                  Create new
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-[425px] md:max-w-[768px]">
+                <DialogHeader>
+                  <DialogTitle>Add New Country</DialogTitle>
+                </DialogHeader>
+                <hr className="border border-gray-100 w-full h-[1px]" />
+                <GenericForm
+                  defaultValues={countryDefaultValues}
+                  validationSchema={countryRequiredForm}
+                  long={true}
+                  onSubmit={onSubmit}
+                >
+                  <FormInput name="country_code" label="Country Code" />
+                  <FormInput name="country_name" label="Country Name" />
+                  <FormInput name="capital_city" label="Capital City" />
+                  <FormInput name="continent" label="Continent" />
+                  <FormInput name="currency_code" label="Currency Code" />
+                  <FormInput name="iso2" label="ISO2" />
+                  <FormInput name="iso3" label="ISO3" />
+                  <FormInput name="phone_code" label="Phone Code" />
+                  <FormInput name="population" label="Population" />
+                  <FormInput
+                    name="population_source"
+                    label="Population Source"
+                  />
+                </GenericForm>
+              </DialogContent>
+            </Dialog>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <div className="border w-auto h-9 border-black bg-white rounded-md flex items-center px-3 space-x-1">
-                <h2 className="text-sm">Report</h2>
-                <ChevronDown color="#000" size={13} />
-              </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {ReportLinks.map((link) => (
-                <DropdownMenuItem key={link.id}>
-                  <div className="w-auto px-2 flex items-center space-x-3">
-                    {link.icon}
-                    <h3 className="text-black font-normal text-xs leading-relaxed">
-                      {link.name}
-                    </h3>
-                  </div>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <div className="border w-auto h-9 border-black bg-white rounded-md flex items-center px-3 space-x-1">
+                  <h2 className="text-sm">Report</h2>
+                  <ChevronDown color="#000" size={13} />
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {ReportLinks.map((link) => (
+                  <DropdownMenuItem key={link.id}>
+                    <div className="w-auto px-2 flex items-center space-x-3">
+                      {link.icon}
+                      <h3 className="text-black font-normal text-xs leading-relaxed">
+                        {link.name}
+                      </h3>
+                    </div>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
-      </div>
 
-      {/* Table */}
-      <ReusableTable columns={countryColumns} data={data} />
+        {/* Table */}
+        <ReusableTable columns={countryColumns} data={data} />
+      </div>
     </div>
   );
 };

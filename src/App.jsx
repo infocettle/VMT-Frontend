@@ -4,9 +4,12 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import Auth from "./pages/Auth/Auth";
+import Subscription from "./pages/Auth/Subscription/Subscription";
+import AdminAuth from "./pages/Auth/Admin/Admin";
+import AdminAuthUser from "./pages/Auth/Admin/AdminUser";
+import MainDashboard from "./pages/MainDashboard/MainDashboard";
 import {
   Gender,
-  PublicReg,
   Title,
   Currency,
   MaritalStatus,
@@ -32,9 +35,7 @@ import {
   Sectors,
   SubSectors,
 } from "./pages/PublicRegistry";
-import Subscription from "./pages/Auth/Subscription/Subscription";
-import AdminAuth from "./pages/Auth/Admin/Admin";
-import AdminAuthUser from "./pages/Auth/Admin/AdminUser";
+import PublicRoute from "./pages/PublicRegistry/PublicRoute";
 
 const queryClient = new QueryClient();
 
@@ -59,130 +60,136 @@ const router = createBrowserRouter([
     element: <Subscription />,
   },
   {
-    path: "/public_reg",
-    element: <PublicReg />,
+    path: "/main-dashboard/*",
+    element: <MainDashboard />,
     children: [
       {
-        path: "personal_details/*",
-        element: <PersonalDetails />,
+        path: "public_reg/*",
+        element: <PublicRoute />,
         children: [
           {
-            path: "",
-            element: <Title />,
+            path: "personal_details/*",
+            element: <PersonalDetails />,
+            children: [
+              {
+                path: "",
+                element: <Title />,
+              },
+              {
+                path: "title",
+                element: <Title />,
+              },
+              {
+                path: "gender",
+                element: <Gender />,
+              },
+              {
+                path: "marital_status",
+                element: <MaritalStatus />,
+              },
+              {
+                path: "relationship",
+                element: <Relationship />,
+              },
+              {
+                path: "medical_data",
+                element: <MedicalData />,
+              },
+              {
+                path: "body_data",
+                element: <BodyData />,
+              },
+              {
+                path: "qualification",
+                element: <Qualification />,
+              },
+            ],
           },
           {
-            path: "title",
-            element: <Title />,
+            path: "currency",
+            element: <Currency />,
           },
           {
-            path: "gender",
-            element: <Gender />,
+            path: "address_nationality/*",
+            element: <AddressNationality />,
+            children: [
+              {
+                path: "",
+                element: <Continent />,
+              },
+              {
+                path: "continent",
+                element: <Continent />,
+              },
+              {
+                path: "country",
+                element: <Country />,
+              },
+              {
+                path: "zone",
+                element: <Zone />,
+              },
+              {
+                path: "state",
+                element: <State />,
+              },
+              {
+                path: "lga",
+                element: <LGA />,
+              },
+              {
+                path: "ward",
+                element: <Ward />,
+              },
+            ],
           },
           {
-            path: "marital_status",
-            element: <MaritalStatus />,
+            path: "financial_institution/*",
+            element: <FinancialInstitution />,
+            children: [
+              {
+                path: "",
+                element: <Banks />,
+              },
+              {
+                path: "banks",
+                element: <Banks />,
+              },
+              {
+                path: "type",
+                element: <Type />,
+              },
+              {
+                path: "license",
+                element: <License />,
+              },
+              {
+                path: "pension_fund",
+                element: <PensionFund />,
+              },
+            ],
           },
           {
-            path: "relationship",
-            element: <Relationship />,
+            path: "tax_authority",
+            element: <TaxAuthority />,
           },
           {
-            path: "medical_data",
-            element: <MedicalData />,
-          },
-          {
-            path: "body_data",
-            element: <BodyData />,
-          },
-          {
-            path: "qualification",
-            element: <Qualification />,
-          },
-        ],
-      },
-      {
-        path: "currency",
-        element: <Currency />,
-      },
-      {
-        path: "address_nationality/*",
-        element: <AddressNationality />,
-        children: [
-          {
-            path: "",
-            element: <Continent />,
-          },
-          {
-            path: "continent",
-            element: <Continent />,
-          },
-          {
-            path: "country",
-            element: <Country />,
-          },
-          {
-            path: "zone",
-            element: <Zone />,
-          },
-          {
-            path: "state",
-            element: <State />,
-          },
-          {
-            path: "lga",
-            element: <LGA />,
-          },
-          {
-            path: "ward",
-            element: <Ward />,
-          },
-        ],
-      },
-      {
-        path: "financial_institution/*",
-        element: <FinancialInstitution />,
-        children: [
-          {
-            path: "",
-            element: <Banks />,
-          },
-          {
-            path: "banks",
-            element: <Banks />,
-          },
-          {
-            path: "type",
-            element: <Type />,
-          },
-          {
-            path: "license",
-            element: <License />,
-          },
-          {
-            path: "pension_fund",
-            element: <PensionFund />,
-          },
-        ],
-      },
-      {
-        path: "tax_authority",
-        element: <TaxAuthority />,
-      },
-      {
-        path: "business/*",
-        element: <Business />,
-        children: [
-          {
-            path: "",
-            element: <Sectors />,
-          },
-          {
-            path: "sectors",
-            element: <Sectors />,
-          },
-          {
-            path: "sub_sectors",
-            element: <SubSectors />,
+            path: "business/*",
+            element: <Business />,
+            children: [
+              {
+                path: "",
+                element: <Sectors />,
+              },
+              {
+                path: "sectors",
+                element: <Sectors />,
+              },
+              {
+                path: "sub_sectors",
+                element: <SubSectors />,
+              },
+            ],
           },
         ],
       },

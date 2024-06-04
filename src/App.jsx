@@ -40,7 +40,7 @@ import System from "./pages/System/System";
 import { Provider } from "react-redux";
 import store, { persistor } from "./pages/Redux/store";
 import { PersistGate } from "redux-persist/integration/react";
-import { HeaderFooter } from "./pages/ProfileUpdate";
+import { Profile } from "./pages/ProfileUpdate";
 
 const queryClient = new QueryClient();
 
@@ -209,13 +209,7 @@ const router = createBrowserRouter([
 
   {
     path: "/profile-update",
-    element: <HeaderFooter />,
-    // children: [
-    //   {
-    //     path: "company-subscriber/*",
-    //     element: <PersonalDetails />,
-    //   }
-    // ]
+    element: <Profile />,
   },
 ]);
 

@@ -40,7 +40,7 @@ const MainDashboard = () => {
             ))}
           </div>
 
-          <div className="md:max-w-screen-xl lg:w-full overflow-x-scroll">
+          <div className="max-w-screen-xl xl:w-full overflow-x-scroll">
             <Outlet />
           </div>
         </div>

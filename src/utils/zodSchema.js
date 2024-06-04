@@ -736,3 +736,72 @@ export const pfaAcctFormSchema = z.object({
     .max(10, "bank account number must be maximum 30 characters")
     .trim(),
 });
+
+export const companyBasicFormSchema = z
+  .object({
+    companyName: z.string().min(1, "Company's name is required"),
+    shortName: z.string().min(1, "Short name is required"),
+    registrationNumber: z.string().min(1, "Registration number is required"),
+    registered: z.enum(["yes", "no"], {
+      errorMap: (issue, ctx) => {
+        return { message: "Please select whether the company is registered" };
+      },
+    }),
+    registrationDate: z.string().optional(),
+    businessSector: z.string().min(1, "Business sector is required"),
+    subSector: z.string().min(1, "Sub-sector is required"),
+    foreignAffiliation: z.enum(["yes", "no"], {
+      errorMap: (issue, ctx) => {
+        return {
+          message: "Please select whether there is a foreign affiliation",
+        };
+      },
+    }),
+  })
+  .refine(
+    (data) => {
+      if (data.registered === "yes" && !data.registrationDate) {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: "Registration date is required if registered is yes",
+      path: ["registrationDate"],
+    }
+  );
+
+const MAX_UPLOAD_SIZE = 1024 * 1024 * 5; // 3MB
+const ACCEPTED_FILE_TYPES = ["image/png"];
+
+export const companyRepresentativeFormSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  surname: z.string().min(1, "Surname is required"),
+  firstname: z.string().min(1, "Firstname is required"),
+  middlename: z.string().optional(),
+  maidenname: z.string().optional(),
+  emailAddress: z
+    .string()
+    .email("Invalid email address")
+    .min(1, "Email address is required"),
+  phoneNumber: z.string().min(1, "Phone Number is required"),
+  gender: z.enum(["male", "female", "other"], {
+    errorMap: (issue, ctx) => {
+      return { message: "Please select a gender" };
+    },
+  }),
+  maritalStatus: z.enum(["single", "married", "divorced", "widowed"], {
+    errorMap: (issue, ctx) => {
+      return { message: "Please select a marital status" };
+    },
+  }),
+  dateOfBirth: z.string().min(1, "Date of birth is required"),
+  nin: z.string().min(1, "NIN is required"),
+  country: z.string().min(1, "Country is required"),
+  state: z.string().min(1, "State is required"),
+  lga: z.string().min(1, "LGA is required"),
+  picture: z
+    .instanceof(FileList)
+    .refine((file) => file?.length == 1, "File is required."),
+  relationship: z.string().min(1, "Relationship is required"),
+});

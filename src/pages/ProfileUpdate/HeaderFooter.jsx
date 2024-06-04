@@ -31,9 +31,9 @@ const HeaderFooter = ({ children }) => {
             #238957340124
           </h3>
         </div>
-      </div>
 
-      {children}
+        {children}
+      </div>
     </div>
   );
 };

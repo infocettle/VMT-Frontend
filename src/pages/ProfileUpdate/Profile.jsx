@@ -6,8 +6,12 @@ import { COMPANY_SUBSCRIBER } from "@/texts/ProfileData";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import {
+  DisplayAddress,
+  DisplayOther,
   DisplayProfile,
   DisplayRepresentative,
+  UpdateAddress,
+  UpdateOther,
   UpdateProfile,
   UpdateRepresentative,
 } from ".";
@@ -129,19 +133,17 @@ const Profile = () => {
               {/* Right Part */}
               <div className="w-full bg-white rounded-lg">
                 {!updateNow && name == "Basic Details" && (
-                  <DisplayProfile
-                    setUpdateNow={setUpdateNow}
-                    setProgress={setProgress}
-                  />
+                  <DisplayProfile setUpdateNow={setUpdateNow} />
                 )}
                 {!updateNow && name == "Representative Details" && (
-                  <DisplayRepresentative
-                    setUpdateNow={setUpdateNow}
-                    setProgress={setProgress}
-                  />
+                  <DisplayRepresentative setUpdateNow={setUpdateNow} />
                 )}
-                {name == "Address" && <div>Address</div>}
-                {name == "Other" && <div> Other</div>}
+                {!updateNow && name == "Address Details" && (
+                  <DisplayAddress setUpdateNow={setUpdateNow} />
+                )}
+                {!updateNow && name == "Other Information" && (
+                  <DisplayOther setUpdateNow={setUpdateNow} />
+                )}
 
                 {/* Update components below */}
 
@@ -150,6 +152,12 @@ const Profile = () => {
                 )}
                 {updateNow && name == "Representative Details" && (
                   <UpdateRepresentative setUpdateNow={setUpdateNow} />
+                )}
+                {updateNow && name == "Address Details" && (
+                  <UpdateAddress setUpdateNow={setUpdateNow} />
+                )}
+                {updateNow && name == "Other Information" && (
+                  <UpdateOther setUpdateNow={setUpdateNow} />
                 )}
               </div>
             </div>

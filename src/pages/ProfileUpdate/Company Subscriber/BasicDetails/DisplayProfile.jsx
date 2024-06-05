@@ -14,14 +14,14 @@ const COMPANY_DETAILS = [
   { id: 8, name: "Foreign Affliation", value: "" },
 ];
 
-const DisplayProfile = ({ setUpdateNow, setProgress }) => {
+const DisplayProfile = ({ setUpdateNow }) => {
   // const titleUrl = `${baseUrl}public-registry/personal-details/title`;
 
   // const { isFetching, isSuccess } = useFetchData(titleUrl, "title");
 
   // if (isFetching) {
-  //   alert("is fetching data");
-  //   setProgress(25);
+  //   // alert("is fetching data");
+  //
   // }
 
   return (

@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { usePostData } from "@/hooks/usePostData";
 import { UserRound } from "lucide-react";
-import { FormInput } from "@/components/FormInput";
 
 const UpdateRepresentative = ({ setUpdateNow }) => {
   const {
@@ -37,7 +36,7 @@ const UpdateRepresentative = ({ setUpdateNow }) => {
         onSubmit={handleSubmit(onSubmit)}
         className="space-y-6 py-5 w-full px-5"
       >
-        <div className="w-full grid grid-cols-6 gap-6">
+        <div className="w-full grid grid-cols-1 md:grid-cols-6 gap-6">
           <div className="col-span-5">
             <div className="col-span-4 md:col-span-1 my-3">
               <label className="text-sm font-light text-gray-700">

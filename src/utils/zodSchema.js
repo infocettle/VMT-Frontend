@@ -771,9 +771,6 @@ export const companyBasicFormSchema = z
     }
   );
 
-const MAX_UPLOAD_SIZE = 1024 * 1024 * 5; // 3MB
-const ACCEPTED_FILE_TYPES = ["image/png"];
-
 export const companyRepresentativeFormSchema = z.object({
   title: z.string().min(1, "Title is required"),
   surname: z.string().min(1, "Surname is required"),
@@ -804,4 +801,61 @@ export const companyRepresentativeFormSchema = z.object({
     .instanceof(FileList)
     .refine((file) => file?.length == 1, "File is required."),
   relationship: z.string().min(1, "Relationship is required"),
+});
+
+// // URL validation regex
+// const urlRegex = new RegExp(
+//   "^(https?:\\/\\/)?" + // protocol
+//     "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|" + // domain name
+//     "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+//     "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+//     "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+//     "(\\#[-a-z\\d_]*)?$",
+//   "i" // fragment locator
+// );
+
+export const addressInformationFormSchema = z.object({
+  streetNo: z.string().min(1, "Street Number is required"),
+  streetName: z.string().min(1, "Street Name is required"),
+  landmark: z.string().min(1, "Nearest Landmark is required"),
+  geoTag: z.string().optional(),
+  emailAddress: z
+    .string()
+    .email("Invalid email address")
+    .min(1, "Email address is required"),
+  altphoneNumber: z.string().optional(),
+  phoneNumber: z
+    .string()
+    .min(1, "Phone Number is required")
+    .max(16, "Phone Number must not exit 16 characters"),
+  ward: z.string().min(1, "Ward is required"),
+  city: z.string().min(1, "city is required"),
+  country: z.string().min(1, "Country is required"),
+  state: z.string().min(1, "State is required"),
+  lga: z.string().min(1, "LGA is required"),
+  zone: z.string().min(1, "Zone is required"),
+  website: z.string().optional(),
+  // .refine((val) => urlRegex.test(val), {
+  //   message: "Invalid website URL",
+  // }),
+});
+
+export const otherInformationFormSchema = z.object({
+  bankCode: z.string().min(1, "bank Code is required"),
+  bankName: z.string().min(1, "Bank Name is required"),
+  bankAccName: z.string().min(1, "Bank Account Name is required"),
+  bankAcctNum: z.string().min(1, "Bank Account Number is required"),
+  taxId: z.string().optional(),
+  vatId: z.string().optional(),
+  penCom: z.string().optional(),
+  ITF: z.string().optional(),
+  NSITF: z.string().optional(),
+  NHF: z.string().optional(),
+  identitytype: z.string().min(1, "Identity Type is required"),
+  identityNum: z.string().min(1, "Identity Number is required"),
+  certOfIncorp: z.instanceof(FileList).optional(),
+  // .refine((file) => file?.length == 1, "File is required."),
+  meansOfID: z
+    .instanceof(FileList)
+    .refine((file) => file?.length == 1, "File is required."),
 });

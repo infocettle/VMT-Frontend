@@ -1,21 +1,11 @@
+import Dashboard from "@/pages/Dashboard/Dashboard";
 import { PublicReg } from "@/pages/PublicRegistry";
 
 export const DashboardLinks = [
   {
     id: 1,
     name: "Dashboard",
-    component: <PublicReg />,
-  },
-
-  {
-    id: 3,
-    name: "Plan & Prices",
-    component: <PublicReg />,
-  },
-  {
-    id: 4,
-    name: "Access Control",
-    component: <PublicReg />,
+    component: <Dashboard />,
   },
   {
     id: 5,

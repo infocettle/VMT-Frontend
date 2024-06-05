@@ -41,6 +41,10 @@ import { Provider } from "react-redux";
 import store, { persistor } from "./pages/Redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { Profile } from "./pages/ProfileUpdate";
+import Overview from "./pages/Dashboard/Overview";
+import GeneralPerfomance from "./pages/Dashboard/GeneralPerfomance";
+import DashboardRoute from "./pages/Dashboard/DashboardRoute";
+import PerformanceDetails from "./pages/Dashboard/Perfomance";
 
 const queryClient = new QueryClient();
 
@@ -64,15 +68,38 @@ const router = createBrowserRouter([
     path: "/subscription",
     element: <Subscription />,
   },
+ 
   {
     path: "/",
-    element: <System />,
-  },
-  {
-    path: "/main-dashboard/*",
     element: <MainDashboard />,
     children: [
       // All children routes here
+      {
+        path: "dashboard/*",
+        element: <DashboardRoute />,
+        children: [
+          {
+            path: "performance/*",
+            element: <PerformanceDetails />,
+            children: [
+              {
+                path: "",
+                element: <GeneralPerfomance />,
+              },
+              {
+                path: "general",
+                element: <GeneralPerfomance />,
+              },
+            
+            ],
+          },
+          {
+            path: "overview",
+            element: <Overview />,
+          },
+         
+        ],
+      },
       {
         path: "public_reg/*",
         element: <PublicRoute />,

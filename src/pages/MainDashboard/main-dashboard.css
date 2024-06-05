@@ -1,0 +1,27 @@
+.dasboard-side-image-container{
+width: 100%;
+
+}
+.dasboard-side-image{
+    width: 100%; 
+     display: flex;
+justify-content: center;
+align-items: center; 
+
+}
+.dasboard-side-image:hover{
+
+background-color: #0D7742;
+padding: 10px; 
+}
+.dasboard-side-image svg{
+  color: #8E8EA9;
+  font-size: 1.7rem;
+
+
+}
+.dasboard-side-image svg:hover{
+
+color: white;
+
+}

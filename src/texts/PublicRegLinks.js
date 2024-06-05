@@ -2,43 +2,43 @@ export const PublicRegLinks = [
   {
     id: 1,
     name: "Personal Details",
-    href: "/main-dashboard/public_reg/personal_details",
+    href: "/public_reg/personal_details",
     icon: true,
     children: [
       {
         id: 1,
         name: "title",
-        href: "/main-dashboard/public_reg/personal_details/title",
+        href: "/public_reg/personal_details/title",
       },
       {
         id: 2,
         name: "gender",
-        href: "/main-dashboard/public_reg/personal_details/gender",
+        href: "/public_reg/personal_details/gender",
       },
       {
         id: 3,
         name: "Marital Status",
-        href: "/main-dashboard/public_reg/personal_details/marital_status",
+        href: "/public_reg/personal_details/marital_status",
       },
       {
         id: 4,
         name: "relationship",
-        href: "/main-dashboard/public_reg/personal_details/relationship",
+        href: "/public_reg/personal_details/relationship",
       },
       {
         id: 5,
         name: "Medical Data",
-        href: "/main-dashboard/public_reg/personal_details/medical_data",
+        href: "/public_reg/personal_details/medical_data",
       },
       {
         id: 6,
         name: "Body Data",
-        href: "/main-dashboard/public_reg/personal_details/body_data",
+        href: "/public_reg/personal_details/body_data",
       },
       {
         id: 7,
         name: "Qualification",
-        href: "/main-dashboard/public_reg/personal_details/qualification",
+        href: "/public_reg/personal_details/qualification",
       },
     ],
   },
@@ -46,66 +46,66 @@ export const PublicRegLinks = [
   {
     id: 3,
     name: "Address / Nationality",
-    href: "/main-dashboard/public_reg/address_nationality",
+    href: "/public_reg/address_nationality",
     icon: true,
     children: [
       {
         id: 1,
         name: "Continent",
-        href: "/main-dashboard/public_reg/address_nationality/continent",
+        href: "/public_reg/address_nationality/continent",
       },
       {
         id: 2,
         name: "Country",
-        href: "/main-dashboard/public_reg/address_nationality/country",
+        href: "/public_reg/address_nationality/country",
       },
       {
         id: 3,
         name: "Zone",
-        href: "/main-dashboard/public_reg/address_nationality/zone",
+        href: "/public_reg/address_nationality/zone",
       },
       {
         id: 4,
         name: "State",
-        href: "/main-dashboard/public_reg/address_nationality/state",
+        href: "/public_reg/address_nationality/state",
       },
       {
         id: 5,
         name: "LGA",
-        href: "/main-dashboard/public_reg/address_nationality/lga",
+        href: "/public_reg/address_nationality/lga",
       },
       {
         id: 6,
         name: "Ward",
-        href: "/main-dashboard/public_reg/address_nationality/ward",
+        href: "/public_reg/address_nationality/ward",
       },
     ],
   },
   {
     id: 4,
     name: "Financial Institution",
-    href: "/main-dashboard/public_reg/financial_institution",
+    href: "/public_reg/financial_institution",
     icon: true,
     children: [
       {
         id: 1,
         name: "Banks",
-        href: "/main-dashboard/public_reg/financial_institution/banks",
+        href: "/public_reg/financial_institution/banks",
       },
       {
         id: 2,
         name: "Type",
-        href: "/main-dashboard/public_reg/financial_institution/type",
+        href: "/public_reg/financial_institution/type",
       },
       {
         id: 3,
         name: "License",
-        href: "/main-dashboard/public_reg/financial_institution/license",
+        href: "/public_reg/financial_institution/license",
       },
       {
         id: 4,
         name: "Pension Fund",
-        href: "/main-dashboard/public_reg/financial_institution/pension_fund",
+        href: "/public_reg/financial_institution/pension_fund",
       },
     ],
   },
@@ -113,18 +113,18 @@ export const PublicRegLinks = [
   {
     id: 6,
     name: "Business",
-    href: "/main-dashboard/public_reg/business",
+    href: "/public_reg/business",
     icon: true,
     children: [
       {
         id: 1,
         name: "Sectors",
-        href: "/main-dashboard/public_reg/business/sectors",
+        href: "/public_reg/business/sectors",
       },
       {
         id: 2,
         name: "Sub-sectors",
-        href: "/main-dashboard/public_reg/business/sub_sectors",
+        href: "/public_reg/business/sub_sectors",
       },
     ],
   },
@@ -134,11 +134,11 @@ export const RegLinks = [
   {
     id: 1,
     name: "Currency",
-    href: "/main-dashboard/public_reg/currency",
+    href: "/public_reg/currency",
   },
   {
     id: 2,
     name: "Tax Authority",
-    href: "/main-dashboard/public_reg/tax_authority",
+    href: "/public_reg/tax_authority",
   },
 ];

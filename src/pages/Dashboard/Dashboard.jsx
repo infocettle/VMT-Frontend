@@ -1,12 +1,13 @@
 import { Earth, Minus, Plus } from "lucide-react";
-import { FC, useState } from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
-import { PublicRegLinks } from "@/texts/PublicRegLinks";
+import { OverviewLinks, PerformanceLinks } from "@/texts/DashboardLinks";
 import { ChevronRight } from "lucide-react";
 import {
   DropdownMenu,
@@ -16,21 +17,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Link, Outlet } from "react-router-dom";
 
-const Dashbaord = () => {
+const Dashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [module, setModule] = useState("");
-
-  // const navigate = useNavigate();
 
   return (
     <div className="w-full flex items-start">
-      <div className="w-auto h-auto border border-gray-200">
+      <div className="">
         <Collapsible
           open={isOpen}
           onOpenChange={setIsOpen}
-          className={cn(`w-52`)}
+          className={cn(`w-48`)}
         >
           <div
             className={cn(
@@ -38,55 +35,89 @@ const Dashbaord = () => {
                 isOpen
                   ? "bg-vmtgray opacity-50 font-semibold border-r-4 border-r-vmtblue"
                   : ""
-              } flex items-center w-full justify-between p-3`
+              } flex items-center w-full justify-between py-2 px-3`
             )}
           >
-            <div className="flex items-center space-x-3">
-              <Earth color="#0B6ED0" size={15} />
-              <Link
-                onClick={() => setModule("Personal Details")}
-                to={"/public_reg/personal_details"}
-              >
-                <h3 className="capitalize text-vmtblue text-lg font-sans">
-                  public registry
-                </h3>
-              </Link>
-            </div>
             <CollapsibleTrigger asChild>
-              {isOpen ? (
-                <Minus color="#000" size={12} />
-              ) : (
-                <Plus color="#000" size={12} />
-              )}
+              <div className="w-full flex items-center justify-between">
+                <div className="w-auto flex items-center space-x-2">
+                  {isOpen ? (
+                    <Earth color="#0B6ED0" size={15} />
+                  ) : (
+                    <Earth color="#000" size={15} />
+                  )}
+
+                  <div>
+                    <h3
+                      className={cn(
+                        `${
+                          isOpen ? "text-vmtblue" : "text-black"
+                        } cursor-pointer capitalize text-sm font-sans`
+                      )}
+                    >
+                      Dashboard
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="w-auto">
+                  {isOpen ? (
+                    <Minus
+                      color="#000"
+                      size={15}
+                      className="cursor-pointer self-center"
+                    />
+                  ) : (
+                    <Plus
+                      color="#000"
+                      size={15}
+                      className="cursor-pointer self-center"
+                    />
+                  )}
+                </div>
+              </div>
             </CollapsibleTrigger>
           </div>
           <CollapsibleContent>
-            <div className="w-52 flex flex-col items-center space-y-2 px-3 py-2">
-              {PublicRegLinks.map((modules) => (
+            <div className="w-full flex flex-col items-center space-y-2 px-3 py-2">
+            {OverviewLinks.map((modules) => (
+                <Link
+                  className="self-start cursor-pointer"
+                  to={modules.href}
+                  key={modules.id}
+                >
+                  <h3
+                    className={cn(
+                      `text-vmtpurple focus-within:text-vmtblue text-xs leading-relaxed`
+                    )}
+                  >
+                    {modules.name}
+                  </h3>
+                </Link>
+              ))}
+              {PerformanceLinks.map((modules) => (
                 <div
                   key={modules.id}
                   className="flex items-center justify-between w-full"
                 >
-                  <Link
-                    onClick={() => setModule(modules.name)}
-                    to={modules.href}
-                  >
-                    <h3
-                      className={cn(
-                        `text-vmtpurple focus:text-vmtblue text-sm leading-relaxed`
-                      )}
-                    >
-                      {modules.name}
-                    </h3>
-                  </Link>
-
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      {modules.icon ? (
-                        <ChevronRight size={14} color="#666687" />
-                      ) : (
-                        ""
-                      )}
+                      <div className="w-full flex items-center justify-between">
+                        <div className="cursor-pointer">
+                          <h3
+                            className={cn(
+                              `text-vmtpurple focus-within:text-vmtblue text-xs leading-relaxed`
+                            )}
+                          >
+                            {modules.name}
+                          </h3>
+                        </div>
+                        {modules.icon ? (
+                          <ChevronRight size={16} color="#666687" />
+                        ) : (
+                          ""
+                        )}
+                      </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuLabel>{modules.name}</DropdownMenuLabel>
@@ -96,10 +127,7 @@ const Dashbaord = () => {
                           <Link key={child.id} to={child.href}>
                             <DropdownMenuItem
                               key={child.id}
-                              className=" capitalize text-xs text-black font-light"
-                              onClick={() => {
-                                setModule(modules.name);
-                              }}
+                              className="capitalize text-xs text-black font-light"
                             >
                               {child.name}
                             </DropdownMenuItem>
@@ -110,27 +138,14 @@ const Dashbaord = () => {
                   </DropdownMenu>
                 </div>
               ))}
+
+
             </div>
           </CollapsibleContent>
         </Collapsible>
-      </div>
-
-      {/* The div that renders second flex */}
-      <div className="w-full h-auto border border-gray-200 flex flex-col items-center">
-        {/* Header Kinda */}
-        <div className="w-full py-3 px-12 flex items-center justify-between">
-          <h2 className="uppercase font-light text-base">{module}</h2>
-          <div className="flex w-auto space-x-2 items-center">
-            <h2 className="font-thin text-black text-sm">Dashboard</h2>
-            <ChevronRight color="#000" size={16} />
-            <h2 className="text-vmtblue capitalize text-sm ">{module}</h2>
-          </div>
-        </div>
-
-        <Outlet />
       </div>
     </div>
   );
 };
 
-export default Dashbaord;
+export default Dashboard;

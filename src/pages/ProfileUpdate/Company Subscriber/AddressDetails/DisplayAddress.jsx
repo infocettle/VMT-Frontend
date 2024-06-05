@@ -5,24 +5,22 @@ import { baseUrl } from "@/App";
 import { UserRound } from "lucide-react";
 
 const REPRESENTATIVE_DETAILS = [
-  { id: 1, name: "Title", value: "" },
-  { id: 2, name: "Surname", value: "" },
-  { id: 3, name: "Firstname", value: "" },
-  { id: 4, name: "Middle/Other name", value: "" },
-  { id: 5, name: "Maiden/Former name", value: "" },
-  { id: 6, name: "Gender", value: "" },
-  { id: 7, name: "Marital Status", value: "" },
-  { id: 8, name: "Date of Birth", value: "" },
-  { id: 9, name: "Email Address", value: "" },
-  { id: 10, name: "Phone number", value: "" },
-  { id: 15, name: "Relationship", value: "" },
+  { id: 1, name: "Email Address", value: "" },
+  { id: 2, name: "Phone Number", value: "" },
+  { id: 3, name: "Alternative phone no.", value: "" },
+  { id: 4, name: "Website", value: "" },
+  { id: 5, name: "Street number", value: "" },
+  { id: 6, name: "Street name", value: "" },
+  { id: 7, name: "Nearest landmark", value: "" },
+  { id: 8, name: "Geo tag", value: "" },
   { id: 11, name: "NIN", value: "" },
   { id: 12, name: "Country", value: "" },
   { id: 13, name: "State", value: "" },
   { id: 14, name: "Local Government Area", value: "" },
+  { id: 15, name: "Ward", value: "" },
 ];
 
-const DisplayRepresentative = ({ setUpdateNow }) => {
+const DisplayAddress = ({ setUpdateNow }) => {
   // const titleUrl = `${baseUrl}public-registry/personal-details/title`;
 
   // const { isFetching, isSuccess } = useFetchData(titleUrl, "title");
@@ -36,7 +34,7 @@ const DisplayRepresentative = ({ setUpdateNow }) => {
     <div className="flex flex-col items-center">
       <div className="w-full flex items-center justify-between border-b py-3 px-5">
         <h3 className="text-black text-sm leading-relaxed">
-          Representative Detail
+          Address Information
         </h3>
         <Button
           onClick={() => setUpdateNow(true)}
@@ -59,15 +57,9 @@ const DisplayRepresentative = ({ setUpdateNow }) => {
             </div>
           ))}
         </div>
-
-        <div className="w-60 h-40 bg-vmtpurple rounded-lg flex justify-center items-center self-start m-5">
-          <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white">
-            <UserRound color="#000" />
-          </div>
-        </div>
       </div>
     </div>
   );
 };
 
-export default DisplayRepresentative;
+export default DisplayAddress;

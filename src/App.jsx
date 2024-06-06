@@ -68,7 +68,7 @@ const router = createBrowserRouter([
     path: "/subscription",
     element: <Subscription />,
   },
- 
+
   {
     path: "/",
     element: <MainDashboard />,
@@ -78,6 +78,10 @@ const router = createBrowserRouter([
         path: "dashboard/*",
         element: <DashboardRoute />,
         children: [
+          {
+            path: "",
+            element: <Overview />,
+          },
           {
             path: "performance/*",
             element: <PerformanceDetails />,
@@ -90,14 +94,12 @@ const router = createBrowserRouter([
                 path: "general",
                 element: <GeneralPerfomance />,
               },
-            
             ],
           },
           {
             path: "overview",
             element: <Overview />,
           },
-         
         ],
       },
       {

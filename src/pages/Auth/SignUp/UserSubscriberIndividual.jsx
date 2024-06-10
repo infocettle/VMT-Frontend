@@ -21,7 +21,7 @@ function UserSubscriberIndividual({ setFormType }) {
     const [nin, setNin] = useState("");
     const [referalCode, setReferalCode] = useState("");
     const [selectedFind, setSelectedFind] = useState("");
-
+    const [selectedRole, setSelectedRole] = useState(null);
 
     const dispatch = useDispatch();
   const handleCountryChange = (selectedCountry) => {
@@ -44,6 +44,11 @@ function UserSubscriberIndividual({ setFormType }) {
     const code = countryCodes[selectedCountry] || "";
     setCountryCode(code);
   };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+};
   const validateForm = () => {
     if (!selectedTitle) {
         toast.error("Title is required");
@@ -65,6 +70,14 @@ function UserSubscriberIndividual({ setFormType }) {
         toast.error("Email Address is required");
         return false;
     }
+    if (!validateEmail(email)) {
+      toast.error("Invalid Email Address");
+      return false;
+  }
+  if (nin.length !== 11) {
+    toast.error('Invalid NIN: must be exactly 11 characters');
+  } 
+  
     return true;
 };
 
@@ -121,8 +134,8 @@ function UserSubscriberIndividual({ setFormType }) {
         Fields labelled with "<span className="auth-mandatory">*</span>" are
         mandatory
       </div>
-
-      <div className="auth-form-flex">
+      <div className="auth-form-content">
+  <div className="auth-form-flex">
         <div className="flex flex-col gap-2 w-full">
           <div className="auth-label">
             Title <span className="auth-mandatory">*</span>
@@ -196,6 +209,7 @@ function UserSubscriberIndividual({ setFormType }) {
               onChange={(e) => setPhoneNumber(e.target.value)}
               className="auth-input"
               style={{ width: "70%" }}
+              placeholder={countryCode}
             />
           </div>
         </div>
@@ -224,6 +238,26 @@ function UserSubscriberIndividual({ setFormType }) {
           />
         </div>
       </div>
+      <div className="auth-form-flex">
+      <div className="flex flex-col gap-2 w-full">
+          <div className="auth-label">
+          Custom Feature <span className="auth-mandatory">*</span>
+          </div>
+          <Select
+            value={selectedRole}
+            placeholder="Select Custom Feature"
+            onChange={(selectedOption) => setSelectedRole(selectedOption)}
+            options={[
+              { value: "Hotel", label: "Hotel" },
+              { value: "School", label: "School" },
+              { value: "Club", label: "Club" },
+              { value: "Hospital", label: "Hospital" },
+              { value: "Others", label: "Others" },
+            ]}
+            styles={customStyles}
+          />
+        </div>
+    </div>
       <div className="auth-form-flex">
         <div className="flex flex-col gap-2 w-full">
           <div className="auth-label">Referral Code (optional)</div>
@@ -263,6 +297,10 @@ function UserSubscriberIndividual({ setFormType }) {
         <IoIosArrowRoundBack style={{ fontSize: "1.3rem", color: "#0B6ED0" }} />
         <div className="auth-button-go-back">Go back</div>
       </div>
+
+        </div>
+
+    
     </div>
   );
 }

@@ -45,6 +45,12 @@ import Overview from "./pages/Dashboard/Overview";
 import GeneralPerfomance from "./pages/Dashboard/GeneralPerfomance";
 import DashboardRoute from "./pages/Dashboard/DashboardRoute";
 import PerformanceDetails from "./pages/Dashboard/Perfomance";
+import BusinessKpiPerformance from "./pages/Dashboard/BusinessKpiPerformance";
+import SalesPerformance from "./pages/Dashboard/SalesPerformance";
+import CommissionPerformance from "./pages/Dashboard/CommissionPerformance";
+import CompanyPerformance from "./pages/Dashboard/CompanyPerformance";
+import PartnersPerformance from "./pages/Dashboard/PartnersPerformance";
+import SupportServicePerformance from "./pages/Dashboard/SupportServicePerformance";
 
 const queryClient = new QueryClient();
 
@@ -97,6 +103,15 @@ const router = createBrowserRouter([
               {
                 path: "general",
                 element: <GeneralPerfomance />,
+              },
+              { path: "business-kpi", element: <BusinessKpiPerformance/> },
+              { path: "sales", element: <SalesPerformance /> },
+              { path: "commission", element: <CommissionPerformance /> },
+              { path: "company", element: <CompanyPerformance /> },
+              { path: "partners", element: <PartnersPerformance /> },
+              {
+                path: "support-service",
+                element: <SupportServicePerformance />,
               },
             ],
           },

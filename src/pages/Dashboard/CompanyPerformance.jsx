@@ -10,26 +10,23 @@ import { PaymentPieChart } from "./charts/PaymentsPieChart";
 import { Calendar } from "@/components/ui/calendar"
 import { FaRegBell } from "react-icons/fa";
 import Tables from "./Tables";
-import { DemographicBarChart } from "./DemographicBarChart";
+import ActiveUsersChart from "./charts/ActiveUsersChart";
+import TopSubscriptionChart from "./charts/TopSubscribtionsChart";
+import TransactionHistoryTable from "./TransactionHistoryTable";
+import MonthlyRevenueChart from "./charts/MonthlyRevenueChart";
 
-const GeneralPerfomance = () => {
+const CompanyPerformance = () => {
   const [open, setIsOpen] = useState(false);
   const [date, setDate] = React.useState(new Date())
   return (
     <div className="w-full">
-      <DashboardDiv module={"Performance"} />
+      <DashboardDiv module={"Overview"} />
       <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
         {/* Second header */}
 
         <div className="flex justify-between w-full items-center">
           <div className="main-container">
-            <div className="filter-button-container justify-between" >
-            <h2 className="uppercase font-light text-base">General</h2>
-              <div className="filter-button">
-                <IoFilter />
-                <div className="filter-button-text">Filter</div>
-              </div>
-            </div>
+           
             <div className="dashboard-cards-container">
               <div className="cards-container">
                 <div className="cards-container-header">
@@ -123,39 +120,45 @@ const GeneralPerfomance = () => {
               </div>
             </div>
             <div className="dashboard-section">
-              <div className="dashboard-section-one"  style={{width:"100%"}}>
-                <div className="card-header">
-                  <div className="card-header-text">SALES</div>
-                </div>
-                <PaymentPieChart/>
-              </div>
-              <div className="dashboard-section-two"  style={{width:"100%"}}>
-                <div className="card-header">
-                  <div className="card-header-text">PAYMENTS</div>
-                </div>
-           <DemographicBarChart/>
-              </div>
               <div className="dashboard-section-one" style={{width:"100%"}}>
-            <div className="card-header">
-                  <div className="card-header-text">PENDING ORDERS</div>
+                <div className="card-header">
+                  <div className="card-header-text">COMMISION PAYABLE</div>
+                  <div className="filter-button-container">
+              <div className="filter-button">
+                <div className="filter-button-text">2023</div>
+                <IoFilter />
+              </div>
+            </div>
                 </div>
-                <Tables/>
+                <MonthlyRevenueChart/>
+              </div>
+              <div className="dashboard-section-two" style={{width:"100%"}}>
+                <div className="card-header">
+                  <div className="card-header-text">SALES AMOUNT</div>
+                  <div className="filter-button-container">
+              <div className="filter-button">
+                <div className="filter-button-text">2023</div>
+                <IoFilter />
+              </div>
             </div>
+                </div>
+                <ActiveUsersChart/>
+              </div>
             </div>
-        
+           
             <div className="dashboard-section">
 
             <div className="dashboard-section-one" style={{width:"100%"}}>
             <div className="card-header">
-                  <div className="card-header-text">ACTIVE SUBSCRIPTIONS</div>
+                  <div className="card-header-text">TOP SUBSCRIPTIONS</div>
                 </div>
-                <Tables/>
+                  <Tables/>
             </div>
             <div className="dashboard-section-two" style={{width:"100%"}}>
             <div className="card-header">
-                  <div className="card-header-text">INACTIVE SUBSCRIPTIONS</div>
+                  <div className="card-header-text">COMMISSION PAY PER PARTNER</div>
                 </div>
-                <Tables/>
+                  <TransactionHistoryTable/>
             </div>
             </div>
           </div>
@@ -165,4 +168,4 @@ const GeneralPerfomance = () => {
   );
 };
 
-export default GeneralPerfomance;
+export default CompanyPerformance;

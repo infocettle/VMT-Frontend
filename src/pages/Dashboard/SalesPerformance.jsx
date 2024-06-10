@@ -7,14 +7,22 @@ import { RiArrowUpSFill } from "react-icons/ri";
 import "./dashboard.css";
 import { SalesLineChart } from "./charts/SalesLineChart";
 import { PaymentPieChart } from "./charts/PaymentsPieChart";
-import { Calendar } from "@/components/ui/calendar"
+import { Calendar } from "@/components/ui/calendar";
 import { FaRegBell } from "react-icons/fa";
 import Tables from "./Tables";
 import { DemographicBarChart } from "./DemographicBarChart";
+import SalesOverviewChart from "./charts/SalesOverviewChart";
+import ActiveUsersChart from "./charts/ActiveUsersChart";
+import ReferralChart from "./charts/ReferralChart";
+import SalesAnalyticsCharts from "./charts/SalesAnalyticsCharts";
+import MonthlyRevenueChart from "./charts/MonthlyRevenueChart";
+import SalesUnit from "./components/SalesUnit";
+import AccountRetention from "./components/AcoountRetention";
+import TransactionHistory from "./components/TransactionHistory";
 
-const GeneralPerfomance = () => {
+const SalesPerformance = () => {
   const [open, setIsOpen] = useState(false);
-  const [date, setDate] = React.useState(new Date())
+  const [date, setDate] = React.useState(new Date());
   return (
     <div className="w-full">
       <DashboardDiv module={"Performance"} />
@@ -23,12 +31,12 @@ const GeneralPerfomance = () => {
 
         <div className="flex justify-between w-full items-center">
           <div className="main-container">
-            <div className="filter-button-container justify-between" >
-            <h2 className="uppercase font-light text-base">General</h2>
-              <div className="filter-button">
+            <div className="filter-button-container justify-between">
+              <h2 className="uppercase font-light text-base">Sales</h2>
+              {/* <div className="filter-button">
                 <IoFilter />
                 <div className="filter-button-text">Filter</div>
-              </div>
+              </div> */}
             </div>
             <div className="dashboard-cards-container">
               <div className="cards-container">
@@ -123,40 +131,24 @@ const GeneralPerfomance = () => {
               </div>
             </div>
             <div className="dashboard-section">
-              <div className="dashboard-section-one"  style={{width:"100%"}}>
+              <div className="dashboard-section-one" style={{ width: "100%" }}>
                 <div className="card-header">
-                  <div className="card-header-text">SALES</div>
+                  <div className="card-header-text">MONTHLY REVENUE</div>
                 </div>
-                <PaymentPieChart/>
+                <MonthlyRevenueChart/>
               </div>
-              <div className="dashboard-section-two"  style={{width:"100%"}}>
+              <div className="dashboard-section-two" style={{ width: "100%" }}>
                 <div className="card-header">
-                  <div className="card-header-text">PAYMENTS</div>
+                  <div className="card-header-text">SALES ANALYTICS</div>
                 </div>
-           <DemographicBarChart/>
+                <SalesAnalyticsCharts/>
               </div>
-              <div className="dashboard-section-one" style={{width:"100%"}}>
-            <div className="card-header">
-                  <div className="card-header-text">PENDING ORDERS</div>
-                </div>
-                <Tables/>
             </div>
-            </div>
-        
-            <div className="dashboard-section">
 
-            <div className="dashboard-section-one" style={{width:"100%"}}>
-            <div className="card-header">
-                  <div className="card-header-text">ACTIVE SUBSCRIPTIONS</div>
-                </div>
-                <Tables/>
-            </div>
-            <div className="dashboard-section-two" style={{width:"100%"}}>
-            <div className="card-header">
-                  <div className="card-header-text">INACTIVE SUBSCRIPTIONS</div>
-                </div>
-                <Tables/>
-            </div>
+            <div className="dashboard-section">
+             <SalesUnit/>
+             <AccountRetention/>
+             <TransactionHistory/>
             </div>
           </div>
         </div>
@@ -165,4 +157,4 @@ const GeneralPerfomance = () => {
   );
 };
 
-export default GeneralPerfomance;
+export default SalesPerformance;

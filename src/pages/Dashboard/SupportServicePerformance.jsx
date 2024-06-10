@@ -10,26 +10,23 @@ import { PaymentPieChart } from "./charts/PaymentsPieChart";
 import { Calendar } from "@/components/ui/calendar"
 import { FaRegBell } from "react-icons/fa";
 import Tables from "./Tables";
-import { DemographicBarChart } from "./DemographicBarChart";
+import ActiveUsersChart from "./charts/ActiveUsersChart";
+import TopSubscriptionChart from "./charts/TopSubscribtionsChart";
+import TimeSpeedComponent from "./components/TimeSpeedComponent";
+import ResolveComplaintChart from "./charts/ResolveComplaintChart";
 
-const GeneralPerfomance = () => {
+const SupportServicePerformance = () => {
   const [open, setIsOpen] = useState(false);
   const [date, setDate] = React.useState(new Date())
   return (
     <div className="w-full">
-      <DashboardDiv module={"Performance"} />
+      <DashboardDiv module={"Overview"} />
       <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
         {/* Second header */}
 
         <div className="flex justify-between w-full items-center">
           <div className="main-container">
-            <div className="filter-button-container justify-between" >
-            <h2 className="uppercase font-light text-base">General</h2>
-              <div className="filter-button">
-                <IoFilter />
-                <div className="filter-button-text">Filter</div>
-              </div>
-            </div>
+           
             <div className="dashboard-cards-container">
               <div className="cards-container">
                 <div className="cards-container-header">
@@ -123,39 +120,49 @@ const GeneralPerfomance = () => {
               </div>
             </div>
             <div className="dashboard-section">
-              <div className="dashboard-section-one"  style={{width:"100%"}}>
-                <div className="card-header">
-                  <div className="card-header-text">SALES</div>
-                </div>
-                <PaymentPieChart/>
-              </div>
-              <div className="dashboard-section-two"  style={{width:"100%"}}>
-                <div className="card-header">
-                  <div className="card-header-text">PAYMENTS</div>
-                </div>
-           <DemographicBarChart/>
-              </div>
               <div className="dashboard-section-one" style={{width:"100%"}}>
-            <div className="card-header">
-                  <div className="card-header-text">PENDING ORDERS</div>
+                <div className="card-header">
+                  <div className="card-header-text">TICKET INFLOW</div>
+              
                 </div>
-                <Tables/>
+                <ActiveUsersChart/>
+              </div>
+              <div className="dashboard-section-two" style={{width:"100%"}}>
+                <div className="card-header">
+                  <div className="card-header-text">TICKET BY REQUEST TYPE</div>
+               
+                </div>
+                <TopSubscriptionChart/>
+              </div>
             </div>
-            </div>
-        
+           
             <div className="dashboard-section">
 
             <div className="dashboard-section-one" style={{width:"100%"}}>
-            <div className="card-header">
-                  <div className="card-header-text">ACTIVE SUBSCRIPTIONS</div>
-                </div>
-                <Tables/>
+         
+            <div className="account-retention-container">
+        <div >
+            <ResolveComplaintChart/>
+        </div>
+        <div className="flex flex-col items-start gap-3 w-72">
+        <div className="account-retention-container-header">4m:28s</div>
+        <div className="account-retention-container-subheader">Time to Resolve Complaint</div>
+        <div className="account-retention-container-text">The average time taken to resolve complaints.</div>
+        </div>
+        </div>
             </div>
             <div className="dashboard-section-two" style={{width:"100%"}}>
-            <div className="card-header">
-                  <div className="card-header-text">INACTIVE SUBSCRIPTIONS</div>
-                </div>
-                <Tables/>
+         
+            <div className="account-retention-container">
+        <div>
+        <ResolveComplaintChart/>
+        </div>
+        <div className="flex flex-col items-start gap-3 w-72">
+        <div className="account-retention-container-header">0m:18s</div>
+        <div className="account-retention-container-subheader">Average Speed of Answer</div>
+        <div className="account-retention-container-text">The average time taken to resolve complaints.</div>
+        </div>
+        </div>
             </div>
             </div>
           </div>
@@ -165,4 +172,4 @@ const GeneralPerfomance = () => {
   );
 };
 
-export default GeneralPerfomance;
+export default SupportServicePerformance;

@@ -15,7 +15,9 @@ function UserSubscriberCompany({ setFormType }) {
   const url = `${baseUrl}v1/subscriber/company/auth/register`;
   const dispatch = useDispatch()
   const [selectedCountry, setSelectedCountry] = useState("NG");
+  const [selectedCountryTwo, setSelectedCountryTwo] = useState("NG");
   const [countryCode, setCountryCode] = useState("+234");
+  const [countryCodeTwo, setCountryCodeTwo] = useState("+234");
   const [selectedTitle, setSelectedTitle] = useState(null);
   const [selectedFind, setSelectedFind] = useState(null);
   const [selectedRole, setSelectedRole] = useState(null);
@@ -49,6 +51,23 @@ function UserSubscriberCompany({ setFormType }) {
     const code = countryCodes[selectedCountry] || "";
     setCountryCode(code);
   };
+  const handleCountryChangeTwo = (selectedCountry) => {
+    setSelectedCountryTwo(selectedCountry);
+    const countryCodes = {
+      NG: "+234",
+      US: "+1",
+      GB: "+44",
+      DE: "+49",
+      FR: "+33",
+      JP: "+81",
+      CN: "+86",
+      IN: "+91",
+      BR: "+55",
+      RU: "+7",
+    };
+    const code = countryCodes[selectedCountry] || "";
+    setCountryCodeTwo(code);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,7 +76,10 @@ function UserSubscriberCompany({ setFormType }) {
       [name]: value,
     }));
   };
-
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+};
   const validateForm = () => {
     if (!formData.companyName.trim()) {
       toast.error("Company name is required");
@@ -100,7 +122,17 @@ function UserSubscriberCompany({ setFormType }) {
     if (!selectedRole) {
       toast.error("Role is required");
       return false;
-    }
+    } if (!validateEmail(formData.companyEmail)) {
+      toast.error("Invalid Email Address");
+      return false;
+  }
+     if (!validateEmail(formData.email)) {
+      toast.error("Invalid Email Address");
+      return false;
+  }
+  if (formData.nin.length !== 11) {
+    toast.error('Invalid NIN: must be exactly 11 characters');
+  } 
     return true;
   };
 
@@ -112,13 +144,13 @@ function UserSubscriberCompany({ setFormType }) {
       heardAboutUs:  "google",
       surname: formData.surname,
       firstName: formData.firstName,
-      phoneNumber: `${countryCode}${formData.phoneNumber}`,
+      phoneNumber: `${countryCodeTwo}${formData.phoneNumber}`,
       email: formData.email,
       nin: formData.nin,
       companyEmail: formData.companyEmail,
       shortName: formData.shortName,
       companyName: formData.companyName,
-      companyPhone: formData.companyPhone,
+      companyPhone: `${countryCode}${formData.companyPhone}`,
       role: selectedRole.value,
       referalCode: "2222222",
     };
@@ -157,6 +189,8 @@ function UserSubscriberCompany({ setFormType }) {
       <div className="auth-subheader-text mt-3">
         Manage your financial and non-financial workflows seamlessly on the go
       </div>
+      <div className="auth-form-content">
+
       <div className="auth-subheader-text mt-10">
         Fields labelled with "<span className="auth-mandatory">*</span>" are
         mandatory
@@ -230,7 +264,7 @@ function UserSubscriberCompany({ setFormType }) {
             <input
               type="text"
               name="companyPhone"
-              placeholder="Company phone number"
+              placeholder={countryCode}
               value={formData.companyPhone}
               onChange={handleChange}
               className="auth-input"
@@ -238,9 +272,30 @@ function UserSubscriberCompany({ setFormType }) {
             />
           </div>
         </div>
+        
       </div>
+      <div className="auth-form-flex">
+      <div className="flex flex-col gap-2 w-full">
+          <div className="auth-label">
+          Custom Feature <span className="auth-mandatory">*</span>
+          </div>
+          <Select
+            value={selectedRole}
+            placeholder="Select Custom Feature"
+            onChange={(selectedOption) => setSelectedRole(selectedOption)}
+            options={[
+              { value: "Hotel", label: "Hotel" },
+              { value: "School", label: "School" },
+              { value: "Club", label: "Club" },
+              { value: "Hospital", label: "Hospital" },
+              { value: "Others", label: "Others" },
+            ]}
+            styles={customStyles}
+          />
+        </div>
+    </div>
 
-      <div>Representative's Details</div>
+      <div className="mt-8">Representative's Details</div>
       <div className="auth-form-flex">
         <div className="flex flex-col gap-2 w-full">
           <div className="auth-label">
@@ -304,8 +359,8 @@ function UserSubscriberCompany({ setFormType }) {
                 "BR",
                 "RU",
               ]}
-              selected={selectedCountry}
-              onSelect={handleCountryChange}
+              selected={selectedCountryTwo}
+              onSelect={handleCountryChangeTwo}
               showSelectedLabel={false}
               showOptionLabel={false}
               className="menu-flags"
@@ -313,7 +368,7 @@ function UserSubscriberCompany({ setFormType }) {
             <input
               type="text"
               name="phoneNumber"
-              placeholder="Phone number"
+              placeholder={countryCodeTwo}
               value={formData.phoneNumber}
               onChange={handleChange}
               className="auth-input"
@@ -322,6 +377,8 @@ function UserSubscriberCompany({ setFormType }) {
           </div>
         </div>
       </div>
+    
+     
       <div className="auth-form-flex">
         <div className="flex flex-col gap-2 w-full">
           <div className="auth-label">
@@ -336,24 +393,7 @@ function UserSubscriberCompany({ setFormType }) {
             onChange={handleChange}
           />
         </div>
-      </div>
-      <div className="auth-form-flex">
-        <div className="flex flex-col gap-2 w-full">
-          <div className="auth-label">
-            Role <span className="auth-mandatory">*</span>
-          </div>
-          <Select
-            value={selectedRole}
-            placeholder="Select Role"
-            onChange={(selectedOption) => setSelectedRole(selectedOption)}
-            options={[
-              { value: "Admin", label: "Admin" },
-              { value: "Manager", label: "Manager" },
-              { value: "Employee", label: "Employee" },
-            ]}
-            styles={customStyles}
-          />
-        </div>
+    
         <div className="flex flex-col gap-2 w-full">
           <div className="auth-label">
            NIN
@@ -380,6 +420,8 @@ function UserSubscriberCompany({ setFormType }) {
         <IoIosArrowRoundBack style={{ fontSize: "1.3rem", color: "#0B6ED0" }} />
         <div className="auth-button-go-back">Go back</div>
       </div>
+      </div>
+     
     </div>
   );
 }

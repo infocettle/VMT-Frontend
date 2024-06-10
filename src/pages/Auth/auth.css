@@ -4,8 +4,13 @@
     background: #FFFFFF;
 
 }
+.auth-form-content{
+    height: 65vh;
+    overflow: scroll !important;
+    width: 100%;
+}
 .image-auth-logo{
-    width: 50%;
+    width: 50%; 
     background: #F6F6F9;
 }
 .auth-banner-image-con {

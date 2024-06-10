@@ -7,14 +7,17 @@ import { RiArrowUpSFill } from "react-icons/ri";
 import "./dashboard.css";
 import { SalesLineChart } from "./charts/SalesLineChart";
 import { PaymentPieChart } from "./charts/PaymentsPieChart";
-import { Calendar } from "@/components/ui/calendar"
+import { Calendar } from "@/components/ui/calendar";
 import { FaRegBell } from "react-icons/fa";
 import Tables from "./Tables";
 import { DemographicBarChart } from "./DemographicBarChart";
+import SalesOverviewChart from "./charts/SalesOverviewChart";
+import ActiveUsersChart from "./charts/ActiveUsersChart";
+import ReferralChart from "./charts/ReferralChart";
 
-const GeneralPerfomance = () => {
+const BusinessKpiPerformance = () => {
   const [open, setIsOpen] = useState(false);
-  const [date, setDate] = React.useState(new Date())
+  const [date, setDate] = React.useState(new Date());
   return (
     <div className="w-full">
       <DashboardDiv module={"Performance"} />
@@ -23,12 +26,12 @@ const GeneralPerfomance = () => {
 
         <div className="flex justify-between w-full items-center">
           <div className="main-container">
-            <div className="filter-button-container justify-between" >
-            <h2 className="uppercase font-light text-base">General</h2>
-              <div className="filter-button">
+            <div className="filter-button-container justify-between">
+              <h2 className="uppercase font-light text-base">Business Kpis</h2>
+              {/* <div className="filter-button">
                 <IoFilter />
                 <div className="filter-button-text">Filter</div>
-              </div>
+              </div> */}
             </div>
             <div className="dashboard-cards-container">
               <div className="cards-container">
@@ -123,40 +126,57 @@ const GeneralPerfomance = () => {
               </div>
             </div>
             <div className="dashboard-section">
-              <div className="dashboard-section-one"  style={{width:"100%"}}>
+              <div className="dashboard-section-one" style={{ width: "100%" }}>
                 <div className="card-header">
-                  <div className="card-header-text">SALES</div>
+                  <div className="card-header-text">SALES OVERVIEW</div>
                 </div>
-                <PaymentPieChart/>
+                <SalesOverviewChart />
               </div>
-              <div className="dashboard-section-two"  style={{width:"100%"}}>
+              <div className="dashboard-section-two" style={{ width: "100%" }}>
                 <div className="card-header">
-                  <div className="card-header-text">PAYMENTS</div>
+                  <div className="card-header-text">ACTIVE USERS</div>
                 </div>
-           <DemographicBarChart/>
+                <ActiveUsersChart />
               </div>
-              <div className="dashboard-section-one" style={{width:"100%"}}>
-            <div className="card-header">
-                  <div className="card-header-text">PENDING ORDERS</div>
-                </div>
-                <Tables/>
             </div>
-            </div>
-        
-            <div className="dashboard-section">
 
-            <div className="dashboard-section-one" style={{width:"100%"}}>
-            <div className="card-header">
+            <div className="dashboard-section">
+              <div className="dashboard-section-one" style={{ width: "100%" }}>
+                <div className="card-header">
                   <div className="card-header-text">ACTIVE SUBSCRIPTIONS</div>
                 </div>
-                <Tables/>
-            </div>
-            <div className="dashboard-section-two" style={{width:"100%"}}>
-            <div className="card-header">
-                  <div className="card-header-text">INACTIVE SUBSCRIPTIONS</div>
+                <div
+                  className="dashboard-section-one"
+                  style={{ width: "100%",display: "flex",gap: "20px"  }}
+                >
+                  <div className="flex flex-col w-100">
+                    <div className="referral-tracking-box">
+                      <div className="referral-tracking-box-text-header">
+                        Invited Prospect
+                      </div>
+                      <div className="referral-tracking-box-text-subheader">
+                        27
+                      </div>
+                    </div>
+                    <div className="referral-tracking-box">
+                      <div className="referral-tracking-box-text-header">
+                        Referall Bonus
+                      </div>
+                      <div className="referral-tracking-box-text-subheader">
+                        ₦123,234.00
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-100">  <ReferralChart /></div>
+                
                 </div>
-                <Tables/>
-            </div>
+              </div>
+              <div className="dashboard-section-two" style={{ width: "100%" }}>
+                <div className="card-header">
+                  <div className="card-header-text">RECENT ORDERS</div>
+                </div>
+                <Tables />
+              </div>
             </div>
           </div>
         </div>
@@ -165,4 +185,4 @@ const GeneralPerfomance = () => {
   );
 };
 
-export default GeneralPerfomance;
+export default BusinessKpiPerformance;

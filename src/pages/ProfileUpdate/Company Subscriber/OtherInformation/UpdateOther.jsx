@@ -291,7 +291,7 @@ const UpdateOther = ({ setUpdateNow }) => {
               type="submit"
               className="mt-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-vmtblue"
             >
-              Submit
+              Save
             </Button>
           </div>
         </form>

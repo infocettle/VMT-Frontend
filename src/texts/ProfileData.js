@@ -20,3 +20,13 @@ export const COMPANY_SUBSCRIBER = [
     href: "/profile-update/company-subscriber/other",
   },
 ];
+
+export const INDIVIDUAL_SUBSCRIBER = [
+  { id: 1, name: "Basic Details" },
+  { id: 2, name: "Address Details" },
+  { id: 3, name: "Other Details" },
+  { id: 4, name: "Relative Details" },
+  { id: 5, name: "Referees Details" },
+  { id: 6, name: "Guarantors Details" },
+  { id: 7, name: "Medical Details" },
+];

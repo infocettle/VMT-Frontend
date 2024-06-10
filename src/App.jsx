@@ -40,7 +40,11 @@ import System from "./pages/System/System";
 import { Provider } from "react-redux";
 import store, { persistor } from "./pages/Redux/store";
 import { PersistGate } from "redux-persist/integration/react";
-import { Profile } from "./pages/ProfileUpdate";
+import {
+  IndividualSubscriberProfile,
+  Profile,
+  ProfilePath,
+} from "./pages/ProfileUpdate";
 import Overview from "./pages/Dashboard/Overview";
 import GeneralPerfomance from "./pages/Dashboard/GeneralPerfomance";
 import DashboardRoute from "./pages/Dashboard/DashboardRoute";
@@ -241,8 +245,18 @@ const router = createBrowserRouter([
   },
 
   {
-    path: "/profile-update",
-    element: <Profile />,
+    path: "/profile/*",
+    element: <ProfilePath />,
+    children: [
+      {
+        path: "company-subscriber",
+        element: <Profile />,
+      },
+      {
+        path: "individual-subscriber",
+        element: <IndividualSubscriberProfile />,
+      },
+    ],
   },
 ]);
 

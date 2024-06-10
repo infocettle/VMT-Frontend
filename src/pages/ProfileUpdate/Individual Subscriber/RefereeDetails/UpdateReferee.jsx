@@ -1,19 +1,18 @@
-import { companyRepresentativeFormSchema } from "@/utils/zodSchema";
+import { individualSubscriberBasicFormSchema } from "@/utils/zodSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { usePostData } from "@/hooks/usePostData";
 import { UserRound } from "lucide-react";
 
-const UpdateRepresentative = ({ setUpdateNow }) => {
+const UpdateReferee = ({ setUpdateNow }) => {
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors },
   } = useForm({
     // companyBasicDefaultValues,
-    resolver: zodResolver(companyRepresentativeFormSchema),
+    resolver: zodResolver(individualSubscriberBasicFormSchema),
   });
 
   const fileRef = register("picture");
@@ -26,9 +25,7 @@ const UpdateRepresentative = ({ setUpdateNow }) => {
   return (
     <div className="flex flex-col items-center">
       <div className="w-full flex items-center justify-between border-b py-3 px-5">
-        <h3 className="text-black text-sm leading-relaxed">
-          Representative Detail
-        </h3>
+        <h3 className="text-black text-sm leading-relaxed">Referee Details</h3>
       </div>
 
       {/* Update Details Form */}
@@ -146,38 +143,7 @@ const UpdateRepresentative = ({ setUpdateNow }) => {
                 </p>
               )}
             </div>
-            <div className="col-span-3 md:col-span-1 my-3">
-              <label className="block text-sm font-medium text-gray-700">
-                Email address<span className="text-red-600">*</span>
-              </label>
-              <input
-                {...register("emailAddress")}
-                type="email"
-                placeholder="Enter email address"
-                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-              />
-              {errors.emailAddress && (
-                <p className="text-red-600 text-sm">
-                  {errors.emailAddress.message}
-                </p>
-              )}
-            </div>
-            <div className="col-span-3 md:col-span-1 my-3">
-              <label className="block text-sm font-medium text-gray-700">
-                Phone number<span className="text-red-600">*</span>
-              </label>
-              <input
-                {...register("phoneNumber")}
-                type="text"
-                placeholder="Enter phone number"
-                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-              />
-              {errors.phoneNumber && (
-                <p className="text-red-600 text-sm">
-                  {errors.phoneNumber.message}
-                </p>
-              )}
-            </div>
+
             <div className="col-span-3 md:col-span-1 my-3">
               <label className="block text-sm font-medium text-gray-700">
                 NIN<span className="text-red-600">*</span>
@@ -206,6 +172,36 @@ const UpdateRepresentative = ({ setUpdateNow }) => {
                 <p className="text-red-600 text-sm">{errors.country.message}</p>
               )}
             </div>
+            <div className="col-span-3 md:col-span-1 my-3">
+              <label className="block text-sm font-medium text-gray-700">
+                Relationship<span className="text-red-600">*</span>
+              </label>
+              <select
+                {...register("relationship")}
+                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+              >
+                <option value="">Select Relationship</option>
+                <option value="spouse">Spouse</option>
+                <option value="child">Child</option>
+                <option value="parent">Parent</option>
+                <option value="sibling">Sibling</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div className="col-span-3 md:col-span-1 my-3">
+              <label className="block text-sm font-medium text-gray-700">
+                Ward<span className="text-red-600">*</span>
+              </label>
+              <input
+                {...register("ward")}
+                type="text"
+                placeholder="Enter Ward"
+                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+              />
+              {errors.ward && (
+                <p className="text-red-600 text-sm">{errors.ward.message}</p>
+              )}
+            </div>
           </div>
 
           <div className="col-span-3">
@@ -217,7 +213,7 @@ const UpdateRepresentative = ({ setUpdateNow }) => {
                 {...register("gender")}
                 className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
               >
-                <option value="">Select gender</option>
+                <option value="">Select Gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
                 <option value="other">Other</option>
@@ -250,7 +246,7 @@ const UpdateRepresentative = ({ setUpdateNow }) => {
                 {...register("maritalStatus")}
                 className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
               >
-                <option value="">Select marital status</option>
+                <option value="">Select Marital Status</option>
                 <option value="single">Single</option>
                 <option value="married">Married</option>
                 <option value="divorced">Divorced</option>
@@ -262,27 +258,7 @@ const UpdateRepresentative = ({ setUpdateNow }) => {
                 </p>
               )}
             </div>
-            <div className="col-span-3 md:col-span-1 my-3">
-              <label className="block text-sm font-medium text-gray-700">
-                Relationship<span className="text-red-600">*</span>
-              </label>
-              <select
-                {...register("relationship")}
-                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-              >
-                <option value="">Select relationship</option>
-                <option value="spouse">Spouse</option>
-                <option value="child">Child</option>
-                <option value="parent">Parent</option>
-                <option value="sibling">Sibling</option>
-                <option value="other">Other</option>
-              </select>
-              {errors.relationship && (
-                <p className="text-red-600 text-sm">
-                  {errors.relationship.message}
-                </p>
-              )}
-            </div>
+
             <div className="col-span-3 md:col-span-1 my-3">
               <label className="block text-sm font-medium text-gray-700">
                 State<span className="text-red-600">*</span>
@@ -291,11 +267,23 @@ const UpdateRepresentative = ({ setUpdateNow }) => {
                 {...register("state")}
                 type="text"
                 placeholder="Enter State"
-                className="mt-1 px-3 w-full h-8 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
               />
               {errors.state && (
                 <p className="text-red-600 text-sm">{errors.state.message}</p>
               )}
+            </div>
+            <div className="col-span-3 md:col-span-1 my-3">
+              <label className="block text-sm font-medium text-gray-700">
+                Duration of Relationship&#91;Years&#93;
+                <span className="text-red-600">*</span>
+              </label>
+              <input
+                {...register("relationshipYears")}
+                type="number"
+                // placeholder="Enter LGA"
+                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+              />
             </div>
             <div className="col-span-3 md:col-span-1 my-3">
               <label className="block text-sm font-medium text-gray-700">
@@ -334,4 +322,4 @@ const UpdateRepresentative = ({ setUpdateNow }) => {
   );
 };
 
-export default UpdateRepresentative;
+export default UpdateReferee;

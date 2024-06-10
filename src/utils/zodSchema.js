@@ -802,6 +802,34 @@ export const companyRepresentativeFormSchema = z.object({
     .refine((file) => file?.length == 1, "File is required."),
   relationship: z.string().min(1, "Relationship is required"),
 });
+export const individualSubscriberBasicFormSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  surname: z.string().min(1, "Surname is required"),
+  firstname: z.string().min(1, "Firstname is required"),
+  middlename: z.string().optional(),
+  maidenname: z.string().optional(),
+  gender: z.enum(["male", "female", "other"], {
+    errorMap: (issue, ctx) => {
+      return { message: "Please select a gender" };
+    },
+  }),
+  maritalStatus: z.enum(["single", "married", "divorced", "widowed"], {
+    errorMap: (issue, ctx) => {
+      return { message: "Please select a marital status" };
+    },
+  }),
+  dateOfBirth: z.string().min(1, "Date of birth is required"),
+  nin: z.string().min(1, "NIN is required"),
+  country: z.string().min(1, "Country is required"),
+  state: z.string().min(1, "State is required"),
+  lga: z.string().min(1, "LGA is required"),
+  ward: z.string().min(1, "Ward is required"),
+  picture: z
+    .instanceof(FileList)
+    .refine((file) => file?.length == 1, "File is required."),
+  relationship: z.string().optional(),
+  relationshipYears: z.string().optional(),
+});
 
 // // URL validation regex
 // const urlRegex = new RegExp(

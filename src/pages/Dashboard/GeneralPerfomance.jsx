@@ -5,12 +5,20 @@ import { IoFilter } from "react-icons/io5";
 import { MdPointOfSale } from "react-icons/md";
 import { RiArrowUpSFill } from "react-icons/ri";
 import "./dashboard.css";
-import { SalesLineChart } from "./charts/SalesLineChart";
-import { PaymentPieChart } from "./charts/PaymentsPieChart";
+
+
 import { Calendar } from "@/components/ui/calendar"
 import { FaRegBell } from "react-icons/fa";
 import Tables from "./Tables";
-import { DemographicBarChart } from "./DemographicBarChart";
+
+import PaymentsPieChart from "./charts/PaymentsPieChart";
+import CustomerCountChart from "./charts/CustomerCountChart";
+import SalesLineChart from "./charts/SalesLineChart";
+import DemographicBarChart from "./DemographicBarChart";
+import PendingTable from "./PendingTable";
+import { BiSolidUserRectangle } from "react-icons/bi";
+import { FaMoneyBills } from "react-icons/fa6";
+import { ImUsers } from "react-icons/im";
 
 const GeneralPerfomance = () => {
   const [open, setIsOpen] = useState(false);
@@ -33,14 +41,14 @@ const GeneralPerfomance = () => {
             <div className="dashboard-cards-container">
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
+                  <div className="cards-container-header-box" >
+                    <MdPointOfSale style={{color:" #0B6ED0"}}/>
                   </div>
                   <div className="cards-container-header-text">SALES</div>
                 </div>
                 <div className="cards-container-footer">
                   <div className="cards-container-footer-number">
-                    ₦12,234,657,804.00
+                    ₦12,234,657.00
                   </div>
                   <div className="cards-container-footer-flex">
                     <div className="cards-container-footer-flex-success">
@@ -57,8 +65,8 @@ const GeneralPerfomance = () => {
               </div>
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
+                  <div className="cards-container-header-box" style={{backgroundColor:" #C942B726"}}>
+                  <BiSolidUserRectangle  style={{color:"#C942B7"}}/>
                   </div>
                   <div className="cards-container-header-text">SUBSCRIBERS</div>
                 </div>
@@ -79,30 +87,8 @@ const GeneralPerfomance = () => {
               </div>
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
-                  </div>
-                  <div className="cards-container-header-text">PROSPECTS</div>
-                </div>
-                <div className="cards-container-footer">
-                  <div className="cards-container-footer-number">24</div>
-                  <div className="cards-container-footer-flex">
-                    <div className="cards-container-footer-flex-success">
-                      <RiArrowUpSFill />
-                      <div className="cards-container-footer-flex-success-text">
-                        4.25%
-                      </div>
-                    </div>
-                    <div className="cards-container-footer-flex-text">
-                      Since last week
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="cards-container">
-                <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
+                  <div className="cards-container-header-box" style={{backgroundColor:"#2F0A2826"}}>
+                  <ImUsers style={{color:"#2F0A28"}} />
                   </div>
                   <div className="cards-container-header-text">PARTNERS</div>
                 </div>
@@ -121,17 +107,40 @@ const GeneralPerfomance = () => {
                   </div>
                 </div>
               </div>
+              <div className="cards-container">
+                <div className="cards-container-header">
+                  <div className="cards-container-header-box" style={{backgroundColor:" #12A55C26"}}>
+                  <FaMoneyBills style={{color:"#12A55C"}}/>
+                  </div>
+                  <div className="cards-container-header-text">TRANSACTIONS</div>
+                </div>
+                <div className="cards-container-footer">
+                  <div className="cards-container-footer-number">N12,234,657.00</div>
+                  <div className="cards-container-footer-flex">
+                    <div className="cards-container-footer-flex-success">
+                      <RiArrowUpSFill />
+                      <div className="cards-container-footer-flex-success-text">
+                        4.25%
+                      </div>
+                    </div>
+                    <div className="cards-container-footer-flex-text">
+                      Since last week
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
             </div>
             <div className="dashboard-section">
               <div className="dashboard-section-one"  style={{width:"100%"}}>
                 <div className="card-header">
-                  <div className="card-header-text">SALES</div>
+                  <div className="card-header-text">CUSTOMER COUNT</div>
                 </div>
-                <PaymentPieChart/>
+                <CustomerCountChart/>
               </div>
               <div className="dashboard-section-two"  style={{width:"100%"}}>
                 <div className="card-header">
-                  <div className="card-header-text">PAYMENTS</div>
+                  <div className="card-header-text">DEMOGRAPHIC DISTRIBUTION</div>
                 </div>
            <DemographicBarChart/>
               </div>
@@ -139,7 +148,10 @@ const GeneralPerfomance = () => {
             <div className="card-header">
                   <div className="card-header-text">PENDING ORDERS</div>
                 </div>
-                <Tables/>
+                <div className="overflow-scroll " style={{height:"362px"}}>
+                     <PendingTable/>
+                </div>
+           
             </div>
             </div>
         

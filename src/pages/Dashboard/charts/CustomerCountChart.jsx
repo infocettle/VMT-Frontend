@@ -8,19 +8,19 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const PaymentsPieChart = () => {
   const data = {
-    labels: ['YTD Payments', 'Commsions'],
+    labels: ['Sole', 'Joint'],
     datasets: [
       {
-        label: 'Payments',
+        label: 'Customer Count',
         data: [40, 60],
         backgroundColor: [
-          'rgba(238, 94, 82, 1)',
-          'rgba(136, 106, 228, 1)',
+          'rgba(183, 233, 251, 1)',
+          'rgba(201, 66, 183, 1)',
          
         ],
         borderColor: [
-          'rgba(238, 94, 82, 1)',
-          'rgba(136, 106, 228, 1)',
+          'rgba(183, 233, 251, 1)',
+          'rgba(201, 66, 183, 1)',
          
         ],
         borderWidth:1,
@@ -28,6 +28,8 @@ const PaymentsPieChart = () => {
     ],
   };
   const options = {
+    cutout: '80%',
+  responsive: true,
     plugins: {
       legend: {
         position: 'right',
@@ -45,15 +47,15 @@ const PaymentsPieChart = () => {
       <div
         style={{
           position: 'absolute',
-          top: '46%',
-          left: '34%',
+          top: '50%',
+          left: '40%',
           transform: 'translate(-50%, -50%)',
           textAlign: 'center',
         }}
       >
-        <span style={{ fontSize: '25px', fontWeight: 'bold' }}>60%</span>
-        <div  style={{ fontSize: '15px' }}>YTD Payments</div>
-        <div style={{ fontSize: '10px' }}>N 12,349,000</div>
+        <span style={{ fontSize: '28px', fontWeight: 'bold' }}>4930</span>
+        <div  style={{ fontSize: '15px' }}>Total</div>
+
       </div>
     </div>
   );

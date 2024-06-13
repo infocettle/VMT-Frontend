@@ -5,15 +5,15 @@ import { IoFilter } from "react-icons/io5";
 import { MdPointOfSale } from "react-icons/md";
 import { RiArrowUpSFill } from "react-icons/ri";
 import "./dashboard.css";
-import { SalesLineChart } from "./charts/SalesLineChart";
-import { PaymentPieChart } from "./charts/PaymentsPieChart";
+
 import { Calendar } from "@/components/ui/calendar";
 import { FaRegBell } from "react-icons/fa";
 import Tables from "./Tables";
-import { DemographicBarChart } from "./DemographicBarChart";
+
 import SalesOverviewChart from "./charts/SalesOverviewChart";
 import ActiveUsersChart from "./charts/ActiveUsersChart";
 import ReferralChart from "./charts/ReferralChart";
+import PendingTable from "./PendingTable";
 
 const BusinessKpiPerformance = () => {
   const [open, setIsOpen] = useState(false);
@@ -36,15 +36,12 @@ const BusinessKpiPerformance = () => {
             <div className="dashboard-cards-container">
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
+                  <div className="cards-container-header-text">
+                    TOTAL TRANSACTION
                   </div>
-                  <div className="cards-container-header-text">SALES</div>
                 </div>
                 <div className="cards-container-footer">
-                  <div className="cards-container-footer-number">
-                    ₦12,234,657,804.00
-                  </div>
+                  <div className="cards-container-footer-number">28</div>
                   <div className="cards-container-footer-flex">
                     <div className="cards-container-footer-flex-success">
                       <RiArrowUpSFill />
@@ -60,9 +57,6 @@ const BusinessKpiPerformance = () => {
               </div>
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
-                  </div>
                   <div className="cards-container-header-text">SUBSCRIBERS</div>
                 </div>
                 <div className="cards-container-footer">
@@ -82,13 +76,10 @@ const BusinessKpiPerformance = () => {
               </div>
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
-                  </div>
-                  <div className="cards-container-header-text">PROSPECTS</div>
+                  <div className="cards-container-header-text">PARTNERS</div>
                 </div>
                 <div className="cards-container-footer">
-                  <div className="cards-container-footer-number">24</div>
+                  <div className="cards-container-footer-number">50</div>
                   <div className="cards-container-footer-flex">
                     <div className="cards-container-footer-flex-success">
                       <RiArrowUpSFill />
@@ -104,13 +95,12 @@ const BusinessKpiPerformance = () => {
               </div>
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
-                  </div>
-                  <div className="cards-container-header-text">PARTNERS</div>
+                  <div className="cards-container-header-text">TOTAL SALES</div>
                 </div>
                 <div className="cards-container-footer">
-                  <div className="cards-container-footer-number">46</div>
+                  <div className="cards-container-footer-number">
+                    N124,234,60.00
+                  </div>
                   <div className="cards-container-footer-flex">
                     <div className="cards-container-footer-flex-success">
                       <RiArrowUpSFill />
@@ -147,7 +137,7 @@ const BusinessKpiPerformance = () => {
                 </div>
                 <div
                   className="dashboard-section-one"
-                  style={{ width: "100%",display: "flex",gap: "20px"  }}
+                  style={{ width: "100%", display: "flex", gap: "20px",justifyContent:"center",padding:"18px",alignItems:"center" }}
                 >
                   <div className="flex flex-col w-100">
                     <div className="referral-tracking-box">
@@ -167,15 +157,20 @@ const BusinessKpiPerformance = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="w-100">  <ReferralChart /></div>
-                
+                  <div className="w-100">
+                    {" "}
+                    <ReferralChart />
+                  </div>
                 </div>
               </div>
               <div className="dashboard-section-two" style={{ width: "100%" }}>
                 <div className="card-header">
                   <div className="card-header-text">RECENT ORDERS</div>
                 </div>
-                <Tables />
+                <div className="sales-unit-container">
+                        <PendingTable/>
+                </div>
+          
               </div>
             </div>
           </div>

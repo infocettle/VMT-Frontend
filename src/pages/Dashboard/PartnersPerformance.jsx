@@ -5,8 +5,8 @@ import { IoFilter } from "react-icons/io5";
 import { MdPointOfSale } from "react-icons/md";
 import { RiArrowUpSFill } from "react-icons/ri";
 import "./dashboard.css";
-import { SalesLineChart } from "./charts/SalesLineChart";
-import { PaymentPieChart } from "./charts/PaymentsPieChart";
+
+
 import { Calendar } from "@/components/ui/calendar"
 import { FaRegBell } from "react-icons/fa";
 import Tables from "./Tables";
@@ -15,6 +15,7 @@ import TopSubscriptionChart from "./charts/TopSubscribtionsChart";
 import TransactionHistoryTable from "./TransactionHistoryTable";
 import MonthlyRevenueChart from "./charts/MonthlyRevenueChart";
 import WorldMapChart from "./charts/WorldMapChart";
+import ActiveAgentChart from "./charts/ActiveAgentCharts";
 
 const PartnersPerformance = () => {
   const [open, setIsOpen] = useState(false);
@@ -31,14 +32,14 @@ const PartnersPerformance = () => {
             <div className="dashboard-cards-container">
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
+                  {/* <div className="cards-container-header-box">
                     <MdPointOfSale />
-                  </div>
-                  <div className="cards-container-header-text">SALES</div>
+                  </div> */}
+                  <div className="cards-container-header-text">CONSULTANTS</div>
                 </div>
                 <div className="cards-container-footer">
                   <div className="cards-container-footer-number">
-                    ₦12,234,657,804.00
+                   28
                   </div>
                   <div className="cards-container-footer-flex">
                     <div className="cards-container-footer-flex-success">
@@ -55,10 +56,8 @@ const PartnersPerformance = () => {
               </div>
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
-                  </div>
-                  <div className="cards-container-header-text">SUBSCRIBERS</div>
+                 
+                  <div className="cards-container-header-text">AGENTS</div>
                 </div>
                 <div className="cards-container-footer">
                   <div className="cards-container-footer-number">124</div>
@@ -77,13 +76,11 @@ const PartnersPerformance = () => {
               </div>
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
-                  </div>
-                  <div className="cards-container-header-text">PROSPECTS</div>
+                 
+                  <div className="cards-container-header-text">PROSPECTS REGISTERED</div>
                 </div>
                 <div className="cards-container-footer">
-                  <div className="cards-container-footer-number">24</div>
+                  <div className="cards-container-footer-number">46</div>
                   <div className="cards-container-footer-flex">
                     <div className="cards-container-footer-flex-success">
                       <RiArrowUpSFill />
@@ -102,10 +99,10 @@ const PartnersPerformance = () => {
                   <div className="cards-container-header-box">
                     <MdPointOfSale />
                   </div>
-                  <div className="cards-container-header-text">PARTNERS</div>
+                  <div className="cards-container-header-text">INVESTORS</div>
                 </div>
                 <div className="cards-container-footer">
-                  <div className="cards-container-footer-number">46</div>
+                  <div className="cards-container-footer-number">28</div>
                   <div className="cards-container-footer-flex">
                     <div className="cards-container-footer-flex-success">
                       <RiArrowUpSFill />
@@ -126,14 +123,16 @@ const PartnersPerformance = () => {
                   <div className="card-header-text">ACTIVE AGENTS</div>
             
                 </div>
-                <ActiveUsersChart/>
+                <ActiveAgentChart/>
               </div>
               <div className="dashboard-section-two" style={{width:"100%"}}>
                 <div className="card-header">
                   <div className="card-header-text">GEOGRAPHICAL DISTRIBUTION</div>
                  
                 </div>
+                <div className="sales-unit-container">
                 <WorldMapChart/>
+                </div>
               </div>
             </div>
            
@@ -141,15 +140,22 @@ const PartnersPerformance = () => {
 
             <div className="dashboard-section-one" style={{width:"100%"}}>
             <div className="card-header">
-                  <div className="card-header-text">TOP SUBSCRIPTIONS</div>
+                  <div className="card-header-text">RECENT PROSPECTS ADDED</div>
                 </div>
-                  <Tables/>
+                <div className="sales-unit-container">
+
+                      <Tables/>
+                  </div>
+              
             </div>
             <div className="dashboard-section-two" style={{width:"100%"}}>
             <div className="card-header">
-                  <div className="card-header-text">COMMISSION PAY PER PARTNER</div>
+            <div className="card-header-text"> RECENT INVESTORS</div>
                 </div>
-                  <TransactionHistoryTable/>
+                <div className="sales-unit-container">
+  <TransactionHistoryTable/>
+                  </div>
+                
             </div>
             </div>
           </div>

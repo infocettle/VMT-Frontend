@@ -6,7 +6,7 @@ import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Title, Toolti
 ChartJS.register(BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 
 const data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
   datasets: [
     {
       label: 'Monthly Data',
@@ -50,8 +50,14 @@ const options = {
   },
 };
 
-const ActiveUsersChart = () => {
-  return <Bar data={data} options={options} />;
+const ActiveAgentChart = () => {
+    return (
+        <div style={{ position: 'relative', width: '100%', }}>
+  
+  
+  <Bar data={data} options={options} height= '122px' />
+  </div>
+  )
 };
 
-export default ActiveUsersChart;
+export default ActiveAgentChart;

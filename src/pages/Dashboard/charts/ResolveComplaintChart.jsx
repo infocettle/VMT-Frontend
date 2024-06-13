@@ -10,8 +10,8 @@ const data = {
   datasets: [
     {
       data: [73, 27],
-      backgroundColor: ['#D81B60', '#f2f2f2'],
-      borderColor: ['#D81B60', '#f2f2f2'],
+      backgroundColor: ['#C942B7', '#f2f2f2'],
+      borderColor: ['#C942B7', '#f2f2f2'],
       borderWidth: 1,
     },
   ],

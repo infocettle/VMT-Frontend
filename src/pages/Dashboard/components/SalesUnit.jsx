@@ -14,7 +14,8 @@ function SalesUnit() {
             <div className="sales-unit-header">Sales</div>
             <div className="sales-unit-percentage">78%</div>
           </div>
-          <Progress value={78}  />
+          <Progress value={78} color="
+rgba(136, 106, 228, 1)" />
 
         </div>
         <div className="sales-unit">
@@ -22,7 +23,8 @@ function SalesUnit() {
             <div className="sales-unit-header">Manufacturing</div>
             <div className="sales-unit-percentage">45%</div>
           </div>
-          <Progress value={45}  />
+          <Progress value={45} color="
+rgba(208, 43, 32, 1)" />
 
         </div>
         <div className="sales-unit">
@@ -30,7 +32,7 @@ function SalesUnit() {
             <div className="sales-unit-header">Marketing</div>
             <div className="sales-unit-percentage">63%</div>
           </div>
-          <Progress value={63}  />
+          <Progress value={63} color="rgba(148, 82, 74, 1)" />
 
         </div>
         <div className="sales-unit">
@@ -38,7 +40,7 @@ function SalesUnit() {
             <div className="sales-unit-header">Finance</div>
             <div className="sales-unit-percentage">84%</div>
           </div>
-          <Progress value={84}  />
+          <Progress value={84} color="rgba(201, 66, 183, 1)" />
 
         </div>
       </div>

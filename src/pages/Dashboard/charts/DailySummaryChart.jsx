@@ -1,3 +1,4 @@
+
 // src/BarChart.js
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
@@ -6,17 +7,17 @@ import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Title, Toolti
 ChartJS.register(BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 
 const data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July',],
   datasets: [
     {
       label: 'Monthly Data',
-      data: [120, 190, 300, 500, 200, 300, 400, 350, 250, 150, 100, 50],
-      backgroundColor: 'rgba(201, 66, 183, 1)',
-      borderColor: 'rgba(201, 66, 183, 1)',
+      data: [120, 190, 300, 500, 200, 300, 200,],
+      backgroundColor: 'rgba(148, 82, 74, 1)',
+      borderColor: 'rgba(148, 82, 74, 1)',
       borderWidth: 1,
    
       
-      barThickness: 4, // Adjust the bar thickness here
+      barThickness: 20, // Adjust the bar thickness here
     },
   ],
 };
@@ -38,6 +39,9 @@ const options = {
         display: false,
         text: 'Month',
       },
+      ticks: {
+        display: false, // Hide x-axis labels
+      },
     },
     y: {
       min: 0,
@@ -50,8 +54,16 @@ const options = {
   },
 };
 
-const ActiveUsersChart = () => {
-  return <Bar data={data} options={options} />;
+
+
+const DailySummaryChart = () => {
+  return (
+    <div style={{ position: 'relative',width: '100%', height: '100%' }}> 
+<Bar data={data} options={options} height="285px" />
+
+</div>
+)
+  
 };
 
-export default ActiveUsersChart;
+export default DailySummaryChart;

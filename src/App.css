@@ -4,3 +4,7 @@
   box-sizing: border-box;
 }
 
+.dashboard-section-one canvas{
+  /* width: 100% !important; */
+  /* height: 220px !important; */
+}

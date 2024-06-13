@@ -5,8 +5,8 @@ import { IoFilter } from "react-icons/io5";
 import { MdPointOfSale } from "react-icons/md";
 import { RiArrowUpSFill } from "react-icons/ri";
 import "./dashboard.css";
-import { SalesLineChart } from "./charts/SalesLineChart";
-import { PaymentPieChart } from "./charts/PaymentsPieChart";
+
+
 import { Calendar } from "@/components/ui/calendar"
 import { FaRegBell } from "react-icons/fa";
 import Tables from "./Tables";
@@ -14,6 +14,9 @@ import ActiveUsersChart from "./charts/ActiveUsersChart";
 import TopSubscriptionChart from "./charts/TopSubscribtionsChart";
 import TimeSpeedComponent from "./components/TimeSpeedComponent";
 import ResolveComplaintChart from "./charts/ResolveComplaintChart";
+import AverageSpeedChart from "./charts/AverageSpeedChart";
+import TicketInflowChart from "./charts/TicketInflowChart";
+import TicketTypeChart from "./charts/TicketTypeChart";
 
 const SupportServicePerformance = () => {
   const [open, setIsOpen] = useState(false);
@@ -27,40 +30,15 @@ const SupportServicePerformance = () => {
         <div className="flex justify-between w-full items-center">
           <div className="main-container">
            
-            <div className="dashboard-cards-container">
+            <div className="dashboard-cards-container dashboard-cards-container-two">
+           
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
-                  </div>
-                  <div className="cards-container-header-text">SALES</div>
+                 
+                  <div className="cards-container-header-text">SUPPORT REQUEST</div>
                 </div>
                 <div className="cards-container-footer">
-                  <div className="cards-container-footer-number">
-                    ₦12,234,657,804.00
-                  </div>
-                  <div className="cards-container-footer-flex">
-                    <div className="cards-container-footer-flex-success">
-                      <RiArrowUpSFill />
-                      <div className="cards-container-footer-flex-success-text">
-                        4.25%
-                      </div>
-                    </div>
-                    <div className="cards-container-footer-flex-text">
-                      Since last week
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="cards-container">
-                <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
-                  </div>
-                  <div className="cards-container-header-text">SUBSCRIBERS</div>
-                </div>
-                <div className="cards-container-footer">
-                  <div className="cards-container-footer-number">124</div>
+                  <div className="cards-container-footer-number">108</div>
                   <div className="cards-container-footer-flex">
                     <div className="cards-container-footer-flex-success">
                       <RiArrowUpSFill />
@@ -76,13 +54,11 @@ const SupportServicePerformance = () => {
               </div>
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
-                  </div>
-                  <div className="cards-container-header-text">PROSPECTS</div>
+                
+                  <div className="cards-container-header-text">RESOLUTIONS</div>
                 </div>
                 <div className="cards-container-footer">
-                  <div className="cards-container-footer-number">24</div>
+                  <div className="cards-container-footer-number">124</div>
                   <div className="cards-container-footer-flex">
                     <div className="cards-container-footer-flex-success">
                       <RiArrowUpSFill />
@@ -98,13 +74,11 @@ const SupportServicePerformance = () => {
               </div>
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
-                  </div>
-                  <div className="cards-container-header-text">PARTNERS</div>
+                  
+                  <div className="cards-container-header-text">AVG. RESPONSE TIME</div>
                 </div>
                 <div className="cards-container-footer">
-                  <div className="cards-container-footer-number">46</div>
+                  <div className="cards-container-footer-number">4m:28s</div>
                   <div className="cards-container-footer-flex">
                     <div className="cards-container-footer-flex-success">
                       <RiArrowUpSFill />
@@ -125,14 +99,14 @@ const SupportServicePerformance = () => {
                   <div className="card-header-text">TICKET INFLOW</div>
               
                 </div>
-                <ActiveUsersChart/>
+                <TicketInflowChart/>
               </div>
               <div className="dashboard-section-two" style={{width:"100%"}}>
                 <div className="card-header">
                   <div className="card-header-text">TICKET BY REQUEST TYPE</div>
                
                 </div>
-                <TopSubscriptionChart/>
+                <TicketTypeChart/>
               </div>
             </div>
            
@@ -155,7 +129,7 @@ const SupportServicePerformance = () => {
          
             <div className="account-retention-container">
         <div>
-        <ResolveComplaintChart/>
+        <AverageSpeedChart/>
         </div>
         <div className="flex flex-col items-start gap-3 w-72">
         <div className="account-retention-container-header">0m:18s</div>

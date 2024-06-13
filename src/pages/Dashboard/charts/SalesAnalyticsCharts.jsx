@@ -1,19 +1,19 @@
 // src/LineChart.js
 import React from 'react';
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, LineElement, PointElement, LinearScale, Title, CategoryScale, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, LineElement, PointElement, LinearScale, Title,Filler, CategoryScale, Tooltip, Legend } from 'chart.js';
 
-ChartJS.register(LineElement, PointElement, LinearScale, Title, CategoryScale, Tooltip, Legend);
+ChartJS.register(LineElement, PointElement, LinearScale, Title, CategoryScale, Tooltip, Legend,Filler);
 
 const data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October'],
+  labels: ['Jan 8', 'Jan 15', 'Jan 22', 'Jan 29', 'Feb 5', 'Feb 12'],
   datasets: [
     {
       label: 'Monthly Data',
-      data: [12, 19, 3, 5, 2, 3, 20, 15, 10, 8],
-      fill: false,
-      backgroundColor: 'rgba(75, 192, 192, 0.2)',
-      borderColor: 'rgba(75, 192, 192, 1)',
+      data: [12, 19, 25, 35, 20, 13],
+      fill: true,
+      backgroundColor: 'rgba(242, 157, 65, 0.1)',
+      borderColor: 'rgba(242, 157, 65, 1)',
       borderWidth: 1,
       tension: 0.4
     },
@@ -24,7 +24,7 @@ const options = {
   responsive: true,
   plugins: {
     legend: {
-      position: 'top',
+      display: false,
     },
     tooltip: {
       enabled: true,
@@ -33,7 +33,7 @@ const options = {
   scales: {
     x: {
       title: {
-        display: true,
+        display: false,
         text: 'Month',
       },
     },
@@ -41,7 +41,7 @@ const options = {
       min: 0,
       max: 50,
       title: {
-        display: true,
+        display: false,
         text: 'Value',
       },
     },

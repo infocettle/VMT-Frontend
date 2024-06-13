@@ -6,13 +6,13 @@ import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Title, Toolti
 ChartJS.register(BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 
 const data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
   datasets: [
     {
       label: 'Monthly Data',
       data: [120, 190, 300, 500, 200, 300, 400, 350, 250, 150, 100, 50],
-      backgroundColor: 'rgba(201, 66, 183, 1)',
-      borderColor: 'rgba(201, 66, 183, 1)',
+      backgroundColor: 'rgba(11, 110, 208, 1)',
+      borderColor: 'rgba(11, 110, 208, 1)',
       borderWidth: 1,
    
       
@@ -50,8 +50,14 @@ const options = {
   },
 };
 
-const ActiveUsersChart = () => {
-  return <Bar data={data} options={options} />;
+const TicketInflowChart = () => {
+    return (
+        <div style={{ position: 'relative', width: '100%', }}>
+  
+  
+  <Bar data={data} options={options} height= '122px' />
+  </div>
+  )
 };
 
-export default ActiveUsersChart;
+export default TicketInflowChart;

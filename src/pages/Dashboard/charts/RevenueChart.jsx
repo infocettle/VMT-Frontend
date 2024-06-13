@@ -8,14 +8,14 @@ import { Chart as ChartJS, LineElement, PointElement, LinearScale, Title, Catego
 ChartJS.register(LineElement, PointElement, LinearScale, Title, CategoryScale, Tooltip, Legend);
 
 const data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October'],
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct'],
   datasets: [
     {
       label: 'Monthly Data',
       data: [40, 30, 23, 5, 2, 3, 20, 15, 10, 8],
       fill: false,
-      backgroundColor: 'rgba(92, 177, 118, 1)',
-      borderColor: 'rgba(92, 177, 118, 1)',
+      backgroundColor: 'rgba(136, 106, 228, 1)',
+      borderColor: 'rgba(136, 106, 228, 1)',
       borderWidth: 1,
       tension:0.4
     },
@@ -59,9 +59,9 @@ const options = {
   },
 };
 
-const SalesOverviewChart = () => {
+const RevenueChart = () => {
   return <Line data={data} options={options} />;
 };
 
-export default SalesOverviewChart;
+export default RevenueChart;
 

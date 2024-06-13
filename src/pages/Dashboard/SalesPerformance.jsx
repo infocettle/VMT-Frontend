@@ -5,15 +5,12 @@ import { IoFilter } from "react-icons/io5";
 import { MdPointOfSale } from "react-icons/md";
 import { RiArrowUpSFill } from "react-icons/ri";
 import "./dashboard.css";
-import { SalesLineChart } from "./charts/SalesLineChart";
-import { PaymentPieChart } from "./charts/PaymentsPieChart";
+
+
 import { Calendar } from "@/components/ui/calendar";
 import { FaRegBell } from "react-icons/fa";
 import Tables from "./Tables";
-import { DemographicBarChart } from "./DemographicBarChart";
-import SalesOverviewChart from "./charts/SalesOverviewChart";
-import ActiveUsersChart from "./charts/ActiveUsersChart";
-import ReferralChart from "./charts/ReferralChart";
+
 import SalesAnalyticsCharts from "./charts/SalesAnalyticsCharts";
 import MonthlyRevenueChart from "./charts/MonthlyRevenueChart";
 import SalesUnit from "./components/SalesUnit";
@@ -41,14 +38,12 @@ const SalesPerformance = () => {
             <div className="dashboard-cards-container">
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
-                  </div>
-                  <div className="cards-container-header-text">SALES</div>
+                 
+                  <div className="cards-container-header-text">REVENUE</div>
                 </div>
                 <div className="cards-container-footer">
                   <div className="cards-container-footer-number">
-                    ₦12,234,657,804.00
+                    ₦12,234,657.00
                   </div>
                   <div className="cards-container-footer-flex">
                     <div className="cards-container-footer-flex-success">
@@ -65,10 +60,8 @@ const SalesPerformance = () => {
               </div>
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
-                  </div>
-                  <div className="cards-container-header-text">SUBSCRIBERS</div>
+                
+                  <div className="cards-container-header-text">TRANSACTION</div>
                 </div>
                 <div className="cards-container-footer">
                   <div className="cards-container-footer-number">124</div>
@@ -87,13 +80,11 @@ const SalesPerformance = () => {
               </div>
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
-                  </div>
-                  <div className="cards-container-header-text">PROSPECTS</div>
+                 
+                  <div className="cards-container-header-text">CONVERSION RATE</div>
                 </div>
                 <div className="cards-container-footer">
-                  <div className="cards-container-footer-number">24</div>
+                  <div className="cards-container-footer-number">1.2</div>
                   <div className="cards-container-footer-flex">
                     <div className="cards-container-footer-flex-success">
                       <RiArrowUpSFill />
@@ -109,13 +100,11 @@ const SalesPerformance = () => {
               </div>
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
-                  </div>
-                  <div className="cards-container-header-text">PARTNERS</div>
+                 
+                  <div className="cards-container-header-text">SUBSCRIBERS</div>
                 </div>
                 <div className="cards-container-footer">
-                  <div className="cards-container-footer-number">46</div>
+                  <div className="cards-container-footer-number">124</div>
                   <div className="cards-container-footer-flex">
                     <div className="cards-container-footer-flex-success">
                       <RiArrowUpSFill />
@@ -129,6 +118,7 @@ const SalesPerformance = () => {
                   </div>
                 </div>
               </div>
+              
             </div>
             <div className="dashboard-section">
               <div className="dashboard-section-one" style={{ width: "100%" }}>

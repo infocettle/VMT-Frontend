@@ -3,13 +3,17 @@ import React, { useState } from "react";
 import DashboardDiv from "./DashboardDiv";
 import { IoFilter } from "react-icons/io5";
 import { MdPointOfSale } from "react-icons/md";
+import { BiSolidUserRectangle } from "react-icons/bi";
+import { FaMoneyBills } from "react-icons/fa6";
+import { ImUsers } from "react-icons/im";
 import { RiArrowUpSFill } from "react-icons/ri";
 import "./dashboard.css";
-import { SalesLineChart } from "./charts/SalesLineChart";
-import { PaymentPieChart } from "./charts/PaymentsPieChart";
+
+import  PaymentsPieChart  from "./charts/PaymentsPieChart";
 import { Calendar } from "@/components/ui/calendar"
 import { FaRegBell } from "react-icons/fa";
 import Tables from "./Tables";
+import SalesLineChart from "./charts/SalesLineChart";
 
 const Overview = () => {
   const [open, setIsOpen] = useState(false);
@@ -31,14 +35,14 @@ const Overview = () => {
             <div className="dashboard-cards-container">
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
+                  <div className="cards-container-header-box" >
+                    <MdPointOfSale style={{color:" #0B6ED0"}}/>
                   </div>
                   <div className="cards-container-header-text">SALES</div>
                 </div>
                 <div className="cards-container-footer">
                   <div className="cards-container-footer-number">
-                    ₦12,234,657,804.00
+                    ₦12,234,657.00
                   </div>
                   <div className="cards-container-footer-flex">
                     <div className="cards-container-footer-flex-success">
@@ -55,8 +59,8 @@ const Overview = () => {
               </div>
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
+                  <div className="cards-container-header-box" style={{backgroundColor:" #C942B726"}}>
+                  <BiSolidUserRectangle  style={{color:"#C942B7"}}/>
                   </div>
                   <div className="cards-container-header-text">SUBSCRIBERS</div>
                 </div>
@@ -77,8 +81,8 @@ const Overview = () => {
               </div>
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
+                  <div className="cards-container-header-box" style={{backgroundColor:" #12A55C26"}}>
+                  <FaMoneyBills style={{color:"#12A55C"}}/>
                   </div>
                   <div className="cards-container-header-text">PROSPECTS</div>
                 </div>
@@ -99,8 +103,8 @@ const Overview = () => {
               </div>
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
+                  <div className="cards-container-header-box" style={{backgroundColor:"#2F0A2826"}}>
+                  <ImUsers style={{color:"#2F0A28"}} />
                   </div>
                   <div className="cards-container-header-text">PARTNERS</div>
                 </div>
@@ -120,7 +124,7 @@ const Overview = () => {
                 </div>
               </div>
             </div>
-            <div className="dashboard-section">
+            <div className="dashboard-section dashboard-section-height">
               <div className="dashboard-section-one">
                 <div className="card-header">
                   <div className="card-header-text">SALES</div>
@@ -131,7 +135,7 @@ const Overview = () => {
                 <div className="card-header">
                   <div className="card-header-text">PAYMENTS</div>
                 </div>
-                <PaymentPieChart/>
+                <PaymentsPieChart/>
               </div>
             </div>
             <div className="dashboard-section">
@@ -221,13 +225,16 @@ const Overview = () => {
                 <div className="card-header">
                   <div className="card-header-text">CALENDER</div>
                 </div>
-                <Calendar
+                <div className="w-100">
+                              <Calendar
     mode="single"
     selected={date}
     onSelect={setDate}
-    className="rounded-md  w-full"
+    className="rounded-md w-full"
 
   />
+                </div>
+    
               </div>
             </div>
             <div className="dashboard-section">

@@ -6,7 +6,7 @@ import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Title, Toolti
 ChartJS.register(BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 
 const data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
   datasets: [
     {
       label: 'Monthly Data',
@@ -16,7 +16,7 @@ const data = {
       borderWidth: 1,
    
       
-      barThickness: 4, // Adjust the bar thickness here
+      barThickness: 20, // Adjust the bar thickness here
     },
   ],
 };
@@ -35,7 +35,7 @@ const options = {
   scales: {
     x: {
       title: {
-        display: false,
+        display: true,
         text: 'Month',
       },
     },
@@ -43,15 +43,15 @@ const options = {
       min: 0,
       max: 400,
       title: {
-        display: false,
+        display: true,
         text: 'Value',
       },
     },
   },
 };
 
-const ActiveUsersChart = () => {
+const CommissionPayableChart = () => {
   return <Bar data={data} options={options} />;
 };
 
-export default ActiveUsersChart;
+export default CommissionPayableChart;

@@ -5,13 +5,16 @@ import { IoFilter } from "react-icons/io5";
 import { MdPointOfSale } from "react-icons/md";
 import { RiArrowUpSFill } from "react-icons/ri";
 import "./dashboard.css";
-import { SalesLineChart } from "./charts/SalesLineChart";
-import { PaymentPieChart } from "./charts/PaymentsPieChart";
+
+import  PaymentsPieChart  from "./charts/PaymentsPieChart";
 import { Calendar } from "@/components/ui/calendar"
 import { FaRegBell } from "react-icons/fa";
 import Tables from "./Tables";
 import ActiveUsersChart from "./charts/ActiveUsersChart";
 import TopSubscriptionChart from "./charts/TopSubscribtionsChart";
+import CommissionPayableChart from "./charts/CommissionPayableChart";
+import SalesAmountChart from "./charts/SalesAmountChart";
+import CommissionPartnerChart from "./charts/CommissionPartnerChart";
 
 const CommissionPerformance = () => {
   const [open, setIsOpen] = useState(false);
@@ -24,18 +27,22 @@ const CommissionPerformance = () => {
 
         <div className="flex justify-between w-full items-center">
           <div className="main-container">
-           
+          <div className="filter-button-container justify-between">
+              <h2 className="uppercase font-light text-base">Commission</h2>
+              {/* <div className="filter-button">
+                <IoFilter />
+                <div className="filter-button-text">Filter</div>
+              </div> */}
+            </div>
             <div className="dashboard-cards-container">
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
-                  </div>
-                  <div className="cards-container-header-text">SALES</div>
+                 
+                  <div className="cards-container-header-text">SALES AMOUNT</div>
                 </div>
                 <div className="cards-container-footer">
                   <div className="cards-container-footer-number">
-                    ₦12,234,657,804.00
+                    ₦35,657,804.00
                   </div>
                   <div className="cards-container-footer-flex">
                     <div className="cards-container-footer-flex-success">
@@ -52,13 +59,11 @@ const CommissionPerformance = () => {
               </div>
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
-                  </div>
-                  <div className="cards-container-header-text">SUBSCRIBERS</div>
+                 
+                  <div className="cards-container-header-text">AVG. COMMISSION RATE</div>
                 </div>
                 <div className="cards-container-footer">
-                  <div className="cards-container-footer-number">124</div>
+                  <div className="cards-container-footer-number">4.3%</div>
                   <div className="cards-container-footer-flex">
                     <div className="cards-container-footer-flex-success">
                       <RiArrowUpSFill />
@@ -74,13 +79,13 @@ const CommissionPerformance = () => {
               </div>
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
+                  {/* <div className="cards-container-header-box">
                     <MdPointOfSale />
-                  </div>
-                  <div className="cards-container-header-text">PROSPECTS</div>
+                  </div> */}
+                  <div className="cards-container-header-text">TOTAL COMMISSION</div>
                 </div>
                 <div className="cards-container-footer">
-                  <div className="cards-container-footer-number">24</div>
+                  <div className="cards-container-footer-number">N657,804.00</div>
                   <div className="cards-container-footer-flex">
                     <div className="cards-container-footer-flex-success">
                       <RiArrowUpSFill />
@@ -96,10 +101,32 @@ const CommissionPerformance = () => {
               </div>
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
+                  {/* <div className="cards-container-header-box">
                     <MdPointOfSale />
+                  </div> */}
+                  <div className="cards-container-header-text">TOTAL DEDUCTION</div>
+                </div>
+                <div className="cards-container-footer">
+                  <div className="cards-container-footer-number">46</div>
+                  <div className="cards-container-footer-flex">
+                    <div className="cards-container-footer-flex-success">
+                      <RiArrowUpSFill />
+                      <div className="cards-container-footer-flex-success-text">
+                        4.25%
+                      </div>
+                    </div>
+                    <div className="cards-container-footer-flex-text">
+                      Since last week
+                    </div>
                   </div>
-                  <div className="cards-container-header-text">PARTNERS</div>
+                </div>
+              </div>
+              <div className="cards-container">
+                <div className="cards-container-header">
+                  {/* <div className="cards-container-header-box">
+                    <MdPointOfSale />
+                  </div> */}
+                  <div className="cards-container-header-text">N657,804.00</div>
                 </div>
                 <div className="cards-container-footer">
                   <div className="cards-container-footer-number">46</div>
@@ -128,7 +155,7 @@ const CommissionPerformance = () => {
               </div>
             </div>
                 </div>
-                <ActiveUsersChart/>
+                <CommissionPayableChart/>
               </div>
               <div className="dashboard-section-two" style={{width:"100%"}}>
                 <div className="card-header">
@@ -140,7 +167,7 @@ const CommissionPerformance = () => {
               </div>
             </div>
                 </div>
-                <ActiveUsersChart/>
+                <SalesAmountChart/>
               </div>
             </div>
            
@@ -156,7 +183,7 @@ const CommissionPerformance = () => {
             <div className="card-header">
                   <div className="card-header-text">COMMISSION PAY PER PARTNER</div>
                 </div>
-                  <TopSubscriptionChart/>
+                  <CommissionPartnerChart/>
             </div>
             </div>
           </div>

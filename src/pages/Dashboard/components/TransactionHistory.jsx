@@ -8,7 +8,10 @@ function TransactionHistory() {
     <div className="card-header">
           <div className="card-header-text">TRANSACTION HISTORY</div>
         </div>
-        <TransactionHistoryTable/>
+        <div className="sales-unit-container">
+               <TransactionHistoryTable/> 
+        </div>
+  
     </div>
   )
 }

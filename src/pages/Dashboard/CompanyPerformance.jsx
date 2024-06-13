@@ -5,8 +5,8 @@ import { IoFilter } from "react-icons/io5";
 import { MdPointOfSale } from "react-icons/md";
 import { RiArrowUpSFill } from "react-icons/ri";
 import "./dashboard.css";
-import { SalesLineChart } from "./charts/SalesLineChart";
-import { PaymentPieChart } from "./charts/PaymentsPieChart";
+
+
 import { Calendar } from "@/components/ui/calendar"
 import { FaRegBell } from "react-icons/fa";
 import Tables from "./Tables";
@@ -14,6 +14,10 @@ import ActiveUsersChart from "./charts/ActiveUsersChart";
 import TopSubscriptionChart from "./charts/TopSubscribtionsChart";
 import TransactionHistoryTable from "./TransactionHistoryTable";
 import MonthlyRevenueChart from "./charts/MonthlyRevenueChart";
+import SalesOverviewChart from "./charts/SalesOverviewChart";
+import RevenueChart from "./charts/RevenueChart";
+import DailySummaryChart from "./charts/DailySummaryChart";
+import PendingTable from "./PendingTable";
 
 const CompanyPerformance = () => {
   const [open, setIsOpen] = useState(false);
@@ -30,14 +34,14 @@ const CompanyPerformance = () => {
             <div className="dashboard-cards-container">
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
+                  {/* <div className="cards-container-header-box">
                     <MdPointOfSale />
-                  </div>
-                  <div className="cards-container-header-text">SALES</div>
+                  </div> */}
+                  <div className="cards-container-header-text">SUBSCRIPTIONS</div>
                 </div>
                 <div className="cards-container-footer">
                   <div className="cards-container-footer-number">
-                    ₦12,234,657,804.00
+            280
                   </div>
                   <div className="cards-container-footer-flex">
                     <div className="cards-container-footer-flex-success">
@@ -54,13 +58,11 @@ const CompanyPerformance = () => {
               </div>
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
-                  </div>
-                  <div className="cards-container-header-text">SUBSCRIBERS</div>
+               
+                  <div className="cards-container-header-text">INCOME</div>
                 </div>
                 <div className="cards-container-footer">
-                  <div className="cards-container-footer-number">124</div>
+                  <div className="cards-container-footer-number">        ₦12,234,657.00</div>
                   <div className="cards-container-footer-flex">
                     <div className="cards-container-footer-flex-success">
                       <RiArrowUpSFill />
@@ -76,10 +78,8 @@ const CompanyPerformance = () => {
               </div>
               <div className="cards-container">
                 <div className="cards-container-header">
-                  <div className="cards-container-header-box">
-                    <MdPointOfSale />
-                  </div>
-                  <div className="cards-container-header-text">PROSPECTS</div>
+                  
+                  <div className="cards-container-header-text">EXPENSE</div>
                 </div>
                 <div className="cards-container-footer">
                   <div className="cards-container-footer-number">24</div>
@@ -101,10 +101,10 @@ const CompanyPerformance = () => {
                   <div className="cards-container-header-box">
                     <MdPointOfSale />
                   </div>
-                  <div className="cards-container-header-text">PARTNERS</div>
+                  <div className="cards-container-header-text">PROFIT</div>
                 </div>
                 <div className="cards-container-footer">
-                  <div className="cards-container-footer-number">46</div>
+                  <div className="cards-container-footer-number">        ₦12,234,804.00</div>
                   <div className="cards-container-footer-flex">
                     <div className="cards-container-footer-flex-success">
                       <RiArrowUpSFill />
@@ -120,9 +120,9 @@ const CompanyPerformance = () => {
               </div>
             </div>
             <div className="dashboard-section">
-              <div className="dashboard-section-one" style={{width:"100%"}}>
+              <div className="dashboard-section-one" >
                 <div className="card-header">
-                  <div className="card-header-text">COMMISION PAYABLE</div>
+                  <div className="card-header-text">REVENUE</div>
                   <div className="filter-button-container">
               <div className="filter-button">
                 <div className="filter-button-text">2023</div>
@@ -130,11 +130,11 @@ const CompanyPerformance = () => {
               </div>
             </div>
                 </div>
-                <MonthlyRevenueChart/>
+                <RevenueChart/>
               </div>
-              <div className="dashboard-section-two" style={{width:"100%"}}>
+              <div className="dashboard-section-two" >
                 <div className="card-header">
-                  <div className="card-header-text">SALES AMOUNT</div>
+                  <div className="card-header-text">DAILY SUMMARY</div>
                   <div className="filter-button-container">
               <div className="filter-button">
                 <div className="filter-button-text">2023</div>
@@ -142,7 +142,7 @@ const CompanyPerformance = () => {
               </div>
             </div>
                 </div>
-                <ActiveUsersChart/>
+                <DailySummaryChart/>
               </div>
             </div>
            
@@ -150,15 +150,21 @@ const CompanyPerformance = () => {
 
             <div className="dashboard-section-one" style={{width:"100%"}}>
             <div className="card-header">
-                  <div className="card-header-text">TOP SUBSCRIPTIONS</div>
+                  <div className="card-header-text">RECENT ORDERS</div>
                 </div>
-                  <Tables/>
+                <div className="sales-unit-container">
+                         <PendingTable/>
+                </div>
+           
             </div>
             <div className="dashboard-section-two" style={{width:"100%"}}>
             <div className="card-header">
-                  <div className="card-header-text">COMMISSION PAY PER PARTNER</div>
+                  <div className="card-header-text">TRANSACTION HISTORY</div>
                 </div>
-                  <TransactionHistoryTable/>
+                <div className="sales-unit-container">
+                           <TransactionHistoryTable/>
+                </div>
+         
             </div>
             </div>
           </div>

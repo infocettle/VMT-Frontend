@@ -1,39 +1,70 @@
 import React from "react";
-import { Chart } from "react-google-charts";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  LineElement,
+  PointElement,
+  LinearScale,
+  Title,
+  CategoryScale,
+  Filler,
+  Tooltip,
+  Legend,
+} from "chart.js";
 
-export const data = [
-  ["Date", "Sales"],
-  ["2022-07-01", 100],
-  ["2022-07-02", 200],
-  ["2022-07-03", 400],
-  ["2022-07-04", 600],
-  ["2022-07-05", 650],
-  ["2022-07-07", 700],
-  ["2022-07-08", 900],
-];
+ChartJS.register(
+  LineElement,
+  PointElement,
+  LinearScale,
+  Title,
+  CategoryScale,
+  Tooltip,
+  Legend,
+  Filler
+);
 
-export const options = {
+const SalesLineChart = () => {
+  const data = {
+    labels: [
+      "2022-07-01",
+      "2022-07-02",
+      "2022-07-03",
+      "2022-07-04",
+      "2022-07-05",
+      "2022-07-06",
+      "2022-07-07",
+    ],
+    datasets: [
+      {
+        label: "YTD Payments",
+        data: [20, 50, 100, 150, 250, 300, 350],
+        fill: true,
+        backgroundColor: "rgba(18, 165, 92, 0.15)",
+        borderColor: "rgba(18, 165, 92, 1)",
+      },
+    ],
+  };
 
-
-  legend: "none",
-  series: {
-    0: { // This refers to the first series in the data array
-      color: "green", // Color of the line
-      backgroundColor: "lightgreen", // Background color of the line
-      fillOpacity: 10,
+  const options = {
+    plugins: {
+      legend: {
+        display: false,
+      },
     },
-  },
-  areaOpacity: 0.2,
+    scales: {
+      y: {
+        beginAtZero: true,
+        // max: 500,
+      },
+     
+    },
+  };
+
+  return (
+    <div style={{ width: "100%", }}>
+      <Line data={data} options={options}/>
+    </div>
+  );
 };
 
-export function SalesLineChart() {
-  return (
-    <Chart
-      chartType="LineChart"
-      width="100%"
-      height="400px"
-      data={data}
-      options={options}
-    />
-  );
-}
+export default SalesLineChart;

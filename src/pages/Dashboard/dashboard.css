@@ -40,9 +40,12 @@
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: 1fr;
   grid-column-gap: 17px;
-  grid-row-gap: 0px;
+  grid-row-gap: 17px;
   width: 100%;
   margin: 2rem auto;
+}
+.dashboard-cards-container-two{
+    grid-template-columns: repeat(3, 1fr) !important;
 }
 .cards-container {
   background: #ffffff;
@@ -137,20 +140,26 @@ padding-top: 0.5rem;
     align-items: flex-start;
     gap: 20px;
     margin: 1.5rem auto;
+  
+}
+.dashboard-section-height{
+  height: 440px;
 }
 .dashboard-section-one{
     width: 65%;
     border-radius: 4px;
     padding: 10px ;
     background-color: white;
-    max-height: 300px
+    /* max-height: 300px */
+    height: inherit ;
 }
 .dashboard-section-two{
     width: 35%;
     border-radius: 4px;
     background-color: white;
     padding: 10px ;
-    max-height: 300px;
+    /* max-height: 300px; */
+    height: inherit ;
 }
 .card-header-text{
     color: #212134;
@@ -257,6 +266,8 @@ background: #7CBAF8;
     display: flex;
     align-items: flex-start;
     flex-direction: column;
+    height: 228px;
+    overflow: scroll;
 }
 .sales-unit{
     display: flex;

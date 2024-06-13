@@ -13,12 +13,16 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import {
   DisplayAddress,
+  DisplayGuarantor,
+  DisplayMedical,
   DisplayOther,
   DisplayReferee,
   DisplayRelative,
-  IndividualDisplayProfile,
-  IndividualUpdateProfile,
+  IndividualSubscriberDisplayBasic,
+  IndividualSubscriberUpdateBasic,
   UpdateAddress,
+  UpdateGuarantor,
+  UpdateMedical,
   UpdateOther,
   UpdateReferee,
   UpdateRelative,
@@ -29,7 +33,9 @@ const IndividualSubscriberProfile = () => {
 
   const [name, setName] = useState("Basic Details");
   const [updateNow, setUpdateNow] = useState(false);
-  const [individual, setIndividual] = useState(true);
+  const [selectedReferee, setSelectedReferee] = useState(null);
+  const [selectedGuarantor, setSelectedGuarantor] = useState(null);
+  const [individualSubscriber, setIndividualSubscriber] = useState(true);
   const [progress, setProgress] = useState(0);
 
   return (
@@ -61,7 +67,7 @@ const IndividualSubscriberProfile = () => {
                 )}
               >
                 <div className="flex space-x-5 items-center">
-                  {/* Individual Photot */}
+                  {/* Individual Photo */}
                   <div className="w-40 h-40 bg-vmtpurple rounded-lg flex justify-center items-center self-start m-5">
                     <div className="w-14 h-14 flex items-center justify-center rounded-full bg-white">
                       <UserRound color="#000" />
@@ -153,7 +159,9 @@ const IndividualSubscriberProfile = () => {
               {/* Right Part */}
               <div className="w-full bg-white rounded-lg">
                 {!updateNow && name == "Basic Details" && (
-                  <IndividualDisplayProfile setUpdateNow={setUpdateNow} />
+                  <IndividualSubscriberDisplayBasic
+                    setUpdateNow={setUpdateNow}
+                  />
                 )}
                 {!updateNow && name == "Relative Details" && (
                   <DisplayRelative setUpdateNow={setUpdateNow} />
@@ -165,13 +173,29 @@ const IndividualSubscriberProfile = () => {
                   <DisplayOther setUpdateNow={setUpdateNow} />
                 )}
                 {!updateNow && name == "Referees Details" && (
-                  <DisplayReferee setUpdateNow={setUpdateNow} />
+                  <DisplayReferee
+                    setUpdateNow={setUpdateNow}
+                    setSelectedReferee={setSelectedReferee}
+                    selectedReferee={selectedReferee}
+                  />
+                )}
+                {!updateNow && name == "Guarantors Details" && (
+                  <DisplayGuarantor
+                    setUpdateNow={setUpdateNow}
+                    setSelectedGuarantor={setSelectedGuarantor}
+                    selectedGuarantor={selectedGuarantor}
+                  />
+                )}
+                {!updateNow && name == "Medical Details" && (
+                  <DisplayMedical setUpdateNow={setUpdateNow} />
                 )}
 
                 {/* Update components below */}
 
                 {updateNow && name == "Basic Details" && (
-                  <IndividualUpdateProfile setUpdateNow={setUpdateNow} />
+                  <IndividualSubscriberUpdateBasic
+                    setUpdateNow={setUpdateNow}
+                  />
                 )}
                 {updateNow && name == "Relative Details" && (
                   <UpdateRelative setUpdateNow={setUpdateNow} />
@@ -179,17 +203,31 @@ const IndividualSubscriberProfile = () => {
                 {updateNow && name == "Address Details" && (
                   <UpdateAddress
                     setUpdateNow={setUpdateNow}
-                    individual={individual}
+                    individual={individualSubscriber}
                   />
                 )}
                 {updateNow && name == "Other Details" && (
                   <UpdateOther
                     setUpdateNow={setUpdateNow}
-                    individual={individual}
+                    individual={individualSubscriber}
                   />
                 )}
                 {updateNow && name == "Referees Details" && (
-                  <UpdateReferee setUpdateNow={setUpdateNow} />
+                  <UpdateReferee
+                    setUpdateNow={setUpdateNow}
+                    setSelectedReferee={setSelectedReferee}
+                    selectedReferee={selectedReferee}
+                  />
+                )}
+                {updateNow && name == "Guarantors Details" && (
+                  <UpdateGuarantor
+                    setUpdateNow={setUpdateNow}
+                    setSelectedGuarantor={setSelectedGuarantor}
+                    selectedGuarantor={selectedGuarantor}
+                  />
+                )}
+                {updateNow && name == "Medical Details" && (
+                  <UpdateMedical setUpdateNow={setUpdateNow} />
                 )}
               </div>
             </div>

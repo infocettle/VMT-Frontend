@@ -7,7 +7,13 @@ import { usePostData } from "@/hooks/usePostData";
 import { UserRound } from "lucide-react";
 import ReactFlagsSelect from "react-flags-select";
 
-const UpdateAddress = ({ setUpdateNow, individual }) => {
+const UpdateAddress = ({
+  setUpdateNow,
+  individualPartner,
+  individualSubscriber,
+  companyPartner,
+  companySubscriber,
+}) => {
   const [selectedCountry, setSelectedCountry] = useState("NG");
   const [countryCode, setCountryCode] = useState("+234");
   const [selectedCountry2, setSelectedCountry2] = useState("NG");
@@ -24,11 +30,20 @@ const UpdateAddress = ({ setUpdateNow, individual }) => {
   });
 
   const onSubmit = (data) => {
-    if (individual) {
-      console.log("individual URL", data);
+    if (individualPartner) {
+      console.log("individualPartner URL", data);
       setUpdateNow(false);
-    } else {
-      console.log("company URL", data);
+    }
+    if (individualSubscriber) {
+      console.log("individualSubscriber URL", data);
+      setUpdateNow(false);
+    }
+    if (companyPartner) {
+      console.log("companyPartner URL", data);
+      setUpdateNow(false);
+    }
+    if (companySubscriber) {
+      console.log("companySubscriber URL", data);
       setUpdateNow(false);
     }
   };

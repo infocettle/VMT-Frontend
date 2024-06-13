@@ -41,6 +41,7 @@ import { Provider } from "react-redux";
 import store, { persistor } from "./pages/Redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import {
+  IndividualPartnerProfile,
   IndividualSubscriberProfile,
   Profile,
   ProfilePath,
@@ -270,6 +271,14 @@ const router = createBrowserRouter([
       {
         path: "individual-subscriber",
         element: <IndividualSubscriberProfile />,
+      },
+      {
+        path: "company-partner",
+        element: <Profile />,
+      },
+      {
+        path: "individual-partner",
+        element: <IndividualPartnerProfile />,
       },
     ],
   },

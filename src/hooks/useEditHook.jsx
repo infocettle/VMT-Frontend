@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const editData = async ({ url, body, title }) => {
+const editData = async ({ url, body, title, image }) => {
   const headers = {
     Accept: "application/json",
     "Content-Type": "application/json",

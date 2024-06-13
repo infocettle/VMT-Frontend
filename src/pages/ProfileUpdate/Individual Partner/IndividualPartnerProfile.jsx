@@ -1,30 +1,31 @@
-import { ArrowLeft, MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
+import {
+  ArrowLeft,
+  MailIcon,
+  MapPinIcon,
+  PhoneIcon,
+  UserRound,
+} from "lucide-react";
 import HeaderFooter from "../HeaderFooter";
 import { Progress } from "@/components/ui/progress";
-import { Outlet, useNavigate, Link } from "react-router-dom";
-import { COMPANY_SUBSCRIBER } from "@/texts/ProfileData";
+import { useNavigate } from "react-router-dom";
+import { INDIVIDUAL_PARTNER } from "@/texts/ProfileData";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import {
   DisplayAddress,
   DisplayOther,
-  DisplayProfile,
-  DisplayRepresentative,
+  IndividualPartnerDisplayBasic,
+  IndividualPartnerUpdateBasic,
   UpdateAddress,
   UpdateOther,
-  UpdateProfile,
-  UpdateRepresentative,
 } from "..";
 
-const Profile = () => {
+const IndividualPartnerProfile = () => {
   const navigate = useNavigate();
 
   const [name, setName] = useState("Basic Details");
   const [updateNow, setUpdateNow] = useState(false);
-  const [individualPartner, setIndividualPartner] = useState(false);
-  const [individualSubscriber, setIndividualSubscriber] = useState(false);
-  const [companyPartner, setCompanyPartner] = useState(false);
-  const [companySubscriber, setCompanySubscriber] = useState(false);
+  const [individual, setIndividual] = useState(true);
   const [progress, setProgress] = useState(0);
 
   return (
@@ -55,27 +56,38 @@ const Profile = () => {
                   `bg-white w-full flex items-center p-5 justify-between`
                 )}
               >
-                <div className="flex flex-col w-auto items-start space-y-2">
-                  <h2 className="text-black font-semibold text-xl leading-relaxed">
-                    XYZ & Co. Initiatives
-                  </h2>
-                  <div className="flex w-auto space-x-2 items-center">
-                    <div className="bg-black h-6 w-6 rounded-sm flex justify-center items-center">
-                      <MailIcon color="#fff" />
+                <div className="flex space-x-5 items-center">
+                  {/* Individual Photot */}
+                  <div className="w-40 h-40 bg-vmtpurple rounded-lg flex justify-center items-center self-start m-5">
+                    <div className="w-14 h-14 flex items-center justify-center rounded-full bg-white">
+                      <UserRound color="#000" />
                     </div>
-                    <h3 className="text-[#666687]">xyz.co@email.com</h3>
                   </div>
-                  <div className="flex w-auto space-x-2 items-center">
-                    <div className="bg-black h-6 w-6 rounded-sm flex justify-center items-center">
-                      <PhoneIcon color="#fff" />
+
+                  <div className="flex flex-col w-auto items-start space-y-2">
+                    <h2 className="text-black font-semibold text-xl leading-relaxed">
+                      James Nwachukwu
+                    </h2>
+                    <div className="flex w-auto space-x-2 items-center">
+                      <div className="bg-black h-6 w-6 rounded-sm flex justify-center items-center">
+                        <MailIcon color="#fff" />
+                      </div>
+                      <h3 className="text-[#666687]">
+                        jamesnwachuku@email.com
+                      </h3>
                     </div>
-                    <h3 className="text-[#666687]">+234 801 234 5678</h3>
-                  </div>
-                  <div className="flex w-auto space-x-2 items-center">
-                    <div className="bg-black h-6 w-6 rounded-sm flex justify-center items-center">
-                      <MapPinIcon color="#fff" />
+                    <div className="flex w-auto space-x-2 items-center">
+                      <div className="bg-black h-6 w-6 rounded-sm flex justify-center items-center">
+                        <PhoneIcon color="#fff" />
+                      </div>
+                      <h3 className="text-[#666687]">+234 801 234 5678</h3>
                     </div>
-                    <h3 className="text-[#666687]">Lagos, Nigeria</h3>
+                    <div className="flex w-auto space-x-2 items-center">
+                      <div className="bg-black h-6 w-6 rounded-sm flex justify-center items-center">
+                        <MapPinIcon color="#fff" />
+                      </div>
+                      <h3 className="text-[#666687]">Lagos, Nigeria</h3>
+                    </div>
                   </div>
                 </div>
 
@@ -107,7 +119,7 @@ const Profile = () => {
             <div className="mt-5 flex items-center space-x-8">
               {/* Left Part */}
               <div className="bg-white rounded-lg w-48 h-[73vh] flex flex-col space-y-2 items-start ">
-                {COMPANY_SUBSCRIBER.map((detail) => (
+                {INDIVIDUAL_PARTNER.map((detail) => (
                   <button
                     onClick={() => setName(detail.name)}
                     key={detail.id}
@@ -137,42 +149,32 @@ const Profile = () => {
               {/* Right Part */}
               <div className="w-full bg-white rounded-lg">
                 {!updateNow && name == "Basic Details" && (
-                  <DisplayProfile setUpdateNow={setUpdateNow} />
+                  <IndividualPartnerDisplayBasic setUpdateNow={setUpdateNow} />
                 )}
-                {!updateNow && name == "Representative Details" && (
-                  <DisplayRepresentative setUpdateNow={setUpdateNow} />
-                )}
+
                 {!updateNow && name == "Address Details" && (
                   <DisplayAddress setUpdateNow={setUpdateNow} />
                 )}
-                {!updateNow && name == "Other Information" && (
+                {!updateNow && name == "Other Details" && (
                   <DisplayOther setUpdateNow={setUpdateNow} />
                 )}
 
                 {/* Update components below */}
 
                 {updateNow && name == "Basic Details" && (
-                  <UpdateProfile setUpdateNow={setUpdateNow} />
+                  <IndividualPartnerUpdateBasic setUpdateNow={setUpdateNow} />
                 )}
-                {updateNow && name == "Representative Details" && (
-                  <UpdateRepresentative setUpdateNow={setUpdateNow} />
-                )}
+
                 {updateNow && name == "Address Details" && (
                   <UpdateAddress
                     setUpdateNow={setUpdateNow}
-                    individualPartner={individualPartner}
-                    individualSubscriber={individualSubscriber}
-                    companyPartner={companyPartner}
-                    companySubscriber={companySubscriber}
+                    individual={individual}
                   />
                 )}
-                {updateNow && name == "Other Information" && (
+                {updateNow && name == "Other Details" && (
                   <UpdateOther
                     setUpdateNow={setUpdateNow}
-                    individualPartner={individualPartner}
-                    individualSubscriber={individualSubscriber}
-                    companyPartner={companyPartner}
-                    companySubscriber={companySubscriber}
+                    individual={individual}
                   />
                 )}
               </div>
@@ -184,4 +186,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default IndividualPartnerProfile;

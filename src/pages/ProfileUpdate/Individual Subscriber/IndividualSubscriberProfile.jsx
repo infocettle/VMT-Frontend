@@ -120,7 +120,7 @@ const IndividualSubscriberProfile = () => {
             )}
 
             {/* Second Div */}
-            <div className="mt-5 flex items-center space-x-8">
+            <div className="mt-5 flex items-start space-x-8">
               {/* Left Part */}
               <div className="bg-white rounded-lg w-48 h-[73vh] flex flex-col space-y-2 items-start ">
                 {INDIVIDUAL_SUBSCRIBER.map((detail) => (

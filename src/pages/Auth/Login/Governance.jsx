@@ -10,10 +10,10 @@ const navigate = useNavigate()
    
     
   const handleContinue = () => {
-    setFormType("user-subscriber");
+    navigate("/subscription");
   };
   const handleBack = () => {
-    navigate("/subscription")
+    navigate("/login")
   };
 
   return (

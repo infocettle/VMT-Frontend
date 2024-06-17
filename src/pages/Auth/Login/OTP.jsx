@@ -1,11 +1,12 @@
 import { baseUrl } from "@/App";
 import { sendData } from "@/hooks/usePostData";
+import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
 import React, { useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 function OTP({ setFormType,userEmail }) {
-  const url = `${baseUrl}v1/subscriber/individual/auth/verify-email`;
+  const url = `${baseUrl}v1/auth/verify-login`;
   const [otp, setOTP] = useState("");
   const dispatch = useDispatch()
     const [showPassword, setShowPassword] = useState(false);
@@ -35,8 +36,10 @@ function OTP({ setFormType,userEmail }) {
           body: body,
           title: "Login",
         });
-        console.log(returnedUser)
-        // setFormType("governance-page");
+        console.log(returnedUser);
+        dispatch(setUserSubscriber(returnedUser.newUser)) 
+        setFormType("governance-page");
+
       } catch (error) {
         console.error("error", error);
       }

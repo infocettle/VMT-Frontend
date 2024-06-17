@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./subscription.css";
 import Table from "./FirstSubTable";
 import Select from "react-select";
-function SubscriptionSubscriber({setSubscriptionType}) {
+function SubscriptionSubscriber({ setSubscriptionType }) {
   const [selectedDateType, setSelectedDateType] = useState("1-month");
   const [endDate, setEndDate] = useState(null);
   const [selectedRole, setSelectedRole] = useState("");
@@ -12,7 +12,7 @@ function SubscriptionSubscriber({setSubscriptionType}) {
     calculateEndDate(selectedDateType);
   }, []);
   const handleProceed = () => {
-    setSubscriptionType("completed-subcription")
+    setSubscriptionType("completed-subcription");
   };
   const handleDateTypeChange = (event) => {
     setSelectedDateType(event.target.value);
@@ -48,14 +48,50 @@ function SubscriptionSubscriber({setSubscriptionType}) {
   return (
     <div className="sub-form-container">
       <div className="sub-header-container">SUBSCRIPTION</div>
-      <div className="sub-form-container mt-10" >
+      <div className="sub-form-container mt-10">
         <div className="sub-form">
           <div className="sub-form-header">First Subscription</div>
-          <div className="sub-form-header-grid">
-            <div className="sub-form-header-key">User ID:</div>
-            <div className="sub-form-header-key">238957340124</div>
-            <div className="sub-form-header-key">Agent Code</div>
-            <div className="sub-form-header-key">238957340124</div>
+          <div className="sub-form-header-grid w-full ">
+            <div className="flex flex-col gap-5">
+          
+                
+                <div className="sub-form-header-key">Subscriber</div>
+                <div className="sub-form-header-key">Administrator 1</div>
+                <div className="sub-form-header-key">Agent</div>
+              
+            </div>
+            <div className="flex flex-col gap-5">
+                
+              <div className="sub-form-header-key">238957340124</div>
+                <div className="sub-form-header-key">238957340124</div>
+                <div className="sub-form-header-key">238957340124</div>
+              </div>
+
+              <div className="flex flex-col gap-5">
+              <div className="sub-form-header-key">DesignXcel</div>
+              <div className="sub-form-header-key">Faith Oluwafemi</div>
+              <div className="sub-form-header-key">Emmanuel Chukwudi</div>
+              </div>
+
+              <div className="flex flex-col gap-5">
+              <div className="sub-form-header-key">info@designxcel.com</div>
+              <div className="sub-form-header-key">
+                faith-oluwafemi@designxcel.com
+              </div>
+              <div className="sub-form-header-key">
+                emmanuelchukwudi@designxcel.com
+              </div>
+              </div>
+              <div className="flex flex-col gap-5">
+                <div className="sub-form-header-key">+2345061483588</div>
+                <div className="sub-form-header-key">+2345061483588</div>
+                <div className="sub-form-header-key">+2345061483588</div>
+              
+              
+              </div>
+          </div>
+            
+          <div className="sub-form-header-grid-one">
             <div className="sub-form-header-key">Payment Cycle</div>
             <div className="sub-form-header-key">
               <div className="flex">
@@ -109,6 +145,8 @@ function SubscriptionSubscriber({setSubscriptionType}) {
                 </div>
               </div>
             </div>
+            <div className="sub-form-header-key">Invoice Number</div>
+            <div className="sub-form-header-key">7902349723</div>
             <div className="sub-form-header-key">End Date</div>
             <div className="sub-form-header-key">
               {endDate && formatDate(endDate)}
@@ -143,28 +181,28 @@ function SubscriptionSubscriber({setSubscriptionType}) {
 
           <div className="auth-form-flex mt-10 justify-between flex-row">
             <div
-            className="auth-button "
-            style={{ width: "fit-content", padding:"10px" }}
-            onClick={handleProceed}
-          >
-            <div className="auth-button-text">Proceed to payment</div>
+              className="auth-button "
+              style={{ width: "fit-content", padding: "10px" }}
+              onClick={handleProceed}
+            >
+              <div className="auth-button-text">Proceed to payment</div>
+            </div>
+            <div className="total_amount_text">Total Amount Payable</div>
           </div>
-          <div className="total_amount_text">Total Amount Payable</div>
-          </div>
-          
+
           <div className="auth-form-flex mt-2 mb-6 justify-between">
-          <div className="flex items-center w-full  mt-5 cursor-pointer " onClick={{}}>
-     
-     <div className="auth-button-go-back">Cancel</div>
-   </div>
-          <div className="total_amount">{totalAmountPayable.toFixed(2)}</div>
+            <div
+              className="flex items-center w-full  mt-5 cursor-pointer "
+              onClick={{}}
+            >
+              <div className="auth-button-go-back">Cancel</div>
+            </div>
+            <div className="total_amount">{totalAmountPayable.toFixed(2)}</div>
           </div>
-    
         </div>
       </div>
     </div>
   );
 }
-
 
 export default SubscriptionSubscriber;

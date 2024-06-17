@@ -10,17 +10,17 @@ import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
 import { useDispatch } from "react-redux";
 import { sendData } from "@/hooks/usePostData";
 
-function UserSubscriberCompany({ setFormType }) {
+function UserSubscriberCompany({ setFormType,userType,partnerType }) {
   const navigate = useNavigate();
-  const url = `${baseUrl}v1/subscriber/company/auth/register`;
+  const url = `${baseUrl}v1/${userType}/company/auth/register`;
   const dispatch = useDispatch()
   const [selectedCountry, setSelectedCountry] = useState("NG");
   const [selectedCountryTwo, setSelectedCountryTwo] = useState("NG");
   const [countryCode, setCountryCode] = useState("+234");
   const [countryCodeTwo, setCountryCodeTwo] = useState("+234");
   const [selectedTitle, setSelectedTitle] = useState(null);
-  const [selectedFind, setSelectedFind] = useState(null);
-  const [selectedRole, setSelectedRole] = useState(null);
+
+  const [selectedCustomFeature, setSelectedCustomFeature] = useState(null);
   const [formData, setFormData] = useState({
     companyName: "",
     shortName: "",
@@ -31,7 +31,14 @@ function UserSubscriberCompany({ setFormType }) {
     phoneNumber: "",
     email: "",
     nin: "",
+    role: "",
+    selectedFind: "",
     referalCode: "",
+  });
+  const [errors, setErrors] = useState({
+    companyEmail: "",
+    email: "",
+    nin: "",
   });
 
   const handleCountryChange = (selectedCountry) => {
@@ -51,6 +58,18 @@ function UserSubscriberCompany({ setFormType }) {
     const code = countryCodes[selectedCountry] || "";
     setCountryCode(code);
   };
+  const handlePhoneNumberChange = (e) => {
+    const value = e.target.value;
+    // Remove the country code prefix from the entered phone number if it exists
+    const numberWithoutCode = value.startsWith(countryCode) ? value.slice(countryCode.length) : value;
+    // Remove non-numeric characters
+    const numericPhoneNumber = numberWithoutCode.replace(/\D/g, '');
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      companyPhone: numericPhoneNumber
+    }));
+
+  };
   const handleCountryChangeTwo = (selectedCountry) => {
     setSelectedCountryTwo(selectedCountry);
     const countryCodes = {
@@ -68,6 +87,17 @@ function UserSubscriberCompany({ setFormType }) {
     const code = countryCodes[selectedCountry] || "";
     setCountryCodeTwo(code);
   };
+  const handlePhoneNumberChangeTwo = (e) => {
+    const value = e.target.value;
+    // Remove the country code prefix from the entered phone number if it exists
+    const numberWithoutCode = value.startsWith(countryCodeTwo) ? value.slice(countryCodeTwo.length) : value;
+    // Remove non-numeric characters
+    const numericPhoneNumber = numberWithoutCode.replace(/\D/g, '');
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      phoneNumber: numericPhoneNumber
+    }));
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -75,11 +105,56 @@ function UserSubscriberCompany({ setFormType }) {
       ...prevData,
       [name]: value,
     }));
+    if (name === "email"){
+       // Validate email
+    if (!value.includes('@')) {
+      setErrors(prevErrors => ({
+        ...prevErrors,
+        email: 'Invalid email address'
+      }));
+    } else {
+      setErrors(prevErrors => ({
+        ...prevErrors,
+        [name]: ''
+      }));
+    }
+    }
+    if (name === "companyEmail"){
+       // Validate company email
+    if (!value.includes('@')) {
+      setErrors(prevErrors => ({
+        ...prevErrors,
+        companyEmail: 'Invalid company email address'
+      }));
+    } else {
+      setErrors(prevErrors => ({
+        ...prevErrors,
+        [name]: ''
+      }));
+    }
+    }
+    if (name === "nin"){
+      const numericNin = value.replace(/\D/g, '');
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        nin: numericNin
+      }));
+  
+      // Validate NIN
+      if (numericNin.length !== 11) {
+        setErrors(prevErrors => ({
+          ...prevErrors,
+          nin: 'NIN must be exactly 11 digits'
+        }));
+      } else {
+        setErrors(prevErrors => ({
+          ...prevErrors,
+          nin: ''
+        }));
+      }
+    }
   };
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-};
+ 
   const validateForm = () => {
     if (!formData.companyName.trim()) {
       toast.error("Company name is required");
@@ -113,26 +188,13 @@ function UserSubscriberCompany({ setFormType }) {
       toast.error("Phone Number is required");
       return false;
     }
-    if (!formData.email.trim()) {
-      toast.error("Email Address is required");
-      return false;
-    }
+  
     
   
-    if (!selectedRole) {
-      toast.error("Role is required");
+    if (!selectedCustomFeature) {
+      toast.error("Custom feature is required");
       return false;
-    } if (!validateEmail(formData.companyEmail)) {
-      toast.error("Invalid Email Address");
-      return false;
-  }
-     if (!validateEmail(formData.email)) {
-      toast.error("Invalid Email Address");
-      return false;
-  }
-  if (formData.nin.length !== 11) {
-    toast.error('Invalid NIN: must be exactly 11 characters');
-  } 
+    } 
     return true;
   };
 
@@ -141,7 +203,7 @@ function UserSubscriberCompany({ setFormType }) {
 
     const body = {
       title: selectedTitle.value,
-      heardAboutUs:  "google",
+      heardAboutUs:  formData.selectedFind.value,
       surname: formData.surname,
       firstName: formData.firstName,
       phoneNumber: `${countryCodeTwo}${formData.phoneNumber}`,
@@ -151,10 +213,13 @@ function UserSubscriberCompany({ setFormType }) {
       shortName: formData.shortName,
       companyName: formData.companyName,
       companyPhone: `${countryCode}${formData.companyPhone}`,
-      role: selectedRole.value,
-      referalCode: "2222222",
+      customFeature: selectedCustomFeature.value,
+      referalCode: formData.referalCode,
+      role:formData.role.value,
     };
-
+    if (partnerType) {
+      body.partnerType = partnerType;
+    }
     try {
       const returnedData = await sendData({
         url: url,
@@ -230,12 +295,13 @@ function UserSubscriberCompany({ setFormType }) {
           </div>
           <input
             type="text"
-            className="auth-input"
+            className={`auth-input ${errors.companyEmail ? 'border-red-500' : ''}`}
             placeholder="Enter company's email address"
             name="companyEmail"
             value={formData.companyEmail}
             onChange={handleChange}
           />
+             
         </div>
         <div className="flex flex-col gap-2 w-full">
           <div className="auth-label">
@@ -264,9 +330,8 @@ function UserSubscriberCompany({ setFormType }) {
             <input
               type="text"
               name="companyPhone"
-              placeholder={countryCode}
-              value={formData.companyPhone}
-              onChange={handleChange}
+              value={countryCode + formData.companyPhone}
+              onChange={handlePhoneNumberChange}
               className="auth-input"
               style={{ width: "70%" }}
             />
@@ -274,15 +339,20 @@ function UserSubscriberCompany({ setFormType }) {
         </div>
         
       </div>
+      <div className="flex items-center justify-between w-100 gap-6">
+      {errors.companyEmail && <p className="text-red-500">{errors.companyEmail}</p>}
+
+      </div>
+
       <div className="auth-form-flex">
       <div className="flex flex-col gap-2 w-full">
           <div className="auth-label">
           Custom Feature <span className="auth-mandatory">*</span>
           </div>
           <Select
-            value={selectedRole}
+            value={selectedCustomFeature}
             placeholder="Select Custom Feature"
-            onChange={(selectedOption) => setSelectedRole(selectedOption)}
+            onChange={(selectedOption) => setSelectedCustomFeature(selectedOption)}
             options={[
               { value: "Hotel", label: "Hotel" },
               { value: "School", label: "School" },
@@ -368,9 +438,8 @@ function UserSubscriberCompany({ setFormType }) {
             <input
               type="text"
               name="phoneNumber"
-              placeholder={countryCodeTwo}
-              value={formData.phoneNumber}
-              onChange={handleChange}
+              value={countryCodeTwo + formData.phoneNumber}
+              onChange={handlePhoneNumberChangeTwo}
               className="auth-input"
               style={{ width: "70%" }}
             />
@@ -386,7 +455,7 @@ function UserSubscriberCompany({ setFormType }) {
           </div>
           <input
             type="text"
-            className="auth-input"
+            className={`auth-input ${errors.email ? 'border-red-500' : ''}`}
             placeholder="Email Address"
             name="email"
             value={formData.email}
@@ -400,11 +469,73 @@ function UserSubscriberCompany({ setFormType }) {
           </div>
           <input
             type="text"
-            className="auth-input"
+            className={`auth-input ${errors.nin ? 'border-red-500' : ''}`}
             placeholder="Enter national identity number"
             name="nin"
             value={formData.nin}
             onChange={handleChange}
+          />
+          
+        </div>
+      </div>
+      <div className="flex items-center justify-between w-100 gap-6">
+      {errors.email && <p className="text-red-500 w-1/2">{errors.email}</p>}
+         {errors.nin && <p className="text-red-500 w-1/2">{errors.nin}</p>}
+      </div>
+     
+
+        
+      <div className="auth-form-flex">
+      <div className="flex flex-col gap-2 w-full">
+          <div className="auth-label">Role</div>
+          
+           <Select
+            styles={customStyles}
+            value={formData.role}
+            placeholder="Your role"
+            onChange={(selectedOption) => {
+              setFormData(prevFormData => ({
+                ...prevFormData,
+                role: selectedOption
+              }));
+            }}
+            options={[
+              { value: "Admin", label: "Admin" },
+              { value: "IT", label: "IT" },
+              { value: "Finance", label: "Finance" },
+            ]}
+          />
+        </div>
+        <div className="flex flex-col gap-2 w-full">
+          <div className="auth-label">Referral Code</div>
+          <input
+            type="text"
+            className="auth-input"
+            name="referalCode"
+            placeholder="Enter referral code"
+            value={formData.referalCode}
+            onChange={handleChange}
+          />
+        </div>
+      </div>
+      <div className="auth-form-flex">
+        <div className="flex flex-col gap-2 w-full">
+          <div className="auth-label">How did you hear about us?</div>
+          <Select
+            styles={customStyles}
+            value={formData.selectedFind}
+            placeholder="How did you hear about us"
+            onChange={(selectedOption) => {
+              setFormData(prevFormData => ({
+                ...prevFormData,
+                selectedFind: selectedOption
+              }));
+            }}
+            options={[
+              { value: "Website", label: "Website" },
+              { value: "Google", label: "Google" },
+              { value: "Instagram", label: "Instagram" },
+            ]}
           />
         </div>
       </div>

@@ -9,10 +9,10 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { sendData } from "@/hooks/usePostData";
 
-function UserCompanyCreatePassword() {
+function UserCompanyCreatePassword({userType}) {
   const profileData = useSelector((state) => state.auth);
   const newUserId = profileData?.newUser?._id;
-  const url = `${baseUrl}v1/subscriber/individual/auth/set-password/${newUserId}`;
+  const url = `${baseUrl}v1/${userType}/company/auth/set-password/${newUserId}`;
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);

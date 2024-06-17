@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 
 import { sendData } from "@/hooks/usePostData";
 function NewPassword({setFormType,userEmail}) {
-  const url = `${baseUrl}v1/subscriber/individual/auth/reset-password`;
+  const url = `${baseUrl}v1/auth/reset-password`;
   const token = useSelector((state) => state.auth.token);
  
   const [password, setPassword] = useState("");

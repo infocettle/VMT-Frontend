@@ -9,10 +9,10 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { sendData } from "@/hooks/usePostData";
 
-function UserCreatePassword() {
+function UserCreatePassword({userType}) {
   const profileData = useSelector((state) => state.auth);
   const newUserId = profileData?.newUser?._id;
-  const url = `${baseUrl}v1/subscriber/individual/auth/set-password/${newUserId}`;
+  const url = `${baseUrl}v1/${userType}/individual/auth/set-password/${newUserId}`;
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -103,6 +103,18 @@ function UserCreatePassword() {
   };
 
   const validateForm = () => {
+    if (!password || password === "" ) {
+      toast.error("Input a password!");
+      return false;
+    }
+    if ( !confirmPassword || confirmPassword === "") {
+      toast.error("Confirm your password!");
+      return false;
+    }
+    if ( !confirmPassword) {
+      toast.error("Confirm a password!");
+      return false;
+    }
     if (password !== confirmPassword) {
       toast.error("Passwords do not match!");
       return false;
@@ -205,8 +217,9 @@ function UserCreatePassword() {
           {showConfirmPassword ? <HiEyeOff /> : <HiEye />}
         </button>
       </div>
+      <div className="password-height">
 
-      <div className="auth-label my-4">Security Questions</div>
+         <div className="auth-label my-4">Security Questions</div>
       <div className="w-full">
         {[0, 1, 2].map((index) => (
           <div key={index} className="w-full">
@@ -243,6 +256,8 @@ function UserCreatePassword() {
       >
         <div className="auth-button-go-back">Go back</div>
       </div>
+      </div>
+     
     </div>
   );
 }

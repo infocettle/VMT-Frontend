@@ -5,7 +5,7 @@ import { IoIosArrowRoundBack } from "react-icons/io";
 import { toast } from "react-toastify";
 
 function ResetPassword({ setFormType,setUserEmail }) {
-  const url = `${baseUrl}v1/subscriber/individual/auth/forgot-password`;
+  const url = `${baseUrl}v1/auth/forgot-password`;
   const [email, setEmail] = useState("");
   const handleEmailChange = (e) => {
     setEmail(e.target.value);

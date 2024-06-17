@@ -5,6 +5,21 @@
   width: 99%;
   margin: 2rem auto;
 }
+.scrolled-height{
+    height:calc(100vh - 20vh);
+    overflow: scroll;
+}
+.box-container-overall{
+    position: relative;
+    overflow: scroll;
+    height: 91vh;
+}
+.box-container-footer{
+    position: absolute;
+    bottom: 0;
+    background-color: white;
+    z-index: 4;
+}
 .filter-button-container {
   width: 100%;
   display: flex;
@@ -42,7 +57,7 @@
   grid-column-gap: 17px;
   grid-row-gap: 17px;
   width: 100%;
-  margin: 2rem auto;
+  margin: 1rem auto;
 }
 .dashboard-cards-container-two{
     grid-template-columns: repeat(3, 1fr) !important;
@@ -88,7 +103,7 @@ text-align: center;
 .cards-container-footer-number{
 color: #212134;
 font-family: Open Sans;
-font-size: 18px;
+font-size: 1.8vh;
 font-weight: 600;
 line-height: 15px;
 text-align: left;

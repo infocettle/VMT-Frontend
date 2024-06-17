@@ -5,12 +5,12 @@ import { FaSearch } from "react-icons/fa";
 
 const SearchBox = () => {
   return (
-    <div className="relative w-full max-w-xs">
+    <div className="relative w-full max-w-xs ">
          <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
       <Input
         type="text"
         placeholder="Search..."
-        className="w-full px-10 py-2 bg-gray-100 text-black rounded-md pr-10"
+        className="w-full px-10 bg-gray-100 text-black rounded-md pr-10"
       />
      
     </div>

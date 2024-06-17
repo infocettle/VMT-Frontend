@@ -28,6 +28,7 @@ const PaymentsPieChart = () => {
     ],
   };
   const options = {
+    responsive: true,
     plugins: {
       legend: {
         position: 'right',
@@ -45,15 +46,15 @@ const PaymentsPieChart = () => {
       <div
         style={{
           position: 'absolute',
-          top: '46%',
-          left: '34%',
+          top: '154px',
+          left: '98px',
           transform: 'translate(-50%, -50%)',
           textAlign: 'center',
         }}
       >
-        <span style={{ fontSize: '25px', fontWeight: 'bold' }}>60%</span>
-        <div  style={{ fontSize: '15px' }}>YTD Payments</div>
-        <div style={{ fontSize: '10px' }}>N 12,349,000</div>
+        <span style={{ fontSize: '20px', fontWeight: 'bold' }}>60%</span>
+        <div  style={{ fontSize: '13px' }}>YTD Payments</div>
+        <div style={{ fontSize: '9px' }}>N 12,349,000</div>
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
 function UserLogin({ setFormType ,setUserEmail}) {
-  const url = `${baseUrl}v1/subscriber/individual/auth/login`;
+  const url = `${baseUrl}v1/auth/login`;
   const dispatch = useDispatch()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -49,12 +49,12 @@ function UserLogin({ setFormType ,setUserEmail}) {
 
     
       try {
-     await sendData({
+        const returnedUser = await sendData({
           url: url,
           body: body,
           title: "OTP sent to your mail",
         });
-    
+        console.log(returnedUser);
       setFormType("otp");
     } catch (error) {
       console.error("error", error);

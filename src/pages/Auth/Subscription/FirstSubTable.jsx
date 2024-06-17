@@ -1,209 +1,269 @@
 import React, { useState, useEffect } from "react";
 
-const Table = ({setTotalAmountPayable}) => {
-  const [basePlanQuantity, setBasePlanQuantity] = useState(1);
+const Table = ({ setTotalAmountPayable }) => {
+  const [customModuleChecked, setCustomModuleChecked] = useState(true);
   const [storageChecked, setStorageChecked] = useState(false);
-  const [storageQuantity, setStorageQuantity] = useState(0);
-  const [processUserQuantity, setProcessUserQuantity] = useState(1);
-  const [selfServiceQuantity, setSelfServiceQuantity] = useState(1);
-  const [vatPrice, setVatPrice] = useState(0);
-  const [exerciseDutyPrice, setExerciseDutyPrice] = useState(0);
+  const [processUserChecked, setProcessUserChecked] = useState(false);
+  const [selfServiceChecked, setSelfServiceChecked] = useState(false);
 
-  const basePlanPrice = basePlanQuantity * 10000;
-  const storagePrice = storageChecked ? storageQuantity * 10000 : 0;
-  const processUserPrice = processUserQuantity * 10000;
-  const selfServicePrice = selfServiceQuantity * 10000;
-  const totalSubscription =
-    basePlanPrice + storagePrice + processUserPrice + selfServicePrice;
-  const totalAdditionalPlans =
-    storagePrice + processUserPrice + selfServicePrice;
+  const basePlanPrice = 120000;
+  const customModulePrice = customModuleChecked ? 10000 : 0;
+  const storagePrice = storageChecked ? 10000 : 0;
+  const processUserPrice = processUserChecked ? 10000 : 0;
+  const selfServicePrice = selfServiceChecked ? 10000 : 0;
+
+  const totalSubscription = basePlanPrice + customModulePrice + storagePrice + processUserPrice + selfServicePrice;
+  const totalAdditionalPlans = customModulePrice + storagePrice + processUserPrice + selfServicePrice;
+  const totalBeforeDiscount = totalSubscription + totalAdditionalPlans;
+
+  const waiverDiscount = 0.35 * totalSubscription;
+  const paymentCycleDiscount = 0.1 * totalSubscription;
+  const promoDiscount = 0.15 * totalSubscription;
+
+  const discountedSubscription = waiverDiscount + paymentCycleDiscount + promoDiscount;
 
   const vatPercentage = 7.5;
-  const exerciseDutyPercentage = 5.0;
-  const totalCharges = vatPrice + exerciseDutyPrice;
-  const totalAmountPayable = totalSubscription + totalCharges;
+  const exciseDutyPercentage = 5.0;
+  const paymentGatewayPercentage = 5.0;
+
+  const vat = (discountedSubscription * vatPercentage) / 100;
+  const exciseDuty = (discountedSubscription * exciseDutyPercentage) / 100;
+  const paymentGateway = (discountedSubscription * paymentGatewayPercentage) / 100;
+
+  const totalCharges = vat + exciseDuty + paymentGateway;
+  const totalAmountPayable = discountedSubscription + totalCharges;
+
   useEffect(() => {
-    const vat = (totalSubscription * vatPercentage) / 100;
-    setVatPrice(vat);
-    const exerciseDuty = (totalSubscription * exerciseDutyPercentage) / 100;
-    setExerciseDutyPrice(exerciseDuty);
-    setTotalAmountPayable(totalAmountPayable)
-  }, [totalSubscription,totalAmountPayable]);
-
-
-
-  const handleBasePlanIncrement = () => {
-    setBasePlanQuantity((prevQuantity) => prevQuantity + 1);
-  };
-
-  const handleBasePlanDecrement = () => {
-    if (basePlanQuantity > 1) {
-      setBasePlanQuantity((prevQuantity) => prevQuantity - 1);
-    }
-  };
-
-  const handleStorageCheckboxChange = () => {
-    setStorageChecked(!storageChecked);
-    if (!storageChecked) {
-      setStorageQuantity(1); // Reset storage quantity to 1 when checked
-    }
-  };
-
-  const handleStorageIncrement = () => {
-    setStorageQuantity((prevQuantity) => prevQuantity + 1);
-  };
-
-  const handleStorageDecrement = () => {
-    if (storageQuantity > 1) {
-      setStorageQuantity((prevQuantity) => prevQuantity - 1);
-    }
-  };
-
-  const handleProcessUserIncrement = () => {
-    setProcessUserQuantity((prevQuantity) => prevQuantity + 1);
-  };
-
-  const handleProcessUserDecrement = () => {
-    if (processUserQuantity > 1) {
-      setProcessUserQuantity((prevQuantity) => prevQuantity - 1);
-    }
-  };
-
-  const handleSelfServiceIncrement = () => {
-    setSelfServiceQuantity((prevQuantity) => prevQuantity + 1);
-  };
-
-  const handleSelfServiceDecrement = () => {
-    if (selfServiceQuantity > 1) {
-      setSelfServiceQuantity((prevQuantity) => prevQuantity - 1);
-    }
-  };
+    setTotalAmountPayable(totalAmountPayable);
+  }, [totalAmountPayable, setTotalAmountPayable]);
 
   return (
     <div className="table-container">
-         <table style={{width:"100%",marginTop:"2rem"}}>
-      <thead>
-        <tr>
-          <th align="left">Item</th>
-          <th align="left">Item Description</th>
-          <th align="left">Quantity</th>
-          <th align="left">Price</th>
-          <th align="left">Amount</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr className="table-rule">
-          <td>Base Plan</td>
-          <td>Basic Plan</td>
-          <td>
-            <div>
-              <button onClick={handleBasePlanDecrement}>-</button>
-              <span>{basePlanQuantity}</span>
-              <button onClick={handleBasePlanIncrement}>+</button>
-            </div>
-          </td>
-          <td>{basePlanPrice.toFixed(2)}</td>
-          <td>{basePlanPrice.toFixed(2)}</td>
-        </tr>
-
-        <tr className="table-rule">
-          <td style={{fontWeight:"700"}}>Additional Plans (optional)</td>
-          
-        </tr>
-        <tr className="table-rule">
-          <td>
-            <label>
-              <input
-                type="checkbox"
-                checked={storageChecked}
-                onChange={handleStorageCheckboxChange}
-              />
-              Storage {storageChecked ? `(${storageQuantity}0GB)` : `(0GB)`}
-            </label>
-          </td>
-          <td>Sub Storage</td>
-          <td>
-            {storageChecked ? (
-              <div>
-                <button onClick={handleStorageDecrement}>-</button>
-                <span>{storageQuantity}</span>
-                <button onClick={handleStorageIncrement}>+</button>
+      <table style={{ width: "100%", marginTop: "2rem" }}>
+        <thead>
+          <tr>
+            <th align="left">Item Description</th>
+            <th align="center">Qty</th>
+            <th align="center">Price</th>
+            <th align="center">Period</th>
+            <th align="center">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className="table-rule">
+            <td>Standard Plan</td>
+            <td align="center"  >
+              <div className="border-gray-400 border bg-gray-100  w-full">
+                  1
               </div>
-            ) : (
-              <div>0</div>
-            )}
-          </td>
-          <td>{storagePrice.toFixed(2)}</td>
-          <td>{storagePrice.toFixed(2)}</td>
-        </tr>
-        <tr className="table-rule">
-          <td>Process User</td>
-          <td>Process User Plan</td>
-          <td>
-            <div>
-              <button onClick={handleProcessUserDecrement}>-</button>
-              <span>{processUserQuantity}</span>
-              <button onClick={handleProcessUserIncrement}>+</button>
-            </div>
-          </td>
-          <td>{processUserPrice.toFixed(2)}</td>
-          <td>{processUserPrice.toFixed(2)}</td>
-        </tr>
-        <tr className="table-rule">
-          <td>Self Service</td>
-          <td>Self Service Plan</td>
-          <td>
-            <div>
-              <button onClick={handleSelfServiceDecrement}>-</button>
-              <span>{selfServiceQuantity}</span>
-              <button onClick={handleSelfServiceIncrement}>+</button>
-            </div>
-          </td>
-          <td>{selfServicePrice.toFixed(2)}</td>
-          <td>{selfServicePrice.toFixed(2)}</td>
-        </tr>
-        <tr className="table-rule">
-          <td colSpan="4"></td>
-          <td style={{fontWeight:"700"}}>{totalAdditionalPlans.toFixed(2)}</td>
-        </tr>
-        <tr className="table-rule">
-          <td colSpan="4" style={{fontWeight:"700"}}>Total Subscription</td>
-          <td style={{fontWeight:"700"}}>{totalSubscription.toFixed(2)}</td>
-        </tr>
-        <tr className="table-rule">
-          <td style={{fontWeight:"700"}}>Charges</td>
-          
-        </tr>
-        <tr className="table-rule">
-          <td>VAT</td>
-          <td colSpan="2"></td>
-          <td >7.5%</td>
-          <td>{vatPrice.toFixed(2)}</td>
-        </tr>
-        <tr className="table-rule">
-          <td>Exercise Duty</td>
-          <td colSpan="2"></td>
-          <td > 5.0%</td>
-          <td>{exerciseDutyPrice.toFixed(2)}</td>
-        </tr>
-        <tr className="table-rule">
-          <td  style={{fontWeight:"700"}}>Total Charges</td>
-          <td colSpan="3"></td>
-       
-          <td  style={{fontWeight:"700"}}>{totalCharges.toFixed(2)}</td>
-        </tr>
-      </tbody>
-
-      {/* <tfoot>
+            </td>
+            <td align="center">10,000.00</td>
+            <td align="center">12</td>
+            <td align="center">120,000.00</td>
+          </tr>
+          <tr className="table-rule">
+            <td>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={true}
+                  style={{color:"black"}}
+                  disabled
+                 className="mr-2"
+                />
+                Standard Modules
+              </label>
+            </td>
+            <td align="center">All</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr className="table-rule">
+            <td>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={true}
+                  disabled
+                  className="mr-2"
+                />
+                Admin User
+              </label>
+            </td>
+            <td align="center">2</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr className="table-rule">
+            <td>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={true}
+                  disabled
+                  className="mr-2"
+                />
+         Storage (15GB)
+              </label>
+            </td>
+            <td align="center">1</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
         
-        <tr className="table-rule">
-          <td colSpan="4">Total Amount Payable</td>
-          <td>{totalAmountPayable.toFixed(2)}</td>
-        </tr>
-      </tfoot> */}
-    </table> 
+          <tr className="table-rule">
+            <td style={{ fontWeight: "700" }}>Additional Plans (optional)</td>
+          </tr>
+          <tr className="table-rule">
+            <td>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={customModuleChecked}
+                  onChange={() => setCustomModuleChecked(!customModuleChecked)}
+                  className="mr-2"
+                />
+                Custom Module (School)
+              </label>
+            </td>
+            <td align="center">1</td>
+            <td align="center">10,000.00</td>
+            <td align="center"> 12</td>
+            <td align="center">{customModuleChecked ? "10,000.00" : "0.00"}</td>
+          </tr>
+          <tr className="table-rule">
+            <td>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={storageChecked}
+                  onChange={() => setStorageChecked(!storageChecked)}
+                  className="mr-2"
+                />
+                Storage (15GB)
+              </label>
+            </td>
+            <td  align="center">
+            <div className="border-gray-400 border bg-gray-100  w-full">
+                  0
+              </div>
+            </td>
+            <td  align="center">10,000.00</td>
+            <td  align="center">12</td>
+            <td  align="center">{storageChecked ? "10,000.00" : "0.00"}</td>
+          </tr>
+          <tr className="table-rule">
+            <td>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={processUserChecked}
+                  onChange={() => setProcessUserChecked(!processUserChecked)}
+                  className="mr-2"
+                />
+                Process User
+              </label>
+            </td>
+            <td  align="center">
+            <div className="border-gray-400 border bg-gray-100  w-full">
+                  0
+              </div>
+            </td>
+            <td  align="center">10,000.00</td>
+            <td  align="center">12</td>
+            <td align="center">{processUserChecked ? "10,000.00" : "0.00"}</td>
+          </tr>
+          <tr className="table-rule">
+            <td>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={selfServiceChecked}
+                  onChange={() => setSelfServiceChecked(!selfServiceChecked)}
+                  className="mr-2"
+                />
+                Self-Service User
+              </label>
+            </td>
+            <td align="center">
+            <div className="border-gray-400 border bg-gray-100  w-full">
+                  0
+              </div>
+            </td>
+            <td align="center">10,000.00</td>
+            <td align="center">12</td>
+            <td align="center">{selfServiceChecked ? "10,000.00" : "0.00"}</td>
+          </tr>
+          <tr className="table-rule">
+            <td colSpan="4" style={{ fontWeight: "700" }}>Total Subscription</td>
+            <td style={{ fontWeight: "700" }}  align="center">{totalSubscription.toFixed(2)}</td>
+          </tr>
+          <tr className="table-rule">
+            <td style={{ fontWeight: "700" }}>Discounts (as applicable)</td>
+          </tr>
+          <tr className="table-rule">
+            <td>Waiver: Part</td>
+            <td></td>
+            <td></td>
+            <td  align="center">35.0%</td>
+            <td  align="center">{waiverDiscount.toFixed(2)}</td>
+          </tr>
+          <tr className="table-rule">
+            <td>Payment Cycle: Annual</td>
+            <td></td>
+            <td></td>
+            <td align="center">10.0%</td>
+            <td  align="center">{paymentCycleDiscount.toFixed(2)}</td>
+          </tr>
+          <tr className="table-rule">
+            <td>Promo: Christmas Bonanza</td>
+            <td></td>
+            <td></td>
+            <td align="center">15.0%</td>
+            <td  align="center">{promoDiscount.toFixed(2)}</td>
+          </tr>
+          <tr className="table-rule">
+            <td colSpan="4" style={{ fontWeight: "700" }}>Discounted Subscription</td>
+            <td style={{ fontWeight: "700" }}  align="center">{discountedSubscription.toFixed(2)}</td>
+          </tr>
+          <tr className="table-rule">
+            <td style={{ fontWeight: "700" }}>Charges</td>
+          </tr>
+          <tr className="table-rule">
+            <td>VAT</td>
+            <td></td>
+            <td></td>
+            <td  align="center">7.5%</td>
+            <td  align="center">{vat.toFixed(2)}</td>
+          </tr>
+          <tr className="table-rule">
+            <td>Excise Duty</td>
+            <td></td>
+            <td></td>
+            <td align="center">5.0%</td>
+            <td align="center">{exciseDuty.toFixed(2)}</td>
+          </tr>
+          <tr className="table-rule">
+            <td>Payment Gateway</td>
+            <td></td>
+            <td></td>
+            <td align="center">5.0%</td>
+            <td align="center">{paymentGateway.toFixed(2)}</td>
+          </tr>
+          <tr className="table-rule">
+            <td colSpan="4" style={{ fontWeight: "700" }}>Total Charges</td>
+            <td style={{ fontWeight: "700" }} align="center">{totalCharges.toFixed(2)}</td>
+          </tr>
+          <tr className="table-rule">
+            <td colSpan="4" style={{ fontWeight: "700" }}>Amount Payable</td>
+            <td style={{ fontWeight: "700" }} align="center">{totalAmountPayable.toFixed(2)}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-  
   );
 };
 

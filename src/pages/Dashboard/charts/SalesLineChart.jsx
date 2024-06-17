@@ -46,6 +46,7 @@ const SalesLineChart = () => {
   };
 
   const options = {
+    responsive: true,
     plugins: {
       legend: {
         display: false,
@@ -61,7 +62,7 @@ const SalesLineChart = () => {
   };
 
   return (
-    <div style={{ width: "100%", }}>
+    <div style={{ width: "100%",position:"relative",height:"100%" }}>
       <Line data={data} options={options}/>
     </div>
   );

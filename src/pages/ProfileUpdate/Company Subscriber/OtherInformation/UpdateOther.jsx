@@ -4,7 +4,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 
-const UpdateOther = ({ setUpdateNow }) => {
+const UpdateOther = ({
+  setUpdateNow,
+  individualPartner,
+  individualSubscriber,
+  companyPartner,
+  companySubscriber,
+}) => {
   const [fileName, setFileName] = useState("");
   const [fileName2, setFileName2] = useState("");
 
@@ -22,8 +28,22 @@ const UpdateOther = ({ setUpdateNow }) => {
   const meansID = register("meansOfID");
 
   const onSubmit = (data) => {
-    console.log(data);
-    setUpdateNow(false);
+    if (individualPartner) {
+      console.log("individualPartner URL", data);
+      setUpdateNow(false);
+    }
+    if (individualSubscriber) {
+      console.log("individualSubscriber URL", data);
+      setUpdateNow(false);
+    }
+    if (companyPartner) {
+      console.log("companyPartner URL", data);
+      setUpdateNow(false);
+    }
+    if (companySubscriber) {
+      console.log("companySubscriber URL", data);
+      setUpdateNow(false);
+    }
   };
 
   const handleFileChange = (e) => {

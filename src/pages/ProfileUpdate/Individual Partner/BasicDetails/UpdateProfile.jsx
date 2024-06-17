@@ -2,13 +2,10 @@ import { individualSubscriberBasicFormSchema } from "@/utils/zodSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
+import { usePostData } from "@/hooks/usePostData";
 import { UserRound } from "lucide-react";
-import { baseUrl } from "@/App";
-import useEditData from "@/hooks/useEditHook";
 
 const UpdateProfile = ({ setUpdateNow }) => {
-  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/basic-details/6667055a1354098b7d372d3f`;
-  // const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/basic-details/${id}`
   const {
     register,
     handleSubmit,
@@ -20,31 +17,8 @@ const UpdateProfile = ({ setUpdateNow }) => {
 
   const fileRef = register("picture");
 
-  const editMutation = useEditData({
-    queryKey: ["individualScubscriberBasicDetails"],
-    url: indiSubBasicUrl,
-    title: "Basic Details",
-  });
-
   const onSubmit = (data) => {
-    const body = {
-      surname: data.surname,
-      firstname: data.firstname,
-      title: data.title,
-      middleName: data.middlename,
-      maidenName: data.maidenname,
-      gender: data.gender,
-      DateOfBirth: data.dateOfBirth,
-      maritalStatus: data.maritalStatus,
-      country: data.country,
-      state: data.state,
-      localGoverment: data.lga,
-      ward: data.lga,
-      nin: data.nin,
-      individualPhoto: data.picture[0],
-    };
-
-    editMutation.mutateAsync(body);
+    console.log(data);
     setUpdateNow(false);
   };
 
@@ -277,7 +251,7 @@ const UpdateProfile = ({ setUpdateNow }) => {
                 {...register("state")}
                 type="text"
                 placeholder="Enter State"
-                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+                className="mt-1 px-3 w-full h-8 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
               />
               {errors.state && (
                 <p className="text-red-600 text-sm">{errors.state.message}</p>

@@ -2,13 +2,10 @@ import { individualSubscriberBasicFormSchema } from "@/utils/zodSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
+import { usePostData } from "@/hooks/usePostData";
 import { UserRound } from "lucide-react";
-import { baseUrl } from "@/App";
-import useEditData from "@/hooks/useEditHook";
 
-const UpdateProfile = ({ setUpdateNow }) => {
-  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/basic-details/6667055a1354098b7d372d3f`;
-  // const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/basic-details/${id}`
+const UpdateGuarantor = ({ setUpdateNow, selectedGuarantor }) => {
   const {
     register,
     handleSubmit,
@@ -20,38 +17,17 @@ const UpdateProfile = ({ setUpdateNow }) => {
 
   const fileRef = register("picture");
 
-  const editMutation = useEditData({
-    queryKey: ["individualScubscriberBasicDetails"],
-    url: indiSubBasicUrl,
-    title: "Basic Details",
-  });
-
   const onSubmit = (data) => {
-    const body = {
-      surname: data.surname,
-      firstname: data.firstname,
-      title: data.title,
-      middleName: data.middlename,
-      maidenName: data.maidenname,
-      gender: data.gender,
-      DateOfBirth: data.dateOfBirth,
-      maritalStatus: data.maritalStatus,
-      country: data.country,
-      state: data.state,
-      localGoverment: data.lga,
-      ward: data.lga,
-      nin: data.nin,
-      individualPhoto: data.picture[0],
-    };
-
-    editMutation.mutateAsync(body);
+    console.log(data, selectedGuarantor);
     setUpdateNow(false);
   };
 
   return (
     <div className="flex flex-col items-center">
       <div className="w-full flex items-center justify-between border-b py-3 px-5">
-        <h3 className="text-black text-sm leading-relaxed">Basic Details</h3>
+        <h3 className="text-black text-sm leading-relaxed">
+          Guarantor Details
+        </h3>
       </div>
 
       {/* Update Details Form */}
@@ -200,6 +176,22 @@ const UpdateProfile = ({ setUpdateNow }) => {
             </div>
             <div className="col-span-3 md:col-span-1 my-3">
               <label className="block text-sm font-medium text-gray-700">
+                Relationship<span className="text-red-600">*</span>
+              </label>
+              <select
+                {...register("relationship")}
+                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+              >
+                <option value="">Select Relationship</option>
+                <option value="spouse">Spouse</option>
+                <option value="child">Child</option>
+                <option value="parent">Parent</option>
+                <option value="sibling">Sibling</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div className="col-span-3 md:col-span-1 my-3">
+              <label className="block text-sm font-medium text-gray-700">
                 Ward<span className="text-red-600">*</span>
               </label>
               <input
@@ -256,7 +248,7 @@ const UpdateProfile = ({ setUpdateNow }) => {
                 {...register("maritalStatus")}
                 className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
               >
-                <option value="">Select marital status</option>
+                <option value="">Select Marital Status</option>
                 <option value="single">Single</option>
                 <option value="married">Married</option>
                 <option value="divorced">Divorced</option>
@@ -282,6 +274,18 @@ const UpdateProfile = ({ setUpdateNow }) => {
               {errors.state && (
                 <p className="text-red-600 text-sm">{errors.state.message}</p>
               )}
+            </div>
+            <div className="col-span-3 md:col-span-1 my-3">
+              <label className="block text-sm font-medium text-gray-700">
+                Duration of Relationship&#91;Years&#93;
+                <span className="text-red-600">*</span>
+              </label>
+              <input
+                {...register("relationshipYears")}
+                type="number"
+                // placeholder="Enter LGA"
+                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+              />
             </div>
             <div className="col-span-3 md:col-span-1 my-3">
               <label className="block text-sm font-medium text-gray-700">
@@ -320,4 +324,4 @@ const UpdateProfile = ({ setUpdateNow }) => {
   );
 };
 
-export default UpdateProfile;
+export default UpdateGuarantor;

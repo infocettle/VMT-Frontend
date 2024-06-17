@@ -8,34 +8,24 @@ import {
 import HeaderFooter from "../HeaderFooter";
 import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
-import { INDIVIDUAL_SUBSCRIBER } from "@/texts/ProfileData";
+import { INDIVIDUAL_PARTNER } from "@/texts/ProfileData";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import {
   DisplayAddress,
-  DisplayGuarantor,
-  DisplayMedical,
   DisplayOther,
-  DisplayReferee,
-  DisplayRelative,
-  IndividualSubscriberDisplayBasic,
-  IndividualSubscriberUpdateBasic,
+  IndividualPartnerDisplayBasic,
+  IndividualPartnerUpdateBasic,
   UpdateAddress,
-  UpdateGuarantor,
-  UpdateMedical,
   UpdateOther,
-  UpdateReferee,
-  UpdateRelative,
 } from "..";
 
-const IndividualSubscriberProfile = () => {
+const IndividualPartnerProfile = () => {
   const navigate = useNavigate();
 
   const [name, setName] = useState("Basic Details");
   const [updateNow, setUpdateNow] = useState(false);
-  const [selectedReferee, setSelectedReferee] = useState(null);
-  const [selectedGuarantor, setSelectedGuarantor] = useState(null);
-  const [individualSubscriber, setIndividualSubscriber] = useState(true);
+  const [individual, setIndividual] = useState(true);
   const [progress, setProgress] = useState(0);
 
   return (
@@ -67,7 +57,7 @@ const IndividualSubscriberProfile = () => {
                 )}
               >
                 <div className="flex space-x-5 items-center">
-                  {/* Individual Photo */}
+                  {/* Individual Photot */}
                   <div className="w-40 h-40 bg-vmtpurple rounded-lg flex justify-center items-center self-start m-5">
                     <div className="w-14 h-14 flex items-center justify-center rounded-full bg-white">
                       <UserRound color="#000" />
@@ -126,10 +116,10 @@ const IndividualSubscriberProfile = () => {
             )}
 
             {/* Second Div */}
-            <div className="mt-5 flex items-start space-x-8">
+            <div className="mt-5 flex items-center space-x-8">
               {/* Left Part */}
               <div className="bg-white rounded-lg w-48 h-[73vh] flex flex-col space-y-2 items-start ">
-                {INDIVIDUAL_SUBSCRIBER.map((detail) => (
+                {INDIVIDUAL_PARTNER.map((detail) => (
                   <button
                     onClick={() => setName(detail.name)}
                     key={detail.id}
@@ -159,75 +149,33 @@ const IndividualSubscriberProfile = () => {
               {/* Right Part */}
               <div className="w-full bg-white rounded-lg">
                 {!updateNow && name == "Basic Details" && (
-                  <IndividualSubscriberDisplayBasic
-                    setUpdateNow={setUpdateNow}
-                  />
+                  <IndividualPartnerDisplayBasic setUpdateNow={setUpdateNow} />
                 )}
-                {!updateNow && name == "Relative Details" && (
-                  <DisplayRelative setUpdateNow={setUpdateNow} />
-                )}
+
                 {!updateNow && name == "Address Details" && (
                   <DisplayAddress setUpdateNow={setUpdateNow} />
                 )}
                 {!updateNow && name == "Other Details" && (
                   <DisplayOther setUpdateNow={setUpdateNow} />
                 )}
-                {!updateNow && name == "Referees Details" && (
-                  <DisplayReferee
-                    setUpdateNow={setUpdateNow}
-                    setSelectedReferee={setSelectedReferee}
-                    selectedReferee={selectedReferee}
-                  />
-                )}
-                {!updateNow && name == "Guarantors Details" && (
-                  <DisplayGuarantor
-                    setUpdateNow={setUpdateNow}
-                    setSelectedGuarantor={setSelectedGuarantor}
-                    selectedGuarantor={selectedGuarantor}
-                  />
-                )}
-                {!updateNow && name == "Medical Details" && (
-                  <DisplayMedical setUpdateNow={setUpdateNow} />
-                )}
 
                 {/* Update components below */}
 
                 {updateNow && name == "Basic Details" && (
-                  <IndividualSubscriberUpdateBasic
-                    setUpdateNow={setUpdateNow}
-                  />
+                  <IndividualPartnerUpdateBasic setUpdateNow={setUpdateNow} />
                 )}
-                {updateNow && name == "Relative Details" && (
-                  <UpdateRelative setUpdateNow={setUpdateNow} />
-                )}
+
                 {updateNow && name == "Address Details" && (
                   <UpdateAddress
                     setUpdateNow={setUpdateNow}
-                    individual={individualSubscriber}
+                    individual={individual}
                   />
                 )}
                 {updateNow && name == "Other Details" && (
                   <UpdateOther
                     setUpdateNow={setUpdateNow}
-                    individual={individualSubscriber}
+                    individual={individual}
                   />
-                )}
-                {updateNow && name == "Referees Details" && (
-                  <UpdateReferee
-                    setUpdateNow={setUpdateNow}
-                    setSelectedReferee={setSelectedReferee}
-                    selectedReferee={selectedReferee}
-                  />
-                )}
-                {updateNow && name == "Guarantors Details" && (
-                  <UpdateGuarantor
-                    setUpdateNow={setUpdateNow}
-                    setSelectedGuarantor={setSelectedGuarantor}
-                    selectedGuarantor={selectedGuarantor}
-                  />
-                )}
-                {updateNow && name == "Medical Details" && (
-                  <UpdateMedical setUpdateNow={setUpdateNow} />
                 )}
               </div>
             </div>
@@ -238,4 +186,4 @@ const IndividualSubscriberProfile = () => {
   );
 };
 
-export default IndividualSubscriberProfile;
+export default IndividualPartnerProfile;

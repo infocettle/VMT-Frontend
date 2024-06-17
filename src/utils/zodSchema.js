@@ -771,6 +771,9 @@ export const companyBasicFormSchema = z
     }
   );
 
+const MAX_UPLOAD_SIZE = 1024 * 1024 * 1; // 1MB
+const ACCEPTED_FILE_TYPES = ["image/png", "image/jpeg", "image/jpg"];
+
 export const companyRepresentativeFormSchema = z.object({
   title: z.string().min(1, "Title is required"),
   surname: z.string().min(1, "Surname is required"),
@@ -799,9 +802,18 @@ export const companyRepresentativeFormSchema = z.object({
   lga: z.string().min(1, "LGA is required"),
   picture: z
     .instanceof(FileList)
-    .refine((file) => file?.length == 1, "File is required."),
+    .refine((file) => file?.length === 1, "Picture is required.")
+    .refine(
+      (file) => file?.item(0)?.size <= MAX_UPLOAD_SIZE,
+      "Picture size must not exceed 1MB"
+    )
+    .refine(
+      (file) => ACCEPTED_FILE_TYPES.includes(file?.item(0)?.type),
+      "Picture must be a PNG"
+    ),
   relationship: z.string().min(1, "Relationship is required"),
 });
+
 export const individualSubscriberBasicFormSchema = z.object({
   title: z.string().min(1, "Title is required"),
   surname: z.string().min(1, "Surname is required"),
@@ -826,7 +838,15 @@ export const individualSubscriberBasicFormSchema = z.object({
   ward: z.string().min(1, "Ward is required"),
   picture: z
     .instanceof(FileList)
-    .refine((file) => file?.length == 1, "File is required."),
+    .refine((file) => file?.length === 1, "Picture is required.")
+    .refine(
+      (file) => file?.item(0)?.size <= MAX_UPLOAD_SIZE,
+      "Picture size must not exceed 1MB"
+    )
+    .refine(
+      (file) => ACCEPTED_FILE_TYPES.includes(file?.item(0)?.type),
+      "Picture must be a PNG"
+    ),
   relationship: z.string().optional(),
   relationshipYears: z.string().optional(),
 });
@@ -885,5 +905,23 @@ export const otherInformationFormSchema = z.object({
   // .refine((file) => file?.length == 1, "File is required."),
   meansOfID: z
     .instanceof(FileList)
-    .refine((file) => file?.length == 1, "File is required."),
+    .refine((file) => file?.length === 1, "File is required.")
+    .refine(
+      (file) => file?.item(0)?.size <= MAX_UPLOAD_SIZE,
+      "File size must not exceed 1MB"
+    ),
+});
+
+export const medicalInformationFormSchema = z.object({
+  genotype: z.string().min(1, "Genotype is required"),
+  bloodGroup: z.string().min(1, "Blood group is required"),
+  pregnant: z.enum(["yes", "no"], {
+    required_error: "Please select if you are pregnant",
+  }),
+  previousCaesareanSection: z.enum(["yes", "no"], {
+    required_error: "Please select if you had a previous caesarean section",
+  }),
+  knownAllergies: z.string().optional(),
+  otherMedicalDetails: z.string().optional(),
+  knownAilments: z.string().optional(),
 });

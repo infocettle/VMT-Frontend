@@ -30,3 +30,9 @@ export const INDIVIDUAL_SUBSCRIBER = [
   { id: 6, name: "Guarantors Details" },
   { id: 7, name: "Medical Details" },
 ];
+
+export const INDIVIDUAL_PARTNER = [
+  { id: 1, name: "Basic Details" },
+  { id: 2, name: "Address Details" },
+  { id: 3, name: "Other Details" },
+];

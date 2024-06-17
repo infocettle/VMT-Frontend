@@ -21,7 +21,10 @@ const Profile = () => {
 
   const [name, setName] = useState("Basic Details");
   const [updateNow, setUpdateNow] = useState(false);
-  const [individual, setIndividual] = useState(false);
+  const [individualPartner, setIndividualPartner] = useState(false);
+  const [individualSubscriber, setIndividualSubscriber] = useState(false);
+  const [companyPartner, setCompanyPartner] = useState(false);
+  const [companySubscriber, setCompanySubscriber] = useState(false);
   const [progress, setProgress] = useState(0);
 
   return (
@@ -157,13 +160,19 @@ const Profile = () => {
                 {updateNow && name == "Address Details" && (
                   <UpdateAddress
                     setUpdateNow={setUpdateNow}
-                    individual={individual}
+                    individualPartner={individualPartner}
+                    individualSubscriber={individualSubscriber}
+                    companyPartner={companyPartner}
+                    companySubscriber={companySubscriber}
                   />
                 )}
                 {updateNow && name == "Other Information" && (
                   <UpdateOther
                     setUpdateNow={setUpdateNow}
-                    individual={individual}
+                    individualPartner={individualPartner}
+                    individualSubscriber={individualSubscriber}
+                    companyPartner={companyPartner}
+                    companySubscriber={companySubscriber}
                   />
                 )}
               </div>

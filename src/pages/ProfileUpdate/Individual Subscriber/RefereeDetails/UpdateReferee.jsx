@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { usePostData } from "@/hooks/usePostData";
 import { UserRound } from "lucide-react";
 
-const UpdateReferee = ({ setUpdateNow }) => {
+const UpdateReferee = ({ setUpdateNow, selectedReferee }) => {
   const {
     register,
     handleSubmit,
@@ -18,7 +18,7 @@ const UpdateReferee = ({ setUpdateNow }) => {
   const fileRef = register("picture");
 
   const onSubmit = (data) => {
-    console.log(data);
+    console.log(data, selectedReferee);
     setUpdateNow(false);
   };
 

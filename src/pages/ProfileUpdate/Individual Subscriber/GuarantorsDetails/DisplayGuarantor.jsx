@@ -5,7 +5,7 @@ import { baseUrl } from "@/App";
 import { UserRound } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 
-const REFEREE_DETAILS = [
+const GUARANTOR_DETAILS = [
   { id: 1, name: "Title", value: "" },
   { id: 2, name: "Surname", value: "" },
   { id: 3, name: "Firstname", value: "" },
@@ -25,7 +25,7 @@ const REFEREE_DETAILS = [
   { id: 14, name: "Local Government Area", value: "" },
 ];
 
-const REFEREE_DETAILS_2 = [
+const GUARANTOR_DETAILS_2 = [
   { id: 1, name: "Title", value: "" },
   { id: 2, name: "Surname", value: "" },
   { id: 3, name: "Firstname", value: "" },
@@ -45,13 +45,13 @@ const REFEREE_DETAILS_2 = [
   { id: 14, name: "Local Government Area", value: "" },
 ];
 
-const DisplayReferee = ({
+const DisplayGuarantor = ({
   setUpdateNow,
-  selectedReferee,
-  setSelectedReferee,
+  setSelectedGuarantor,
+  selectedGuarantor,
 }) => {
   const handleCheckboxChange = (referee) => {
-    setSelectedReferee(referee);
+    setSelectedGuarantor(referee);
   };
 
   // const titleUrl = `${baseUrl}public-registry/personal-details/title`;
@@ -81,18 +81,18 @@ const DisplayReferee = ({
           <div className="w-full flex flex-col space-y-3 items-start p-5">
             <div className="inline-flex items-center ">
               <Checkbox
-                id="ref1"
-                checked={selectedReferee === "first"}
+                id="gua1"
+                checked={selectedGuarantor === "first"}
                 onCheckedChange={() => handleCheckboxChange("first")}
               />
-              <label htmlFor="ref1">
+              <label htmlFor="gua1">
                 <h5 className="ml-2 text-black font-light text-xs">
-                  First Referee
+                  First Guarantor
                 </h5>
               </label>
             </div>
 
-            {REFEREE_DETAILS.map((detail) => (
+            {GUARANTOR_DETAILS.map((detail) => (
               <div
                 key={detail.id}
                 className="w-auto flex items-center space-x-4"
@@ -117,17 +117,17 @@ const DisplayReferee = ({
           <div className="w-full flex flex-col space-y-3 items-start p-5 ">
             <div className="inline-flex items-center ">
               <Checkbox
-                id="ref2"
-                checked={selectedReferee === "second"}
+                id="gua2"
+                checked={selectedGuarantor === "second"}
                 onCheckedChange={() => handleCheckboxChange("second")}
               />
-              <label htmlFor="ref2">
+              <label htmlFor="gua2">
                 <h5 className="ml-2 text-black font-light text-xs">
-                  Second Referee
+                  Second Guarantor
                 </h5>
               </label>
             </div>
-            {REFEREE_DETAILS_2.map((detail) => (
+            {GUARANTOR_DETAILS_2.map((detail) => (
               <div
                 key={detail.id}
                 className="w-auto flex items-center space-x-4"
@@ -152,4 +152,4 @@ const DisplayReferee = ({
   );
 };
 
-export default DisplayReferee;
+export default DisplayGuarantor;

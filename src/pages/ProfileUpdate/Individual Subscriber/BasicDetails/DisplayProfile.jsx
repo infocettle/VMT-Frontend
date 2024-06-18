@@ -6,8 +6,11 @@ import { baseUrl } from "@/App";
 const DisplayProfile = ({ setUpdateNow }) => {
   const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/basic-details/6667055a1354098b7d372d3f`;
 
-  const { data, isFetching } = useFetchData(indiSubBasicUrl, "Basic Details");
-  // console.log(data);
+  const { data, isFetching } = useFetchData(
+    indiSubBasicUrl,
+    "individualScubscriberBasicDetails"
+  );
+  console.log(data);
 
   const INDIVIDUAL_SUBSCRIBER_DETAILS = [
     { id: 1, name: "Title", value: data?.title },

@@ -3424,7 +3424,7 @@ export const bankColumns = [
 
       const title = row.original;
 
-      const Url = `${baseUrl}public-registry/business/financial-institutions/bank/${title._id}`;
+      const Url = `${baseUrl}public-registry/financial-institutions/bank/${title._id}`;
 
       const deleteMutation = useDeleteData({
         queryKey: ["bank"],
@@ -3646,7 +3646,7 @@ export const typeColumns = [
 
       const title = row.original;
 
-      const Url = `${baseUrl}public-registry/business/financial-institutions/type/${title._id}`;
+      const Url = `${baseUrl}public-registry/financial-institutions/type/${title._id}`;
 
       const deleteMutation = useDeleteData({
         queryKey: ["type"],
@@ -3845,7 +3845,7 @@ export const licenseColumns = [
 
       const title = row.original;
 
-      const Url = `${baseUrl}public-registry/business/financial-institutions/licence/${title._id}`;
+      const Url = `${baseUrl}public-registry/financial-institutions/licence/${title._id}`;
 
       const deleteMutation = useDeleteData({
         queryKey: ["licence"],
@@ -4655,7 +4655,7 @@ export const pfcColumns = [
 
       // console.log(title);
 
-      const pfcUrl = `${baseUrl}public-registry/business/financial-institutions/pension-fund/pfc/${title._id}`;
+      const pfcUrl = `${baseUrl}public-registry/financial-institutions/pension-fund/pfc/${title._id}`;
       const deleteMutation = useDeleteData({
         queryKey: ["pfc"],
         url: pfcUrl,
@@ -4843,7 +4843,7 @@ export const pfaColumns = [
 
       // console.log(title);
 
-      const pfaUrl = `${baseUrl}public-registry/business/financial-institutions/pension-fund/pfa/${title._id}`;
+      const pfaUrl = `${baseUrl}public-registry/financial-institutions/pension-fund/pfa/${title._id}`;
       const deleteMutation = useDeleteData({
         queryKey: ["pfa"],
         url: pfaUrl,
@@ -5058,7 +5058,7 @@ export const pfaAcctColumns = [
 
       // console.log(title);
 
-      const pfaAcctUrl = `${baseUrl}public-registry/business/financial-institutions/pension-fund/pfa-account/${title._id}`;
+      const pfaAcctUrl = `${baseUrl}public-registry/financial-institutions/pension-fund/pfa-account/${title._id}`;
       const deleteMutation = useDeleteData({
         queryKey: ["pfaAcct"],
         url: pfaAcctUrl,

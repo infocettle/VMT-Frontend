@@ -217,9 +217,10 @@ function UserCreatePassword({userType}) {
           {showConfirmPassword ? <HiEyeOff /> : <HiEye />}
         </button>
       </div>
+      <div className="auth-label my-4">Security Questions</div>
       <div className="password-height">
 
-         <div className="auth-label my-4">Security Questions</div>
+        
       <div className="w-full">
         {[0, 1, 2].map((index) => (
           <div key={index} className="w-full">

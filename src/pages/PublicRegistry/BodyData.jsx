@@ -21,14 +21,14 @@ import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { GenericForm } from "@/components/GenericForm";
 import { FormInput } from "@/components/FormInput";
-import { ReportLinks } from "@/components/ReportLinks";
+import { ReportLinks, handleExport } from "@/components/ReportLinks";
 import SecondHeader from "@/components/SecondHeader";
 import { BodyDataFormSchema } from "@/utils/zodSchema";
 import { bodyDataColumns } from "@/components/typings";
 import { ReusableTable } from "@/components/ReusableTable";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
-import {usePostData} from "@/hooks/usePostData";
+import { usePostData } from "@/hooks/usePostData";
 import SecondDiv from "@/components/SecondDiv";
 
 export const bodyDataRequiredForm = BodyDataFormSchema.required();
@@ -38,7 +38,7 @@ const bodyDataDefaultValues = {
 
 const BodyData = () => {
   const [open, setIsOpen] = useState(false);
-  const [subGroup, setSubGroup] = useState("eye color");
+  const [subGroup, setSubGroup] = useState("nose shape");
   const [eyeColor, setEyeColor] = useState(false);
   const [hairColor, setHairColor] = useState(false);
   const [noseColor, setNoseColor] = useState(true);
@@ -159,7 +159,14 @@ const BodyData = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 {ReportLinks.map((link) => (
-                  <DropdownMenuItem key={link.id}>
+                  <DropdownMenuItem
+                    key={link.id}
+                    onClick={
+                      link.name == "Export"
+                        ? () => handleExport(data)
+                        : link.Click
+                    }
+                  >
                     <div className="w-auto px-2 flex items-center space-x-3">
                       {link.icon}
                       <h3 className="text-black font-normal text-xs leading-relaxed">
@@ -276,16 +283,32 @@ const BodyData = () => {
 
           {/* Table */}
           {subGroup == "eye color" && (
-            <ReusableTable columns={bodyDataColumns} data={data} />
+            <ReusableTable
+              columns={bodyDataColumns}
+              data={data}
+              tableName={"eyeColor"}
+            />
           )}
           {subGroup == "skin tone" && (
-            <ReusableTable columns={bodyDataColumns} data={data} />
+            <ReusableTable
+              columns={bodyDataColumns}
+              data={data}
+              tableName={"skinTone"}
+            />
           )}
           {subGroup == "nose shape" && (
-            <ReusableTable columns={bodyDataColumns} data={data} />
+            <ReusableTable
+              columns={bodyDataColumns}
+              data={data}
+              tableName={"noseShape"}
+            />
           )}
           {subGroup == "hair color" && (
-            <ReusableTable columns={bodyDataColumns} data={data} />
+            <ReusableTable
+              columns={bodyDataColumns}
+              data={data}
+              tableName={"hairColor"}
+            />
           )}
         </div>
       </div>

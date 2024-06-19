@@ -2,15 +2,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const editData = async ({ url, body, title, image }) => {
+const patchData = async ({ url, body, title }) => {
   const headers = {
     Accept: "application/json",
-    "Content-Type": image ? "multipart/form-data" : "application/json",
+    "Content-Type": "application/json",
   };
 
   try {
-    const { data } = await axios.put(url, body, { headers });
-    toast.success(`${title} updated successfully`, {
+    const { data } = await axios.patch(url, body, { headers });
+    toast.success(`${title} entry approved`, {
       autoClose: 2000,
       theme: "light",
     });
@@ -26,15 +26,15 @@ const editData = async ({ url, body, title, image }) => {
   }
 };
 
-const useEditData = ({ queryKey, url, title, image }) => {
+const usePatchData = ({ queryKey, url, title }) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (body) => editData({ url, body, title, image }),
+    mutationFn: (body) => patchData({ url, body, title }),
     onSuccess: () => {
       queryClient.invalidateQueries(queryKey);
     },
   });
 };
 
-export default useEditData;
+export default usePatchData;

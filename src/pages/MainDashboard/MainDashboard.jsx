@@ -3,7 +3,7 @@ import { BellDotIcon, UserRound } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import MobileLogo from "../../assets/img/MobileLogo.svg";
-import SystemLogo from "../../assets/img/SystemLogo.svg";
+import "../../texts/print.css";
 import Avatar from "../../assets/img/Avatar.svg";
 import Menu from "../../assets/img/Menu.svg";
 import "./main-dashboard.css";
@@ -52,8 +52,8 @@ const MainDashboard = () => {
     <div className="w-full flex items-start overflow-hidden pb-2 h-screen ">
       <div className="border-r h-screen flex flex-col  items-center large_screen">
         <img src={MobileLogo} alt="image" className="p-2" />
-        <div className="dasboard-side-image-container  h-screen flex gap-4 flex-col items-center">
-          <div className="dasboard-side-image active-side">
+        <div className="dasboard-side-image-container h-screen flex flex-col space-y-5 items-center">
+        <div className="dasboard-side-image active-side">
             <LuServer />
           </div>
           <div className="dasboard-side-image">
@@ -117,16 +117,16 @@ const MainDashboard = () => {
               </div>
               <div className="flex flex-col flex-wrap w-full">
                   <div className="flex gap-2 items-center border-b mb-3 border-b-gray-200 pb-3">
-                  <MdSupportAgent />
-                  <div className="help-container-text">Help & Support</div>
+                    <MdSupportAgent />
+                    <div className="help-container-text">Help & Support</div>
                   </div>
                   <div className="flex gap-2 items-center">
-                  <LuLogOut />
-                  <div className="help-container-text">Log out</div>
+                    <LuLogOut />
+                    <div className="help-container-text">Log out</div>
                   </div>
                 </div>
-            </div>): null}
-            
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -151,7 +151,7 @@ const MainDashboard = () => {
               <div className="footer-copyright">
                 Copyright ©2023 <span>Valuemine.</span> All rights reserved
               </div>
-              <div className="footer-links">
+              <div className="footer-links mr-5">
                 <a href="#">Privacy</a>
                 <a href="#" className="border-r-2 pl-2 border-l-2 pr-2">
                   Security

@@ -12,11 +12,11 @@ import ReuseDialog from "@/components/ReuseDialog";
 import { FormInput } from "@/components/FormInput";
 import { FormTextArea } from "@/components/FormTextArea";
 import { sectorFormSchema } from "@/utils/zodSchema";
-import { ReportLinks } from "@/components/ReportLinks";
+import { ReportLinks, handleExport } from "@/components/ReportLinks";
 import SecondHeader from "@/components/SecondHeader";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
-import {usePostData} from "@/hooks/usePostData";
+import { usePostData } from "@/hooks/usePostData";
 import SecondDiv from "@/components/SecondDiv";
 
 export const sectorRequiredForm = sectorFormSchema.required();
@@ -89,7 +89,14 @@ const Sectors = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 {ReportLinks.map((link) => (
-                  <DropdownMenuItem key={link.id}>
+                  <DropdownMenuItem
+                    key={link.id}
+                    onClick={
+                      link.name == "Export"
+                        ? () => handleExport(data)
+                        : link.Click
+                    }
+                  >
                     <div className="w-auto px-2 flex items-center space-x-3">
                       {link.icon}
                       <h3 className="text-black font-normal text-xs leading-relaxed">
@@ -104,7 +111,11 @@ const Sectors = () => {
         </div>
 
         {/* Table */}
-        <ReusableTable columns={sectorColumns} data={data} />
+        <ReusableTable
+          columns={sectorColumns}
+          data={data}
+          tableName={"Sector"}
+        />
       </div>
     </div>
   );

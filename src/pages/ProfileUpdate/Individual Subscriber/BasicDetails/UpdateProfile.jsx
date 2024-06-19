@@ -24,27 +24,47 @@ const UpdateProfile = ({ setUpdateNow }) => {
     queryKey: ["individualScubscriberBasicDetails"],
     url: indiSubBasicUrl,
     title: "Basic Details",
+    image: true,
   });
 
   const onSubmit = (data) => {
-    const body = {
-      surname: data.surname,
-      firstname: data.firstname,
-      title: data.title,
-      middleName: data.middlename,
-      maidenName: data.maidenname,
-      gender: data.gender,
-      DateOfBirth: data.dateOfBirth,
-      maritalStatus: data.maritalStatus,
-      country: data.country,
-      state: data.state,
-      localGoverment: data.lga,
-      ward: data.lga,
-      nin: data.nin,
-      individualPhoto: data.picture[0],
-    };
+    let formData = new FormData();
 
-    editMutation.mutateAsync(body);
+    // const body = {
+    //   surname: data.surname,
+    //   firstname: data.firstname,
+    //   title: data.title,
+    //   middleName: data.middlename,
+    //   maidenName: data.maidenname,
+    //   gender: data.gender,
+    //   DateOfBirth: data.dateOfBirth,
+    //   maritalStatus: data.maritalStatus,
+    //   country: data.country,
+    //   state: data.state,
+    //   localGoverment: data.lga,
+    //   ward: data.lga,
+    //   nin: data.nin,
+    //   individualPhoto: data.picture[0],
+    // };
+
+    formData.append("middleName", data.middlename);
+    formData.append("surname", data.surname);
+    formData.append("firstname", data.firstname);
+    formData.append("title", data.title);
+    formData.append("nin", data.nin);
+    formData.append("maidenName", data.maidenName);
+    formData.append("gender", data.gender);
+    formData.append("DateOfBirth", data.dateOfBirth);
+    formData.append("maritalStatus", data.maritalStatus);
+    formData.append("country", data.country);
+    formData.append("state", data.state);
+    formData.append("localGoverment", data.lga);
+    formData.append("ward", data.ward);
+    if (data.picture[0]) {
+      formData.append("individualPhoto", data.picture[0]);
+    }
+
+    editMutation.mutateAsync(formData);
     setUpdateNow(false);
   };
 

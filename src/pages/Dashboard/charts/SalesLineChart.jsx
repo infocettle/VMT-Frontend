@@ -61,11 +61,7 @@ const SalesLineChart = () => {
     },
   };
 
-  return (
-    <div style={{ width: "100%",position:"relative",height:"100%" }}>
-      <Line data={data} options={options}/>
-    </div>
-  );
+  return <Line data={data} options={options} />;
 };
 
 export default SalesLineChart;

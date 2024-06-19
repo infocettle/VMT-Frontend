@@ -183,11 +183,9 @@ color:  #0B6ED0;
     .sub-form-header-grid{
         grid-template-columns: 100px 1fr;
     }
-    .flex{
-        flex-wrap: wrap;
-    }
-    th, td {
-        text-align: left;
-        padding: 20px !important;
-      }
+   .table-container th{  text-align: left;
+    padding: 20px !important;}
+   .table-container td{  text-align: left;
+    padding: 20px !important;}
+   
    }

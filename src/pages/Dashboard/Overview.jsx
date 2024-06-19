@@ -21,7 +21,7 @@ const Overview = () => {
   return (
     <div className="w-full">
       <DashboardDiv module={"Overview"} />
-      <div className="bg-gray-100 py-3 scrolled-height px-10 w-full flex-col items-center">
+      <div className="bg-gray-100 px-2 py-3  scrolled-height lg:px-10 w-full flex-col items-center">
         {/* Second header */}
 
         <div className="flex justify-between w-full items-center">
@@ -125,13 +125,13 @@ const Overview = () => {
               </div>
             </div>
             <div className="dashboard-section ">
-              <div className="dashboard-section-one" style={{height:"360px"}}>
-                <div className="card-header">
+              <div className="dashboard-section-one" >
+                <div className="card-header mb-4">
                   <div className="card-header-text">SALES</div>
                 </div>
                 <SalesLineChart/>
               </div>
-              <div className="dashboard-section-two" style={{height:"360px"}}>
+              <div className="dashboard-section-two" >
                 <div className="card-header">
                   <div className="card-header-text">PAYMENTS</div>
                 </div>

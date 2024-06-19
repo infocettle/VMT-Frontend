@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import Logo from "../../../assets/img/Logo.svg";
 import { useNavigate } from "react-router-dom";
+import { baseUrl } from "@/App";
+import { sendData } from "@/hooks/usePostData";
 function AdminLogin({ setFormType }) {
+  const url = `${baseUrl}v1/admin/auth/login`;
+  const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 const navigate = useNavigate()
@@ -11,25 +15,57 @@ const navigate = useNavigate()
         setShowPassword(!showPassword);
       };
     
+      const handleEmailChange = (e) => {
+        setEmail(e.target.value);
+      };
     
     
       const handlePasswordChange = (e) => {
         const newPassword = e.target.value;
         setPassword(newPassword);
     
-        if (newPassword !== confirmPassword) {
-          setPasswordMatchError(true);
-        } else {
-          setPasswordMatchError(false);
+    
+      };
+      const validateForm = () => {
+        if (!email.trim()) {
+          toast.error("Email is required");
+          return false;
         }
+        if (!password.trim()) {
+          toast.error("Password is required");
+          return false;
+        }
+        return true;
       };
     
-  const handleContinue = () => {
-    navigate('/admin-dashboard')
-  };
-  const handleReset = () => {
+      const handleContinue = async () => {
+        if (!validateForm()) return;
+    
+        const body = {
+          email: email,
+          password: password,
+        };
+    
+        
+          try {
+            const returnedUser = await sendData({
+              url: url,
+              body: body,
+              title:"Admin User Logged in"
+
+            });
+            console.log(returnedUser);
+            navigate('/')
+        } catch (error) {
+          console.error("error", error);
+        }
+      };
+
+
+
+      const handleReset = () => {
     setFormType("admin-forgot-password");
-  };
+       };
  
 
   return (
@@ -50,6 +86,8 @@ const navigate = useNavigate()
             type="text"
             className="auth-input"
             placeholder="Example@gmail.com"
+            value={email}
+            onChange={handleEmailChange}
           />
         </div>
       

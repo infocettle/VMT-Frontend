@@ -31,7 +31,7 @@ const PaymentsPieChart = () => {
     responsive: true,
     plugins: {
       legend: {
-        position: 'right',
+        position: 'bottom',
         align: 'center',
         labels: {
           usePointStyle: true,
@@ -46,15 +46,15 @@ const PaymentsPieChart = () => {
       <div
         style={{
           position: 'absolute',
-          top: '154px',
-          left: '98px',
+          top: '45%',
+          left: '50%',
           transform: 'translate(-50%, -50%)',
           textAlign: 'center',
         }}
       >
-        <span style={{ fontSize: '20px', fontWeight: 'bold' }}>60%</span>
-        <div  style={{ fontSize: '13px' }}>YTD Payments</div>
-        <div style={{ fontSize: '9px' }}>N 12,349,000</div>
+        <span style={{ fontSize: '4.8vh', fontWeight: 'bold' }}>60%</span>
+        <div  style={{ fontSize: '2vh' }}>YTD Payments</div>
+        <div style={{ fontSize: '1.8vh' }}>N 12,349,000</div>
       </div>
     </div>
   );

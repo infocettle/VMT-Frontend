@@ -1,6 +1,20 @@
+.large_screen{
+  display: flex !important;
+}
+.small_screen{
+  display:none !important;
+}
 .dasboard-side-image-container{
 width: 100%;
 
+}
+.main-dashbaord-header{
+  font-family: Open Sans;
+font-size: 28px;
+font-weight: 600;
+line-height: 34px;
+text-align: left;
+color: #181826;
 }
 .dasboard-side-image{
     width: 100%; 
@@ -60,7 +74,7 @@ text-decoration: underline;
 }
 .slide-in-box {
   position: fixed;
-  top: 70px;
+  top: 62px;
   right: -400px; /* Adjust the width of the box */
   width: 400px;
   height: 100%;
@@ -165,3 +179,23 @@ color: #212134;
 .profile-card-container svg{
   font-size: 24px;
 }
+@media screen and (max-width: 1068px) {
+  .large_screen{
+    display: none !important;
+  }
+  .small_screen{
+    display: flex !important;
+  }
+  .side-position{
+    position: relative;
+  }
+  .side-position-first{
+    position: absolute;
+    z-index: 2;
+    background-color: white;
+  }
+  .profile-card-container{
+    top: 51px;
+    right: 11px;
+  }
+ }

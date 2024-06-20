@@ -816,8 +816,8 @@ export const companyRepresentativeFormSchema = z.object({
 
 export const individualSubscriberBasicFormSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  surname: z.string().min(1, "Surname is required"),
-  firstname: z.string().min(1, "Firstname is required"),
+  surname: z.string().optional(),
+  firstname: z.string().optional(),
   middlename: z.string().optional(),
   maidenname: z.string().optional(),
   gender: z.enum(["male", "female", "other"], {
@@ -831,7 +831,7 @@ export const individualSubscriberBasicFormSchema = z.object({
     },
   }),
   dateOfBirth: z.string().min(1, "Date of birth is required"),
-  nin: z.string().min(1, "NIN is required"),
+  nin: z.string().optional(),
   country: z.string().min(1, "Country is required"),
   state: z.string().min(1, "State is required"),
   lga: z.string().min(1, "LGA is required"),

@@ -10,7 +10,7 @@ const DisplayProfile = ({ setUpdateNow }) => {
     indiSubBasicUrl,
     "individualScubscriberBasicDetails"
   );
-  console.log(data);
+  // console.log(data);
 
   const INDIVIDUAL_SUBSCRIBER_DETAILS = [
     { id: 1, name: "Title", value: data?.title },

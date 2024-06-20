@@ -24,10 +24,10 @@ const MainDashboard = () => {
 
   useEffect(() => {
     const url = location.pathname; // Or location.href if needed
-    
-    if (url.includes('dashboard')) {
+
+    if (url.includes("dashboard")) {
       setPageHeader("Dashboard");
-    } else if (url.includes('public_reg')) {
+    } else if (url.includes("public_reg")) {
       setPageHeader("Public Registry");
     } else {
       setPageHeader("Dashboard"); // Default or other cases
@@ -53,7 +53,7 @@ const MainDashboard = () => {
       <div className="border-r h-screen flex flex-col  items-center large_screen">
         <img src={MobileLogo} alt="image" className="p-2" />
         <div className="dasboard-side-image-container h-screen flex flex-col space-y-5 items-center">
-        <div className="dasboard-side-image active-side">
+          <div className="dasboard-side-image active-side">
             <LuServer />
           </div>
           <div className="dasboard-side-image">
@@ -65,105 +65,118 @@ const MainDashboard = () => {
         </div>
       </div>
       <div className="flex flex-col w-full">
-         <div className="small_screen justify-between items-center w-full border-b border-b-gray-100">
-        <div className="flex">
-        <img src={MobileLogo} alt="image" className="p-2" />
-        </div>
-        <div className="flex">
-        <img src={Avatar} alt="image" className="pr-2" onClick={handleProfileOpen}/>
-        </div>
-      </div>
-      <div className="w-full flex flex-col items-start">
-        <div className="w-full border-b pt-2 pb-3 px-4 flex items-center justify-between">
-          <div className="w-auto flex items-center space-x-2">
+        <div className="small_screen justify-between items-center w-full border-b border-b-gray-100">
+          <div className="flex">
+            <img src={MobileLogo} alt="image" className="p-2" />
+          </div>
+          <div className="flex">
             <img
-              onClick={handleHideSubSide}
-              src={Menu}
+              src={Avatar}
               alt="image"
-              className="mr-3"
+              className="pr-2"
+              onClick={handleProfileOpen}
             />
-            <h2 className="main-dashbaord-header">{pageHeader}</h2>
           </div>
-          <div className="w-auto flex items-center space-x-2 large_screen">
-            <SearchBox />
-          </div>
-          <div className="w-auto flex items-center space-x-2 mr-6  overflow-hidden ">
-            <FaRegBell
-              onClick={handleIconClick}
-              style={{
-                fontSize: "1.4rem",
-                color: "#666687",
-                marginRight: "0.5rem",
-                cursor: "pointer",
-              }}
-              className="large_screen"
-            />
+        </div>
+        <div className="w-full flex flex-col items-start">
+          <div className="w-full border-b pt-2 pb-3 px-4 flex items-center justify-between">
+            <div className="w-auto flex items-center space-x-2">
+              <img
+                onClick={handleHideSubSide}
+                src={Menu}
+                alt="image"
+                className="mr-3"
+              />
+              <h2 className="main-dashbaord-header">{pageHeader}</h2>
+            </div>
+            <div className="w-auto flex items-center space-x-2 large_screen">
+              <SearchBox />
+            </div>
+            <div className="w-auto flex items-center space-x-2 mr-6  overflow-hidden ">
+              <FaRegBell
+                onClick={handleIconClick}
+                style={{
+                  fontSize: "1.4rem",
+                  color: "#666687",
+                  marginRight: "0.5rem",
+                  cursor: "pointer",
+                }}
+                className="large_screen"
+              />
 
-            <div className=" w-full flex items-center gap-2 pl-3 border-l-2 cursor-pointer large_screen" onClick={handleProfileOpen}>
-              <img src={Avatar} alt="image" />
-              <p style={{ fontSize: "14px", color: "#666687" }} >VMT ADMIN</p>
-            </div>
-            <div className={`slide-in-box ${isOpenNotification ? "open" : ""}`}>
-              <Notification onClose={handleClose} />
-            </div>
-            {isOpenProfile ? (<div className="profile-card-container">
-              <div className="profile-info-container">
+              <div
+                className=" w-full flex items-center gap-2 pl-3 border-l-2 cursor-pointer large_screen"
+                onClick={handleProfileOpen}
+              >
                 <img src={Avatar} alt="image" />
-                <div className="flex flex-col flex-wrap w-full">
-                  <div className="profile-info-name">VMT ADMIN</div>
-                  <div className="profile-info-email flex  flex-wrap ">vmtadim@gmail.com</div>
-                </div>
-             
+                <p style={{ fontSize: "14px", color: "#666687" }}>VMT ADMIN</p>
               </div>
-              <div className="flex flex-col flex-wrap w-full">
-                  <div className="flex gap-2 items-center border-b mb-3 border-b-gray-200 pb-3">
-                    <MdSupportAgent />
-                    <div className="help-container-text">Help & Support</div>
+              <div
+                className={`slide-in-box ${isOpenNotification ? "open" : ""}`}
+              >
+                <Notification onClose={handleClose} />
+              </div>
+              {isOpenProfile ? (
+                <div className="profile-card-container">
+                  <div className="profile-info-container">
+                    <img src={Avatar} alt="image" />
+                    <div className="flex flex-col flex-wrap w-full">
+                      <div className="profile-info-name">VMT ADMIN</div>
+                      <div className="profile-info-email flex  flex-wrap ">
+                        vmtadim@gmail.com
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex gap-2 items-center">
-                    <LuLogOut />
-                    <div className="help-container-text">Log out</div>
+                  <div className="flex flex-col flex-wrap w-full">
+                    <div className="flex gap-2 items-center border-b mb-3 border-b-gray-200 pb-3">
+                      <MdSupportAgent />
+                      <div className="help-container-text">Help & Support</div>
+                    </div>
+                    <div className="flex gap-2 items-center">
+                      <LuLogOut />
+                      <div className="help-container-text">Log out</div>
+                    </div>
                   </div>
                 </div>
+              ) : null}
+            </div>
+          </div>
+
+          <div className="w-full flex items-start side-position">
+            {!showSubSide ? (
+              <div className="w-auto border-r h-screen flex flex-col items-start side-position-first">
+                {DashboardLinks.map((eachLink) => (
+                  <div
+                    className="w-auto flex items-start justify-between"
+                    key={eachLink.id}
+                  >
+                    {eachLink.component}
+                  </div>
+                ))}
               </div>
             ) : null}
-          </div>
-        </div>
 
-        <div className="w-full flex items-start side-position">
-          
-          {!showSubSide ? (
-            <div className="w-auto border-r h-screen flex flex-col items-start side-position-first">
-              {DashboardLinks.map((eachLink) => (
-                <div
-                  className="w-auto flex items-start justify-between"
-                  key={eachLink.id}
-                >
-                  {eachLink.component}
+            <div className="max-w-screen-xl xl:w-full overflow-x-scroll">
+              <div id="print-section">
+                <Outlet />
+              </div>
+
+              <div className="w-auto border-b py-5 px-4 flex items-center justify-between ">
+                <div className="footer-copyright">
+                  Copyright ©2023 <span>Valuemine.</span> All rights reserved
                 </div>
-              ))}
-            </div>
-          ) : null}
-
-          <div className="xl:w-full overflow-x-scroll box-container-overall">
-            <Outlet />
-            <div className="w-full border-b py-5 px-4 flex items-center justify-between box-container-footer large_screen">
-              <div className="footer-copyright">
-                Copyright ©2023 <span>Valuemine.</span> All rights reserved
-              </div>
-              <div className="footer-links mr-5">
-                <a href="#">Privacy</a>
-                <a href="#" className="border-r-2 pl-2 border-l-2 pr-2">
-                  Security
-                </a>
-                <a href="#">Service Terms</a>
+                <div className="footer-links mr-5">
+                  <a href="#">Privacy</a>
+                  <a href="#" className="border-r-2 pl-2 border-l-2 pr-2">
+                    Security
+                  </a>
+                  <a href="#">Service Terms</a>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      </div>
-     
     </div>
   );
 };

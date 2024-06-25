@@ -4,46 +4,7 @@ import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
 import { UserRound } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
-
-const REFEREE_DETAILS = [
-  { id: 1, name: "Title", value: "" },
-  { id: 2, name: "Surname", value: "" },
-  { id: 3, name: "Firstname", value: "" },
-  { id: 4, name: "Middle/Other name", value: "" },
-  { id: 5, name: "Maiden/Former name", value: "" },
-  { id: 17, name: "Relationship", value: "" },
-  { id: 16, name: "Duration of relationship", value: "" },
-  { id: 6, name: "Gender", value: "" },
-  { id: 7, name: "Marital Status", value: "" },
-  { id: 8, name: "Date of Birth", value: "" },
-  { id: 9, name: "Email Address", value: "" },
-  { id: 10, name: "Phone number", value: "" },
-  { id: 15, name: "Relationship", value: "" },
-  { id: 11, name: "NIN", value: "" },
-  { id: 12, name: "Country", value: "" },
-  { id: 13, name: "State", value: "" },
-  { id: 14, name: "Local Government Area", value: "" },
-];
-
-const REFEREE_DETAILS_2 = [
-  { id: 1, name: "Title", value: "" },
-  { id: 2, name: "Surname", value: "" },
-  { id: 3, name: "Firstname", value: "" },
-  { id: 4, name: "Middle/Other name", value: "" },
-  { id: 5, name: "Maiden/Former name", value: "" },
-  { id: 17, name: "Relationship", value: "" },
-  { id: 16, name: "Duration of relationship", value: "" },
-  { id: 6, name: "Gender", value: "" },
-  { id: 7, name: "Marital Status", value: "" },
-  { id: 8, name: "Date of Birth", value: "" },
-  { id: 9, name: "Email Address", value: "" },
-  { id: 10, name: "Phone number", value: "" },
-  { id: 15, name: "Relationship", value: "" },
-  { id: 11, name: "NIN", value: "" },
-  { id: 12, name: "Country", value: "" },
-  { id: 13, name: "State", value: "" },
-  { id: 14, name: "Local Government Area", value: "" },
-];
+import { useSelector } from "react-redux";
 
 const DisplayReferee = ({
   setUpdateNow,
@@ -54,14 +15,77 @@ const DisplayReferee = ({
     setSelectedReferee(referee);
   };
 
-  // const titleUrl = `${baseUrl}public-registry/personal-details/title`;
+  const userData = useSelector((state) => state.auth.user);
+  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/referee-information/${userData._id}`;
 
-  // const { isFetching, isSuccess } = useFetchData(titleUrl, "title");
+  const { data, isFetching } = useFetchData(
+    indiSubBasicUrl,
+    "individualScubscriberRefereeDetails"
+  );
 
-  // if (isFetching) {
-  //   // alert("is fetching data");
-  //
-  // }
+  const REFEREE_DETAILS = [
+    { id: 1, name: "Title", value: data?.firstRefreeTitle },
+    { id: 2, name: "Surname", value: data?.firstRefreeSurname },
+    { id: 3, name: "Firstname", value: data?.firstRefreeFirstname },
+    { id: 4, name: "Middle/Other name", value: data?.firstRefreeMiddlename },
+    { id: 5, name: "Maiden/Former name", value: data?.firstRefreeMaidenname },
+    { id: 17, name: "Relationship", value: data?.firstRefreeRelationship },
+    {
+      id: 16,
+      name: "Duration of relationship",
+      value: data?.firstRefreeDurationOfRelationship,
+    },
+    { id: 6, name: "Gender", value: data?.firstRefreeGender },
+    { id: 7, name: "Marital Status", value: data?.firstRefreeMaritalstatus },
+    {
+      id: 8,
+      name: "Date of Birth",
+      value: data?.firstRefreeDateofbirth.split("T")[0],
+    },
+    { id: 9, name: "Email Address", value: data?.firstRefreeEmail },
+    { id: 10, name: "Phone number", value: data?.firstRefreePhone },
+    { id: 11, name: "NIN", value: data?.firstRefreeNin },
+    { id: 12, name: "Country", value: data?.firstRefreeCountry },
+    { id: 13, name: "State", value: data?.firstRefreeState },
+    { id: 15, name: "Ward", value: data?.firstRefreeWard },
+    {
+      id: 14,
+      name: "Local Government Area",
+      value: data?.firstRefreelocalGoverment,
+    },
+  ];
+
+  const REFEREE_DETAILS_2 = [
+    { id: 1, name: "Title", value: data?.secondRefreeTitle },
+    { id: 2, name: "Surname", value: data?.secondRefreeSurname },
+    { id: 3, name: "Firstname", value: data?.firstRefreeFirstname },
+    { id: 4, name: "Middle/Other name", value: data?.secondRefreeMiddlename },
+    { id: 5, name: "Maiden/Former name", value: data?.secondRefreeMaidenname },
+    { id: 17, name: "Relationship", value: data?.secondRefreeRelationship },
+    {
+      id: 16,
+      name: "Duration of relationship",
+      value: data?.secondRefreeDurationOfRelationship,
+    },
+    { id: 6, name: "Gender", value: data?.secondRefreeGender },
+    { id: 7, name: "Marital Status", value: data?.secondRefreeMaritalstatus },
+    { id: 8, name: "Date of Birth", value: data?.secondRefreeDateofbirth },
+    { id: 9, name: "Email Address", value: data?.secondRefreeEmail },
+    { id: 10, name: "Phone number", value: data?.secondRefreePhone },
+    { id: 15, name: "Ward", value: data?.secondRefreeWard },
+    { id: 11, name: "NIN", value: data?.secondRefreeNin },
+    { id: 12, name: "Country", value: data?.secondRefreeCountry },
+    { id: 13, name: "State", value: data?.secondRefreeState },
+    {
+      id: 14,
+      name: "Local Government Area",
+      value: data?.secondRefreelocalGoverment,
+    },
+  ];
+
+  if (isFetching) {
+    return <span>Loading...</span>;
+  }
 
   return (
     <div className="flex flex-col items-center">

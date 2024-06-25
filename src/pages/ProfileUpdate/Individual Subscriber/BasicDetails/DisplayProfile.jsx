@@ -2,9 +2,11 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
+import { useSelector } from "react-redux";
 
 const DisplayProfile = ({ setUpdateNow }) => {
-  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/basic-details/6667055a1354098b7d372d3f`;
+  const userData = useSelector((state) => state.auth.user);
+  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/basic-details/${userData._id}`;
 
   const { data, isFetching } = useFetchData(
     indiSubBasicUrl,

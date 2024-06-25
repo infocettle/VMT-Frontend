@@ -2,8 +2,11 @@ import { individualSubscriberBasicFormSchema } from "@/utils/zodSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { usePostData } from "@/hooks/usePostData";
+import useEditData from "@/hooks/useEditHook";
+import useFetchData from "@/hooks/useFetchData";
+import { baseUrl } from "@/App";
 import { UserRound } from "lucide-react";
+import { useSelector } from "react-redux";
 
 const UpdateReferee = ({ setUpdateNow, selectedReferee }) => {
   const {
@@ -17,8 +20,77 @@ const UpdateReferee = ({ setUpdateNow, selectedReferee }) => {
 
   const fileRef = register("picture");
 
+  const userData = useSelector((state) => state.auth.user);
+
+  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/referee-information/${userData._id}`;
+
+  const { data } = useFetchData(
+    indiSubBasicUrl,
+    "individualScubscriberRefereeDetails"
+  );
+
+  const editMutation = useEditData({
+    queryKey: ["individualScubscriberRefereeDetails"],
+    url: indiSubBasicUrl,
+    title: "Referee Details",
+    image: true,
+  });
+
   const onSubmit = (data) => {
-    console.log(data, selectedReferee);
+    let formData = new FormData();
+    if (selectedReferee === "first") {
+      console.log(data, selectedReferee);
+
+      formData.append("firstRefreeMiddlename", data.middlename);
+      formData.append("firstRefreeSurname", data.surname);
+      formData.append("firstRefreeFirstname", data.firstname);
+      formData.append("firstRefreeTitle", data.title);
+      formData.append("firstRefreeNin", data.nin);
+      formData.append("firstRefreeMaidenname", data.maidenName);
+      formData.append("firstRefreeGender", data.gender);
+      formData.append("firstRefreeDateofbirth", data.dateOfBirth);
+      formData.append("firstRefreeMaritalstatus", data.maritalStatus);
+      formData.append("firstRefreeCountry", data.country);
+      formData.append("firstRefreeState", data.state);
+      formData.append("firstRefreelocalGoverment", data.lga);
+      formData.append("firstRefreeWard", data.ward);
+      formData.append("firstRefreeRelationship", data.relationship);
+      formData.append(
+        "firstRefreeDurationOfRelationship",
+        data.relationshipYears
+      );
+      if (data.picture[0]) {
+        formData.append("firstRefreePhoto", data.picture[0]);
+      }
+    }
+
+    if (selectedReferee === "second") {
+      console.log(data, selectedReferee);
+
+      formData.append("firstRefreeMiddlename", data.middlename);
+      formData.append("firstRefreeSurname", data.surname);
+      formData.append("firstRefreeFirstname", data.firstname);
+      formData.append("firstRefreeTitle", data.title);
+      formData.append("firstRefreeNin", data.nin);
+      formData.append("firstRefreeMaidenname", data.maidenName);
+      formData.append("firstRefreeGender", data.gender);
+      formData.append("firstRefreeDateofbirth", data.dateOfBirth);
+      formData.append("firstRefreeMaritalstatus", data.maritalStatus);
+      formData.append("firstRefreeCountry", data.country);
+      formData.append("firstRefreeState", data.state);
+      formData.append("firstRefreelocalGoverment", data.lga);
+      formData.append("firstRefreeWard", data.ward);
+      formData.append("firstRefreeRelationship", data.relationship);
+      formData.append(
+        "firstRefreeDurationOfRelationship",
+        data.relationshipYears
+      );
+      if (data.picture[0]) {
+        formData.append("firstRefreePhoto", data.picture[0]);
+      }
+    }
+
+    editMutation.mutateAsync(formData);
     setUpdateNow(false);
   };
 

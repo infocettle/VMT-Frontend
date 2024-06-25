@@ -3,14 +3,11 @@ import { otherInformationFormSchema } from "@/utils/zodSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
+import useEditData from "@/hooks/useEditHook";
+import { useSelector } from "react-redux";
+import { baseUrl } from "@/App";
 
-const UpdateOther = ({
-  setUpdateNow,
-  individualPartner,
-  individualSubscriber,
-  companyPartner,
-  companySubscriber,
-}) => {
+const UpdateOther = ({ setUpdateNow, type }) => {
   const [fileName, setFileName] = useState("");
   const [fileName2, setFileName2] = useState("");
 
@@ -23,27 +20,65 @@ const UpdateOther = ({
     // companyBasicDefaultValues,
     resolver: zodResolver(otherInformationFormSchema),
   });
+  const userData = useSelector((state) => state.auth.user);
 
   const certRef = register("certOfIncorp");
   const meansID = register("meansOfID");
 
-  const onSubmit = (data) => {
-    if (individualPartner) {
-      console.log("individualPartner URL", data);
-      setUpdateNow(false);
+  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/other-details/${userData._id}`;
+  const companySubscriberUrl = `${baseUrl}v1/subscriber/company/profile/${userData._id}/other-details`;
+  const companyPartnerUrl = `${baseUrl}v1/partner/company/profile/${userData._id}/other-details`;
+  const individualPartnerUrl = `${baseUrl}v1/partner/individual/profile/other-details/${userData._id}`;
+
+  const editMutation = useEditData({
+    queryKey: [
+      type === "individual subscriber"
+        ? "individualScubscriberOtherDetails"
+        : type === "company subscriber"
+        ? "companySubscriberOtherDetails"
+        : type === "individual partner"
+        ? "individualPartnerOtherDetails"
+        : "companyPartnerOtherDetails",
+    ],
+    url:
+      type === "individual subscriber"
+        ? indiSubBasicUrl
+        : type === "company subscriber"
+        ? companySubscriberUrl
+        : type === "individual partner"
+        ? individualPartnerUrl
+        : companyPartnerUrl,
+    title: "Other Details",
+    image: true,
+  });
+
+  const onSubmit = (values) => {
+    let formData = new FormData();
+
+    formData.append("bankCode", values.bankCode);
+    formData.append("bankName", values.bankName);
+    formData.append("bankAccountName", values.bankAccName);
+    formData.append("bankAccountNumber", values.bankAcctNum);
+    formData.append("taxidNumber", values.taxId);
+    formData.append("vatidNumber", values.vatId);
+    formData.append("pencomCode", values.penCom);
+    formData.append("itfCode", values.ITF);
+    formData.append("nsitfCode", values.NSITF);
+    formData.append("nhfCode", values.NHF);
+    formData.append("identityType", values.identitytype);
+    formData.append("identityNumber", values.identityNum);
+    formData.append("issuingAuthority", values.issuingAuth);
+    formData.append("dateIssued", values.DateIssued);
+    formData.append("expiryDate", values.ExpiryDate);
+    if (values.certOfIncorp[0]) {
+      formData.append("certificateOfIncorporation", values.certOfIncorp[0]);
     }
-    if (individualSubscriber) {
-      console.log("individualSubscriber URL", data);
-      setUpdateNow(false);
+    if (values.meansOfID[0]) {
+      formData.append("meansOfIdentification", values.meansOfID[0]);
     }
-    if (companyPartner) {
-      console.log("companyPartner URL", data);
-      setUpdateNow(false);
-    }
-    if (companySubscriber) {
-      console.log("companySubscriber URL", data);
-      setUpdateNow(false);
-    }
+
+    editMutation.mutateAsync(formData);
+    setUpdateNow(false);
   };
 
   const handleFileChange = (e) => {
@@ -282,7 +317,7 @@ const UpdateOther = ({
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                identity Number<span className="text-red-600">*</span>
+                Identity Number<span className="text-red-600">*</span>
               </label>
               <input
                 {...register("identityNum")}
@@ -293,6 +328,56 @@ const UpdateOther = ({
               {errors.identityNum && (
                 <p className="text-red-600 text-sm">
                   {errors.identityNum.message}
+                </p>
+              )}
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Issuing Authority<span className="text-red-600">*</span>
+              </label>
+              <input
+                {...register("issuingAuth")}
+                type="text"
+                placeholder="Enter Issuing Authority"
+                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+              />
+              {errors.issuingAuth && (
+                <p className="text-red-600 text-sm">
+                  {errors.issuingAuth.message}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Date Issued<span className="text-red-600">*</span>
+              </label>
+              <input
+                {...register("DateIssued")}
+                type="date"
+                placeholder="mm/dd/yyyy"
+                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+              />
+              {errors.DateIssued && (
+                <p className="text-red-600 text-sm">
+                  {errors.DateIssued.message}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Expiry Date<span className="text-red-600">*</span>
+              </label>
+              <input
+                {...register("ExpiryDate")}
+                type="date"
+                placeholder="mm/dd/yyyy"
+                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+              />
+              {errors.ExpiryDate && (
+                <p className="text-red-600 text-sm">
+                  {errors.ExpiryDate.message}
                 </p>
               )}
             </div>

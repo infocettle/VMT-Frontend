@@ -1,7 +1,10 @@
 import { Bell, ChevronRight, Settings, UserRound } from "lucide-react";
 import Logo from "../../assets/img/Logo.svg";
+import { useSelector } from "react-redux";
 
 const HeaderFooter = ({ children }) => {
+  const userData = useSelector((state) => state.auth.user);
+  // console.log(userData);
   return (
     <div className="w-full flex items-center">
       <div className="w-full flex flex-col items-center">
@@ -18,7 +21,7 @@ const HeaderFooter = ({ children }) => {
                 <UserRound color="#ffffff" />
               </div>
               <p className="text-[#666687] leading-relaxed text-sm font-normal">
-                James Nwachuku
+                {userData.surname} {userData.firstName}
               </p>
             </div>
           </div>
@@ -28,7 +31,7 @@ const HeaderFooter = ({ children }) => {
           <h2 className="uppercase text-lg text-black">profile</h2>
           <ChevronRight size={24} />
           <h3 className="text-vmtblue text-lg leading-relaxed">
-            #238957340124
+            #{userData._id}
           </h3>
         </div>
 

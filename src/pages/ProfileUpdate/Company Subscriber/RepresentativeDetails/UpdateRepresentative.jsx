@@ -2,10 +2,12 @@ import { companyRepresentativeFormSchema } from "@/utils/zodSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { usePostData } from "@/hooks/usePostData";
+import { baseUrl } from "@/App";
+import useEditData from "@/hooks/useEditHook";
 import { UserRound } from "lucide-react";
+import { useSelector } from "react-redux";
 
-const UpdateRepresentative = ({ setUpdateNow }) => {
+const UpdateRepresentative = ({ setUpdateNow, type }) => {
   const {
     register,
     handleSubmit,
@@ -16,10 +18,48 @@ const UpdateRepresentative = ({ setUpdateNow }) => {
     resolver: zodResolver(companyRepresentativeFormSchema),
   });
 
+  const userData = useSelector((state) => state.auth.user);
+
+  const companySubscriberUrl = `${baseUrl}v1/subscriber/company/profile/${userData._id}/representative-details`;
+  const companyPartnerUrl = `${baseUrl}v1/partner/company/profile/${userData._id}/representative-details`;
+
   const fileRef = register("picture");
 
+  const editMutation = useEditData({
+    queryKey: [
+      type === "company subscriber"
+        ? "companySubscriberRepDetails"
+        : "companyPartnerRepDetails",
+    ],
+    url:
+      type === "company subscriber" ? companySubscriberUrl : companyPartnerUrl,
+    title: "Representative Details",
+    image: true,
+  });
+
   const onSubmit = (data) => {
-    console.log(data);
+    let formData = new FormData();
+
+    formData.append("representativeMiddleName", data.middlename);
+    formData.append("representativeSurname", data.surname);
+    formData.append("representativeFirstName", data.firstname);
+    formData.append("representativeTitle", data.title);
+    formData.append("representativeNin", data.nin);
+    formData.append("representativeMaidenName", data.maidenName);
+    formData.append("representativeGender", data.gender);
+    formData.append("representativeEmail", data.emailAddress);
+    formData.append("representativePhoneNumber", data.phoneNumber);
+    formData.append("representativeDateOfBirth", data.dateOfBirth);
+    formData.append("representativeMaritalStatus", data.maritalStatus);
+    formData.append("representativeCountry", data.country);
+    formData.append("representativeState", data.state);
+    formData.append("representativeLocalGoverment", data.lga);
+    formData.append("representativeWard", data.ward);
+    if (data.picture[0]) {
+      formData.append("representativePhoto", data.picture[0]);
+    }
+
+    editMutation.mutateAsync(formData);
     setUpdateNow(false);
   };
 
@@ -309,6 +349,20 @@ const UpdateRepresentative = ({ setUpdateNow }) => {
               />
               {errors.lga && (
                 <p className="text-red-600 text-sm">{errors.lga.message}</p>
+              )}
+            </div>
+            <div className="col-span-3 md:col-span-1 my-3">
+              <label className="block text-sm font-medium text-gray-700">
+                Ward<span className="text-red-600">*</span>
+              </label>
+              <input
+                {...register("ward")}
+                type="text"
+                placeholder="Enter Ward"
+                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+              />
+              {errors.ward && (
+                <p className="text-red-600 text-sm">{errors.ward.message}</p>
               )}
             </div>
           </div>

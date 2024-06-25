@@ -2,32 +2,37 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
-
-const INDIVIDUAL_SUBSCRIBER_DETAILS = [
-  { id: 1, name: "Title", value: "Mr." },
-  { id: 2, name: "Surname", value: "Nwachukwu" },
-  { id: 3, name: "Firstname", value: "James" },
-  { id: 4, name: "Middle/othername", value: "" },
-  { id: 5, name: "Maiden/former name", value: "" },
-  { id: 6, name: "Gender", value: "" },
-  { id: 7, name: "Date of Birth", value: "" },
-  { id: 8, name: "Marital Status", value: "" },
-  { id: 9, name: "NIN", value: "" },
-  { id: 10, name: "Country", value: "" },
-  { id: 11, name: "State", value: "" },
-  { id: 12, name: "LGA", value: "" },
-  { id: 13, name: "Ward", value: "" },
-];
+import { useSelector } from "react-redux";
 
 const DisplayProfile = ({ setUpdateNow }) => {
-  // const titleUrl = `${baseUrl}public-registry/personal-details/title`;
+  const userData = useSelector((state) => state.auth.user);
 
-  // const { isFetching, isSuccess } = useFetchData(titleUrl, "title");
+  const indiPatBasicUrl = `${baseUrl}v1/partner/individual/profile/basic-details/${userData._id}`;
 
-  // if (isFetching) {
-  //   // alert("is fetching data");
-  //
-  // }
+  const { data, isFetching } = useFetchData(
+    indiPatBasicUrl,
+    "individualPartnerBasicDetails"
+  );
+
+  if (isFetching) {
+    return <span>Loading...</span>;
+  }
+
+  const INDIVIDUAL_PARTNER_DETAILS = [
+    { id: 1, name: "Title", value: data?.title },
+    { id: 2, name: "Surname", value: data?.surname },
+    { id: 3, name: "Firstname", value: data?.firstName },
+    { id: 4, name: "Middle/othername", value: data?.middleName },
+    { id: 5, name: "Maiden/former name", value: "" },
+    { id: 6, name: "Gender", value: data?.gender },
+    { id: 7, name: "Date of Birth", value: data?.DateOfBirth },
+    { id: 8, name: "Marital Status", value: data?.maritalStatus },
+    { id: 9, name: "NIN", value: data?.nin },
+    { id: 10, name: "Country", value: data?.country },
+    { id: 11, name: "State", value: data?.state },
+    { id: 12, name: "LGA", value: data?.localGoverment },
+    { id: 13, name: "Ward", value: data?.ward },
+  ];
 
   return (
     <div className="flex flex-col items-center">
@@ -44,7 +49,7 @@ const DisplayProfile = ({ setUpdateNow }) => {
       {/* Company Details */}
       <div className="w-full flex items-center">
         <div className="w-full flex flex-col space-y-3 items-start p-5">
-          {INDIVIDUAL_SUBSCRIBER_DETAILS.map((detail) => (
+          {INDIVIDUAL_PARTNER_DETAILS.map((detail) => (
             <div key={detail.id} className="w-auto flex items-center space-x-4">
               <h3 className="w-48 text-black text-sm">{detail.name}</h3>
               <h3 className="text-black text-sm">:</h3>

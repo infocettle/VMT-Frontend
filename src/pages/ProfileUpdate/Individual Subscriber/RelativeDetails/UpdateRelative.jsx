@@ -2,8 +2,11 @@ import { individualSubscriberBasicFormSchema } from "@/utils/zodSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { usePostData } from "@/hooks/usePostData";
+import useEditData from "@/hooks/useEditHook";
+import useFetchData from "@/hooks/useFetchData";
 import { UserRound } from "lucide-react";
+import { baseUrl } from "@/App";
+import { useSelector } from "react-redux";
 
 const UpdateRelative = ({ setUpdateNow }) => {
   const {
@@ -17,15 +20,51 @@ const UpdateRelative = ({ setUpdateNow }) => {
 
   const fileRef = register("picture");
 
+  const userData = useSelector((state) => state.auth.user);
+
+  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/relative-information/${userData._id}`;
+
+  const { data } = useFetchData(
+    indiSubBasicUrl,
+    "individualScubscriberRelativeDetails"
+  );
+
+  const editMutation = useEditData({
+    queryKey: ["individualScubscriberRelativeDetails"],
+    url: indiSubBasicUrl,
+    title: "Relative Details",
+    image: true,
+  });
+
   const onSubmit = (data) => {
-    console.log(data);
+    let formData = new FormData();
+
+    formData.append("relativeMiddlename", data.middlename);
+    formData.append("relativeSurname", data.surname);
+    formData.append("relativeFirstname", data.firstname);
+    formData.append("relativeTitle", data.title);
+    formData.append("relativeNin", data.nin);
+    formData.append("relativeMaidenname", data.maidenName);
+    formData.append("relativeGender", data.gender);
+    formData.append("relativeDateofbirth", data.dateOfBirth);
+    formData.append("relativeMaritalstatus", data.maritalStatus);
+    formData.append("relativeCountry", data.country);
+    formData.append("relativeState", data.state);
+    formData.append("relativelocalGoverment", data.lga);
+    formData.append("relativeward", data.ward);
+    formData.append("relativeRelationship", data.relationship);
+    if (data.picture[0]) {
+      formData.append("relativePhoto", data.picture[0]);
+    }
+
+    editMutation.mutateAsync(formData);
     setUpdateNow(false);
   };
 
   return (
     <div className="flex flex-col items-center">
       <div className="w-full flex items-center justify-between border-b py-3 px-5">
-        <h3 className="text-black text-sm leading-relaxed">Basic Details</h3>
+        <h3 className="text-black text-sm leading-relaxed">Relative Details</h3>
       </div>
 
       {/* Update Details Form */}

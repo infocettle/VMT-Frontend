@@ -27,16 +27,27 @@ import {
   UpdateReferee,
   UpdateRelative,
 } from "..";
+import useFetchData from "@/hooks/useFetchData";
+import { baseUrl } from "@/App";
+import { useSelector } from "react-redux";
 
 const IndividualSubscriberProfile = () => {
   const navigate = useNavigate();
+  const userData = useSelector((state) => state.auth.user);
 
   const [name, setName] = useState("Basic Details");
   const [updateNow, setUpdateNow] = useState(false);
   const [selectedReferee, setSelectedReferee] = useState(null);
   const [selectedGuarantor, setSelectedGuarantor] = useState(null);
-  const [individualSubscriber, setIndividualSubscriber] = useState(true);
+  const [type, setType] = useState("individual subscriber");
   const [progress, setProgress] = useState(0);
+
+  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/basic-details/${userData._id}`;
+
+  const { data, isFetching } = useFetchData(
+    indiSubBasicUrl,
+    "individualScubscriberBasicDetails"
+  );
 
   return (
     <div>
@@ -68,29 +79,35 @@ const IndividualSubscriberProfile = () => {
               >
                 <div className="flex space-x-5 items-center">
                   {/* Individual Photo */}
-                  <div className="w-40 h-40 bg-vmtpurple rounded-lg flex justify-center items-center self-start m-5">
-                    <div className="w-14 h-14 flex items-center justify-center rounded-full bg-white">
-                      <UserRound color="#000" />
+                  {isFetching ? (
+                    <div className="w-40 h-40 bg-vmtpurple rounded-lg flex justify-center items-center self-start m-5">
+                      <div className="w-14 h-14 flex items-center justify-center rounded-full bg-white">
+                        <UserRound color="#000" />
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="w-40 h-40 bg-white rounded-lg border-vmtpurple border-2 flex justify-center items-center self-start m-5">
+                      <img src={data.individualPhoto} alt="profile-photo" />
+                    </div>
+                  )}
 
                   <div className="flex flex-col w-auto items-start space-y-2">
                     <h2 className="text-black font-semibold text-xl leading-relaxed">
-                      James Nwachukwu
+                      {userData.surname} {userData.firstName}
                     </h2>
                     <div className="flex w-auto space-x-2 items-center">
                       <div className="bg-black h-6 w-6 rounded-sm flex justify-center items-center">
                         <MailIcon color="#fff" />
                       </div>
-                      <h3 className="text-[#666687]">
-                        jamesnwachuku@email.com
-                      </h3>
+                      <h3 className="text-[#666687]">{userData.email}</h3>
                     </div>
                     <div className="flex w-auto space-x-2 items-center">
                       <div className="bg-black h-6 w-6 rounded-sm flex justify-center items-center">
                         <PhoneIcon color="#fff" />
                       </div>
-                      <h3 className="text-[#666687]">+234 801 234 5678</h3>
+                      <h3 className="text-[#666687]">
+                        {userData?.phoneNumber}
+                      </h3>
                     </div>
                     <div className="flex w-auto space-x-2 items-center">
                       <div className="bg-black h-6 w-6 rounded-sm flex justify-center items-center">
@@ -167,10 +184,10 @@ const IndividualSubscriberProfile = () => {
                   <DisplayRelative setUpdateNow={setUpdateNow} />
                 )}
                 {!updateNow && name == "Address Details" && (
-                  <DisplayAddress setUpdateNow={setUpdateNow} />
+                  <DisplayAddress setUpdateNow={setUpdateNow} type={type} />
                 )}
                 {!updateNow && name == "Other Details" && (
-                  <DisplayOther setUpdateNow={setUpdateNow} />
+                  <DisplayOther setUpdateNow={setUpdateNow} type={type} />
                 )}
                 {!updateNow && name == "Referees Details" && (
                   <DisplayReferee
@@ -201,16 +218,10 @@ const IndividualSubscriberProfile = () => {
                   <UpdateRelative setUpdateNow={setUpdateNow} />
                 )}
                 {updateNow && name == "Address Details" && (
-                  <UpdateAddress
-                    setUpdateNow={setUpdateNow}
-                    individual={individualSubscriber}
-                  />
+                  <UpdateAddress setUpdateNow={setUpdateNow} type={type} />
                 )}
                 {updateNow && name == "Other Details" && (
-                  <UpdateOther
-                    setUpdateNow={setUpdateNow}
-                    individual={individualSubscriber}
-                  />
+                  <UpdateOther setUpdateNow={setUpdateNow} type={type} />
                 )}
                 {updateNow && name == "Referees Details" && (
                   <UpdateReferee

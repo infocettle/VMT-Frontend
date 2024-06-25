@@ -739,8 +739,8 @@ export const pfaAcctFormSchema = z.object({
 
 export const companyBasicFormSchema = z
   .object({
-    companyName: z.string().min(1, "Company's name is required"),
-    shortName: z.string().min(1, "Short name is required"),
+    companyName: z.string().optional(),
+    shortName: z.string().optional(),
     registrationNumber: z.string().min(1, "Registration number is required"),
     registered: z.enum(["yes", "no"], {
       errorMap: (issue, ctx) => {
@@ -800,6 +800,7 @@ export const companyRepresentativeFormSchema = z.object({
   country: z.string().min(1, "Country is required"),
   state: z.string().min(1, "State is required"),
   lga: z.string().min(1, "LGA is required"),
+  ward: z.string().min(1, "Ward is required"),
   picture: z
     .instanceof(FileList)
     .refine((file) => file?.length === 1, "Picture is required.")
@@ -876,11 +877,11 @@ export const addressInformationFormSchema = z.object({
     .string()
     .min(1, "Phone Number is required")
     .max(16, "Phone Number must not exit 16 characters"),
-  ward: z.string().min(1, "Ward is required"),
+  ward: z.string().optional(),
   city: z.string().min(1, "city is required"),
-  country: z.string().min(1, "Country is required"),
-  state: z.string().min(1, "State is required"),
-  lga: z.string().min(1, "LGA is required"),
+  country: z.string().optional(),
+  state: z.string().optional(),
+  lga: z.string().optional(),
   zone: z.string().min(1, "Zone is required"),
   website: z.string().optional(),
   // .refine((val) => urlRegex.test(val), {
@@ -901,6 +902,9 @@ export const otherInformationFormSchema = z.object({
   NHF: z.string().optional(),
   identitytype: z.string().min(1, "Identity Type is required"),
   identityNum: z.string().min(1, "Identity Number is required"),
+  issuingAuth: z.string().min(1, "Issuing Authority is required"),
+  DateIssued: z.string().min(1, "Date Issued is required"),
+  ExpiryDate: z.string().min(1, "Expiry Date is required"),
   certOfIncorp: z.instanceof(FileList).optional(),
   // .refine((file) => file?.length == 1, "File is required."),
   meansOfID: z

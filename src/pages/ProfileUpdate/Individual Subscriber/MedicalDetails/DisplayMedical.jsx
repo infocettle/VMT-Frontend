@@ -2,28 +2,35 @@ import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
-import { UserRound } from "lucide-react";
-
-const MEDICAL_DETAILS = [
-  { id: 1, name: "Genotype", value: "" },
-  { id: 2, name: "Blood group", value: "" },
-  { id: 3, name: "Pregnant", value: "" },
-  { id: 4, name: "Previous CS", value: "" },
-  { id: 5, name: "Known allergies", value: "" },
-  { id: 6, name: "Other relevant medical details", value: "" },
-  { id: 7, name: "Known ailments", value: "" },
-  ,
-];
+import { useSelector } from "react-redux";
 
 const DisplayMedical = ({ setUpdateNow }) => {
-  // const titleUrl = `${baseUrl}public-registry/personal-details/title`;
+  const userData = useSelector((state) => state.auth.user);
+  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/medical-information/${userData._id}`;
 
-  // const { isFetching, isSuccess } = useFetchData(titleUrl, "title");
+  const { data, isFetching } = useFetchData(
+    indiSubBasicUrl,
+    "individualScubscriberMedicalDetails"
+  );
 
-  // if (isFetching) {
-  //   // alert("is fetching data");
-  //
-  // }
+  const MEDICAL_DETAILS = [
+    { id: 1, name: "Genotype", value: data?.genotype },
+    { id: 2, name: "Blood group", value: data?.bloodGroup },
+    { id: 3, name: "Pregnant", value: data?.pregnant },
+    { id: 4, name: "Previous CS", value: data?.previousCs },
+    { id: 5, name: "Known allergies", value: data?.knownAllergies },
+    {
+      id: 6,
+      name: "Other relevant medical details",
+      value: data?.relevantInformation,
+    },
+    { id: 7, name: "Known ailments", value: data?.knownAilments },
+    ,
+  ];
+
+  if (isFetching) {
+    return <span>Loading...</span>;
+  }
 
   return (
     <div className="flex flex-col items-center">

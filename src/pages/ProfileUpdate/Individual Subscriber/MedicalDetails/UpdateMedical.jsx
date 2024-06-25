@@ -2,8 +2,9 @@ import { medicalInformationFormSchema } from "@/utils/zodSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { usePostData } from "@/hooks/usePostData";
-import { UserRound } from "lucide-react";
+import { baseUrl } from "@/App";
+import useEditData from "@/hooks/useEditHook";
+import { useSelector } from "react-redux";
 
 const UpdateMedical = ({ setUpdateNow }) => {
   const {
@@ -15,8 +16,27 @@ const UpdateMedical = ({ setUpdateNow }) => {
     resolver: zodResolver(medicalInformationFormSchema),
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const userData = useSelector((state) => state.auth.user);
+  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/medical-information/${userData._id}`;
+
+  const editMutation = useEditData({
+    queryKey: ["individualScubscriberMedicalDetails"],
+    url: indiSubBasicUrl,
+    title: "Medical Details",
+    image: false,
+  });
+
+  const onSubmit = (values) => {
+    const body = {
+      genotype: values.genotype,
+      bloodGroup: values.bloodGroup,
+      pregnant: values.pregnant,
+      previousCs: values.previousCaesareanSection,
+      knownAllergies: values.knownAllergies,
+      knownAilments: values.knownAilments,
+      relevantInformation: values.otherMedicalDetails,
+    };
+    editMutation.mutateAsync(body);
     setUpdateNow(false);
   };
 

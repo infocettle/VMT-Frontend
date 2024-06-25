@@ -3,21 +3,18 @@ import { addressInformationFormSchema } from "@/utils/zodSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { usePostData } from "@/hooks/usePostData";
-import { UserRound } from "lucide-react";
+import useEditData from "@/hooks/useEditHook";
 import ReactFlagsSelect from "react-flags-select";
+import { baseUrl } from "@/App";
+import useFetchData from "@/hooks/useFetchData";
+import { useSelector } from "react-redux";
 
-const UpdateAddress = ({
-  setUpdateNow,
-  individualPartner,
-  individualSubscriber,
-  companyPartner,
-  companySubscriber,
-}) => {
+const UpdateAddress = ({ setUpdateNow, type }) => {
   const [selectedCountry, setSelectedCountry] = useState("NG");
   const [countryCode, setCountryCode] = useState("+234");
   const [selectedCountry2, setSelectedCountry2] = useState("NG");
   const [countryCode2, setCountryCode2] = useState("+234");
+  const userData = useSelector((state) => state.auth.user);
 
   const {
     register,
@@ -29,23 +26,67 @@ const UpdateAddress = ({
     resolver: zodResolver(addressInformationFormSchema),
   });
 
-  const onSubmit = (data) => {
-    if (individualPartner) {
-      console.log("individualPartner URL", data);
-      setUpdateNow(false);
-    }
-    if (individualSubscriber) {
-      console.log("individualSubscriber URL", data);
-      setUpdateNow(false);
-    }
-    if (companyPartner) {
-      console.log("companyPartner URL", data);
-      setUpdateNow(false);
-    }
-    if (companySubscriber) {
-      console.log("companySubscriber URL", data);
-      setUpdateNow(false);
-    }
+  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/address/${userData._id}`;
+  const companySubscriberUrl = `${baseUrl}v1/subscriber/company/profile/${userData._id}/address`;
+  const companyPartnerUrl = `${baseUrl}v1/partner/company/profile/${userData._id}/address`;
+  const individualPartnerUrl = `${baseUrl}v1/partner/individual/profile/address/${userData._id}`;
+
+  const { data, isFetching } = useFetchData(
+    type === "individual subscriber"
+      ? indiSubBasicUrl
+      : type === "company subscriber"
+      ? companySubscriberUrl
+      : type === "individual partner"
+      ? individualPartnerUrl
+      : companyPartnerUrl,
+    type === "individual subscriber"
+      ? "individualScubscriberAddressDetails"
+      : type === "company subscriber"
+      ? "companySubscriberAddressDetails"
+      : type === "individual partner"
+      ? "individualPartnerAddressDetails"
+      : "companyPartnerAddressDetails"
+  );
+
+  const editMutation = useEditData({
+    queryKey: [
+      type === "individual subscriber"
+        ? "individualScubscriberAddressDetails"
+        : type === "company subscriber"
+        ? "companySubscriberAddressDetails"
+        : type === "individual partner"
+        ? "individualPartnerAddressDetails"
+        : "companyPartnerAddressDetails",
+    ],
+    url:
+      type === "individual subscriber"
+        ? indiSubBasicUrl
+        : type === "company subscriber"
+        ? companySubscriberUrl
+        : type === "individual partner"
+        ? individualPartnerUrl
+        : companyPartnerUrl,
+    title: "Address Details",
+    image: false,
+  });
+
+  if (isFetching) {
+    return <span>Loading...</span>;
+  }
+
+  const onSubmit = (values) => {
+    // console.log(data);
+    const body = {
+      alternativePhone: values.altphoneNumber,
+      website: values.website,
+      streetNumber: values.streetNo,
+      streetName: values.streetName,
+      nearestLandmark: values.landmark,
+      geoTag: values.geoTag,
+      city: values.city,
+    };
+    editMutation.mutateAsync(body);
+    setUpdateNow(false);
   };
 
   const countryCodes = {
@@ -279,6 +320,7 @@ const UpdateAddress = ({
               {...register("lga")}
               type="text"
               placeholder="Enter LGA"
+              value={data.localGoverment}
               className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
             />
             {errors.lga && (
@@ -293,12 +335,14 @@ const UpdateAddress = ({
               {...register("country")}
               type="text"
               placeholder="Enter country"
+              value={data.country}
               className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
             />
             {errors.country && (
               <p className="text-red-600 text-sm">{errors.country.message}</p>
             )}
           </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700">
               State<span className="text-red-600">*</span>
@@ -307,6 +351,7 @@ const UpdateAddress = ({
               {...register("state")}
               type="text"
               placeholder="Enter state"
+              value={data.state}
               className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
             />
             {errors.state && (
@@ -321,6 +366,7 @@ const UpdateAddress = ({
               {...register("ward")}
               type="text"
               placeholder="Enter ward"
+              value={data.ward}
               className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
             />
             {errors.ward && (

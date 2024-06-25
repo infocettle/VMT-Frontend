@@ -2,8 +2,11 @@ import { individualSubscriberBasicFormSchema } from "@/utils/zodSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { usePostData } from "@/hooks/usePostData";
+import { baseUrl } from "@/App";
+import useEditData from "@/hooks/useEditHook";
+import useFetchData from "@/hooks/useFetchData";
 import { UserRound } from "lucide-react";
+import { useSelector } from "react-redux";
 
 const UpdateProfile = ({ setUpdateNow }) => {
   const {
@@ -15,10 +18,45 @@ const UpdateProfile = ({ setUpdateNow }) => {
     resolver: zodResolver(individualSubscriberBasicFormSchema),
   });
 
+  const userData = useSelector((state) => state.auth.user);
+
   const fileRef = register("picture");
 
+  const indiPatBasicUrl = `${baseUrl}v1/partner/individual/profile/basic-details/${userData._id}`;
+
+  const { data } = useFetchData(
+    indiPatBasicUrl,
+    "individualPartnerBasicDetails"
+  );
+
+  const editMutation = useEditData({
+    queryKey: ["individualPartnerBasicDetails"],
+    url: indiPatBasicUrl,
+    title: "Basic Details",
+    image: true,
+  });
+
   const onSubmit = (data) => {
-    console.log(data);
+    let formData = new FormData();
+
+    formData.append("middleName", data.middlename);
+    formData.append("surname", data.surname);
+    formData.append("firstname", data.firstname);
+    formData.append("title", data.title);
+    formData.append("nin", data.nin);
+    formData.append("maidenName", data.maidenName);
+    formData.append("gender", data.gender);
+    formData.append("DateOfBirth", data.dateOfBirth);
+    formData.append("maritalStatus", data.maritalStatus);
+    formData.append("country", data.country);
+    formData.append("state", data.state);
+    formData.append("localGoverment", data.lga);
+    formData.append("ward", data.ward);
+    if (data.picture[0]) {
+      formData.append("individualPhoto", data.picture[0]);
+    }
+
+    editMutation.mutateAsync(formData);
     setUpdateNow(false);
   };
 
@@ -61,7 +99,9 @@ const UpdateProfile = ({ setUpdateNow }) => {
                 {...register("firstname")}
                 type="text"
                 placeholder="Enter Firstname"
-                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+                disabled={true}
+                value={data.firstName}
+                className="mt-1 px-3 w-full h-9 bg-slate-500 border border-gray-300 rounded-md shadow-sm cursor-not-allowed"
               />
               {errors.firstname && (
                 <p className="text-red-600 text-sm">
@@ -78,7 +118,9 @@ const UpdateProfile = ({ setUpdateNow }) => {
                 {...register("surname")}
                 type="text"
                 placeholder="Enter Surname"
-                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+                disabled={true}
+                value={data.surname}
+                className="mt-1 px-3 w-full h-9 bg-slate-500 border border-gray-300 rounded-md shadow-sm cursor-not-allowed"
               />
               {errors.surname && (
                 <p className="text-red-600 text-sm">{errors.surname.message}</p>
@@ -152,7 +194,9 @@ const UpdateProfile = ({ setUpdateNow }) => {
                 {...register("nin")}
                 type="text"
                 placeholder="Enter NIN"
-                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+                value={data.nin}
+                disabled
+                className="mt-1 px-3 w-full h-9 bg-slate-500 border border-gray-300 rounded-md shadow-sm cursor-not-allowed"
               />
               {errors.nin && (
                 <p className="text-red-600 text-sm">{errors.nin.message}</p>
@@ -251,7 +295,7 @@ const UpdateProfile = ({ setUpdateNow }) => {
                 {...register("state")}
                 type="text"
                 placeholder="Enter State"
-                className="mt-1 px-3 w-full h-8 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
               />
               {errors.state && (
                 <p className="text-red-600 text-sm">{errors.state.message}</p>

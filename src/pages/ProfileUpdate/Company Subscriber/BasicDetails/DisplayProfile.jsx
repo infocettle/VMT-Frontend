@@ -2,27 +2,35 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
+import { useSelector } from "react-redux";
 
-const COMPANY_DETAILS = [
-  { id: 1, name: "Company's name", value: "XYZ & Co. Initiatives" },
-  { id: 2, name: "Short name", value: "" },
-  { id: 3, name: "Registered", value: "" },
-  { id: 4, name: "Registration number", value: "" },
-  { id: 5, name: "Registration date", value: "" },
-  { id: 6, name: "Business Sector", value: "" },
-  { id: 7, name: "Sub-sector", value: "" },
-  { id: 8, name: "Foreign Affliation", value: "" },
-];
+const DisplayProfile = ({ setUpdateNow, type }) => {
+  const userData = useSelector((state) => state.auth.user);
 
-const DisplayProfile = ({ setUpdateNow }) => {
-  // const titleUrl = `${baseUrl}public-registry/personal-details/title`;
+  const companySubscriberUrl = `${baseUrl}v1/subscriber/company/profile/${userData._id}/basic-details`;
+  const companyPartnerUrl = `${baseUrl}v1/partner/company/profile/${userData._id}/basic-details`;
 
-  // const { isFetching, isSuccess } = useFetchData(titleUrl, "title");
+  const { data, isFetching } = useFetchData(
+    type === "company subscriber" ? companySubscriberUrl : companyPartnerUrl,
+    type === "company subscriber"
+      ? "companySubscriberBasicDetails"
+      : "companyPartnerBasicDetails"
+  );
 
-  // if (isFetching) {
-  //   // alert("is fetching data");
-  //
-  // }
+  const COMPANY_DETAILS = [
+    { id: 1, name: "Company's name", value: data?.companyName },
+    { id: 2, name: "Short name", value: data?.shortName },
+    { id: 3, name: "Registered", value: data?.registered },
+    { id: 4, name: "Registration number", value: data?.registration },
+    { id: 5, name: "Registration date", value: data?.registrationDate },
+    { id: 6, name: "Business Sector", value: data?.businessSector },
+    { id: 7, name: "Sub-sector", value: data?.subSector },
+    { id: 8, name: "Foreign Affliation", value: data?.foreignAffiliation },
+  ];
+
+  if (isFetching) {
+    return <span>Loading...</span>;
+  }
 
   return (
     <div className="flex flex-col items-center">

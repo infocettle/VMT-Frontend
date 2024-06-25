@@ -2,8 +2,11 @@ import { individualSubscriberBasicFormSchema } from "@/utils/zodSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { usePostData } from "@/hooks/usePostData";
+import useEditData from "@/hooks/useEditHook";
+import useFetchData from "@/hooks/useFetchData";
+import { baseUrl } from "@/App";
 import { UserRound } from "lucide-react";
+import { useSelector } from "react-redux";
 
 const UpdateGuarantor = ({ setUpdateNow, selectedGuarantor }) => {
   const {
@@ -16,9 +19,78 @@ const UpdateGuarantor = ({ setUpdateNow, selectedGuarantor }) => {
   });
 
   const fileRef = register("picture");
+  const userData = useSelector((state) => state.auth.user);
+
+  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/guarantors-information/${userData._id}`;
+
+  const { data } = useFetchData(
+    indiSubBasicUrl,
+    "individualScubscriberGuarantorsDetails"
+  );
+
+  const editMutation = useEditData({
+    queryKey: ["individualScubscriberGuarantorsDetails"],
+    url: indiSubBasicUrl,
+    title: "Guarantor Details",
+    image: true,
+  });
 
   const onSubmit = (data) => {
-    console.log(data, selectedGuarantor);
+    let formData = new FormData();
+
+    if (selectedGuarantor === "first") {
+      console.log(data, selectedGuarantor);
+
+      formData.append("firstGuarantorMiddlename", data.middlename);
+      formData.append("firstGuarantorSurname", data.surname);
+      formData.append("firstGuarantorFirstname", data.firstname);
+      formData.append("firstGuarantorTitle", data.title);
+      formData.append("firstGuarantorNin", data.nin);
+      formData.append("firstGuarantorMaidenname", data.maidenName);
+      formData.append("firstGuarantorGender", data.gender);
+      formData.append("firstGuarantorDateofbirth", data.dateOfBirth);
+      formData.append("firstGuarantorMaritalstatus", data.maritalStatus);
+      formData.append("firstGuarantorCountry", data.country);
+      formData.append("firstGuarantorState", data.state);
+      formData.append("firstGuarantorlocalGoverment", data.lga);
+      formData.append("firstGuarantorWard", data.ward);
+      formData.append("firstGuarantorRelationship", data.relationship);
+      formData.append(
+        "firstGuarantorDurationOfRelationship",
+        data.relationshipYears
+      );
+      if (data.picture[0]) {
+        formData.append("firstGuarantorPhoto", data.picture[0]);
+      }
+    }
+
+    if (selectedGuarantor === "second") {
+      console.log(data, selectedGuarantor);
+
+      formData.append("firstGuarantorMiddlename", data.middlename);
+      formData.append("firstGuarantorSurname", data.surname);
+      formData.append("firstGuarantorFirstname", data.firstname);
+      formData.append("firstGuarantorTitle", data.title);
+      formData.append("firstGuarantorNin", data.nin);
+      formData.append("firstGuarantorMaidenname", data.maidenName);
+      formData.append("firstGuarantorGender", data.gender);
+      formData.append("firstGuarantorDateofbirth", data.dateOfBirth);
+      formData.append("firstGuarantorMaritalstatus", data.maritalStatus);
+      formData.append("firstGuarantorCountry", data.country);
+      formData.append("firstGuarantorState", data.state);
+      formData.append("firstGuarantorlocalGoverment", data.lga);
+      formData.append("firstGuarantorWard", data.ward);
+      formData.append("firstGuarantorRelationship", data.relationship);
+      formData.append(
+        "firstGuarantorDurationOfRelationship",
+        data.relationshipYears
+      );
+      if (data.picture[0]) {
+        formData.append("firstGuarantorPhoto", data.picture[0]);
+      }
+    }
+
+    editMutation.mutateAsync(formData);
     setUpdateNow(false);
   };
 

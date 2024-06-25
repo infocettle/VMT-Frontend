@@ -2,48 +2,8 @@ import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
-import { UserRound } from "lucide-react";
+import { useSelector } from "react-redux";
 import { Checkbox } from "@/components/ui/checkbox";
-
-const GUARANTOR_DETAILS = [
-  { id: 1, name: "Title", value: "" },
-  { id: 2, name: "Surname", value: "" },
-  { id: 3, name: "Firstname", value: "" },
-  { id: 4, name: "Middle/Other name", value: "" },
-  { id: 5, name: "Maiden/Former name", value: "" },
-  { id: 17, name: "Relationship", value: "" },
-  { id: 16, name: "Duration of relationship", value: "" },
-  { id: 6, name: "Gender", value: "" },
-  { id: 7, name: "Marital Status", value: "" },
-  { id: 8, name: "Date of Birth", value: "" },
-  { id: 9, name: "Email Address", value: "" },
-  { id: 10, name: "Phone number", value: "" },
-  { id: 15, name: "Relationship", value: "" },
-  { id: 11, name: "NIN", value: "" },
-  { id: 12, name: "Country", value: "" },
-  { id: 13, name: "State", value: "" },
-  { id: 14, name: "Local Government Area", value: "" },
-];
-
-const GUARANTOR_DETAILS_2 = [
-  { id: 1, name: "Title", value: "" },
-  { id: 2, name: "Surname", value: "" },
-  { id: 3, name: "Firstname", value: "" },
-  { id: 4, name: "Middle/Other name", value: "" },
-  { id: 5, name: "Maiden/Former name", value: "" },
-  { id: 17, name: "Relationship", value: "" },
-  { id: 16, name: "Duration of relationship", value: "" },
-  { id: 6, name: "Gender", value: "" },
-  { id: 7, name: "Marital Status", value: "" },
-  { id: 8, name: "Date of Birth", value: "" },
-  { id: 9, name: "Email Address", value: "" },
-  { id: 10, name: "Phone number", value: "" },
-  { id: 15, name: "Relationship", value: "" },
-  { id: 11, name: "NIN", value: "" },
-  { id: 12, name: "Country", value: "" },
-  { id: 13, name: "State", value: "" },
-  { id: 14, name: "Local Government Area", value: "" },
-];
 
 const DisplayGuarantor = ({
   setUpdateNow,
@@ -54,19 +14,80 @@ const DisplayGuarantor = ({
     setSelectedGuarantor(referee);
   };
 
-  // const titleUrl = `${baseUrl}public-registry/personal-details/title`;
+  const userData = useSelector((state) => state.auth.user);
+  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/guarantors-information/${userData._id}`;
 
-  // const { isFetching, isSuccess } = useFetchData(titleUrl, "title");
+  const { data, isFetching } = useFetchData(
+    indiSubBasicUrl,
+    "individualScubscriberGuarantorDetails"
+  );
 
-  // if (isFetching) {
-  //   // alert("is fetching data");
-  //
-  // }
+  const GUARANTOR_DETAILS = [
+    { id: 1, name: "Title", value: data?.firstGuarantorTitle },
+    { id: 2, name: "Surname", value: data?.firstGuarantorSurname },
+    { id: 3, name: "Firstname", value: data?.firstGuarantorFirstname },
+    { id: 4, name: "Middle/Other name", value: data?.firstGuarantorMiddlename },
+    {
+      id: 5,
+      name: "Maiden/Former name",
+      value: data?.firstGuarantorMaidenname,
+    },
+    { id: 17, name: "Relationship", value: data?.firstGuarantorRelationship },
+    {
+      id: 16,
+      name: "Duration of relationship",
+      value: data?.firstGuarantorDurationOfRelationship,
+    },
+    { id: 6, name: "Gender", value: data?.firstGuarantorGender },
+    { id: 7, name: "Marital Status", value: data?.firstGuarantorMaritalstatus },
+    {
+      id: 8,
+      name: "Date of Birth",
+      value: data?.firstGuarantorDateofbirth.split("T")[0],
+    },
+    { id: 9, name: "Email Address", value: data?.firstGuarantorEmail },
+    { id: 10, name: "Phone number", value: data?.firstGuarantorPhone },
+    { id: 15, name: "Ward", value: data?.firstGuarantorWard },
+    { id: 11, name: "NIN", value: data?.firstGuarantorNin },
+    { id: 12, name: "Country", value: data?.firstGuarantorCountry },
+    { id: 13, name: "State", value: data?.firstGuarantorState },
+    {
+      id: 14,
+      name: "Local Government Area",
+      value: data?.firstGuarantorlocalGoverment,
+    },
+  ];
+
+  const GUARANTOR_DETAILS_2 = [
+    { id: 1, name: "Title", value: "" },
+    { id: 2, name: "Surname", value: "" },
+    { id: 3, name: "Firstname", value: "" },
+    { id: 4, name: "Middle/Other name", value: "" },
+    { id: 5, name: "Maiden/Former name", value: "" },
+    { id: 17, name: "Relationship", value: "" },
+    { id: 16, name: "Duration of relationship", value: "" },
+    { id: 6, name: "Gender", value: "" },
+    { id: 7, name: "Marital Status", value: "" },
+    { id: 8, name: "Date of Birth", value: "" },
+    { id: 9, name: "Email Address", value: "" },
+    { id: 10, name: "Phone number", value: "" },
+    { id: 15, name: "Relationship", value: "" },
+    { id: 11, name: "NIN", value: "" },
+    { id: 12, name: "Country", value: "" },
+    { id: 13, name: "State", value: "" },
+    { id: 14, name: "Local Government Area", value: "" },
+  ];
+
+  if (isFetching) {
+    return <span>Loading...</span>;
+  }
 
   return (
     <div className="flex flex-col items-center">
       <div className="w-full flex items-center justify-between border-b py-3 px-5">
-        <h3 className="text-black text-sm leading-relaxed">Referee Detail</h3>
+        <h3 className="text-black text-sm leading-relaxed">
+          Guarantor Details
+        </h3>
         <Button
           onClick={() => setUpdateNow(true)}
           className="bg-blue-200 border border-blue-500 text-blue-900 capitalize w-20 rounded-lg h-10 flex items-center justify-center"
@@ -106,10 +127,8 @@ const DisplayGuarantor = ({
             ))}
           </div>
 
-          <div className="w-60 h-40 bg-vmtpurple rounded-lg flex justify-center items-center self-start m-5">
-            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white">
-              <UserRound color="#000" />
-            </div>
+          <div className="w-60 h-40 bg-white rounded-lg border-vmtpurple border-2 flex justify-center items-center self-start m-5">
+            <img src={data.firstGuarantorPhoto} alt="relative-photo" />
           </div>
         </div>
 
@@ -141,10 +160,8 @@ const DisplayGuarantor = ({
             ))}
           </div>
 
-          <div className="w-60 h-40 bg-vmtpurple rounded-lg flex justify-center items-center self-start m-5">
-            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white">
-              <UserRound color="#000" />
-            </div>
+          <div className="w-60 h-40 bg-white rounded-lg border-vmtpurple border-2 flex justify-center items-center self-start m-5">
+            <img src={data.firstGuarantorPhoto} alt="relative-photo" />
           </div>
         </div>
       </div>

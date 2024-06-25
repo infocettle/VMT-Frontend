@@ -1,6 +1,7 @@
 import { Bell, ChevronRight, Settings, UserRound } from "lucide-react";
 import Logo from "../../assets/img/Logo.svg";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const HeaderFooter = ({ children }) => {
   const userData = useSelector((state) => state.auth.user);
@@ -9,9 +10,9 @@ const HeaderFooter = ({ children }) => {
     <div className="w-full flex items-center">
       <div className="w-full flex flex-col items-center">
         <div className="w-full flex items-center justify-between py-2 px-8 border-b">
-          <div className="w-auto">
+          <Link to={"/"} className="w-auto">
             <img className="h-10 w-auto" src={Logo} alt="valuemine-logo" />
-          </div>
+          </Link>
 
           <div className="w-auto px-4 py-2 flex space-x-3 items-center">
             <Bell size={18} color="#666687" />

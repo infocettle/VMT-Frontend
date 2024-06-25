@@ -20,6 +20,8 @@ import {
   UpdateOther,
 } from "..";
 import { useSelector } from "react-redux";
+import { baseUrl } from "@/App";
+import useFetchData from "@/hooks/useFetchData";
 
 const IndividualPartnerProfile = () => {
   const navigate = useNavigate();

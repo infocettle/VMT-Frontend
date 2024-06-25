@@ -29,7 +29,7 @@ const MainDashboard = () => {
 
   useEffect(() => {
     const url = location.pathname; // Or location.href if needed
-console.log(url,"url");
+    console.log(url, "url");
     if (url.includes("dashboard")) {
       setPageHeader("Dashboard");
     } else if (url.includes("public_reg")) {
@@ -53,10 +53,9 @@ console.log(url,"url");
     setIsOpenNotification(false);
   };
   const handleLogOut = () => {
-    dispatch(logOutUserSubscriber())
-    console.log("hello")
+    dispatch(logOutUserSubscriber());
+    console.log("hello");
   };
-
 
   return (
     <div className="w-full flex items-start overflow-hidden pb-2 h-screen ">
@@ -97,7 +96,9 @@ console.log(url,"url");
                 alt="image"
                 className="mr-1 lg:mr-3"
               />
-              <h2 className="main-dashbaord-header">{pageHeader.toUpperCase()}</h2>
+              <h2 className="main-dashbaord-header">
+                {pageHeader.toUpperCase()}
+              </h2>
             </div>
             <div className="w-auto flex items-center space-x-2 large_screen">
               <SearchBox />
@@ -112,7 +113,6 @@ console.log(url,"url");
                   cursor: "pointer",
                 }}
                 className="large_screen"
-                
               />
 
               <div
@@ -120,7 +120,10 @@ console.log(url,"url");
                 onClick={handleProfileOpen}
               >
                 <img src={Avatar} alt="image" />
-                <p style={{ fontSize: "14px", color: "#666687" }}>{userData?.surname.toUpperCase()} {userData?.firstName.toUpperCase()} </p>
+                <p style={{ fontSize: "14px", color: "#666687" }}>
+                  {userData?.surname.toUpperCase()}{" "}
+                  {userData?.firstName.toUpperCase()}{" "}
+                </p>
               </div>
               <div
                 className={`slide-in-box ${isOpenNotification ? "open" : ""}`}
@@ -131,14 +134,20 @@ console.log(url,"url");
                 <div className="profile-card-container">
                   <div className="profile-info-container">
                     <img src={Avatar} alt="image" />
-                    <div className="flex flex-col flex-wrap w-full pr-3"style={{
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  }}>
-                      <div className="profile-info-name">{userData?.surname.toUpperCase()} {userData?.firstName.toUpperCase()}</div>
-                      <div className="profile-info-email flex  flex-wrap " >
-                      {userData?.email}
+                    <div
+                      className="flex flex-col flex-wrap w-full pr-3"
+                      style={{
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      <div className="profile-info-name">
+                        {userData?.surname.toUpperCase()}{" "}
+                        {userData?.firstName.toUpperCase()}
+                      </div>
+                      <div className="profile-info-email flex  flex-wrap ">
+                        {userData?.email}
                       </div>
                     </div>
                   </div>
@@ -147,7 +156,10 @@ console.log(url,"url");
                       <MdSupportAgent />
                       <div className="help-container-text">Help & Support</div>
                     </div>
-                    <div className="flex gap-2 items-center cursor-pointer" onClick={handleLogOut}>
+                    <div
+                      className="flex gap-2 items-center cursor-pointer"
+                      onClick={handleLogOut}
+                    >
                       <LuLogOut />
                       <div className="help-container-text">Log out</div>
                     </div>
@@ -156,9 +168,8 @@ console.log(url,"url");
               ) : null}
             </div>
             <div className="small_screen">
-                       <DashboardDivTwo/>
+              <DashboardDivTwo />
             </div>
-   
           </div>
 
           <div className="w-full flex items-start side-position">

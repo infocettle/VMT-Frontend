@@ -4,12 +4,17 @@ import Logo from "../../../assets/img/Logo.svg";
 import { useNavigate } from "react-router-dom";
 import { baseUrl } from "@/App";
 import { sendData } from "@/hooks/usePostData";
+import { Loader } from 'lucide-react';
+import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
+import { useDispatch } from "react-redux";
 function AdminLogin({ setFormType }) {
   const url = `${baseUrl}v1/admin/auth/login`;
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 const navigate = useNavigate()
+const dispatch = useDispatch()
   
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -51,10 +56,10 @@ const navigate = useNavigate()
             const returnedUser = await sendData({
               url: url,
               body: body,
-              title:"Admin User Logged in"
-
+              title:"Admin User Logged in",
+              setLoading: setLoading 
             });
-            console.log(returnedUser);
+            dispatch(setUserSubscriber(returnedUser.user));
             navigate('/')
         } catch (error) {
           console.error("error", error);
@@ -124,7 +129,9 @@ const navigate = useNavigate()
           <div className="subscription-terms-text cursor-pointer" onClick={handleReset}> <span>Forgot your password?</span></div>
           </div>
       <div className="auth-button mt-10" onClick={handleContinue}>
-        <div className="auth-button-text">Login</div>
+      <div className="auth-button-text">
+          {loading ? <Loader className="animate-spin" /> : 'Login'}
+        </div>
       </div>
      
     </div>

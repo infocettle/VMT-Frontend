@@ -13,7 +13,7 @@ const navigate = useNavigate()
     navigate("/subscription");
   };
   const handleBack = () => {
-    navigate("/login")
+    navigate("/subscription")
   };
 
   return (
@@ -24,12 +24,12 @@ const navigate = useNavigate()
       </div>
      
 
-      <div className="auth-form-flex  justify-between items-center">
+      <div className="flex items-center justify-between w-full mt-5">
       <div className="governance-text">Sign Agreement</div>
         <img src={ArrowAuthRight} alt="image"/>
       
       </div>
-      <div className="auth-form-flex  justify-between items-center">
+      <div className="flex items-center justify-between w-full mt-10">
       <div className="governance-text">Update your profile</div>
         <img src={ArrowAuthRight} alt="image"/>
       

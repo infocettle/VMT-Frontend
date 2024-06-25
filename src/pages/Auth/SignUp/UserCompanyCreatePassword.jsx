@@ -8,10 +8,10 @@ import { baseUrl } from "@/App";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { sendData } from "@/hooks/usePostData";
-
+import { Loader } from 'lucide-react';
 function UserCompanyCreatePassword({userType}) {
   const profileData = useSelector((state) => state.auth);
-  const newUserId = profileData?.newUser?._id;
+  const newUserId = profileData?.user?._id;
   const url = `${baseUrl}v1/${userType}/company/auth/set-password/${newUserId}`;
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -20,6 +20,7 @@ function UserCompanyCreatePassword({userType}) {
   const [passwordMatchError, setPasswordMatchError] = useState(false);
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [answers, setAnswers] = useState(["", "", ""]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
@@ -147,6 +148,7 @@ function UserCompanyCreatePassword({userType}) {
         url: url,
         body: requestBody,
         title: "Password and security questions set",
+        setLoading: setLoading 
       });
      
       navigate("/subscription");
@@ -235,7 +237,9 @@ function UserCompanyCreatePassword({userType}) {
       </div>
 
       <div className="auth-button mt-10" onClick={handleContinue}>
-        <div className="auth-button-text">Submit</div>
+      <div className="auth-button-text">
+          {loading ? <Loader className="animate-spin" /> : 'Submit'}
+        </div>
       </div>
 
       <div

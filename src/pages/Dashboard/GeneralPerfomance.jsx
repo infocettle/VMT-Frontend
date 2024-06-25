@@ -26,13 +26,13 @@ const GeneralPerfomance = () => {
   return (
     <div className="w-full">
       <DashboardDiv module={"Performance"} />
-      <div className="bg-gray-100 py-3 scrolled-height px-10 w-full flex-col items-center">
+      <div className="bg-gray-100 px-2 py-3  scrolled-height lg:px-10 w-full flex-col items-center">
         {/* Second header */}
 
         <div className="flex justify-between w-full items-center">
           <div className="main-container">
             <div className="filter-button-container justify-between" >
-            <h2 className="uppercase font-light text-base">General</h2>
+            <h2 className="uppercase performance_header">General</h2>
               <div className="filter-button">
                 <IoFilter />
                 <div className="filter-button-text">Filter</div>

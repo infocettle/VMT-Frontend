@@ -13,6 +13,7 @@ import AdminUserNewPassword from "./AdminUserNewPassword";
 
 function AdminAuthUser() {
   const [formType, setFormType] = useState("admin-user-login");
+  const [userEmail, setUserEmail] = useState("");
   const handleSubmit = () => {
     console.log("Form submitted:", formType);
   };
@@ -21,22 +22,22 @@ function AdminAuthUser() {
     <div className="auth-container">
       <div className="auth-form-overall-container">
         {formType === "admin-user-login" && (
-          <AdminUserLogin setFormType={setFormType} onSubmit={handleSubmit} />
+          <AdminUserLogin setFormType={setFormType} onSubmit={handleSubmit} setUserEmail={setUserEmail} />
         )}
         {formType === "admin-user-verify-login" && (
-          <AdminUserVerifyLogin setFormType={setFormType} onSubmit={handleSubmit} />
+          <AdminUserVerifyLogin setFormType={setFormType} onSubmit={handleSubmit} userEmail={userEmail} />
         )}
         {formType === "change-password" && (
-          <AdminUserChangePassword setFormType={setFormType} onSubmit={handleSubmit} />
+          <AdminUserChangePassword setFormType={setFormType} onSubmit={handleSubmit} userEmail={userEmail} />
         )}
         {formType === "admin-user-reset-password" && (
-          <AdminUserResetPassword setFormType={setFormType} onSubmit={handleSubmit} />
+          <AdminUserResetPassword setFormType={setFormType} onSubmit={handleSubmit} setUserEmail={setUserEmail}/>
         )}
         {formType === "admin-user-verify-email" && (
-          <AdminUserVerifyEmail setFormType={setFormType} onSubmit={handleSubmit} />
+          <AdminUserVerifyEmail setFormType={setFormType} onSubmit={handleSubmit}  userEmail={userEmail}  />
         )}
         {formType === "admin-user-new-password" && (
-          <AdminUserNewPassword setFormType={setFormType} onSubmit={handleSubmit} />
+          <AdminUserNewPassword setFormType={setFormType} onSubmit={handleSubmit} userEmail={userEmail} />
         )}
       </div>
 

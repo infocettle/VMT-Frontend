@@ -4,12 +4,14 @@ import React, { useEffect, useState } from "react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-
+import { Loader } from 'lucide-react';
+import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
 function UserLogin({ setFormType ,setUserEmail}) {
   const url = `${baseUrl}v1/auth/login`;
   const dispatch = useDispatch()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   useEffect(() => {
     setUserEmail(email);
@@ -53,8 +55,10 @@ function UserLogin({ setFormType ,setUserEmail}) {
           url: url,
           body: body,
           title: "OTP sent to your mail",
+          setLoading: setLoading 
         });
         console.log(returnedUser);
+        dispatch(setUserSubscriber(returnedUser.user));
       setFormType("otp");
     } catch (error) {
       console.error("error", error);
@@ -121,7 +125,9 @@ function UserLogin({ setFormType ,setUserEmail}) {
       </div>
 
       <div className="auth-button mt-10" onClick={handleContinue}>
-        <div className="auth-button-text">Login</div>
+      <div className="auth-button-text">
+          {loading ? <Loader className="animate-spin" /> : 'Login'}
+        </div>
       </div>
       <div className="auth-already mt-5">New to ValueMine</div>
       <div className="auth-button-white mt-5" onClick={handleSignUp}>

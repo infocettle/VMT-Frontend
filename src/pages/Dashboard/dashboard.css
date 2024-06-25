@@ -46,10 +46,28 @@
   background-color: white;
   z-index: 4;
 }
+.page_details_mobile{
+  color: #666687;
+font-family: Open Sans;
+font-size: 16px;
+font-weight: 600;
+line-height: 20px;
+text-align: left;
+
+}
+.performance_header{
+   color: #212134;
+font-family: Open Sans;
+font-size: 18px;
+font-weight: 600;
+line-height: 22px;
+text-align: left;
+
+}
 .filter-button-container {
   width: 100%;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: flex-end;
 }
 .filter-button {

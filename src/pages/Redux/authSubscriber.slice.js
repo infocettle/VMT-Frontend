@@ -2,27 +2,27 @@ import { createSlice } from '@reduxjs/toolkit';
 const authSubscriberSlice = createSlice({
   name: 'authSubscriber',
   initialState: {
-    newUser: null,
+    user: null,
     authenticated: false,
     token: null,
     // subscriptionStatus: 'inactive', // Initialize subscription status as 'inactive'
   },
   reducers: {
     setUserSubscriber: (state, action) => {
-      state.newUser = action.payload;
+      state.user = action.payload;
       state.authenticated = action.payload ? true : false;
       state.token = null;
     },
 
     setUpdatedUserSubscriber: (state, action) => {
-      state.newUser = action.payload;
+      state.user = action.payload;
       state.authenticated = true;
       state.token = null;
     },
     setTokenSubscriber: (state,action) => {
-      state.newUser = null;
-      state.authenticated = false;
-      state.token = action.payload
+      state.user = action.payload ? action.payload.user : false;
+      state.authenticated = action.payload ? true : false;
+      state.token = action.payload.token
       // state.subscriptionStatus = 'inactive'; // Reset the subscription status upon logout
     },
 
@@ -32,7 +32,7 @@ const authSubscriberSlice = createSlice({
     // },
 
     logOutUserSubscriber: (state) => {
-      state.newUser = null;
+      state.user = null;
       state.authenticated = false;
       state.token = null;
       // state.subscriptionStatus = 'inactive'; // Reset the subscription status upon logout

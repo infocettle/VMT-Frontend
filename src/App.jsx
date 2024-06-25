@@ -56,6 +56,7 @@ import CommissionPerformance from "./pages/Dashboard/CommissionPerformance";
 import CompanyPerformance from "./pages/Dashboard/CompanyPerformance";
 import PartnersPerformance from "./pages/Dashboard/PartnersPerformance";
 import SupportServicePerformance from "./pages/Dashboard/SupportServicePerformance";
+import ProtectedRoute from "./pages/Auth/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -77,12 +78,14 @@ const router = createBrowserRouter([
 
   {
     path: "/subscription",
-    element: <Subscription />,
+    element:(<ProtectedRoute><Subscription /></ProtectedRoute>) ,
   },
 
   {
     path: "/",
-    element: <MainDashboard />,
+    element:<ProtectedRoute>
+    <MainDashboard />
+  </ProtectedRoute>,
     children: [
       // All children routes here
       {
@@ -262,7 +265,9 @@ const router = createBrowserRouter([
 
   {
     path: "/profile/*",
-    element: <ProfilePath />,
+    element:  <ProtectedRoute>
+    <ProfilePath />
+  </ProtectedRoute>,
     children: [
       {
         path: "company-subscriber",

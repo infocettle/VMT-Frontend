@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactFlagsSelect from "react-flags-select";
 import Select from "react-select";
 import { IoIosArrowRoundBack } from "react-icons/io";
@@ -8,9 +8,11 @@ import { sendData } from "@/hooks/usePostData";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
+import { Loader } from 'lucide-react';
+import axios from "axios";
 function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
   const url = `${baseUrl}v1/${userType}/individual/auth/register`;
-
+  const [loading, setLoading] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState("NG");
   const [countryCode, setCountryCode] = useState("+234");
   const [selectedTitle, setSelectedTitle] = useState("");
@@ -19,12 +21,31 @@ function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
   const [nin, setNin] = useState("");
+  const [administrator, setAdministrator] = useState("");
   const [referalCode, setReferalCode] = useState("");
   const [selectedFind, setSelectedFind] = useState("");
   const [selectedRole, setSelectedRole] = useState(null);
   const [error, setError] = useState("");
   const [errorNin, setErrorNin] = useState("");
+  const [titleOptions, setTitleOptions] = useState([]);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchTitles = async () => {
+        try {
+            const url = `${baseUrl}public-registry/personal-details/title?status=Active`;
+            const response = await axios.get(url);
+            const activeTitles = response.data
+                .filter(item => item.status === 'Active')
+                .map(item => ({ value: item.title, label: item.title }));
+            setTitleOptions(activeTitles);
+        } catch (error) {
+            toast.error('Error fetching titles');
+        }
+    };
+
+    fetchTitles();
+}, [baseUrl]);
   const handleCountryChange = (selectedCountry) => {
     setSelectedCountry(selectedCountry);
     // Here you can implement a mapping of country to country code
@@ -55,7 +76,9 @@ function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
     const numericPhoneNumber = numberWithoutCode.replace(/\D/g, "");
     setPhoneNumber(numericPhoneNumber);
   };
-
+  const handleRadioChange = (e) => {
+    setAdministrator(e.target.value);
+};
   const validateForm = () => {
     if (!selectedTitle) {
       toast.error("Title is required");
@@ -121,8 +144,10 @@ function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
       firstName: firstName,
       phoneNumber: `${countryCode}${phoneNumber}`,
       email: email,
-      nin: nin,
+      nin: parseInt(nin),
       referalCode: referalCode,
+      administratorType:administrator,
+      
     };
   
     if (partnerType) {
@@ -134,6 +159,7 @@ function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
         url: url,
         body: requestBody,
         title: "Subscriber individual created",
+        setLoading: setLoading 
       });
       dispatch(setUserSubscriber(returnedData.newUser));
       setFormType("individual-create-password");
@@ -147,10 +173,17 @@ function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
     setFormType("user-subscriber");
   };
   const customStyles = {
+  
+    container: (provided) => ({
+      ...provided,
+      
+      width:"100%",
+    }),
     control: (provided) => ({
       ...provided,
       minHeight: "48px",
       height: "48px",
+      width:"100%",
     }),
   };
 
@@ -174,16 +207,13 @@ function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
               Title <span className="auth-mandatory">*</span>
             </div>
             <Select
-              value={selectedTitle}
-              placeholder="Select Title"
-              onChange={(selectedOption) => setSelectedTitle(selectedOption)}
-              options={[
-                { value: "Mr", label: "Mr" },
-                { value: "Mrs", label: "Mrs" },
-                { value: "Miss", label: "Miss" },
-              ]}
-              styles={customStyles}
-            />
+                    value={selectedTitle}
+                    placeholder="Select Title"
+                    onChange={(selectedOption) => setSelectedTitle(selectedOption)}
+                    options={titleOptions}
+                    styles={customStyles}
+                />
+   
           </div>
           <div className="flex flex-col gap-2 w-full">
             <div className="auth-label">
@@ -310,6 +340,7 @@ function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
             />
           </div>
         </div>
+      
         <div className="auth-form-flex">
           <div className="flex flex-col gap-2 w-full">
             <div className="auth-label">How did you hear about us?</div>
@@ -326,8 +357,37 @@ function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
             />
           </div>
         </div>
+        <div className="auth-form-flex">
+          <div className="flex flex-col gap-2 w-full">
+            <div className="auth-label">Are you the administrator?</div>
+            <div className="flex gap-4">
+                    <label className="flex items-center">
+                        <input
+                            type="radio"
+                            name="administrator"
+                            value="yes"
+                            checked={administrator === 'yes'}
+                            onChange={handleRadioChange}
+                        />
+                        <span className="ml-2">Yes</span>
+                    </label>
+                    <label className="flex items-center">
+                        <input
+                            type="radio"
+                            name="administrator"
+                            value="no"
+                            checked={administrator === 'no'}
+                            onChange={handleRadioChange}
+                        />
+                        <span className="ml-2">No</span>
+                    </label>
+              </div>
+          </div>
+        </div>
         <div className="auth-button mt-10" onClick={handleContinue}>
-          <div className="auth-button-text">Save & Continue</div>
+        <div className="auth-button-text">
+          {loading ? <Loader className="animate-spin" /> : 'Save & Continue'}
+        </div>
         </div>
 
         <div

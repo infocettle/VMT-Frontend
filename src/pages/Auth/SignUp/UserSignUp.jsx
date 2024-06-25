@@ -86,7 +86,7 @@ function UserSignUp({ setFormType,setPartnerType,setUserType }) {
       </div>
 
       {showPartnerType && (
-        <div className="flex flex-col mt-5">
+        <div className="flex flex-col mt-5 w-full">
           <div className="flex items-center gap-2 mt-2">
             <input
               type="radio"

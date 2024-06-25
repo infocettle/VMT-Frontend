@@ -4,7 +4,14 @@ import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import Logo from "../../../assets/img/Logo.svg";
 import Party from "../../../assets/img/Party.svg";
-function AdminUserChangePassword({setFormType}) {
+import { useSelector } from "react-redux";
+import { baseUrl } from "@/App";
+import { toast } from "react-toastify";
+import { Loader } from 'lucide-react';
+function AdminUserChangePassword({setFormType,userEmail}) {
+  const url = `${baseUrl}v1/user/admin/auth/reset-password`;
+  const token = useSelector((state) => state.auth.token);
+  const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -43,13 +50,51 @@ function AdminUserChangePassword({setFormType}) {
       setPasswordMatchError(false);
     }
   };
-
+  const validateForm = () => {
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match!");
+      return false;
+    }
+   
+    return true;
+  };
   
-  const handleSuccessful = () => {
-    setSucessState(true);
+  const handleSuccessful = async () => {
+    if (!validateForm()) {
+      return;
+    }
+    setLoading(true);
+    const body = {
+      email: userEmail,
+     password : password,
+     confirmPassword : confirmPassword
+
+    };
+ 
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const result = await response.json();
+      setLoading(false)
+    console.log(result)
+   
+      setSucessState(true);
+    } catch (error) {
+      console.error("error", error);
+    }
   };
   const handleContinue = () => {
-    navigate("/adminUser-dashboard");
+    navigate("/");
   };
 
   
@@ -99,7 +144,9 @@ function AdminUserChangePassword({setFormType}) {
             {/* {passwordMatchError && <p className="error-message">Passwords do not match</p>} */}
           </div>
           <div className="auth-button mt-10" onClick={handleSuccessful}>
-            <div className="auth-button-text">Continue</div>
+          <div className="auth-button-text">
+          {loading ? <Loader className="animate-spin" /> : 'Continue'}
+        </div>
           </div>
          
         </>

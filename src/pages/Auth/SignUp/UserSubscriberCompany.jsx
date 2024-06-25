@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactFlagsSelect from "react-flags-select";
 import Select from "react-select";
 import { IoIosArrowRoundBack } from "react-icons/io";
@@ -9,7 +9,8 @@ import { toast } from "react-toastify";
 import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
 import { useDispatch } from "react-redux";
 import { sendData } from "@/hooks/usePostData";
-
+import { Loader } from 'lucide-react';
+import axios from "axios";
 function UserSubscriberCompany({ setFormType,userType,partnerType }) {
   const navigate = useNavigate();
   const url = `${baseUrl}v1/${userType}/company/auth/register`;
@@ -19,7 +20,8 @@ function UserSubscriberCompany({ setFormType,userType,partnerType }) {
   const [countryCode, setCountryCode] = useState("+234");
   const [countryCodeTwo, setCountryCodeTwo] = useState("+234");
   const [selectedTitle, setSelectedTitle] = useState(null);
-
+  const [titleOptions, setTitleOptions] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [selectedCustomFeature, setSelectedCustomFeature] = useState(null);
   const [formData, setFormData] = useState({
     companyName: "",
@@ -40,7 +42,22 @@ function UserSubscriberCompany({ setFormType,userType,partnerType }) {
     email: "",
     nin: "",
   });
+  useEffect(() => {
+    const fetchTitles = async () => {
+        try {
+            const url = `${baseUrl}public-registry/personal-details/title?status=Active`;
+            const response = await axios.get(url);
+            const activeTitles = response.data
+                .filter(item => item.status === 'Active')
+                .map(item => ({ value: item.title, label: item.title }));
+            setTitleOptions(activeTitles);
+        } catch (error) {
+            toast.error('Error fetching titles');
+        }
+    };
 
+    fetchTitles();
+}, [baseUrl]);
   const handleCountryChange = (selectedCountry) => {
     setSelectedCountry(selectedCountry);
     const countryCodes = {
@@ -208,14 +225,14 @@ function UserSubscriberCompany({ setFormType,userType,partnerType }) {
       firstName: formData.firstName,
       phoneNumber: `${countryCodeTwo}${formData.phoneNumber}`,
       email: formData.email,
-      nin: formData.nin,
+      nin: parseInt(formData.nin),
       companyEmail: formData.companyEmail,
       shortName: formData.shortName,
       companyName: formData.companyName,
       companyPhone: `${countryCode}${formData.companyPhone}`,
       customFeature: selectedCustomFeature.value,
       referalCode: formData.referalCode,
-      role:formData.role.value,
+      companyRole:formData.role.value,
     };
     if (partnerType) {
       body.partnerType = partnerType;
@@ -225,8 +242,9 @@ function UserSubscriberCompany({ setFormType,userType,partnerType }) {
         url: url,
         body: body,
         title: "Subscriber company created",
+        setLoading: setLoading 
       });
-   dispatch(setUserSubscriber(returnedData.newUser)) 
+      dispatch(setUserSubscriber(returnedData.newUser));
       setFormType("company-create-password");
     } catch (error) {
       toast.error(`Error: ${error.message}`);
@@ -238,10 +256,17 @@ function UserSubscriberCompany({ setFormType,userType,partnerType }) {
   };
 
   const customStyles = {
+  
+    container: (provided) => ({
+      ...provided,
+      
+      width:"100%",
+    }),
     control: (provided) => ({
       ...provided,
       minHeight: "48px",
       height: "48px",
+      width:"100%",
     }),
   };
 
@@ -372,16 +397,12 @@ function UserSubscriberCompany({ setFormType,userType,partnerType }) {
             Title <span className="auth-mandatory">*</span>
           </div>
           <Select
-            value={selectedTitle}
-            placeholder="Select Title"
-            onChange={(selectedOption) => setSelectedTitle(selectedOption)}
-            options={[
-              { value: "Mr", label: "Mr" },
-              { value: "Mrs", label: "Mrs" },
-              { value: "Miss", label: "Miss" },
-            ]}
-            styles={customStyles}
-          />
+                    value={selectedTitle}
+                    placeholder="Select Title"
+                    onChange={(selectedOption) => setSelectedTitle(selectedOption)}
+                    options={titleOptions}
+                    styles={customStyles}
+                />
         </div>
         <div className="flex flex-col gap-2 w-full">
           <div className="auth-label">
@@ -541,7 +562,10 @@ function UserSubscriberCompany({ setFormType,userType,partnerType }) {
       </div>
 
       <div className="auth-button mt-10" onClick={handleContinue}>
-        <div className="auth-button-text">Save & Continue</div>
+   
+        <div className="auth-button-text">
+          {loading ? <Loader className="animate-spin" /> : 'Save & Continue'}
+        </div>
       </div>
 
       <div

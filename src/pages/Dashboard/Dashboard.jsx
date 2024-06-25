@@ -1,4 +1,5 @@
 import { Earth, Minus, Plus } from "lucide-react";
+import { MdDashboard } from "react-icons/md";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -42,9 +43,9 @@ const Dashboard = () => {
               <div className="w-full flex items-center justify-between">
                 <div className="w-auto flex items-center space-x-2">
                   {isOpen ? (
-                    <Earth color="#0B6ED0" size={15} />
+                    <MdDashboard  color="#0B6ED0" size={15} />
                   ) : (
-                    <Earth color="#000" size={15} />
+                    <MdDashboard  color="#000" size={15} />
                   )}
 
                   <div>

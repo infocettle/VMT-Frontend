@@ -8,15 +8,15 @@ import { Loader } from 'lucide-react';
 import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
 function UserLogin({ setFormType ,setUserEmail}) {
   const url = `${baseUrl}v1/auth/login`;
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   useEffect(() => {
     setUserEmail(email);
-   }, [email])
-   
+  }, [email]);
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -96,7 +96,10 @@ function UserLogin({ setFormType ,setUserEmail}) {
       <div className="auth-form-flex">
         <div className="flex flex-col gap-2 w-full">
           <div className="auth-label mt-1">Password</div>
-          <div className="password-input-container" style={{ marginTop: "0px" }}>
+          <div
+            className="password-input-container"
+            style={{ marginTop: "0px" }}
+          >
             <input
               type={showPassword ? "text" : "password"}
               placeholder="6+ Characters"
@@ -119,7 +122,10 @@ function UserLogin({ setFormType ,setUserEmail}) {
           <input type="checkbox" />
           <div className="subscription-terms-text">Remember me</div>
         </div>
-        <div className="subscription-terms-text cursor-pointer" onClick={handleReset}>
+        <div
+          className="subscription-terms-text cursor-pointer"
+          onClick={handleReset}
+        >
           <span>Forgot your password?</span>
         </div>
       </div>

@@ -112,6 +112,7 @@ console.log(url,"url");
                   cursor: "pointer",
                 }}
                 className="large_screen"
+                
               />
 
               <div

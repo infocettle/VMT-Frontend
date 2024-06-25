@@ -5,10 +5,22 @@ import { Button } from "@/components/ui/button";
 import { UserRound } from "lucide-react";
 import { baseUrl } from "@/App";
 import useEditData from "@/hooks/useEditHook";
+import useFetchData from "@/hooks/useFetchData";
 
 const UpdateProfile = ({ setUpdateNow }) => {
-  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/basic-details/6667055a1354098b7d372d3f`;
   // const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/basic-details/${id}`
+
+  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/basic-details/6667055a1354098b7d372d3f`;
+
+  const { data, isFetching } = useFetchData(
+    indiSubBasicUrl,
+    "individualScubscriberBasicDetails"
+  );
+
+  // if (isFetching) {
+  //   return <span>Loading...</span>;
+  // }
+
   const {
     register,
     handleSubmit,
@@ -107,7 +119,9 @@ const UpdateProfile = ({ setUpdateNow }) => {
                 {...register("firstname")}
                 type="text"
                 placeholder="Enter Firstname"
-                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+                disabled={true}
+                value={data.firstName}
+                className="mt-1 px-3 w-full h-9 bg-slate-500 border border-gray-300 rounded-md shadow-sm cursor-not-allowed"
               />
               {errors.firstname && (
                 <p className="text-red-600 text-sm">
@@ -124,7 +138,9 @@ const UpdateProfile = ({ setUpdateNow }) => {
                 {...register("surname")}
                 type="text"
                 placeholder="Enter Surname"
-                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+                disabled={true}
+                value={data.surname}
+                className="mt-1 px-3 w-full h-9 bg-slate-500 border border-gray-300 rounded-md shadow-sm cursor-not-allowed"
               />
               {errors.surname && (
                 <p className="text-red-600 text-sm">{errors.surname.message}</p>
@@ -198,7 +214,9 @@ const UpdateProfile = ({ setUpdateNow }) => {
                 {...register("nin")}
                 type="text"
                 placeholder="Enter NIN"
-                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+                value={data.nin}
+                disabled
+                className="mt-1 px-3 w-full h-9 bg-slate-500 border border-gray-300 rounded-md shadow-sm cursor-not-allowed"
               />
               {errors.nin && (
                 <p className="text-red-600 text-sm">{errors.nin.message}</p>

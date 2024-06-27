@@ -7,7 +7,9 @@ import Logo from "../../../assets/img/Logo.svg";
 import { FaRegBell } from "react-icons/fa";
 import { MdOutlineSettings } from "react-icons/md";
 import Avatar from "../../../assets/img/Avatar.svg";
+import { useSelector } from "react-redux";
 function Subscription() {
+  const userData = useSelector((state) => state.auth.user);
   const [subscriptionType, setSubscriptionType] =
     useState("first-subscription");
   const handleSubmit = () => {
@@ -36,12 +38,13 @@ function Subscription() {
                     fontSize: "2rem",
                     color: "#666687",
                     marginRight: "0.5rem",
+                    className:"d-none"
                   }}/>
                 <div className=" w-full flex items-center gap-2  ">
                   <img src={Avatar} alt="image" />
                  
                   <p style={{ fontSize: "14px", color: "#666687" }}>
-                    VMT ADMIN
+                 {userData.firstName.toUpperCase()} {userData.surname.toUpperCase()}
                   </p>
                 </div>
               </div>
@@ -52,6 +55,7 @@ function Subscription() {
           <SubscriptionSubscriber
             setSubscriptionType={setSubscriptionType}
             onSubmit={handleSubmit}
+            userData={userData}
           />
         )}
         {subscriptionType === "subscription-investor" && (

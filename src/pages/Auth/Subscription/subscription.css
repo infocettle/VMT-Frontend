@@ -55,7 +55,7 @@ color: #181826;
 .sub-form-header-key{
 
     font-family: Open Sans;
-    font-size: 1.2vw;
+    font-size: 16px;
     font-weight: 600;
     line-height: 20px;
     text-align: left;
@@ -181,11 +181,24 @@ color:  #0B6ED0;
         width: 92%;
     }
     .sub-form-header-grid{
-        grid-template-columns: 100px 1fr;
+    overflow: scroll;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    width: 500px;
+    gap: 15px;
+    }
+    .sub-form-header-grid-one{
+        grid-template-columns: 123px 1fr;
+        grid-template-rows: auto;
     }
    .table-container th{  text-align: left;
-    padding: 20px !important;}
+    padding-right: 20px !important;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;}
    .table-container td{  text-align: left;
-    padding: 20px !important;}
-   
+    padding-right: 20px !important;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;}
+   .sub-form-header-key{
+    font-size: 12px;
+   }
    }

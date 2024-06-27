@@ -53,7 +53,7 @@ const Table = ({ setTotalAmountPayable }) => {
           <tr className="table-rule">
             <td>Standard Plan</td>
             <td align="center"  >
-              <div className="border-gray-400 border bg-gray-100  w-full">
+              <div className="border-gray-400 border bg-gray-100  w-full flex justify-center items-center">
                   1
               </div>
             </td>
@@ -147,7 +147,7 @@ const Table = ({ setTotalAmountPayable }) => {
               </label>
             </td>
             <td  align="center">
-            <div className="border-gray-400 border bg-gray-100  w-full">
+            <div className="border-gray-400 border bg-gray-100  w-full flex justify-center items-center">
                   0
               </div>
             </td>
@@ -168,7 +168,7 @@ const Table = ({ setTotalAmountPayable }) => {
               </label>
             </td>
             <td  align="center">
-            <div className="border-gray-400 border bg-gray-100  w-full">
+            <div className="border-gray-400 border bg-gray-100  w-full flex justify-center items-center">
                   0
               </div>
             </td>
@@ -189,7 +189,7 @@ const Table = ({ setTotalAmountPayable }) => {
               </label>
             </td>
             <td align="center">
-            <div className="border-gray-400 border bg-gray-100  w-full">
+            <div className="border-gray-400 border bg-gray-100  w-full flex justify-center items-center">
                   0
               </div>
             </td>

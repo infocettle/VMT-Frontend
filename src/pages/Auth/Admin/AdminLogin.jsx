@@ -59,7 +59,7 @@ const dispatch = useDispatch()
               title:"Admin User Logged in",
               setLoading: setLoading 
             });
-            dispatch(setUserSubscriber(returnedUser.user));
+            dispatch(setUserSubscriber(returnedUser.admin));
             navigate('/')
         } catch (error) {
           console.error("error", error);

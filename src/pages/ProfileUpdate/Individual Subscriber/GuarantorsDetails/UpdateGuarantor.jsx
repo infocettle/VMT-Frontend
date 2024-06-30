@@ -67,26 +67,26 @@ const UpdateGuarantor = ({ setUpdateNow, selectedGuarantor }) => {
     if (selectedGuarantor === "second") {
       console.log(data, selectedGuarantor);
 
-      formData.append("firstGuarantorMiddlename", data.middlename);
-      formData.append("firstGuarantorSurname", data.surname);
-      formData.append("firstGuarantorFirstname", data.firstname);
-      formData.append("firstGuarantorTitle", data.title);
-      formData.append("firstGuarantorNin", data.nin);
-      formData.append("firstGuarantorMaidenname", data.maidenName);
-      formData.append("firstGuarantorGender", data.gender);
-      formData.append("firstGuarantorDateofbirth", data.dateOfBirth);
-      formData.append("firstGuarantorMaritalstatus", data.maritalStatus);
-      formData.append("firstGuarantorCountry", data.country);
-      formData.append("firstGuarantorState", data.state);
-      formData.append("firstGuarantorlocalGoverment", data.lga);
-      formData.append("firstGuarantorWard", data.ward);
-      formData.append("firstGuarantorRelationship", data.relationship);
+      formData.append("secondGuarantorMiddlename", data.middlename);
+      formData.append("secondGuarantorSurname", data.surname);
+      formData.append("secondGuarantorFirstname", data.firstname);
+      formData.append("secondGuarantorTitle", data.title);
+      formData.append("secondGuarantorNin", data.nin);
+      formData.append("secondGuarantorMaidenname", data.maidenName);
+      formData.append("secondGuarantorGender", data.gender);
+      formData.append("secondGuarantorDateofbirth", data.dateOfBirth);
+      formData.append("secondGuarantorMaritalstatus", data.maritalStatus);
+      formData.append("secondGuarantorCountry", data.country);
+      formData.append("secondGuarantorState", data.state);
+      formData.append("secondGuarantorlocalGoverment", data.lga);
+      formData.append("secondGuarantorWard", data.ward);
+      formData.append("secondGuarantorRelationship", data.relationship);
       formData.append(
-        "firstGuarantorDurationOfRelationship",
+        "secondGuarantorDurationOfRelationship",
         data.relationshipYears
       );
       if (data.picture[0]) {
-        formData.append("firstGuarantorPhoto", data.picture[0]);
+        formData.append("secondGuarantorPhoto", data.picture[0]);
       }
     }
 

@@ -37,8 +37,8 @@ const IndividualSubscriberProfile = () => {
 
   const [name, setName] = useState("Basic Details");
   const [updateNow, setUpdateNow] = useState(false);
-  const [selectedReferee, setSelectedReferee] = useState(null);
-  const [selectedGuarantor, setSelectedGuarantor] = useState(null);
+  const [selectedReferee, setSelectedReferee] = useState("first");
+  const [selectedGuarantor, setSelectedGuarantor] = useState("first");
   const [type, setType] = useState("individual subscriber");
   const [progress, setProgress] = useState(0);
 

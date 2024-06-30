@@ -67,26 +67,26 @@ const UpdateReferee = ({ setUpdateNow, selectedReferee }) => {
     if (selectedReferee === "second") {
       console.log(data, selectedReferee);
 
-      formData.append("firstRefreeMiddlename", data.middlename);
-      formData.append("firstRefreeSurname", data.surname);
-      formData.append("firstRefreeFirstname", data.firstname);
-      formData.append("firstRefreeTitle", data.title);
-      formData.append("firstRefreeNin", data.nin);
-      formData.append("firstRefreeMaidenname", data.maidenName);
-      formData.append("firstRefreeGender", data.gender);
-      formData.append("firstRefreeDateofbirth", data.dateOfBirth);
-      formData.append("firstRefreeMaritalstatus", data.maritalStatus);
-      formData.append("firstRefreeCountry", data.country);
-      formData.append("firstRefreeState", data.state);
-      formData.append("firstRefreelocalGoverment", data.lga);
-      formData.append("firstRefreeWard", data.ward);
-      formData.append("firstRefreeRelationship", data.relationship);
+      formData.append("secondRefreeMiddlename", data.middlename);
+      formData.append("secondRefreeSurname", data.surname);
+      formData.append("secondRefreeFirstname", data.firstname);
+      formData.append("secondRefreeTitle", data.title);
+      formData.append("secondRefreeNin", data.nin);
+      formData.append("secondRefreeMaidenname", data.maidenName);
+      formData.append("secondRefreeGender", data.gender);
+      formData.append("secondRefreeDateofbirth", data.dateOfBirth);
+      formData.append("secondRefreeMaritalstatus", data.maritalStatus);
+      formData.append("secondRefreeCountry", data.country);
+      formData.append("secondRefreeState", data.state);
+      formData.append("secondRefreelocalGoverment", data.lga);
+      formData.append("secondRefreeWard", data.ward);
+      formData.append("secondRefreeRelationship", data.relationship);
       formData.append(
-        "firstRefreeDurationOfRelationship",
+        "secondRefreeDurationOfRelationship",
         data.relationshipYears
       );
       if (data.picture[0]) {
-        formData.append("firstRefreePhoto", data.picture[0]);
+        formData.append("secondRefreePhoto", data.picture[0]);
       }
     }
 

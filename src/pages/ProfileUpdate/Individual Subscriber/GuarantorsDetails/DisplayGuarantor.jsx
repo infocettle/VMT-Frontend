@@ -22,6 +22,8 @@ const DisplayGuarantor = ({
     "individualScubscriberGuarantorDetails"
   );
 
+  // console.log(data);
+
   const GUARANTOR_DETAILS = [
     { id: 1, name: "Title", value: data?.firstGuarantorTitle },
     { id: 2, name: "Surname", value: data?.firstGuarantorSurname },
@@ -43,7 +45,7 @@ const DisplayGuarantor = ({
     {
       id: 8,
       name: "Date of Birth",
-      value: data?.firstGuarantorDateofbirth.split("T")[0],
+      value: data?.firstGuarantorDateofbirth?.split("T")[0],
     },
     { id: 9, name: "Email Address", value: data?.firstGuarantorEmail },
     { id: 10, name: "Phone number", value: data?.firstGuarantorPhone },
@@ -59,23 +61,47 @@ const DisplayGuarantor = ({
   ];
 
   const GUARANTOR_DETAILS_2 = [
-    { id: 1, name: "Title", value: "" },
-    { id: 2, name: "Surname", value: "" },
-    { id: 3, name: "Firstname", value: "" },
-    { id: 4, name: "Middle/Other name", value: "" },
-    { id: 5, name: "Maiden/Former name", value: "" },
-    { id: 17, name: "Relationship", value: "" },
-    { id: 16, name: "Duration of relationship", value: "" },
-    { id: 6, name: "Gender", value: "" },
-    { id: 7, name: "Marital Status", value: "" },
-    { id: 8, name: "Date of Birth", value: "" },
-    { id: 9, name: "Email Address", value: "" },
-    { id: 10, name: "Phone number", value: "" },
-    { id: 15, name: "Relationship", value: "" },
-    { id: 11, name: "NIN", value: "" },
-    { id: 12, name: "Country", value: "" },
-    { id: 13, name: "State", value: "" },
-    { id: 14, name: "Local Government Area", value: "" },
+    { id: 1, name: "Title", value: data?.secondGuarantorTitle },
+    { id: 2, name: "Surname", value: data?.secondGuarantorSurname },
+    { id: 3, name: "Firstname", value: data?.secondGuarantorFirstname },
+    {
+      id: 4,
+      name: "Middle/Other name",
+      value: data?.secondGuarantorMiddlename,
+    },
+    {
+      id: 5,
+      name: "Maiden/Former name",
+      value: data?.secondGuarantorMaidenname,
+    },
+    { id: 17, name: "Relationship", value: data?.secondGuarantorRelationship },
+    {
+      id: 16,
+      name: "Duration of relationship",
+      value: data?.secondGuarantorDurationOfRelationship,
+    },
+    { id: 6, name: "Gender", value: data?.secondGuarantorGender },
+    {
+      id: 7,
+      name: "Marital Status",
+      value: data?.secondGuarantorMaritalstatus,
+    },
+    {
+      id: 8,
+      name: "Date of Birth",
+      value: data?.secondGuarantorDateofbirth?.split("T")[0],
+    },
+    { id: 9, name: "Email Address", value: data?.secondGuarantorEmail },
+    { id: 10, name: "Phone number", value: data?.secondGuarantorPhone },
+    { id: 15, name: "Ward", value: data?.secondGuarantorWard },
+    { id: 11, name: "NIN", value: data?.secondGuarantorNin },
+    { id: 12, name: "Country", value: data?.secondGuarantorCountry },
+    { id: 13, name: "State", value: data?.secondGuarantorState },
+    {
+      id: 14,
+      name: "Local Government Area",
+      value: data?.secondGuarantorlocalGoverment,
+    },
   ];
 
   if (isFetching) {
@@ -128,7 +154,7 @@ const DisplayGuarantor = ({
           </div>
 
           <div className="w-60 h-40 bg-white rounded-lg border-vmtpurple border-2 flex justify-center items-center self-start m-5">
-            <img src={data.firstGuarantorPhoto} alt="relative-photo" />
+            <img src={data?.firstGuarantorPhoto} alt="guarantor-photo" />
           </div>
         </div>
 
@@ -161,7 +187,7 @@ const DisplayGuarantor = ({
           </div>
 
           <div className="w-60 h-40 bg-white rounded-lg border-vmtpurple border-2 flex justify-center items-center self-start m-5">
-            <img src={data.firstGuarantorPhoto} alt="relative-photo" />
+            <img src={data?.secondGuarantorPhoto} alt="guarantor-photo" />
           </div>
         </div>
       </div>

@@ -30,6 +30,7 @@ const Title = () => {
   const titleUrl = `${baseUrl}public-registry/personal-details/title`;
 
   const { data, isPending } = useFetchData(titleUrl, "title");
+
   const postMutation = usePostData({
     queryKey: ["title"],
     url: titleUrl,

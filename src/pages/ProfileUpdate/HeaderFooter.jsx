@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 const HeaderFooter = ({ children }) => {
   const userData = useSelector((state) => state.auth.user);
   // console.log(userData);
+
   return (
     <div className="w-full flex items-center">
       <div className="w-full flex flex-col items-center">

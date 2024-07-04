@@ -87,19 +87,19 @@ const IndividualSubscriberProfile = () => {
                     </div>
                   ) : (
                     <div className="w-40 h-40 bg-white rounded-lg border-vmtpurple border-2 flex justify-center items-center self-start m-5">
-                      <img src={data.individualPhoto} alt="profile-photo" />
+                      <img src={data?.individualPhoto} alt="profile-photo" />
                     </div>
                   )}
 
                   <div className="flex flex-col w-auto items-start space-y-2">
                     <h2 className="text-black font-semibold text-xl leading-relaxed">
-                      {userData.surname} {userData.firstName}
+                      {userData?.surname} {userData?.firstName}
                     </h2>
                     <div className="flex w-auto space-x-2 items-center">
                       <div className="bg-black h-6 w-6 rounded-sm flex justify-center items-center">
                         <MailIcon color="#fff" />
                       </div>
-                      <h3 className="text-[#666687]">{userData.email}</h3>
+                      <h3 className="text-[#666687]">{userData?.email}</h3>
                     </div>
                     <div className="flex w-auto space-x-2 items-center">
                       <div className="bg-black h-6 w-6 rounded-sm flex justify-center items-center">

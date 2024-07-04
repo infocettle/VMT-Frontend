@@ -36,7 +36,7 @@ const IndividualSubscriberProfile = () => {
   const userData = useSelector((state) => state.auth.user);
 
   const [name, setName] = useState("Basic Details");
-  const [updateNow, setUpdateNow] = useState(false);
+  const [updateNow, setUpdateNow] = useState(true);
   const [selectedReferee, setSelectedReferee] = useState("first");
   const [selectedGuarantor, setSelectedGuarantor] = useState("first");
   const [type, setType] = useState("individual subscriber");

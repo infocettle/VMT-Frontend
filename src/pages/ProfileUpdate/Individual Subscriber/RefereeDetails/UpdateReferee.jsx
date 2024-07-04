@@ -29,6 +29,36 @@ const UpdateReferee = ({ setUpdateNow, selectedReferee }) => {
     "individualScubscriberRefereeDetails"
   );
 
+  const titleUrl = `${baseUrl}public-registry/personal-details/title`;
+  const { data: titleData } = useFetchData(titleUrl, "title");
+  const genderUrl = `${baseUrl}public-registry/personal-details/gender`;
+  const { data: genderData } = useFetchData(genderUrl, "gender");
+  const maritalStatusUrl = `${baseUrl}public-registry/personal-details/marital-status`;
+  const { data: maritalData } = useFetchData(maritalStatusUrl, "maritalStatus");
+  const countryUrl = `${baseUrl}public-registry/address/country`;
+  const { data: countryData } = useFetchData(countryUrl, "country");
+  const wardUrl = `${baseUrl}public-registry/address/ward`;
+  const { data: wardData } = useFetchData(wardUrl, "ward");
+  const stateUrl = `${baseUrl}public-registry/address/state`;
+  const { data: stateData } = useFetchData(stateUrl, "state");
+  const lgaUrl = `${baseUrl}public-registry/address/lga`;
+  const { data: stateLga } = useFetchData(lgaUrl, "lga");
+  const relationshipUrl = `${baseUrl}public-registry/personal-details/relationship`;
+  const { data: relationshipData } = useFetchData(
+    relationshipUrl,
+    "relationship"
+  );
+  const activeTitles = titleData?.filter((item) => item.status === "Active");
+  const activeGenders = genderData?.filter((item) => item.status === "Active");
+  const activeMarital = maritalData?.filter((item) => item.status === "Active");
+  const activeCountry = countryData?.filter((item) => item.status === "Active");
+  const activeWard = wardData?.filter((item) => item.status === "Active");
+  const activeState = stateData?.filter((item) => item.status === "Active");
+  const activeLga = stateLga?.filter((item) => item.status === "Active");
+  const activeRelation = relationshipData?.filter(
+    (item) => item.status === "Active"
+  );
+
   const editMutation = useEditData({
     queryKey: ["individualScubscriberRefereeDetails"],
     url: indiSubBasicUrl,
@@ -116,9 +146,11 @@ const UpdateReferee = ({ setUpdateNow, selectedReferee }) => {
                 className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
               >
                 <option value="">Select Title</option>
-                <option value="mr">Mr</option>
-                <option value="mrs">Mrs</option>
-                <option value="ms">Ms</option>
+                {activeTitles?.map((item) => (
+                  <option value={item.title.toLowerCase()}>
+                    {item.title.toUpperCase()}
+                  </option>
+                ))}
               </select>
               {errors.title && (
                 <p className="text-red-600 text-sm">{errors.title.message}</p>
@@ -230,46 +262,64 @@ const UpdateReferee = ({ setUpdateNow, selectedReferee }) => {
                 <p className="text-red-600 text-sm">{errors.nin.message}</p>
               )}
             </div>
+
             <div className="col-span-3 md:col-span-1 my-3">
               <label className="block text-sm font-medium text-gray-700">
                 Country<span className="text-red-600">*</span>
               </label>
-              <input
+              <select
                 {...register("country")}
-                type="text"
-                placeholder="Enter Country"
-                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-              />
+                className="mt-1 px-3 w-full h-9 bg-slate-x100 border border-gray-300 rounded-md shadow-sm"
+              >
+                <option value="">Select country</option>
+                {activeCountry?.map((item) => (
+                  <option value={item?.name?.toLowerCase()}>
+                    {item?.name?.toUpperCase()}
+                  </option>
+                ))}
+              </select>
               {errors.country && (
                 <p className="text-red-600 text-sm">{errors.country.message}</p>
               )}
             </div>
+
             <div className="col-span-3 md:col-span-1 my-3">
               <label className="block text-sm font-medium text-gray-700">
                 Relationship<span className="text-red-600">*</span>
               </label>
               <select
                 {...register("relationship")}
-                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+                className="mt-1 px-3 w-full h-9 bg-slate-x100 border border-gray-300 rounded-md shadow-sm"
               >
                 <option value="">Select Relationship</option>
-                <option value="spouse">Spouse</option>
-                <option value="child">Child</option>
-                <option value="parent">Parent</option>
-                <option value="sibling">Sibling</option>
-                <option value="other">Other</option>
+                {activeRelation?.map((item) => (
+                  <option value={item?.relationship?.toLowerCase()}>
+                    {item?.relationship?.toUpperCase()}
+                  </option>
+                ))}
               </select>
+              {errors.relationship && (
+                <p className="text-red-600 text-sm">
+                  {errors.relationship.message}
+                </p>
+              )}
             </div>
+
             <div className="col-span-3 md:col-span-1 my-3">
               <label className="block text-sm font-medium text-gray-700">
                 Ward<span className="text-red-600">*</span>
               </label>
-              <input
+              <select
                 {...register("ward")}
-                type="text"
-                placeholder="Enter Ward"
                 className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-              />
+              >
+                <option value="">Select Ward</option>
+                {activeWard?.map((item) => (
+                  <option value={item?.name?.toLowerCase()}>
+                    {item?.name?.toUpperCase()}
+                  </option>
+                ))}
+              </select>
               {errors.ward && (
                 <p className="text-red-600 text-sm">{errors.ward.message}</p>
               )}
@@ -286,14 +336,17 @@ const UpdateReferee = ({ setUpdateNow, selectedReferee }) => {
                 className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
               >
                 <option value="">Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
+                {activeGenders?.map((item) => (
+                  <option value={item?.gender?.toLowerCase()}>
+                    {item?.gender?.toUpperCase()}
+                  </option>
+                ))}
               </select>
               {errors.gender && (
                 <p className="text-red-600 text-sm">{errors.gender.message}</p>
               )}
             </div>
+
             <div className="col-span-3 md:col-span-1 my-3">
               <label className="block text-sm font-medium text-gray-700">
                 Date of birth<span className="text-red-600">*</span>
@@ -318,11 +371,12 @@ const UpdateReferee = ({ setUpdateNow, selectedReferee }) => {
                 {...register("maritalStatus")}
                 className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
               >
-                <option value="">Select Marital Status</option>
-                <option value="single">Single</option>
-                <option value="married">Married</option>
-                <option value="divorced">Divorced</option>
-                <option value="widowed">Widowed</option>
+                <option value="">Select marital status</option>
+                {activeMarital?.map((item) => (
+                  <option value={item?.maritalStatus?.toLowerCase()}>
+                    {item?.maritalStatus?.toUpperCase()}
+                  </option>
+                ))}
               </select>
               {errors.maritalStatus && (
                 <p className="text-red-600 text-sm">
@@ -335,16 +389,22 @@ const UpdateReferee = ({ setUpdateNow, selectedReferee }) => {
               <label className="block text-sm font-medium text-gray-700">
                 State<span className="text-red-600">*</span>
               </label>
-              <input
+              <select
                 {...register("state")}
-                type="text"
-                placeholder="Enter State"
                 className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-              />
+              >
+                <option value="">Select State</option>
+                {activeState?.map((item) => (
+                  <option value={item?.name?.toLowerCase()}>
+                    {item?.name?.toUpperCase()}
+                  </option>
+                ))}
+              </select>
               {errors.state && (
                 <p className="text-red-600 text-sm">{errors.state.message}</p>
               )}
             </div>
+
             <div className="col-span-3 md:col-span-1 my-3">
               <label className="block text-sm font-medium text-gray-700">
                 Duration of Relationship&#91;Years&#93;
@@ -361,12 +421,17 @@ const UpdateReferee = ({ setUpdateNow, selectedReferee }) => {
               <label className="block text-sm font-medium text-gray-700">
                 LGA<span className="text-red-600">*</span>
               </label>
-              <input
+              <select
                 {...register("lga")}
-                type="text"
-                placeholder="Enter LGA"
                 className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-              />
+              >
+                <option value="">Select LGA</option>
+                {activeLga?.map((item) => (
+                  <option value={item?.name?.toLowerCase()}>
+                    {item?.name?.toUpperCase()}
+                  </option>
+                ))}
+              </select>
               {errors.lga && (
                 <p className="text-red-600 text-sm">{errors.lga.message}</p>
               )}

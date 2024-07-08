@@ -15,12 +15,14 @@ import {
   UpdateProfile,
   UpdateRepresentative,
 } from "..";
+import { useSelector } from "react-redux";
 
 const Profile = () => {
   const navigate = useNavigate();
+  const userData = useSelector((state) => state.auth.user);
 
   const [name, setName] = useState("Basic Details");
-  const [updateNow, setUpdateNow] = useState(false);
+  const [updateNow, setUpdateNow] = useState(true);
   const [type, setType] = useState("company partner");
   const [progress, setProgress] = useState(0);
 
@@ -54,19 +56,19 @@ const Profile = () => {
               >
                 <div className="flex flex-col w-auto items-start space-y-2">
                   <h2 className="text-black font-semibold text-xl leading-relaxed">
-                    XYZ & Co. Initiatives
+                    {userData.companyName}
                   </h2>
                   <div className="flex w-auto space-x-2 items-center">
                     <div className="bg-black h-6 w-6 rounded-sm flex justify-center items-center">
                       <MailIcon color="#fff" />
                     </div>
-                    <h3 className="text-[#666687]">xyz.co@email.com</h3>
+                    <h3 className="text-[#666687]">{userData.companyEmail}</h3>
                   </div>
                   <div className="flex w-auto space-x-2 items-center">
                     <div className="bg-black h-6 w-6 rounded-sm flex justify-center items-center">
                       <PhoneIcon color="#fff" />
                     </div>
-                    <h3 className="text-[#666687]">+234 801 234 5678</h3>
+                    <h3 className="text-[#666687]">{userData.companyPhone}</h3>
                   </div>
                   <div className="flex w-auto space-x-2 items-center">
                     <div className="bg-black h-6 w-6 rounded-sm flex justify-center items-center">

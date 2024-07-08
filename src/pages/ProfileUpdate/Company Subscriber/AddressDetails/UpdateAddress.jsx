@@ -31,6 +31,23 @@ const UpdateAddress = ({ setUpdateNow, type }) => {
   const companyPartnerUrl = `${baseUrl}v1/partner/company/profile/${userData._id}/address`;
   const individualPartnerUrl = `${baseUrl}v1/partner/individual/profile/address/${userData._id}`;
 
+  const countryUrl = `${baseUrl}public-registry/address/country`;
+  const { data: countryData } = useFetchData(countryUrl, "country");
+  const wardUrl = `${baseUrl}public-registry/address/ward`;
+  const { data: wardData } = useFetchData(wardUrl, "ward");
+  const stateUrl = `${baseUrl}public-registry/address/state`;
+  const { data: stateData } = useFetchData(stateUrl, "state");
+  const lgaUrl = `${baseUrl}public-registry/address/lga`;
+  const { data: lgaData } = useFetchData(lgaUrl, "lga");
+  const zoneUrl = `${baseUrl}public-registry/address/zone`;
+  const { data: zoneData } = useFetchData(zoneUrl, "zone");
+
+  const activeCountry = countryData?.filter((item) => item.status === "Active");
+  const activeWard = wardData?.filter((item) => item.status === "Active");
+  const activeState = stateData?.filter((item) => item.status === "Active");
+  const activeLga = lgaData?.filter((item) => item.status === "Active");
+  const activeZone = zoneData?.filter((item) => item.status === "Active");
+
   const { data, isFetching } = useFetchData(
     type === "individual subscriber"
       ? indiSubBasicUrl
@@ -302,73 +319,94 @@ const UpdateAddress = ({ setUpdateNow, type }) => {
             <label className="block text-sm font-medium text-gray-700">
               Zone<span className="text-red-600">*</span>
             </label>
-            <input
+            <select
               {...register("zone")}
-              type="text"
-              placeholder="Enter zone"
               className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-            />
+            >
+              <option value="">Select Zone</option>
+              {activeZone?.map((item) => (
+                <option value={item?.zone?.toLowerCase()}>
+                  {item?.zone?.toUpperCase()}
+                </option>
+              ))}
+            </select>
             {errors.zone && (
               <p className="text-red-600 text-sm">{errors.zone.message}</p>
             )}
           </div>
-          <div>
+          <div className="col-span-3 md:col-span-1 my-3">
             <label className="block text-sm font-medium text-gray-700">
               LGA<span className="text-red-600">*</span>
             </label>
-            <input
+            <select
               {...register("lga")}
-              type="text"
-              placeholder="Enter LGA"
-              value={data.localGoverment}
               className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-            />
+            >
+              <option value="">Select LGA</option>
+              {activeLga?.map((item) => (
+                <option value={item?.name?.toLowerCase()}>
+                  {item?.name?.toUpperCase()}
+                </option>
+              ))}
+            </select>
             {errors.lga && (
               <p className="text-red-600 text-sm">{errors.lga.message}</p>
             )}
           </div>
-          <div>
+          <div className="col-span-3 md:col-span-1 my-3">
             <label className="block text-sm font-medium text-gray-700">
               Country<span className="text-red-600">*</span>
             </label>
-            <input
+            <select
               {...register("country")}
-              type="text"
-              placeholder="Enter country"
-              value={data.country}
               className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-            />
+            >
+              <option value="">Select country</option>
+              {activeCountry?.map((item) => (
+                <option value={item?.name?.toLowerCase()}>
+                  {item?.name?.toUpperCase()}
+                </option>
+              ))}
+            </select>
             {errors.country && (
               <p className="text-red-600 text-sm">{errors.country.message}</p>
             )}
           </div>
 
-          <div>
+          <div className="col-span-3 md:col-span-1 my-3">
             <label className="block text-sm font-medium text-gray-700">
               State<span className="text-red-600">*</span>
             </label>
-            <input
+            <select
               {...register("state")}
-              type="text"
-              placeholder="Enter state"
-              value={data.state}
               className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-            />
+            >
+              <option value="">Select State</option>
+              {activeState?.map((item) => (
+                <option value={item?.name?.toLowerCase()}>
+                  {item?.name?.toUpperCase()}
+                </option>
+              ))}
+            </select>
             {errors.state && (
               <p className="text-red-600 text-sm">{errors.state.message}</p>
             )}
           </div>
-          <div>
+          <div className="col-span-3 md:col-span-1 my-3">
             <label className="block text-sm font-medium text-gray-700">
               Ward<span className="text-red-600">*</span>
             </label>
-            <input
+            <select
               {...register("ward")}
-              type="text"
-              placeholder="Enter ward"
-              value={data.ward}
               className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-            />
+            >
+              <option value="">Select Ward</option>
+              {activeWard?.map((item) => (
+                <option value={item?.name?.toLowerCase()}>
+                  {item?.name?.toUpperCase()}
+                </option>
+              ))}
+            </select>
             {errors.ward && (
               <p className="text-red-600 text-sm">{errors.ward.message}</p>
             )}

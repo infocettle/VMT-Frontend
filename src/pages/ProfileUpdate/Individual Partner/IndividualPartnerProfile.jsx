@@ -28,7 +28,7 @@ const IndividualPartnerProfile = () => {
   const userData = useSelector((state) => state.auth.user);
 
   const [name, setName] = useState("Basic Details");
-  const [updateNow, setUpdateNow] = useState(false);
+  const [updateNow, setUpdateNow] = useState(true);
   const [type, setType] = useState("individual partner");
   const [progress, setProgress] = useState(0);
 

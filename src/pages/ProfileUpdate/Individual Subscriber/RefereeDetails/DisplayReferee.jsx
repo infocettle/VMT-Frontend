@@ -40,7 +40,7 @@ const DisplayReferee = ({
     {
       id: 8,
       name: "Date of Birth",
-      value: data?.firstRefreeDateofbirth.split("T")[0],
+      value: data?.firstRefreeDateofbirth?.split("T")[0],
     },
     { id: 9, name: "Email Address", value: data?.firstRefreeEmail },
     { id: 10, name: "Phone number", value: data?.firstRefreePhone },
@@ -58,7 +58,7 @@ const DisplayReferee = ({
   const REFEREE_DETAILS_2 = [
     { id: 1, name: "Title", value: data?.secondRefreeTitle },
     { id: 2, name: "Surname", value: data?.secondRefreeSurname },
-    { id: 3, name: "Firstname", value: data?.firstRefreeFirstname },
+    { id: 3, name: "Firstname", value: data?.secondRefreeFirstname },
     { id: 4, name: "Middle/Other name", value: data?.secondRefreeMiddlename },
     { id: 5, name: "Maiden/Former name", value: data?.secondRefreeMaidenname },
     { id: 17, name: "Relationship", value: data?.secondRefreeRelationship },
@@ -130,10 +130,8 @@ const DisplayReferee = ({
             ))}
           </div>
 
-          <div className="w-60 h-40 bg-vmtpurple rounded-lg flex justify-center items-center self-start m-5">
-            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white">
-              <UserRound color="#000" />
-            </div>
+          <div className="w-60 h-40 bg-white rounded-lg border-vmtpurple border-2 flex justify-center items-center self-start m-5">
+            <img src={data.firstRefereePhoto} alt="referee-photo" />
           </div>
         </div>
 
@@ -165,10 +163,8 @@ const DisplayReferee = ({
             ))}
           </div>
 
-          <div className="w-60 h-40 bg-vmtpurple rounded-lg flex justify-center items-center self-start m-5">
-            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white">
-              <UserRound color="#000" />
-            </div>
+          <div className="w-60 h-40 bg-white rounded-lg border-vmtpurple border-2 flex justify-center items-center self-start m-5">
+            <img src={data.secondRefereePhoto} alt="referee-photo" />
           </div>
         </div>
       </div>

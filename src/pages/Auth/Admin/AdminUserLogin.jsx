@@ -2,7 +2,16 @@ import React, { useState } from "react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import Logo from "../../../assets/img/Logo.svg";
 import { useNavigate } from "react-router-dom";
-function AdminUserLogin({ setFormType }) {
+import { baseUrl } from "@/App";
+import { Loader } from 'lucide-react';
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { sendData } from "@/hooks/usePostData";
+import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
+function AdminUserLogin({ setFormType,setUserEmail }) {
+  const url = `${baseUrl}/user/admin/auth/login`;
+  const dispatch = useDispatch()
+  const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 const navigate = useNavigate()

@@ -48,7 +48,7 @@ import PerformanceDetails from "./pages/Dashboard/Perfomance";
 
 const queryClient = new QueryClient();
 
-export const baseUrl = "https://vmt-server.onrender.com/api/";
+export const baseUrl = "https://vmt-server.onrender.com/api/v1";
 
 const router = createBrowserRouter([
   {

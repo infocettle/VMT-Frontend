@@ -3,6 +3,9 @@ import { HiEye, HiEyeOff } from "react-icons/hi";
 import Logo from "../../../assets/img/Logo.svg";
 import { useNavigate } from "react-router-dom";
 function AdminLogin({ setFormType }) {
+  const url = `${baseUrl}/admin/auth/login`;
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 const navigate = useNavigate()

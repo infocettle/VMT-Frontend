@@ -111,7 +111,7 @@ const PensionFund = () => {
 
   return (
     <div className="w-full">
-      <SecondDiv module={"Financial Institutions"} />
+      <SecondDiv parentModule={"Public Registry"} module={"Financial Institutions"} />
       <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
         {/* Second header */}
 

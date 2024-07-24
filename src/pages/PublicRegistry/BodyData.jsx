@@ -109,7 +109,7 @@ const BodyData = () => {
 
   return (
     <div className="w-full">
-      <SecondDiv module={"Personal Details"} />
+      <SecondDiv parentModule={"Public Registry"} module={"Personal Details"} />
       <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
         {/* Second header */}
 

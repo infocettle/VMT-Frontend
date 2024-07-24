@@ -1,16 +1,58 @@
+import { baseUrl } from "@/App";
 import React, { useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import { toast } from "react-toastify";
+import { Loader } from 'lucide-react';
+import { useDispatch } from "react-redux";
+import { sendData } from "@/hooks/usePostData";
+import { setTokenSubscriber, setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
+function AdminUserVerifyLogin({ setFormType,userEmail }) {
+  const url = `${baseUrl}v1/auth/verify-login`;
+  const [otp, setOTP] = useState("");
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch()
 
-function AdminUserVerifyLogin({ setFormType }) {
-    const [password, setPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
 
   
    
+  const validateForm = () => {
+    if (!otp.trim()) {
+      toast.error("otp is required");
+      return false;
+    }
     
-  const handleContinue = () => {
-    setFormType("change-password");
+    return true;
   };
+ 
+ 
+  const handleContinue = async () => {
+    if (!validateForm()) {
+      return;
+    }
+    const body = {
+      email: userEmail,
+      otp: otp
+    };
+
+    try {
+      const returnedUser = await sendData({
+        url: url,
+        body: body,
+        title: "Login",
+        setLoading: setLoading 
+      });
+      console.log(returnedUser);
+      dispatch(setTokenSubscriber({
+        user: returnedUser.user,
+        token: returnedUser.token
+    }));
+      setFormType("change-password");
+
+    } catch (error) {
+      console.error("error", error);
+    }
+  };
+  
   const handleBack = () => {
     setFormType("admin-user-login");
   };
@@ -30,6 +72,8 @@ function AdminUserVerifyLogin({ setFormType }) {
             type="text"
             className="auth-input"
             placeholder="--- ---"
+            value={otp}
+            onChange={(e) => setOTP(e.target.value)}
           />
         </div>
       
@@ -38,7 +82,9 @@ function AdminUserVerifyLogin({ setFormType }) {
      
 
       <div className="auth-button mt-10" onClick={handleContinue}>
-        <div className="auth-button-text">Verify</div>
+      <div className="auth-button-text">
+          {loading ? <Loader className="animate-spin" /> : 'Verify'}
+        </div>
       </div>
     
 

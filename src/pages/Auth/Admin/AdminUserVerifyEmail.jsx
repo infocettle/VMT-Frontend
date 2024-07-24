@@ -1,16 +1,52 @@
 import React, { useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import Logo from "../../../assets/img/Logo.svg";
+import { baseUrl } from "@/App";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { sendData } from "@/hooks/usePostData";
 function AdminUserVerifyEmail({ setFormType }) {
-    const [password, setPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
+  const url = `${baseUrl}v1/user/admin/auth/verify-otp`;
+  const [loading, setLoading] = useState(false);
+  const [otp, setOTP] = useState("");
+  const dispatch = useDispatch()
 
   
-   
+  const validateForm = () => {
+    if (!otp.trim()) {
+      toast.error("otp is required");
+      return false;
+    }
     
-  const handleContinue = () => {
-    setFormType("admin-user-new-password");
+    return true;
   };
+ 
+    
+  const handleContinue = async () => {
+    if (!validateForm()) {
+      return;
+    }
+    const body = {
+      email: userEmail,
+      otp: otp
+    };
+
+    try {
+      const returnedUser = await sendData({
+        url: url,
+        body: body,
+        title: "Login",
+        setLoading: setLoading 
+      });
+      console.log(returnedUser);
+      dispatch(setUserSubscriber(returnedUser.newUser)) 
+      setFormType("admin-user-new-password");
+
+    } catch (error) {
+      console.error("error", error);
+    }
+  };
+
   const handleBack = () => {
     setFormType("admin-user-login");
   };
@@ -34,6 +70,8 @@ function AdminUserVerifyEmail({ setFormType }) {
             type="text"
             className="auth-input"
             placeholder="--- ---"
+            value={otp}
+            onChange={(e) => setOTP(e.target.value)}
           />
         </div>
       
@@ -42,7 +80,9 @@ function AdminUserVerifyEmail({ setFormType }) {
      
 
       <div className="auth-button mt-10" onClick={handleContinue}>
-        <div className="auth-button-text">Confirm</div>
+      <div className="auth-button-text">
+          {loading ? <Loader className="animate-spin" /> : 'Confirm'}
+        </div>
       </div>
     
 

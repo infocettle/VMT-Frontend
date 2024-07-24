@@ -2,10 +2,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const editData = async ({ url, body, title }) => {
+const editData = async ({ url, body, title, image }) => {
   const headers = {
     Accept: "application/json",
-    "Content-Type": "application/json",
+    "Content-Type": image ? "multipart/form-data" : "application/json",
   };
 
   try {
@@ -26,11 +26,11 @@ const editData = async ({ url, body, title }) => {
   }
 };
 
-const useEditData = ({ queryKey, url, title }) => {
+const useEditData = ({ queryKey, url, title, image }) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (body) => editData({ url, body, title }),
+    mutationFn: (body) => editData({ url, body, title, image }),
     onSuccess: () => {
       queryClient.invalidateQueries(queryKey);
     },

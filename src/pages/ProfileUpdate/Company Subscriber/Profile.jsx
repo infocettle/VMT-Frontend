@@ -1,22 +1,29 @@
 import { ArrowLeft, MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
-import HeaderFooter from "./HeaderFooter";
+import HeaderFooter from "../HeaderFooter";
 import { Progress } from "@/components/ui/progress";
 import { Outlet, useNavigate, Link } from "react-router-dom";
 import { COMPANY_SUBSCRIBER } from "@/texts/ProfileData";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import {
+  DisplayAddress,
+  DisplayOther,
   DisplayProfile,
   DisplayRepresentative,
+  UpdateAddress,
+  UpdateOther,
   UpdateProfile,
   UpdateRepresentative,
-} from ".";
+} from "..";
+import { useSelector } from "react-redux";
 
 const Profile = () => {
   const navigate = useNavigate();
+  const userData = useSelector((state) => state.auth.user);
 
   const [name, setName] = useState("Basic Details");
-  const [updateNow, setUpdateNow] = useState(false);
+  const [updateNow, setUpdateNow] = useState(true);
+  const [type, setType] = useState("company subscriber");
   const [progress, setProgress] = useState(0);
 
   return (
@@ -24,7 +31,10 @@ const Profile = () => {
       <HeaderFooter>
         <div className="bg-slate-100 w-full px-8 py-6 flex items-center">
           <div className="w-full flex flex-col space-y-5">
-            <div className="w-60 px-3 py-2 flex items-center space-x-2">
+            <div
+              className="w-60 px-3 py-2 flex items-center space-x-2"
+              onClick={() => navigate(-1)}
+            >
               <ArrowLeft color={"#666687"} size={20} />
 
               {updateNow ? (
@@ -32,10 +42,7 @@ const Profile = () => {
                   Update Information
                 </h3>
               ) : (
-                <h3
-                  className="text-vmtblue text-sm leading-relaxed cursor-pointer"
-                  onClick={() => navigate(-1)}
-                >
+                <h3 className="text-vmtblue text-sm leading-relaxed cursor-pointer">
                   Go back
                 </h3>
               )}
@@ -49,19 +56,19 @@ const Profile = () => {
               >
                 <div className="flex flex-col w-auto items-start space-y-2">
                   <h2 className="text-black font-semibold text-xl leading-relaxed">
-                    XYZ & Co. Initiatives
+                    {userData.companyName}
                   </h2>
                   <div className="flex w-auto space-x-2 items-center">
                     <div className="bg-black h-6 w-6 rounded-sm flex justify-center items-center">
                       <MailIcon color="#fff" />
                     </div>
-                    <h3 className="text-[#666687]">xyz.co@email.com</h3>
+                    <h3 className="text-[#666687]">{userData.companyEmail}</h3>
                   </div>
                   <div className="flex w-auto space-x-2 items-center">
                     <div className="bg-black h-6 w-6 rounded-sm flex justify-center items-center">
                       <PhoneIcon color="#fff" />
                     </div>
-                    <h3 className="text-[#666687]">+234 801 234 5678</h3>
+                    <h3 className="text-[#666687]">{userData.companyPhone}</h3>
                   </div>
                   <div className="flex w-auto space-x-2 items-center">
                     <div className="bg-black h-6 w-6 rounded-sm flex justify-center items-center">
@@ -96,7 +103,7 @@ const Profile = () => {
             )}
 
             {/* Second Div */}
-            <div className="mt-5 flex items-center space-x-8">
+            <div className="mt-5 flex items-start space-x-8">
               {/* Left Part */}
               <div className="bg-white rounded-lg w-48 h-[73vh] flex flex-col space-y-2 items-start ">
                 {COMPANY_SUBSCRIBER.map((detail) => (
@@ -129,27 +136,37 @@ const Profile = () => {
               {/* Right Part */}
               <div className="w-full bg-white rounded-lg">
                 {!updateNow && name == "Basic Details" && (
-                  <DisplayProfile
-                    setUpdateNow={setUpdateNow}
-                    setProgress={setProgress}
-                  />
+                  <DisplayProfile setUpdateNow={setUpdateNow} type={type} />
                 )}
                 {!updateNow && name == "Representative Details" && (
                   <DisplayRepresentative
                     setUpdateNow={setUpdateNow}
-                    setProgress={setProgress}
+                    type={type}
                   />
                 )}
-                {name == "Address" && <div>Address</div>}
-                {name == "Other" && <div> Other</div>}
+                {!updateNow && name == "Address Details" && (
+                  <DisplayAddress setUpdateNow={setUpdateNow} type={type} />
+                )}
+                {!updateNow && name == "Other Information" && (
+                  <DisplayOther setUpdateNow={setUpdateNow} type={type} />
+                )}
 
                 {/* Update components below */}
 
                 {updateNow && name == "Basic Details" && (
-                  <UpdateProfile setUpdateNow={setUpdateNow} />
+                  <UpdateProfile setUpdateNow={setUpdateNow} type={type} />
                 )}
                 {updateNow && name == "Representative Details" && (
-                  <UpdateRepresentative setUpdateNow={setUpdateNow} />
+                  <UpdateRepresentative
+                    setUpdateNow={setUpdateNow}
+                    type={type}
+                  />
+                )}
+                {updateNow && name == "Address Details" && (
+                  <UpdateAddress setUpdateNow={setUpdateNow} type={type} />
+                )}
+                {updateNow && name == "Other Information" && (
+                  <UpdateOther setUpdateNow={setUpdateNow} type={type} />
                 )}
               </div>
             </div>

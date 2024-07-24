@@ -18,11 +18,11 @@ import { ReusableTable } from "@/components/ReusableTable";
 import { GenericForm } from "@/components/GenericForm";
 import { FormInput } from "@/components/FormInput";
 import { stateFormSchema } from "@/utils/zodSchema";
-import { ReportLinks } from "@/components/ReportLinks";
+import { ReportLinks, handleExport } from "@/components/ReportLinks";
 import SecondHeader from "@/components/SecondHeader";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
-import {usePostData} from "@/hooks/usePostData";
+import { usePostData } from "@/hooks/usePostData";
 import { useState } from "react";
 import SecondDiv from "@/components/SecondDiv";
 
@@ -113,7 +113,14 @@ const State = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 {ReportLinks.map((link) => (
-                  <DropdownMenuItem key={link.id}>
+                  <DropdownMenuItem
+                    key={link.id}
+                    onClick={
+                      link.name == "Export"
+                        ? () => handleExport(data)
+                        : link.Click
+                    }
+                  >
                     <div className="w-auto px-2 flex items-center space-x-3">
                       {link.icon}
                       <h3 className="text-black font-normal text-xs leading-relaxed">
@@ -128,7 +135,7 @@ const State = () => {
         </div>
 
         {/* Table */}
-        <ReusableTable columns={stateColumns} data={data} />
+        <ReusableTable columns={stateColumns} data={data} tableName={"state"} />
       </div>
     </div>
   );

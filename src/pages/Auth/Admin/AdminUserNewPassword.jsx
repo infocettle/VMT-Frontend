@@ -3,7 +3,12 @@ import { HiEye, HiEyeOff } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import Logo from "../../../assets/img/Logo.svg";
-function AdminUserNewPassword({setFormType}) {
+import { useSelector } from "react-redux";
+import { baseUrl } from "@/App";
+function AdminUserNewPassword({setFormType,userEmail}) {
+  const url = `${baseUrl}v1/user/admin/auth/reset-password`;
+  const token = useSelector((state) => state.auth.token);
+  const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -43,9 +48,47 @@ function AdminUserNewPassword({setFormType}) {
     }
   };
 
-  
-  const handleSuccessful = () => {
-    setSucessState(true);
+  const validateForm = () => {
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match!");
+      return false;
+    }
+   
+    return true;
+  };
+  const handleSuccessful = async() => {
+    if (!validateForm()) {
+      return;
+    }
+    setLoading(true);
+    const body = {
+      email: userEmail,
+     password : password,
+     confirmPassword : confirmPassword
+
+    };
+ 
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const result = await response.json();
+      setLoading(false)
+    console.log(result)
+   
+      setSucessState(true);
+    } catch (error) {
+      console.error("error", error);
+    }
   };
   const handleContinue = () => {
     setFormType("admin-user-login");

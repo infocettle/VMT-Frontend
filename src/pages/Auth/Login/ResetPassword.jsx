@@ -3,9 +3,10 @@ import { sendData } from "@/hooks/usePostData";
 import React, { useEffect, useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { toast } from "react-toastify";
-
+import { Loader } from 'lucide-react';
 function ResetPassword({ setFormType,setUserEmail }) {
-  const url = `${baseUrl}v1/subscriber/individual/auth/forgot-password`;
+  const url = `${baseUrl}v1/auth/forgot-password`;
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -35,6 +36,7 @@ function ResetPassword({ setFormType,setUserEmail }) {
         url: url,
         body: body,
         title: "Verication code sent",
+        setLoading: setLoading 
       });
       setFormType("verify-email");
     } catch (error) {
@@ -63,7 +65,9 @@ function ResetPassword({ setFormType,setUserEmail }) {
       </div>
 
       <div className="auth-button mt-10" onClick={handleContinue}>
-        <div className="auth-button-text">Submit</div>
+      <div className="auth-button-text">
+          {loading ? <Loader className="animate-spin" /> : 'Submit'}
+        </div>
       </div>
 
       <div

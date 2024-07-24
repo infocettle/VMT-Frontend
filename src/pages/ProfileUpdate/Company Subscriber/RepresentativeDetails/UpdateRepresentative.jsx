@@ -2,11 +2,12 @@ import { companyRepresentativeFormSchema } from "@/utils/zodSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { usePostData } from "@/hooks/usePostData";
+import { baseUrl } from "@/App";
+import useEditData from "@/hooks/useEditHook";
 import { UserRound } from "lucide-react";
-import { FormInput } from "@/components/FormInput";
+import { useSelector } from "react-redux";
 
-const UpdateRepresentative = ({ setUpdateNow }) => {
+const UpdateRepresentative = ({ setUpdateNow, type }) => {
   const {
     register,
     handleSubmit,
@@ -17,10 +18,77 @@ const UpdateRepresentative = ({ setUpdateNow }) => {
     resolver: zodResolver(companyRepresentativeFormSchema),
   });
 
+  const userData = useSelector((state) => state.auth.user);
+
+  const companySubscriberUrl = `${baseUrl}v1/subscriber/company/profile/${userData._id}/representative-details`;
+  const companyPartnerUrl = `${baseUrl}v1/partner/company/profile/${userData._id}/representative-details`;
+
+  const titleUrl = `${baseUrl}public-registry/personal-details/title`;
+  const { data: titleData } = useFetchData(titleUrl, "title");
+  const genderUrl = `${baseUrl}public-registry/personal-details/gender`;
+  const { data: genderData } = useFetchData(genderUrl, "gender");
+  const maritalStatusUrl = `${baseUrl}public-registry/personal-details/marital-status`;
+  const { data: maritalData } = useFetchData(maritalStatusUrl, "maritalStatus");
+  const countryUrl = `${baseUrl}public-registry/address/country`;
+  const { data: countryData } = useFetchData(countryUrl, "country");
+  const wardUrl = `${baseUrl}public-registry/address/ward`;
+  const { data: wardData } = useFetchData(wardUrl, "ward");
+  const stateUrl = `${baseUrl}public-registry/address/state`;
+  const { data: stateData } = useFetchData(stateUrl, "state");
+  const lgaUrl = `${baseUrl}public-registry/address/lga`;
+  const { data: stateLga } = useFetchData(lgaUrl, "lga");
+  const { data: relationshipData } = useFetchData(
+    relationshipUrl,
+    "relationship"
+  );
+  const activeTitles = titleData?.filter((item) => item.status === "Active");
+  const activeGenders = genderData?.filter((item) => item.status === "Active");
+  const activeMarital = maritalData?.filter((item) => item.status === "Active");
+  const activeCountry = countryData?.filter((item) => item.status === "Active");
+  const activeWard = wardData?.filter((item) => item.status === "Active");
+  const activeState = stateData?.filter((item) => item.status === "Active");
+  const activeLga = stateLga?.filter((item) => item.status === "Active");
+  const activeRelation = relationshipData?.filter(
+    (item) => item.status === "Active"
+  );
+
   const fileRef = register("picture");
 
+  const editMutation = useEditData({
+    queryKey: [
+      type === "company subscriber"
+        ? "companySubscriberRepDetails"
+        : "companyPartnerRepDetails",
+    ],
+    url:
+      type === "company subscriber" ? companySubscriberUrl : companyPartnerUrl,
+    title: "Representative Details",
+    image: true,
+  });
+
   const onSubmit = (data) => {
-    console.log(data);
+    let formData = new FormData();
+
+    formData.append("representativeMiddleName", data.middlename);
+    formData.append("representativeSurname", data.surname);
+    formData.append("representativeFirstName", data.firstname);
+    formData.append("representativeTitle", data.title);
+    formData.append("representativeNin", data.nin);
+    formData.append("representativeMaidenName", data.maidenName);
+    formData.append("representativeGender", data.gender);
+    formData.append("representativeEmail", data.emailAddress);
+    formData.append("representativePhoneNumber", data.phoneNumber);
+    formData.append("representativeDateOfBirth", data.dateOfBirth);
+    formData.append("representativeMaritalStatus", data.maritalStatus);
+    formData.append("representativeCountry", data.country);
+    formData.append("representativeState", data.state);
+    formData.append("representativeLocalGoverment", data.lga);
+    formData.append("representativeWard", data.ward);
+    if (data.picture[0]) {
+      formData.append("representativePhoto", data.picture[0]);
+    }
+
+    editMutation.mutateAsync(formData);
     setUpdateNow(false);
   };
 
@@ -37,7 +105,7 @@ const UpdateRepresentative = ({ setUpdateNow }) => {
         onSubmit={handleSubmit(onSubmit)}
         className="space-y-6 py-5 w-full px-5"
       >
-        <div className="w-full grid grid-cols-6 gap-6">
+        <div className="w-full grid grid-cols-1 md:grid-cols-6 gap-6">
           <div className="col-span-5">
             <div className="col-span-4 md:col-span-1 my-3">
               <label className="text-sm font-light text-gray-700">
@@ -48,9 +116,11 @@ const UpdateRepresentative = ({ setUpdateNow }) => {
                 className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
               >
                 <option value="">Select Title</option>
-                <option value="mr">Mr</option>
-                <option value="mrs">Mrs</option>
-                <option value="ms">Ms</option>
+                {activeTitles?.map((item) => (
+                  <option value={item.title.toLowerCase()}>
+                    {item.title.toUpperCase()}
+                  </option>
+                ))}
               </select>
               {errors.title && (
                 <p className="text-red-600 text-sm">{errors.title.message}</p>
@@ -90,21 +160,24 @@ const UpdateRepresentative = ({ setUpdateNow }) => {
             </div>
           </div>
 
-          <div className="col-span-1 md:col-span-1">
+          <div className="col-span-1 md:col-span-1 mt-2">
             <label className="block text-sm font-medium text-gray-700">
               Upload picture<span className="text-red-600">*</span>
             </label>
-            <div className="w-full h-40 bg-vmtpurple rounded-lg flex justify-center items-center">
-              <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white">
-                <UserRound color="#000" />
+            <div className="w-full h-36 bg-vmtpurple rounded-lg flex justify-center items-center">
+              <div className="w-14 h-14 flex items-center justify-center rounded-full bg-white">
+                <UserRound color="#000" size={40} />
               </div>
             </div>
-            <input
-              {...fileRef}
-              type="file"
-              name="picture"
-              className="mt-2 w-full h-auto"
-            />
+            <div className="relative cursor-pointer h-9 bg-green-50 border border-green-500 flex justify-center items-center rounded-lg mt-3">
+              <h3 className="font-bold text-green-900 text-xs">Choose file</h3>
+              <input
+                {...fileRef}
+                type="file"
+                name="picture"
+                className="mt-2 w-full h-auto absolute bottom-[2px] left-2 opacity-0 cursor-pointer"
+              />
+            </div>
             {errors.picture && (
               <p className="text-red-600 text-sm">{errors.picture.message}</p>
             )}
@@ -194,12 +267,17 @@ const UpdateRepresentative = ({ setUpdateNow }) => {
               <label className="block text-sm font-medium text-gray-700">
                 Country<span className="text-red-600">*</span>
               </label>
-              <input
+              <select
                 {...register("country")}
-                type="text"
-                placeholder="Enter Country"
-                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-              />
+                className="mt-1 px-3 w-full h-9 bg-slate-x100 border border-gray-300 rounded-md shadow-sm"
+              >
+                <option value="">Select country</option>
+                {activeCountry?.map((item) => (
+                  <option value={item?.name?.toLowerCase()}>
+                    {item?.name?.toUpperCase()}
+                  </option>
+                ))}
+              </select>
               {errors.country && (
                 <p className="text-red-600 text-sm">{errors.country.message}</p>
               )}
@@ -215,10 +293,12 @@ const UpdateRepresentative = ({ setUpdateNow }) => {
                 {...register("gender")}
                 className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
               >
-                <option value="">Select gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
+                <option value="">Select Gender</option>
+                {activeGenders?.map((item) => (
+                  <option value={item?.gender?.toLowerCase()}>
+                    {item?.gender?.toUpperCase()}
+                  </option>
+                ))}
               </select>
               {errors.gender && (
                 <p className="text-red-600 text-sm">{errors.gender.message}</p>
@@ -249,15 +329,56 @@ const UpdateRepresentative = ({ setUpdateNow }) => {
                 className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
               >
                 <option value="">Select marital status</option>
-                <option value="single">Single</option>
-                <option value="married">Married</option>
-                <option value="divorced">Divorced</option>
-                <option value="widowed">Widowed</option>
+                {activeMarital?.map((item) => (
+                  <option value={item?.maritalStatus?.toLowerCase()}>
+                    {item?.maritalStatus?.toUpperCase()}
+                  </option>
+                ))}
               </select>
               {errors.maritalStatus && (
                 <p className="text-red-600 text-sm">
                   {errors.maritalStatus.message}
                 </p>
+              )}
+            </div>
+
+            <div className="col-span-3 md:col-span-1 my-3">
+              <label className="block text-sm font-medium text-gray-700">
+                State<span className="text-red-600">*</span>
+              </label>
+              <select
+                {...register("state")}
+                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+              >
+                <option value="">Select State</option>
+                {activeState?.map((item) => (
+                  <option value={item?.name?.toLowerCase()}>
+                    {item?.name?.toUpperCase()}
+                  </option>
+                ))}
+              </select>
+              {errors.state && (
+                <p className="text-red-600 text-sm">{errors.state.message}</p>
+              )}
+            </div>
+
+            <div className="col-span-3 md:col-span-1 my-3">
+              <label className="block text-sm font-medium text-gray-700">
+                LGA<span className="text-red-600">*</span>
+              </label>
+              <select
+                {...register("lga")}
+                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+              >
+                <option value="">Select LGA</option>
+                {activeLga?.map((item) => (
+                  <option value={item?.name?.toLowerCase()}>
+                    {item?.name?.toUpperCase()}
+                  </option>
+                ))}
+              </select>
+              {errors.lga && (
+                <p className="text-red-600 text-sm">{errors.lga.message}</p>
               )}
             </div>
             <div className="col-span-3 md:col-span-1 my-3">
@@ -266,14 +387,14 @@ const UpdateRepresentative = ({ setUpdateNow }) => {
               </label>
               <select
                 {...register("relationship")}
-                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+                className="mt-1 px-3 w-full h-9 bg-slate-x100 border border-gray-300 rounded-md shadow-sm"
               >
-                <option value="">Select relationship</option>
-                <option value="spouse">Spouse</option>
-                <option value="child">Child</option>
-                <option value="parent">Parent</option>
-                <option value="sibling">Sibling</option>
-                <option value="other">Other</option>
+                <option value="">Select Relationship</option>
+                {activeRelation?.map((item) => (
+                  <option value={item?.relationship?.toLowerCase()}>
+                    {item?.relationship?.toUpperCase()}
+                  </option>
+                ))}
               </select>
               {errors.relationship && (
                 <p className="text-red-600 text-sm">
@@ -283,30 +404,21 @@ const UpdateRepresentative = ({ setUpdateNow }) => {
             </div>
             <div className="col-span-3 md:col-span-1 my-3">
               <label className="block text-sm font-medium text-gray-700">
-                State<span className="text-red-600">*</span>
+                Ward<span className="text-red-600">*</span>
               </label>
-              <input
-                {...register("state")}
-                type="text"
-                placeholder="Enter State"
-                className="mt-1 px-3 w-full h-8 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-              />
-              {errors.state && (
-                <p className="text-red-600 text-sm">{errors.state.message}</p>
-              )}
-            </div>
-            <div className="col-span-3 md:col-span-1 my-3">
-              <label className="block text-sm font-medium text-gray-700">
-                LGA<span className="text-red-600">*</span>
-              </label>
-              <input
-                {...register("lga")}
-                type="text"
-                placeholder="Enter LGA"
+              <select
+                {...register("ward")}
                 className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-              />
-              {errors.lga && (
-                <p className="text-red-600 text-sm">{errors.lga.message}</p>
+              >
+                <option value="">Select Ward</option>
+                {activeWard?.map((item) => (
+                  <option value={item?.name?.toLowerCase()}>
+                    {item?.name?.toUpperCase()}
+                  </option>
+                ))}
+              </select>
+              {errors.ward && (
+                <p className="text-red-600 text-sm">{errors.ward.message}</p>
               )}
             </div>
           </div>
@@ -324,7 +436,7 @@ const UpdateRepresentative = ({ setUpdateNow }) => {
             type="submit"
             className="mt-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-vmtblue"
           >
-            Submit
+            Save
           </Button>
         </div>
       </form>

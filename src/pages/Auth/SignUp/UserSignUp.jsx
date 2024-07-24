@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import MobileLogo from "../../../assets/img/MobileLogo.svg";
 import { HiOutlineUsers, HiOutlineUser } from "react-icons/hi2";
-function UserSignUp({setFormType}) {
+import { toast } from "react-toastify";
+
+function UserSignUp({ setFormType,setPartnerType,setUserType }) {
   const [showPartnerType, setShowPartnerType] = useState(false);
   const [selectedPartnerType, setSelectedPartnerType] = useState(null);
   const [checkedIndex, setCheckedIndex] = useState(null);
@@ -9,33 +11,46 @@ function UserSignUp({setFormType}) {
   const handlePartnerTypeChange = (event) => {
     setSelectedPartnerType(event.target.value);
   };
+
   const handleCheckboxChange = (index) => {
-    
     if (index === "subscriber") {
-      // Uncheck the current checkbox if clicked again
       setCheckedIndex(0);
+      setUserType("subscriber");
       setSelectedPartnerType(null);
     } else {
+      setUserType("partner")
       setCheckedIndex(1);
     }
   };
+
   const handleShowPartnerType = () => {
     setShowPartnerType(true);
     handleCheckboxChange(1);
   };
+
   const handleContinue = () => {
-    setFormType("user-subscriber")
+    if (!selectedPartnerType & checkedIndex === 1){
+      toast.error(`Choose a partner type`);
+      return false;
+    }else{
+      setPartnerType(selectedPartnerType);
+    }
+   
+    if (checkedIndex !== null) {
+      setFormType("user-subscriber");
+      
+    }
   };
+
   const handleLogin = () => {
-    setFormType("login-user")
+    setFormType("login-user");
   };
-console.log(checkedIndex)
+
   return (
     <div className="auth-form-container">
-<div className="auth-logo-two">
-     <img src={MobileLogo} alt="image"/>
-</div>
-       
+      <div className="auth-logo-two">
+        <img src={MobileLogo} alt="image" />
+      </div>
       <div className="auth-header-text">Welcome to ValueMine</div>
       <div className="auth-subheader-text mt-3">
         Manage your financial and non-financial workflows seamlessly on the go
@@ -70,8 +85,8 @@ console.log(checkedIndex)
         <div className="auth-choose-user-box-text">Partner</div>
       </div>
 
-      {showPartnerType ? (
-        <div className="flex flex-col mt-5">
+      {showPartnerType && (
+        <div className="flex flex-col mt-5 w-full">
           <div className="flex items-center gap-2 mt-2">
             <input
               type="radio"
@@ -111,20 +126,24 @@ console.log(checkedIndex)
               Investor
             </label>
           </div>
-          {/* {selectedPartnerType && <div>You selected: {selectedPartnerType}</div>} */}
         </div>
-      ) : null}
+      )}
 
-      <div className="auth-button mt-10" onClick={handleContinue}>
+      <div
+        className={`auth-button mt-10 ${checkedIndex === null ? "disabled" : ""}`}
+        onClick={handleContinue}
+        style={{ pointerEvents: checkedIndex === null ? "none" : "auto", opacity: checkedIndex === null ? 0.5 : 1 }}
+      >
         <div className="auth-button-text">Continue</div>
       </div>
       <div className="auth-already mt-5">Already have a ValueMine account?</div>
 
-
       <div className="auth-button-white mt-5" onClick={handleLogin}>
         <div className="auth-button-white-text">Login to your account</div>
       </div>
-      <div className="image-auth-text-two">ERP for Micro, Small and Medium Entities</div>
+      <div className="image-auth-text-two">
+        ERP for Micro, Small and Medium Entities
+      </div>
     </div>
   );
 }

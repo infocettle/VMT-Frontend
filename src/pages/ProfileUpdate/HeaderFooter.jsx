@@ -1,14 +1,19 @@
 import { Bell, ChevronRight, Settings, UserRound } from "lucide-react";
 import Logo from "../../assets/img/Logo.svg";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const HeaderFooter = ({ children }) => {
+  const userData = useSelector((state) => state.auth.user);
+  // console.log(userData);
+
   return (
     <div className="w-full flex items-center">
       <div className="w-full flex flex-col items-center">
         <div className="w-full flex items-center justify-between py-2 px-8 border-b">
-          <div className="w-auto">
+          <Link to={"/"} className="w-auto">
             <img className="h-10 w-auto" src={Logo} alt="valuemine-logo" />
-          </div>
+          </Link>
 
           <div className="w-auto px-4 py-2 flex space-x-3 items-center">
             <Bell size={18} color="#666687" />
@@ -18,7 +23,7 @@ const HeaderFooter = ({ children }) => {
                 <UserRound color="#ffffff" />
               </div>
               <p className="text-[#666687] leading-relaxed text-sm font-normal">
-                James Nwachuku
+                {userData.surname} {userData.firstName}
               </p>
             </div>
           </div>
@@ -28,7 +33,7 @@ const HeaderFooter = ({ children }) => {
           <h2 className="uppercase text-lg text-black">profile</h2>
           <ChevronRight size={24} />
           <h3 className="text-vmtblue text-lg leading-relaxed">
-            #238957340124
+            #{userData._id}
           </h3>
         </div>
 

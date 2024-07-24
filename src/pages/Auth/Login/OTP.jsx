@@ -1,12 +1,15 @@
 import { baseUrl } from "@/App";
 import { sendData } from "@/hooks/usePostData";
+import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
 import React, { useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { Loader } from 'lucide-react';
 function OTP({ setFormType,userEmail }) {
-  const url = `${baseUrl}v1/subscriber/individual/auth/verify-email`;
+  const url = `${baseUrl}v1/auth/verify-login`;
   const [otp, setOTP] = useState("");
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch()
     const [showPassword, setShowPassword] = useState(false);
 
@@ -34,9 +37,12 @@ function OTP({ setFormType,userEmail }) {
           url: url,
           body: body,
           title: "Login",
+          setLoading: setLoading 
         });
-        console.log(returnedUser)
-        // setFormType("governance-page");
+        console.log(returnedUser);
+        dispatch(setUserSubscriber(returnedUser.user)) 
+        setFormType("governance-page");
+
       } catch (error) {
         console.error("error", error);
       }
@@ -71,7 +77,9 @@ function OTP({ setFormType,userEmail }) {
      
 
       <div className="auth-button mt-10" onClick={handleContinue}>
-        <div className="auth-button-text">Confirm</div>
+      <div className="auth-button-text">
+          {loading ? <Loader className="animate-spin" /> : 'Confirm'}
+        </div>
       </div>
     
 

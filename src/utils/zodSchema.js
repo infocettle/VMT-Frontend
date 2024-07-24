@@ -739,8 +739,8 @@ export const pfaAcctFormSchema = z.object({
 
 export const companyBasicFormSchema = z
   .object({
-    companyName: z.string().min(1, "Company's name is required"),
-    shortName: z.string().min(1, "Short name is required"),
+    companyName: z.string().optional(),
+    shortName: z.string().optional(),
     registrationNumber: z.string().min(1, "Registration number is required"),
     registered: z.enum(["yes", "no"], {
       errorMap: (issue, ctx) => {
@@ -771,8 +771,8 @@ export const companyBasicFormSchema = z
     }
   );
 
-const MAX_UPLOAD_SIZE = 1024 * 1024 * 5; // 3MB
-const ACCEPTED_FILE_TYPES = ["image/png"];
+const MAX_UPLOAD_SIZE = 1024 * 1024 * 1; // 1MB
+const ACCEPTED_FILE_TYPES = ["image/png", "image/jpeg", "image/jpg"];
 
 export const companyRepresentativeFormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -800,8 +800,132 @@ export const companyRepresentativeFormSchema = z.object({
   country: z.string().min(1, "Country is required"),
   state: z.string().min(1, "State is required"),
   lga: z.string().min(1, "LGA is required"),
+  ward: z.string().min(1, "Ward is required"),
   picture: z
     .instanceof(FileList)
-    .refine((file) => file?.length == 1, "File is required."),
+    .refine((file) => file?.length === 1, "Picture is required.")
+    .refine(
+      (file) => file?.item(0)?.size <= MAX_UPLOAD_SIZE,
+      "Picture size must not exceed 1MB"
+    )
+    .refine(
+      (file) => ACCEPTED_FILE_TYPES.includes(file?.item(0)?.type),
+      "Picture must be a PNG"
+    ),
   relationship: z.string().min(1, "Relationship is required"),
+});
+
+export const individualSubscriberBasicFormSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  surname: z.string().optional(),
+  firstname: z.string().optional(),
+  middlename: z.string().optional(),
+  maidenname: z.string().optional(),
+  gender: z.enum(["male", "female", "other"], {
+    errorMap: (issue, ctx) => {
+      return { message: "Please select a gender" };
+    },
+  }),
+  maritalStatus: z.enum(["single", "married", "divorced", "widowed"], {
+    errorMap: (issue, ctx) => {
+      return { message: "Please select a marital status" };
+    },
+  }),
+  dateOfBirth: z.string().min(1, "Date of birth is required"),
+  nin: z.string().optional(),
+  country: z.string().min(1, "Country is required"),
+  state: z.string().min(1, "State is required"),
+  lga: z.string().min(1, "LGA is required"),
+  ward: z.string().min(1, "Ward is required"),
+  picture: z
+    .instanceof(FileList)
+    .refine((file) => file?.length === 1, "Picture is required.")
+    .refine(
+      (file) => file?.item(0)?.size <= MAX_UPLOAD_SIZE,
+      "Picture size must not exceed 1MB"
+    )
+    .refine(
+      (file) => ACCEPTED_FILE_TYPES.includes(file?.item(0)?.type),
+      "Picture must be a PNG"
+    ),
+  relationship: z.string().optional(),
+  relationshipYears: z.string().optional(),
+});
+
+// // URL validation regex
+// const urlRegex = new RegExp(
+//   "^(https?:\\/\\/)?" + // protocol
+//     "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|" + // domain name
+//     "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+//     "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+//     "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+//     "(\\#[-a-z\\d_]*)?$",
+//   "i" // fragment locator
+// );
+
+export const addressInformationFormSchema = z.object({
+  streetNo: z.string().min(1, "Street Number is required"),
+  streetName: z.string().min(1, "Street Name is required"),
+  landmark: z.string().min(1, "Nearest Landmark is required"),
+  geoTag: z.string().optional(),
+  emailAddress: z
+    .string()
+    .email("Invalid email address")
+    .min(1, "Email address is required"),
+  altphoneNumber: z.string().optional(),
+  phoneNumber: z
+    .string()
+    .min(1, "Phone Number is required")
+    .max(16, "Phone Number must not exit 16 characters"),
+  ward: z.string().optional(),
+  city: z.string().min(1, "city is required"),
+  country: z.string().optional(),
+  state: z.string().optional(),
+  lga: z.string().optional(),
+  zone: z.string().min(1, "Zone is required"),
+  website: z.string().optional(),
+  // .refine((val) => urlRegex.test(val), {
+  //   message: "Invalid website URL",
+  // }),
+});
+
+export const otherInformationFormSchema = z.object({
+  bankCode: z.string().min(1, "bank Code is required"),
+  bankName: z.string().min(1, "Bank Name is required"),
+  bankAccName: z.string().min(1, "Bank Account Name is required"),
+  bankAcctNum: z.string().min(1, "Bank Account Number is required"),
+  taxId: z.string().optional(),
+  vatId: z.string().optional(),
+  penCom: z.string().optional(),
+  ITF: z.string().optional(),
+  NSITF: z.string().optional(),
+  NHF: z.string().optional(),
+  identitytype: z.string().min(1, "Identity Type is required"),
+  identityNum: z.string().min(1, "Identity Number is required"),
+  issuingAuth: z.string().min(1, "Issuing Authority is required"),
+  DateIssued: z.string().min(1, "Date Issued is required"),
+  ExpiryDate: z.string().min(1, "Expiry Date is required"),
+  certOfIncorp: z.instanceof(FileList).optional(),
+  // .refine((file) => file?.length == 1, "File is required."),
+  meansOfID: z
+    .instanceof(FileList)
+    .refine((file) => file?.length === 1, "File is required.")
+    .refine(
+      (file) => file?.item(0)?.size <= MAX_UPLOAD_SIZE,
+      "File size must not exceed 1MB"
+    ),
+});
+
+export const medicalInformationFormSchema = z.object({
+  genotype: z.string().min(1, "Genotype is required"),
+  bloodGroup: z.string().min(1, "Blood group is required"),
+  pregnant: z.enum(["yes", "no"], {
+    required_error: "Please select if you are pregnant",
+  }),
+  previousCaesareanSection: z.enum(["yes", "no"], {
+    required_error: "Please select if you had a previous caesarean section",
+  }),
+  knownAllergies: z.string().optional(),
+  otherMedicalDetails: z.string().optional(),
+  knownAilments: z.string().optional(),
 });

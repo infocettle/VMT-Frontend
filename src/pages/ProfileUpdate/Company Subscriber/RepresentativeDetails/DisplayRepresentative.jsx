@@ -2,35 +2,51 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
-import { UserRound } from "lucide-react";
+import { useSelector } from "react-redux";
 
-const REPRESENTATIVE_DETAILS = [
-  { id: 1, name: "Title", value: "" },
-  { id: 2, name: "Surname", value: "" },
-  { id: 3, name: "Firstname", value: "" },
-  { id: 4, name: "Middle/Other name", value: "" },
-  { id: 5, name: "Maiden/Former name", value: "" },
-  { id: 6, name: "Gender", value: "" },
-  { id: 7, name: "Marital Status", value: "" },
-  { id: 8, name: "Date of Birth", value: "" },
-  { id: 9, name: "Email Address", value: "" },
-  { id: 10, name: "Phone number", value: "" },
-  { id: 15, name: "Relationship", value: "" },
-  { id: 11, name: "NIN", value: "" },
-  { id: 12, name: "Country", value: "" },
-  { id: 13, name: "State", value: "" },
-  { id: 14, name: "Local Government Area", value: "" },
-];
+const DisplayRepresentative = ({ setUpdateNow, type }) => {
+  const userData = useSelector((state) => state.auth.user);
 
-const DisplayRepresentative = ({ setUpdateNow, setProgress }) => {
-  // const titleUrl = `${baseUrl}public-registry/personal-details/title`;
+  const companySubscriberUrl = `${baseUrl}v1/subscriber/company/profile/${userData._id}/representative-details`;
+  const companyPartnerUrl = `${baseUrl}v1/partner/company/profile/${userData._id}/representative-details`;
 
-  // const { isFetching, isSuccess } = useFetchData(titleUrl, "title");
+  const { data, isFetching } = useFetchData(
+    type === "company subscriber" ? companySubscriberUrl : companyPartnerUrl,
+    type === "company subscriber"
+      ? "companySubscriberRepDetails"
+      : "companyPartnerRepDetails"
+  );
 
-  // if (isFetching) {
-  //   alert("is fetching data");
-  //   setProgress(25);
-  // }
+  if (isFetching) {
+    return <span>Loading...</span>;
+  }
+
+  const REPRESENTATIVE_DETAILS = [
+    { id: 1, name: "Title", value: data?.representativeTitle },
+    { id: 2, name: "Surname", value: data?.representativeSurname },
+    { id: 3, name: "Firstname", value: data?.representativeFirstName },
+    { id: 4, name: "Middle/Other name", value: data?.representativeMiddleName },
+    {
+      id: 5,
+      name: "Maiden/Former name",
+      value: data?.representativeMaidenName,
+    },
+    { id: 6, name: "Gender", value: data?.representativeGender },
+    { id: 7, name: "Marital Status", value: data?.representativeDateOfBirth },
+    { id: 8, name: "Date of Birth", value: data?.representativeMaritalStatus },
+    { id: 9, name: "Email Address", value: data?.representativeEmail },
+    { id: 10, name: "Phone number", value: data?.representativePhoneNumber },
+    { id: 15, name: "Relationship", value: data?.representativeRelationship },
+    { id: 11, name: "NIN", value: data?.representativeNin },
+    { id: 12, name: "Country", value: data?.representativeCountry },
+    { id: 13, name: "State", value: data?.representativeState },
+    {
+      id: 14,
+      name: "Local Government Area",
+      value: data?.representativeLocalGoverment,
+    },
+    { id: 16, name: "Ward", value: data?.representativeWard },
+  ];
 
   return (
     <div className="flex flex-col items-center">
@@ -60,10 +76,8 @@ const DisplayRepresentative = ({ setUpdateNow, setProgress }) => {
           ))}
         </div>
 
-        <div className="w-60 h-40 bg-vmtpurple rounded-lg flex justify-center items-center self-start m-5">
-          <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white">
-            <UserRound color="#000" />
-          </div>
+        <div className="w-60 h-40 bg-white rounded-lg border-vmtpurple border-2 flex justify-center items-center self-start m-5">
+          <img src={data.representativePhoto} alt="profile-photo" />
         </div>
       </div>
     </div>

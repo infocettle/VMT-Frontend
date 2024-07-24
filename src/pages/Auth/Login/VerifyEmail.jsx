@@ -5,13 +5,13 @@ import React, { useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-
+import { Loader } from 'lucide-react';
 function VerifyEmail({ setFormType,userEmail }) {
-  const url = `${baseUrl}v1/subscriber/individual/auth/verify-otp`;
+  const url = `${baseUrl}v1/auth/verify-otp`;
     const [otp, setOTP] = useState("");
     const dispatch = useDispatch()
     const [showPassword, setShowPassword] = useState(false);
-
+    const [loading, setLoading] = useState(false);
     const validateForm = () => {
       if (!otp.trim()) {
         toast.error("otp is required");
@@ -36,6 +36,7 @@ function VerifyEmail({ setFormType,userEmail }) {
         url: url,
         body: body,
         title: "OTP verification",
+        setLoading: setLoading 
       });
       dispatch(setTokenSubscriber(returnedToken.resetToken))
       setFormType("new-password");
@@ -72,7 +73,9 @@ function VerifyEmail({ setFormType,userEmail }) {
      
 
       <div className="auth-button mt-10" onClick={handleContinue}>
-        <div className="auth-button-text">Confirm</div>
+      <div className="auth-button-text">
+          {loading ? <Loader className="animate-spin" /> : 'Confirm'}
+        </div>
       </div>
     
 

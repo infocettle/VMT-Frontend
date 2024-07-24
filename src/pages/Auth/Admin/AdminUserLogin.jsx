@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import Logo from "../../../assets/img/Logo.svg";
 import { useNavigate } from "react-router-dom";
@@ -14,27 +14,57 @@ function AdminUserLogin({ setFormType,setUserEmail }) {
   const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-const navigate = useNavigate()
+    const [loading, setLoading] = useState(false);
+    useEffect(() => {
+      setUserEmail(email);
+     }, [email])
   
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
       };
     
+      const handleEmailChange = (e) => {
+        setEmail(e.target.value);
+      };
     
     
       const handlePasswordChange = (e) => {
         const newPassword = e.target.value;
         setPassword(newPassword);
     
-        if (newPassword !== confirmPassword) {
-          setPasswordMatchError(true);
-        } else {
-          setPasswordMatchError(false);
-        }
+       
       };
-    
-  const handleContinue = () => {
+      const validateForm = () => {
+        if (!email.trim()) {
+          toast.error("Email is required");
+          return false;
+        }
+        if (!password.trim()) {
+          toast.error("Password is required");
+          return false;
+        }
+        return true;
+      };
+  const handleContinue = async () => {
+    if (!validateForm()) return;
+
+    const body = {
+      email: email,
+      password: password,
+    };
+
+    try {
+      const returnedUser = await sendData({
+        url: url,
+        body: body,
+        title: "OTP sent to your mail",
+        setLoading: setLoading 
+      });
+      dispatch(setUserSubscriber(returnedUser.user));
     setFormType('admin-user-verify-login')
+  } catch (error) {
+    console.error("error", error);
+  }
   };
   const handleReset = () => {
     setFormType("admin-user-reset-password");
@@ -59,6 +89,8 @@ const navigate = useNavigate()
             type="text"
             className="auth-input"
             placeholder="Example@gmail.com"
+            value={email}
+            onChange={handleEmailChange}
           />
         </div>
       
@@ -95,7 +127,9 @@ const navigate = useNavigate()
           <div className="subscription-terms-text cursor-pointer" onClick={handleReset}> <span>Forgot your password?</span></div>
           </div>
       <div className="auth-button mt-10" onClick={handleContinue}>
-        <div className="auth-button-text">Login</div>
+      <div className="auth-button-text">
+          {loading ? <Loader className="animate-spin" /> : 'Login'}
+        </div>
       </div>
      
     </div>

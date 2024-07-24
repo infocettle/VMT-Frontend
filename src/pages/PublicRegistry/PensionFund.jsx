@@ -16,11 +16,11 @@ import {
   pfaAcctFormSchema,
   pfaFormSchema,
 } from "@/utils/zodSchema";
-import { ReportLinks } from "@/components/ReportLinks";
+import { ReportLinks, handleExport } from "@/components/ReportLinks";
 import SecondHeader from "@/components/SecondHeader";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
-import {usePostData} from "@/hooks/usePostData";
+import { usePostData } from "@/hooks/usePostData";
 import SecondDiv from "@/components/SecondDiv";
 
 export const pfcRequiredForm = pfcFormSchema.required();
@@ -56,9 +56,9 @@ const PensionFund = () => {
   const [isPFA, setPFA] = useState(true);
   const [isAcc, setAcc] = useState(false);
 
-  const pfcUrl = `${baseUrl}public-registry/business/financial-institutions/pension-fund/pfc/`;
-  const pfaUrl = `${baseUrl}public-registry/business/financial-institutions/pension-fund/pfa`;
-  const pfaAcctUrl = `${baseUrl}public-registry/business/financial-institutions/pension-fund/pfa-account`;
+  const pfcUrl = `${baseUrl}public-registry/financial-institutions/pension-fund/pfc/`;
+  const pfaUrl = `${baseUrl}public-registry/financial-institutions/pension-fund/pfa`;
+  const pfaAcctUrl = `${baseUrl}public-registry/financial-institutions/pension-fund/pfa-account`;
 
   const { data, isPending } = useFetchData(
     subGroup == "pfa" ? pfaUrl : subGroup == "pfc" ? pfcUrl : pfaAcctUrl,
@@ -186,7 +186,14 @@ const PensionFund = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 {ReportLinks.map((link) => (
-                  <DropdownMenuItem key={link.id}>
+                  <DropdownMenuItem
+                    key={link.id}
+                    onClick={
+                      link.name == "Export"
+                        ? () => handleExport(data)
+                        : link.Click
+                    }
+                  >
                     <div className="w-auto px-2 flex items-center space-x-3">
                       {link.icon}
                       <h3 className="text-black font-normal text-xs leading-relaxed">
@@ -272,13 +279,17 @@ const PensionFund = () => {
 
           {/* Table */}
           {subGroup == "pfa" && (
-            <ReusableTable columns={pfaColumns} data={data} />
+            <ReusableTable columns={pfaColumns} data={data} tableName={"pfa"} />
           )}
           {subGroup == "pfc" && (
-            <ReusableTable columns={pfcColumns} data={data} />
+            <ReusableTable columns={pfcColumns} data={data} tableName={"pfc"} />
           )}
           {subGroup == "pfa account" && (
-            <ReusableTable columns={pfaAcctColumns} data={data} />
+            <ReusableTable
+              columns={pfaAcctColumns}
+              data={data}
+              tableName={"pfa account"}
+            />
           )}
         </div>
       </div>

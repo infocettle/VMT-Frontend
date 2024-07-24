@@ -26,12 +26,14 @@ const postData = async ({ url, body, title }) => {
   }
 };
 
-export const sendData = async ({ url, body, title }) => {
+export const sendData = async ({ url, body, title, setLoading }) => {
   console.log(body, url, title);
   const headers = {
     Accept: "application/json",
     "Content-Type": "application/json",
   };
+
+  setLoading(true); // Set loading to true when the request starts
 
   try {
     const { data } = await axios.post(url, body, { headers });
@@ -40,6 +42,7 @@ export const sendData = async ({ url, body, title }) => {
       autoClose: 2000,
       theme: "light",
     });
+    setLoading(false); // Set loading to false when the request ends
     return data;
   } catch (error) {
     const errorBody = error.response?.data || { detail: error.message };
@@ -48,9 +51,11 @@ export const sendData = async ({ url, body, title }) => {
       autoClose: 2000,
       theme: "light",
     });
+    setLoading(false); // Set loading to false if there's an error
     throw new Error(errorBody.detail);
   }
 };
+
 
 export const usePostData = ({ queryKey, url, title }) => {
   const queryClient = useQueryClient();

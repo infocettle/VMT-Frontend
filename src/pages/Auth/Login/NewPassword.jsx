@@ -5,12 +5,12 @@ import Select from "react-select";
 import { toast } from "react-toastify";
 import { baseUrl } from "@/App";
 import { useSelector } from "react-redux";
-
+import { Loader } from 'lucide-react';
 import { sendData } from "@/hooks/usePostData";
 function NewPassword({setFormType,userEmail}) {
-  const url = `${baseUrl}v1/subscriber/individual/auth/reset-password`;
+  const url = `${baseUrl}v1/auth/reset-password`;
   const token = useSelector((state) => state.auth.token);
- 
+  const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -65,6 +65,7 @@ function NewPassword({setFormType,userEmail}) {
     if (!validateForm()) {
       return;
     }
+    setLoading(true);
     const body = {
       email: userEmail,
      password : password,
@@ -85,8 +86,8 @@ function NewPassword({setFormType,userEmail}) {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-
       const result = await response.json();
+      setLoading(false)
     console.log(result)
    
       setSucessState(true);
@@ -141,7 +142,9 @@ function NewPassword({setFormType,userEmail}) {
             {/* {passwordMatchError && <p className="error-message">Passwords do not match</p>} */}
           </div>
           <div className="auth-button mt-10" onClick={handleContinue }>
-            <div className="auth-button-text">Submit</div>
+      <div className="auth-button-text">
+          {loading ? <Loader className="animate-spin" /> : 'Submit'}
+        </div>
           </div>
           <div
             className="flex items-center w-full justify-center mt-5 cursor-pointer "
@@ -158,7 +161,9 @@ function NewPassword({setFormType,userEmail}) {
           Your password reset was successful. Please contact our support team if you need any clarification
           </div>
           <div className="auth-button mt-5" onClick={handleSuccessful}>
-            <div className="auth-button-text">Submit</div>
+      <div className="auth-button-text">
+         Go to login
+        </div>
           </div>
       </div>
       )}

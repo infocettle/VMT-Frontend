@@ -8,11 +8,11 @@ import { baseUrl } from "@/App";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { sendData } from "@/hooks/usePostData";
-
-function UserCompanyCreatePassword() {
+import { Loader } from 'lucide-react';
+function UserCompanyCreatePassword({userType}) {
   const profileData = useSelector((state) => state.auth);
-  const newUserId = profileData?.newUser?._id;
-  const url = `${baseUrl}v1/subscriber/individual/auth/set-password/${newUserId}`;
+  const newUserId = profileData?.user?._id;
+  const url = `${baseUrl}v1/${userType}/company/auth/set-password/${newUserId}`;
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -20,6 +20,7 @@ function UserCompanyCreatePassword() {
   const [passwordMatchError, setPasswordMatchError] = useState(false);
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [answers, setAnswers] = useState(["", "", ""]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
@@ -147,6 +148,7 @@ function UserCompanyCreatePassword() {
         url: url,
         body: requestBody,
         title: "Password and security questions set",
+        setLoading: setLoading 
       });
      
       navigate("/subscription");
@@ -207,6 +209,7 @@ function UserCompanyCreatePassword() {
       </div>
 
       <div className="auth-label my-4">Security Questions</div>
+      <div className="password-height">
       <div className="w-full">
         {[0, 1, 2].map((index) => (
           <div key={index} className="w-full">
@@ -234,7 +237,9 @@ function UserCompanyCreatePassword() {
       </div>
 
       <div className="auth-button mt-10" onClick={handleContinue}>
-        <div className="auth-button-text">Submit</div>
+      <div className="auth-button-text">
+          {loading ? <Loader className="animate-spin" /> : 'Submit'}
+        </div>
       </div>
 
       <div
@@ -242,6 +247,7 @@ function UserCompanyCreatePassword() {
         onClick={handleGoback}
       >
         <div className="auth-button-go-back">Go back</div>
+        </div>
       </div>
     </div>
   );

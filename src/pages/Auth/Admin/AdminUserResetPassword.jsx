@@ -1,11 +1,49 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import Logo from "../../../assets/img/Logo.svg";
-function AdminUserResetPassword({ setFormType }) {
+import { baseUrl } from "@/App";
+import { sendData } from "@/hooks/usePostData";
+import { toast } from "react-toastify";
+import { Loader } from 'lucide-react';
+function AdminUserResetPassword({ setFormType,setUserEmail }) {
+  const url = `${baseUrl}v1/user/admin/auth/forgot-password`;
     
-    
-  const handleContinue = () => {
-    setFormType("admin-user-verify-email");
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  useEffect(() => {
+   setUserEmail(email);
+  }, [email])
+  
+  const validateForm = () => {
+    if (!email.trim()) {
+      toast.error("Email is required");
+      return false;
+    }
+
+    return true;
+  };
+  const handleContinue = async () => {
+    if (!validateForm()) return;
+
+    const body = {
+      email: email,
+    };
+
+    try {
+      await sendData({
+        url: url,
+        body: body,
+        title: "Verication code sent",
+        setLoading: setLoading 
+      });
+      setFormType("admin-user-verify-email");
+    } catch (error) {
+      console.error("error", error);
+    }
   };
   const handleBack = () => {
     setFormType("admin-user-login");
@@ -28,6 +66,8 @@ function AdminUserResetPassword({ setFormType }) {
             type="text"
             className="auth-input"
             placeholder="Example@gmail.com"
+            value={email}
+            onChange={handleEmailChange}
           />
         </div>
       
@@ -36,7 +76,9 @@ function AdminUserResetPassword({ setFormType }) {
       
       
       <div className="auth-button mt-10" onClick={handleContinue}>
-        <div className="auth-button-text">Submit</div>
+      <div className="auth-button-text">
+          {loading ? <Loader className="animate-spin" /> : 'Submit'}
+        </div>
       </div>
    
       <div className="flex items-center w-full justify-center mt-5 cursor-pointer " onClick={handleBack}>

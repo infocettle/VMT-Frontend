@@ -18,12 +18,12 @@ import ReuseDialog from "@/components/ReuseDialog";
 import { relationshipColumns } from "@/components/typings";
 import { GenericForm } from "@/components/GenericForm";
 import { FormInput } from "@/components/FormInput";
-import { ReportLinks } from "@/components/ReportLinks";
+import { ReportLinks, handleExport } from "@/components/ReportLinks";
 import SecondHeader from "@/components/SecondHeader";
 import { relationshiptitleFormSchema } from "@/utils/zodSchema";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
-import {usePostData} from "@/hooks/usePostData";
+import { usePostData } from "@/hooks/usePostData";
 import { useState } from "react";
 import SecondDiv from "@/components/SecondDiv";
 
@@ -91,7 +91,14 @@ const Relationship = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 {ReportLinks.map((link) => (
-                  <DropdownMenuItem key={link.id}>
+                  <DropdownMenuItem
+                    key={link.id}
+                    onClick={
+                      link.name == "Export"
+                        ? () => handleExport(data)
+                        : link.Click
+                    }
+                  >
                     <div className="w-auto px-2 flex items-center space-x-3">
                       {link.icon}
                       <h3 className="text-black font-normal text-xs leading-relaxed">
@@ -106,7 +113,11 @@ const Relationship = () => {
         </div>
 
         {/* Table */}
-        <ReusableTable columns={relationshipColumns} data={data} />
+        <ReusableTable
+          columns={relationshipColumns}
+          data={data}
+          tableName={"Relationship"}
+        />
       </div>
     </div>
   );

@@ -40,11 +40,23 @@ import System from "./pages/System/System";
 import { Provider } from "react-redux";
 import store, { persistor } from "./pages/Redux/store";
 import { PersistGate } from "redux-persist/integration/react";
-import { Profile } from "./pages/ProfileUpdate";
+import {
+  IndividualPartnerProfile,
+  IndividualSubscriberProfile,
+  Profile,
+  ProfilePath,
+} from "./pages/ProfileUpdate";
 import Overview from "./pages/Dashboard/Overview";
 import GeneralPerfomance from "./pages/Dashboard/GeneralPerfomance";
 import DashboardRoute from "./pages/Dashboard/DashboardRoute";
 import PerformanceDetails from "./pages/Dashboard/Perfomance";
+import BusinessKpiPerformance from "./pages/Dashboard/BusinessKpiPerformance";
+import SalesPerformance from "./pages/Dashboard/SalesPerformance";
+import CommissionPerformance from "./pages/Dashboard/CommissionPerformance";
+import CompanyPerformance from "./pages/Dashboard/CompanyPerformance";
+import PartnersPerformance from "./pages/Dashboard/PartnersPerformance";
+import SupportServicePerformance from "./pages/Dashboard/SupportServicePerformance";
+import ProtectedRoute from "./pages/Auth/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -66,18 +78,28 @@ const router = createBrowserRouter([
 
   {
     path: "/subscription",
-    element: <Subscription />,
+    element:(<ProtectedRoute><Subscription /></ProtectedRoute>) ,
   },
- 
+
   {
     path: "/",
-    element: <MainDashboard />,
+    element:<ProtectedRoute>
+    <MainDashboard />
+  </ProtectedRoute>,
     children: [
       // All children routes here
+      {
+        path: "",
+        element: <Overview />,
+      },
       {
         path: "dashboard/*",
         element: <DashboardRoute />,
         children: [
+          {
+            path: "",
+            element: <Overview />,
+          },
           {
             path: "performance/*",
             element: <PerformanceDetails />,
@@ -90,14 +112,21 @@ const router = createBrowserRouter([
                 path: "general",
                 element: <GeneralPerfomance />,
               },
-            
+              { path: "business-kpi", element: <BusinessKpiPerformance/> },
+              { path: "sales", element: <SalesPerformance /> },
+              { path: "commission", element: <CommissionPerformance /> },
+              { path: "company", element: <CompanyPerformance /> },
+              { path: "partners", element: <PartnersPerformance /> },
+              {
+                path: "support-service",
+                element: <SupportServicePerformance />,
+              },
             ],
           },
           {
             path: "overview",
             element: <Overview />,
           },
-         
         ],
       },
       {
@@ -235,8 +264,28 @@ const router = createBrowserRouter([
   },
 
   {
-    path: "/profile-update",
-    element: <Profile />,
+    path: "/profile/*",
+    element:  <ProtectedRoute>
+    <ProfilePath />
+  </ProtectedRoute>,
+    children: [
+      {
+        path: "company-subscriber",
+        element: <Profile />,
+      },
+      {
+        path: "individual-subscriber",
+        element: <IndividualSubscriberProfile />,
+      },
+      {
+        path: "company-partner",
+        element: <Profile />,
+      },
+      {
+        path: "individual-partner",
+        element: <IndividualPartnerProfile />,
+      },
+    ],
   },
 ]);
 

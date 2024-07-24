@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import Logo from "../../../assets/img/Logo.svg";
 import { useNavigate } from "react-router-dom";
+import { baseUrl } from "@/App";
+import { sendData } from "@/hooks/usePostData";
+import { Loader } from 'lucide-react';
+import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
+import { useDispatch } from "react-redux";
 function AdminLogin({ setFormType }) {
   const url = `${baseUrl}/admin/auth/login`;
   const [email, setEmail] = useState("");
@@ -9,30 +14,63 @@ function AdminLogin({ setFormType }) {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 const navigate = useNavigate()
+const dispatch = useDispatch()
   
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
       };
     
+      const handleEmailChange = (e) => {
+        setEmail(e.target.value);
+      };
     
     
       const handlePasswordChange = (e) => {
         const newPassword = e.target.value;
         setPassword(newPassword);
     
-        if (newPassword !== confirmPassword) {
-          setPasswordMatchError(true);
-        } else {
-          setPasswordMatchError(false);
+    
+      };
+      const validateForm = () => {
+        if (!email.trim()) {
+          toast.error("Email is required");
+          return false;
         }
+        if (!password.trim()) {
+          toast.error("Password is required");
+          return false;
+        }
+        return true;
       };
     
-  const handleContinue = () => {
-    navigate('/admin-dashboard')
-  };
-  const handleReset = () => {
+      const handleContinue = async () => {
+        if (!validateForm()) return;
+    
+        const body = {
+          email: email,
+          password: password,
+        };
+    
+        
+          try {
+            const returnedUser = await sendData({
+              url: url,
+              body: body,
+              title:"Admin User Logged in",
+              setLoading: setLoading 
+            });
+            dispatch(setUserSubscriber(returnedUser.admin));
+            navigate('/')
+        } catch (error) {
+          console.error("error", error);
+        }
+      };
+
+
+
+      const handleReset = () => {
     setFormType("admin-forgot-password");
-  };
+       };
  
 
   return (
@@ -53,6 +91,8 @@ const navigate = useNavigate()
             type="text"
             className="auth-input"
             placeholder="Example@gmail.com"
+            value={email}
+            onChange={handleEmailChange}
           />
         </div>
       
@@ -89,7 +129,9 @@ const navigate = useNavigate()
           <div className="subscription-terms-text cursor-pointer" onClick={handleReset}> <span>Forgot your password?</span></div>
           </div>
       <div className="auth-button mt-10" onClick={handleContinue}>
-        <div className="auth-button-text">Login</div>
+      <div className="auth-button-text">
+          {loading ? <Loader className="animate-spin" /> : 'Login'}
+        </div>
       </div>
      
     </div>

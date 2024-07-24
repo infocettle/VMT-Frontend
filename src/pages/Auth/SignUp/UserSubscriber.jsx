@@ -82,7 +82,11 @@ console.log(checkedIndex)
       </div>
 
 
-      <div className="auth-button mt-10" onClick={handleContinue}>
+      <div
+        className={`auth-button mt-10 ${checkedIndex === null ? "disabled" : ""}`}
+        onClick={handleContinue}
+        style={{ pointerEvents: checkedIndex === null ? "none" : "auto", opacity: checkedIndex === null ? 0.5 : 1 }}
+      >
         <div className="auth-button-text">Continue</div>
       </div>
      

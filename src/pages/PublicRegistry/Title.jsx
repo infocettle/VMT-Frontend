@@ -9,11 +9,11 @@ import { titleColumns } from "@/components/typings";
 import { ReusableTable } from "@/components/ReusableTable";
 import { FormInput } from "@/components/FormInput";
 import { titleFormSchema } from "@/utils/zodSchema";
-import { ReportLinks } from "@/components/ReportLinks";
+import { ReportLinks, handleExport } from "@/components/ReportLinks";
 import SecondHeader from "@/components/SecondHeader";
 import useFetchData from "@/hooks/useFetchData";
 import { baseUrl } from "@/App";
-import {usePostData} from "@/hooks/usePostData";
+import { usePostData } from "@/hooks/usePostData";
 import { useState } from "react";
 import ReuseDialog from "@/components/ReuseDialog";
 import SecondDiv from "../../components/SecondDiv";
@@ -30,6 +30,7 @@ const Title = () => {
   const titleUrl = `${baseUrl}public-registry/personal-details/title`;
 
   const { data, isPending } = useFetchData(titleUrl, "title");
+
   const postMutation = usePostData({
     queryKey: ["title"],
     url: titleUrl,
@@ -82,7 +83,14 @@ const Title = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 {ReportLinks.map((link) => (
-                  <DropdownMenuItem key={link.id}>
+                  <DropdownMenuItem
+                    key={link.id}
+                    onClick={
+                      link.name == "Export"
+                        ? () => handleExport(data)
+                        : link.Click
+                    }
+                  >
                     <div className="w-auto px-2 flex items-center space-x-3">
                       {link.icon}
                       <h3 className="text-black font-normal text-xs leading-relaxed">
@@ -97,7 +105,7 @@ const Title = () => {
         </div>
 
         {/* Table */}
-        <ReusableTable columns={titleColumns} data={data} title={"New Title"} />
+        <ReusableTable columns={titleColumns} data={data} tableName={"Title"} />
       </div>
     </div>
   );

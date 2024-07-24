@@ -2,9 +2,12 @@ import { companyBasicFormSchema } from "@/utils/zodSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { usePostData } from "@/hooks/usePostData";
+import { baseUrl } from "@/App";
+import useEditData from "@/hooks/useEditHook";
+import useFetchData from "@/hooks/useFetchData";
+import { useSelector } from "react-redux";
 
-const UpdateProfile = ({ setUpdateNow }) => {
+const UpdateProfile = ({ setUpdateNow, type }) => {
   const {
     register,
     handleSubmit,
@@ -15,8 +18,43 @@ const UpdateProfile = ({ setUpdateNow }) => {
     resolver: zodResolver(companyBasicFormSchema),
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const userData = useSelector((state) => state.auth.user);
+
+  const companySubscriberUrl = `${baseUrl}v1/subscriber/company/profile/${userData._id}/basic-details`;
+  const companyPartnerUrl = `${baseUrl}v1/partner/company/profile/${userData._id}/basic-details`;
+
+  const { data, isFetching } = useFetchData(
+    type === "company subscriber" ? companySubscriberUrl : companyPartnerUrl,
+    type === "company subscriber"
+      ? "companySubscriberBasicDetails"
+      : "companyPartnerBasicDetails"
+  );
+
+  const editMutation = useEditData({
+    queryKey: [
+      type === "company subscriber"
+        ? "companySubscriberBasicDetails"
+        : "companyPartnerBasicDetails",
+    ],
+    url:
+      type === "company subscriber" ? companySubscriberUrl : companyPartnerUrl,
+    title: "Basic Details",
+    image: false,
+  });
+
+  if (isFetching) {
+    return <span>Loading...</span>;
+  }
+
+  const onSubmit = (values) => {
+    console.log(values);
+    const body = {
+      registrationDate: values.registrationDate,
+      businessSector: values.businessSector,
+      subSector: values.subSector,
+      foreignAffiliation: values.foreignAffiliation,
+    };
+    editMutation.mutateAsync(body);
     setUpdateNow(false);
   };
 
@@ -42,7 +80,9 @@ const UpdateProfile = ({ setUpdateNow }) => {
               {...register("companyName")}
               type="text"
               placeholder="Enter Company's Name"
-              className="mt-1 px-3 block w-full h-10 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+              value={data?.companyName}
+              disabled
+              className="mt-1 px-3 block w-full h-10 bg-slate-400 border border-gray-300 rounded-md shadow-sm"
             />
             {errors.companyName && (
               <p className="text-red-600 text-sm">
@@ -57,8 +97,10 @@ const UpdateProfile = ({ setUpdateNow }) => {
             <input
               {...register("shortName")}
               type="text"
+              disabled
+              value={data?.shortName}
               placeholder="Enter Company's Short-Name"
-              className="mt-1 px-3 block w-full h-10 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
+              className="mt-1 px-3 block w-full h-10 bg-slate-400 border border-gray-300 rounded-md shadow-sm"
             />
             {errors.shortName && (
               <p className="text-red-600 text-sm">{errors.shortName.message}</p>
@@ -73,6 +115,7 @@ const UpdateProfile = ({ setUpdateNow }) => {
                 <input
                   {...register("registered")}
                   type="radio"
+                  // value={data?.registered}
                   value="yes"
                   className="form-radio"
                 />
@@ -82,7 +125,7 @@ const UpdateProfile = ({ setUpdateNow }) => {
                 <input
                   {...register("registered")}
                   type="radio"
-                  value="no"
+                  value={data?.registered ?? "no"}
                   className="form-radio"
                 />
                 <span className="ml-2">No</span>
@@ -201,7 +244,7 @@ const UpdateProfile = ({ setUpdateNow }) => {
             type="submit"
             className="mt-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-vmtblue"
           >
-            Submit
+            Save
           </Button>
         </div>
       </form>

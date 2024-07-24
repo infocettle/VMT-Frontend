@@ -66,7 +66,7 @@ const State = () => {
 
   return (
     <div className="w-full">
-      <SecondDiv module={"Address / Nationality"} />
+      <SecondDiv parentModule={"Public Registry"} module={"Address / Nationality"} />
       <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
         {/* Second header */}
 

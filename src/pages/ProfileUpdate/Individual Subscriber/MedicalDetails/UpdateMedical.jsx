@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { baseUrl } from "@/App";
 import useEditData from "@/hooks/useEditHook";
 import { useSelector } from "react-redux";
+import useFetchData from "@/hooks/useFetchData";
 
 const UpdateMedical = ({ setUpdateNow }) => {
   const {
@@ -18,6 +19,20 @@ const UpdateMedical = ({ setUpdateNow }) => {
 
   const userData = useSelector((state) => state.auth.user);
   const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/medical-information/${userData._id}`;
+
+  const bloodUrl = `${baseUrl}public-registry/personal-details/blood-group/`;
+  const genotypeUrl = `${baseUrl}public-registry/personal-details/genotype/`;
+  const ailUrl = `${baseUrl}public-registry/personal-details/ailment/`;
+
+  const { data: bGData } = useFetchData(bloodUrl, "bloodGroup");
+
+  const { data: GenoData } = useFetchData(genotypeUrl, "genotype");
+
+  const { data: ailData } = useFetchData(ailUrl, "ailment");
+
+  const activeBG = bGData?.filter((item) => item.status === "Active");
+  const activeGe = GenoData?.filter((item) => item.status === "Active");
+  const activeAil = ailData?.filter((item) => item.status === "Active");
 
   const editMutation = useEditData({
     queryKey: ["individualScubscriberMedicalDetails"],
@@ -53,31 +68,41 @@ const UpdateMedical = ({ setUpdateNow }) => {
         onSubmit={handleSubmit(onSubmit)}
         className="space-y-6 py-5 w-full px-5"
       >
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Genotype
+        <div className="col-span-4 md:col-span-1 my-3">
+          <label className="text-sm font-light text-gray-700">
+            Genotype<span className="text-red-600">*</span>
           </label>
-          <input
+          <select
             {...register("genotype")}
-            type="text"
-            placeholder="Enter Genotype"
             className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-          />
+          >
+            <option value="">Select Genotype</option>
+            {activeGe?.map((item) => (
+              <option value={item.name.toLowerCase()}>
+                {item.name.toUpperCase()}
+              </option>
+            ))}
+          </select>
           {errors.genotype && (
             <p className="text-red-600 text-sm">{errors.genotype.message}</p>
           )}
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Blood Group
+        <div className="col-span-4 md:col-span-1 my-3">
+          <label className="text-sm font-light text-gray-700">
+            Blood Group<span className="text-red-600">*</span>
           </label>
-          <input
+          <select
             {...register("bloodGroup")}
-            type="text"
-            placeholder="Enter blood group"
             className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-          />
+          >
+            <option value="">Select Blood Group</option>
+            {activeBG?.map((item) => (
+              <option value={item.name.toLowerCase()}>
+                {item.name.toUpperCase()}
+              </option>
+            ))}
+          </select>
           {errors.bloodGroup && (
             <p className="text-red-600 text-sm">{errors.bloodGroup.message}</p>
           )}
@@ -165,16 +190,24 @@ const UpdateMedical = ({ setUpdateNow }) => {
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Known ailments
+        <div className="col-span-4 md:col-span-1 my-3">
+          <label className="text-sm font-light text-gray-700">
+            Known ailments<span className="text-red-600">*</span>
           </label>
-          <input
-            {...register("knownAilments")}
-            type="text"
-            placeholder="Select ailments"
+          <select
+            {...register("ailments")}
             className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-          />
+          >
+            <option value="">Select Ailments</option>
+            {activeAil?.map((item) => (
+              <option value={item.name.toLowerCase()}>
+                {item.name.toUpperCase()}
+              </option>
+            ))}
+          </select>
+          {errors.ailments && (
+            <p className="text-red-600 text-sm">{errors.ailments.message}</p>
+          )}
         </div>
 
         {/* Button */}

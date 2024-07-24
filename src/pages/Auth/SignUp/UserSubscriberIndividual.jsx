@@ -37,7 +37,7 @@ function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
             const response = await axios.get(url);
             const activeTitles = response.data
                 .filter(item => item.status === 'Active')
-                .map(item => ({ value: item.title, label: item.title }));
+                .map(item => ({ value: item.title.toUpperCase(), label: item.title.toUpperCase() }));
             setTitleOptions(activeTitles);
         } catch (error) {
             toast.error('Error fetching titles');

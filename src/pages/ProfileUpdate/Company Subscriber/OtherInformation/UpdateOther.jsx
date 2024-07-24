@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import useEditData from "@/hooks/useEditHook";
 import { useSelector } from "react-redux";
 import { baseUrl } from "@/App";
+import useFetchData from "@/hooks/useFetchData";
 
 const UpdateOther = ({ setUpdateNow, type }) => {
   const [fileName, setFileName] = useState("");
@@ -29,6 +30,11 @@ const UpdateOther = ({ setUpdateNow, type }) => {
   const companySubscriberUrl = `${baseUrl}v1/subscriber/company/profile/${userData._id}/other-details`;
   const companyPartnerUrl = `${baseUrl}v1/partner/company/profile/${userData._id}/other-details`;
   const individualPartnerUrl = `${baseUrl}v1/partner/individual/profile/other-details/${userData._id}`;
+
+  const bankUrl = `${baseUrl}public-registry/financial-institutions/bank`;
+  const { data: bankData } = useFetchData(bankUrl, "bank");
+
+  const activeBank = bankData?.filter((item) => item.status === "Active");
 
   const editMutation = useEditData({
     queryKey: [
@@ -114,12 +120,15 @@ const UpdateOther = ({ setUpdateNow, type }) => {
               <label className="block text-sm font-medium text-gray-700">
                 Bank Code<span className="text-red-600">*</span>
               </label>
-              <input
+              <select
                 {...register("bankCode")}
-                type="text"
-                placeholder="Enter Bank Code"
                 className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-              />
+              >
+                <option value="">Select Bank Code</option>
+                {activeBank?.map((item) => (
+                  <option value={item?.code}>{item?.code}</option>
+                ))}
+              </select>
               {errors.bankCode && (
                 <p className="text-red-600 text-sm">
                   {errors.bankCode.message}

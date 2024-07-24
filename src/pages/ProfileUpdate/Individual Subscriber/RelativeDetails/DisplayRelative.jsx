@@ -30,7 +30,7 @@ const DisplayRelative = ({ setUpdateNow }) => {
     {
       id: 8,
       name: "Date of Birth",
-      value: data?.relativeDateofbirth.split("T")[0],
+      value: data?.relativeDateofbirth?.split("T")[0],
     },
     { id: 9, name: "Email Address", value: data?.relativeEmail },
     { id: 10, name: "Phone number", value: data?.relativePhone },

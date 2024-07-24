@@ -60,7 +60,7 @@ import ProtectedRoute from "./pages/Auth/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
-export const baseUrl = "https://vmt-server.onrender.com/api/";
+export const baseUrl = "https://vmt-server.onrender.com/api/v1";
 
 const router = createBrowserRouter([
   {

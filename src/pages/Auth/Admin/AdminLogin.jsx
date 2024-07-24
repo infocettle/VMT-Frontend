@@ -8,7 +8,7 @@ import { Loader } from 'lucide-react';
 import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
 import { useDispatch } from "react-redux";
 function AdminLogin({ setFormType }) {
-  const url = `${baseUrl}v1/admin/auth/login`;
+  const url = `${baseUrl}/admin/auth/login`;
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
     const [password, setPassword] = useState("");
@@ -59,7 +59,7 @@ const dispatch = useDispatch()
               title:"Admin User Logged in",
               setLoading: setLoading 
             });
-            dispatch(setUserSubscriber(returnedUser.user));
+            dispatch(setUserSubscriber(returnedUser.admin));
             navigate('/')
         } catch (error) {
           console.error("error", error);

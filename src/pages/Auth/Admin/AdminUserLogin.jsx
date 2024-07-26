@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { sendData } from "@/hooks/usePostData";
 import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
 function AdminUserLogin({ setFormType,setUserEmail }) {
-  const url = `${baseUrl}/user/admin/auth/login`;
+  const url = `${baseUrl}user/admin/auth/login`;
   const dispatch = useDispatch()
   const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");

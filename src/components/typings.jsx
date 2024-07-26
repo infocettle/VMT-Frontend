@@ -5131,3 +5131,72 @@ export const pfaAcctColumns = [
     },
   },
 ];
+
+
+export const activationColumns = [
+  {
+    accessorKey: "subscriberId",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Subscriber ID</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("subscriberId");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "entityType",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Entity Type</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("entityType");
+      return (
+        <div className="ml-6 uppercase">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "failedActivationTime",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Failed Activation Time</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("failedActivationTime");
+    
+      function formatISODate(isoString) {
+        const date = new Date(isoString);
+    
+        const hours = date.getUTCHours();
+        const minutes = date.getUTCMinutes();
+    
+        const timezoneOffsetMinutes = date.getTimezoneOffset();
+        const offsetHours = -Math.floor(timezoneOffsetMinutes / 60);
+        const offsetSign = offsetHours >= 0 ? '+' : '-';
+        const formattedOffset = `GMT ${offsetSign}${offsetHours}`;
+  
+        const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    
+        return `${formattedTime} (${formattedOffset})`;
+      }
+    
+      return (
+        <div className="ml-6 uppercase">{formatISODate(String(formatted))}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "date",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Date</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("date");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  }
+]

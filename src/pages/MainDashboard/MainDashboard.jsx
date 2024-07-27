@@ -34,7 +34,11 @@ const MainDashboard = () => {
       setPageHeader("Dashboard");
     } else if (url.includes("public_reg")) {
       setPageHeader("Public Registry");
-    } else {
+    } 
+    else if (url.includes("services")) {
+      setPageHeader("Services");
+    }
+    else {
       setPageHeader("Dashboard"); // Default or other cases
     }
   }, [location]);

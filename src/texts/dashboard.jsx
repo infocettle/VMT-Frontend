@@ -1,5 +1,7 @@
 import Dashboard from "@/pages/Dashboard/Dashboard";
 import { PublicReg } from "@/pages/PublicRegistry";
+import { ServiceItems } from "@/pages/Services";
+import {  } from "@/pages/Services";
 
 export const DashboardLinks = [
   {
@@ -12,9 +14,9 @@ export const DashboardLinks = [
     name: "Public Registry",
     component: <PublicReg />,
   },
-  // {
-  //   id: 6,
-  //   name: "Services",
-  //   component: <PublicReg />,
-  // },
+  {
+    id: 6,
+    name: "Services",
+    component: <ServiceItems />,
+  },
 ];

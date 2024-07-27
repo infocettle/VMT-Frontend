@@ -57,6 +57,9 @@ import CompanyPerformance from "./pages/Dashboard/CompanyPerformance";
 import PartnersPerformance from "./pages/Dashboard/PartnersPerformance";
 import SupportServicePerformance from "./pages/Dashboard/SupportServicePerformance";
 import ProtectedRoute from "./pages/Auth/ProtectedRoute";
+import ContactType from "./pages/Services/Contacts/Type";
+import Services from "./pages/Services/Services";
+import ServicesRoute from "./pages/Services/ServicesRoute";
 
 const queryClient = new QueryClient();
 
@@ -129,6 +132,22 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "services/*",
+        element: <ServicesRoute />,
+        children: [
+          {
+            path: "contacts/*",
+            children: [
+              {
+                path: "type",
+                element: <ContactType />,
+              },
+            ],
+          },
+        ],
+      },
+
       {
         path: "public_reg/*",
         element: <PublicRoute />,

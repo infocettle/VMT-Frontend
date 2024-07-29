@@ -20,8 +20,84 @@ import { cn } from "@/lib/utils";
 
 
 export function ReusableTableVariant({ columns, tableData }) {
+
+
+  const sampleData = [
+    {
+      subscriberId: '123456789',
+      entityType: 'Type A',
+      failedActivationTime: '2024-07-24T12:34:56.789Z',
+      date: '2024-07-24T12:00:00.000Z'
+    },
+    {
+      subscriberId: '987654321',
+      entityType: 'Type B',
+      failedActivationTime: '2024-07-23T11:22:33.456Z',
+      date: '2024-07-23T11:00:00.000Z'
+    },
+    {
+      subscriberId: '456123789',
+      entityType: 'Type C',
+      failedActivationTime: '2024-07-22T10:11:22.345Z',
+      date: '2024-07-22T10:00:00.000Z'
+    },
+    {
+      subscriberId: '321654987',
+      entityType: 'Type D',
+      failedActivationTime: '2024-07-21T09:10:11.234Z',
+      date: '2024-07-21T09:00:00.000Z'
+    }, 
+    {
+        subscriberId: '123456789',
+        entityType: 'Type A',
+        failedActivationTime: '2024-07-24T12:34:56.789Z',
+        date: '2024-07-24T12:00:00.000Z'
+      },
+      {
+        subscriberId: '987654321',
+        entityType: 'Type B',
+        failedActivationTime: '2024-07-23T11:22:33.456Z',
+        date: '2024-07-23T11:00:00.000Z'
+      },
+      {
+        subscriberId: '456123789',
+        entityType: 'Type C',
+        failedActivationTime: '2024-07-22T10:11:22.345Z',
+        date: '2024-07-22T10:00:00.000Z'
+      },
+      {
+        subscriberId: '321654987',
+        entityType: 'Type D',
+        failedActivationTime: '2024-07-21T09:10:11.234Z',
+        date: '2024-07-21T09:00:00.000Z'
+      },
+      {
+        subscriberId: '123456789',
+        entityType: 'Type A',
+        failedActivationTime: '2024-07-24T12:34:56.789Z',
+        date: '2024-07-24T12:00:00.000Z'
+      },
+      {
+        subscriberId: '987654321',
+        entityType: 'Type B',
+        failedActivationTime: '2024-07-23T11:22:33.456Z',
+        date: '2024-07-23T11:00:00.000Z'
+      },
+      {
+        subscriberId: '456123789',
+        entityType: 'Type C',
+        failedActivationTime: '2024-07-22T10:11:22.345Z',
+        date: '2024-07-22T10:00:00.000Z'
+      },
+      {
+        subscriberId: '321654987',
+        entityType: 'Type D',
+        failedActivationTime: '2024-07-21T09:10:11.234Z',
+        date: '2024-07-21T09:00:00.000Z'
+      }
+  ];
     
-    const data = useMemo(() => tableData, []);
+    const data = useMemo(() => sampleData, []);
     const table = useReactTable({
         data,
         columns: columns,

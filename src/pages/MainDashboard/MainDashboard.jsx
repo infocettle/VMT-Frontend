@@ -58,7 +58,7 @@ const MainDashboard = () => {
   };
 
   return (
-    <div className="w-full flex items-start overflow-hidden pb-2 h-screen ">
+    <div className="relative w-full flex items-start overflow-hidden pb-2 h-screen ">
       <div className="border-r h-screen flex flex-col  items-center large_screen">
         <img src={MobileLogo} alt="image" className="p-2" />
         <div className="dasboard-side-image-container h-screen flex flex-col space-y-5 items-center">
@@ -186,9 +186,9 @@ const MainDashboard = () => {
               </div>
             ) : null}
 
-            <div className="xl:w-full overflow-x-scroll box-container-overall">
+            <div className="relative xl:w-full overflow-x-scroll box-container-overall">
               <Outlet />
-              <div className="w-full border-b py-5 px-4 flex items-center justify-between box-container-footer large_screen">
+              <div className="sticky w-full border-b py-5 px-4 flex items-center justify-between box-container-footer large_screen">
                 <div className="footer-copyright">
                   Copyright ©2023 <span>Valuemine.</span> All rights reserved
                 </div>

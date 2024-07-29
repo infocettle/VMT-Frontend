@@ -143,6 +143,8 @@ const MedicalData = () => {
                     defaultValues={bgDefaultValues}
                     validationSchema={bGRequiredForm}
                     onSubmit={onSubmit}
+                    firstButton={"Cancel"}
+                    secondButton={"Submit"}
                   >
                     <FormInput name="name" label="Name" />
                     <FormInput name="code" label="Code" />
@@ -169,6 +171,8 @@ const MedicalData = () => {
                     defaultValues={ailDefaultValues}
                     validationSchema={ailRequiredForm}
                     onSubmit={onSubmit}
+                    firstButton={"Cancel"}
+                    secondButton={"Submit"}
                   >
                     <FormInput name="name" label="Name" />
                   </GenericForm>

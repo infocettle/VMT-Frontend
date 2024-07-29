@@ -96,6 +96,8 @@ const Currency = () => {
                   defaultValues={currencyDefaultValues}
                   validationSchema={currencyRequiredForm}
                   onSubmit={onSubmit}
+                  firstButton={"Cancel"}
+                  secondButton={"Submit"}
                 >
                   <FormInput name="alphabet_code" label="Alphabet Code" />
                   <FormInput name="number_code" label="Number Code" />

@@ -85,6 +85,8 @@ const Continent = () => {
                   defaultValues={continentDefaultValues}
                   validationSchema={continentRequiredForm}
                   onSubmit={onSubmit}
+                  firstButton={"Cancel"}
+                  secondButton={"Submit"}
                 >
                   <FormInput name="name" label="Name" />
                 </GenericForm>

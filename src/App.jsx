@@ -58,6 +58,13 @@ import PartnersPerformance from "./pages/Dashboard/PartnersPerformance";
 import SupportServicePerformance from "./pages/Dashboard/SupportServicePerformance";
 import ProtectedRoute from "./pages/Auth/ProtectedRoute";
 import MaintenanceRoute from "./pages/Maintenance/MaintenanceRoute";
+import ContactType from "./pages/Services/Contacts/Type";
+import NewType from "./pages/Services/Contacts/NewType";
+import ContactRegistration from "./pages/Services/Contacts/Registration";
+import ServicesRoute from "./pages/Services/ServicesRoute";
+import RegistrationDetails from "./pages/Services/Contacts/RegistrationDetails";
+
+
 import { 
   Activation,
   Backup,
@@ -264,6 +271,34 @@ const router = createBrowserRouter([
                 path: "sub_sectors",
                 element: <SubSectors />,
               },
+            ],
+          },
+        ],
+      },
+      {
+        path: "services/*",
+        element: <ServicesRoute />,
+        children: [
+          {
+            path: "contacts/*",
+            children: [
+              {
+                path: "type",
+                element: <ContactType />,
+              },
+              {
+                path: "newtype",
+                element: <NewType />,
+              },
+              {
+                path: "registration",
+                element: <ContactRegistration />,
+              },
+              {
+                path: "registrationdetails",
+                element: <RegistrationDetails />,
+              }
+
             ],
           },
         ],

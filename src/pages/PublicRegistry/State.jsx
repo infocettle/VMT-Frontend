@@ -94,6 +94,8 @@ const State = () => {
                   validationSchema={stateRequiredForm}
                   long={false}
                   onSubmit={onSubmit}
+                  firstButton={"Cancel"}
+                  secondButton={"Submit"}
                 >
                   <FormInput name="state_code" label="State Code" />
                   <FormInput name="state_name" label="State Name" />

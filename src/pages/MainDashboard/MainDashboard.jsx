@@ -37,14 +37,18 @@ const MainDashboard = () => {
     } else if (url.includes("public_reg")) {
       setPageHeader("Public Registry");
     } 
-    else if (url.includes("services")) {
+    else if (url?.includes("services")) {
       setPageHeader("Services");
-      if (url.includes("newtype")) {
+      if (url?.includes("newtype")) {
         setShowFooter(false)
+      }
+      else{
+        setShowFooter(true)
       }
     }
     else {
       setPageHeader("Dashboard"); // Default or other cases
+      setShowFooter(true)
     }
   }, [location]);
   const handleHideSubSide = () => {

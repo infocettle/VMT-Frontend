@@ -104,6 +104,8 @@ const Country = () => {
                   validationSchema={countryRequiredForm}
                   long={true}
                   onSubmit={onSubmit}
+                  firstButton={"Cancel"}
+                  secondButton={"Submit"}
                 >
                   <FormInput name="country_code" label="Country Code" />
                   <FormInput name="country_name" label="Country Name" />

@@ -70,8 +70,8 @@ import {
   Backup,
   Restore,
   Recover,
-  LockDomain,
-  CancelDomain
+  // LockDomain,
+  // CancelDomain
 } from "./pages/Maintenance";
 
 const queryClient = new QueryClient();
@@ -323,14 +323,14 @@ const router = createBrowserRouter([
             path: "recover",
             element: <Recover/>
           },
-          {
-            path: 'lock_domain',
-            element: <LockDomain/>
-          },
-          {
-            path: "cancel_domain",
-            element: <CancelDomain/>
-          }
+          // {
+          //   path: 'lock_domain',
+          //   element: <LockDomain/>
+          // },
+          // {
+          //   path: "cancel_domain",
+          //   element: <CancelDomain/>
+          // }
         ]
       },
       // Add your children routes here

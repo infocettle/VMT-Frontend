@@ -47,6 +47,8 @@ const ReuseDialog = ({
           validationSchema={validationSchema}
           onSubmit={onSubmit}
           long={long}
+          firstButton={"Cancel"}
+          secondButton={"Submit"}
         >
           {children}
         </GenericForm>

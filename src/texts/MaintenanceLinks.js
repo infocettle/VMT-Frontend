@@ -19,14 +19,14 @@ export const MaintenanceLinks = [
         name: "Recover",
         href: "/maintenance/recover",
     },
-    {
-        id: 5,
-        name: "Lock Domain",
-        href: "/maintenance/lock_domain",
-    },
-    {
-        id: 6,
-        name: "Cancel Domain",
-        href: "/maintenance/cancel_domain",
-    }
+    // {
+    //     id: 5,
+    //     name: "Lock Domain",
+    //     href: "/maintenance/lock_domain",
+    // },
+    // {
+    //     id: 6,
+    //     name: "Cancel Domain",
+    //     href: "/maintenance/cancel_domain",
+    // }
 ]

@@ -1,8 +1,11 @@
 import { cn } from "@/lib/utils";
 import useDeleteData from "@/hooks/useDeleteData";
 import useEditData from "@/hooks/useEditHook";
+import { usePostData } from "@/hooks/usePostData";
 import { baseUrl } from "@/App";
 import { PencilIcon, Trash2Icon, ChevronsUpDown } from "lucide-react";
+import { TbRestore } from "react-icons/tb";
+import { LuArchiveRestore } from "react-icons/lu";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import {
@@ -14,11 +17,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import ConfirmDelete from "./ConfirmDelete";
+import ConfirmDeleteVariant from "./ConfirmDeleteVariant";
 import ReuseDialog from "./ReuseDialog";
 import { GenericForm } from "@/components/GenericForm";
 import { FormInput } from "@/components/FormInput";
 import { FormSelect } from "@/components/FormSelect";
 import { FormTextArea } from "./FormTextArea";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { requiredForm } from "@/pages/PublicRegistry/Title";
 import { genderRequiredForm } from "@/pages/PublicRegistry/Gender";
 import { maritalRequiredForm } from "@/pages/PublicRegistry/MaritalStatus";
@@ -53,6 +58,7 @@ import {
   pfaRequiredForm,
   pfcRequiredForm,
 } from "@/pages/PublicRegistry/PensionFund";
+import { formatISODate, formatBytes } from "@/lib/utils";
 
 export const titleColumns = [
   {
@@ -876,6 +882,8 @@ export const bloodGroupGenotypeColumns = [
                 defaultValues={bgDefaultValues}
                 validationSchema={bGRequiredForm}
                 onSubmit={onSubmit}
+                firstButton={"Cancel"}
+                secondButton={"Submit"}
               >
                 <FormInput name="name" label="Name" />
                 <FormInput name="code" label="Code" />
@@ -1078,6 +1086,8 @@ export const ailmentColumns = [
                 defaultValues={ailDefaultValues}
                 validationSchema={ailRequiredForm}
                 onSubmit={onSubmit}
+                firstButton={"Cancel"}
+                secondButton={"Submit"}
               >
                 <FormInput name="name" label="Name" />
               </GenericForm>
@@ -1327,6 +1337,8 @@ export const bodyDataColumns = [
                 defaultValues={bodyDataDefaultValues}
                 validationSchema={bodyDataRequiredForm}
                 onSubmit={onSubmit}
+                firstButton={"Cancel"}
+                secondButton={"Submit"}
               >
                 <FormInput name="name" label="Name" />
               </GenericForm>
@@ -1530,6 +1542,8 @@ export const qualificationColumns = [
                 defaultValues={qualificationDefaultValues}
                 validationSchema={qualificationRequiredForm}
                 onSubmit={onSubmit}
+                firstButton={"Cancel"}
+                secondButton={"Submit"}
               >
                 <FormInput name="name" label="Name" />
                 <FormInput name="code" label="Code" />
@@ -1758,6 +1772,8 @@ export const currencyColumns = [
                 defaultValues={currencyDefaultValues}
                 validationSchema={currencyRequiredForm}
                 onSubmit={onSubmit}
+                firstButton={"Cancel"}
+                secondButton={"Submit"}
               >
                 <FormInput name="alphabet_code" label="Alphabet Code" />
                 <FormInput name="number_code" label="Number Code" />
@@ -1971,6 +1987,8 @@ export const continentColumns = [
                 defaultValues={continentDefaultValues}
                 validationSchema={continentRequiredForm}
                 onSubmit={onSubmit}
+                firstButton={"Cancel"}
+                secondButton={"Submit"}
               >
                 <FormInput name="name" label="Name" />
               </GenericForm>
@@ -2271,6 +2289,8 @@ export const countryColumns = [
                 defaultValues={countryDefaultValues}
                 validationSchema={countryRequiredForm}
                 onSubmit={onSubmit}
+                firstButton={"Cancel"}
+                secondButton={"Submit"}
               >
                 <FormInput name="country_code" label="Country Code" />
                 <FormInput name="country_name" label="Country Name" />
@@ -2512,6 +2532,8 @@ export const zoneColumns = [
                 validationSchema={zoneRequiredForm}
                 onSubmit={onSubmit}
                 long={false}
+                firstButton={"Cancel"}
+                secondButton={"Submit"}
               >
                 <FormInput name="code" label="Code" />
                 <FormInput name="zone_name" label="Zone Name" />
@@ -2766,6 +2788,8 @@ export const stateColumns = [
                 validationSchema={stateRequiredForm}
                 long={false}
                 onSubmit={onSubmit}
+                firstButton={"Cancel"}
+                secondButton={"Submit"}
               >
                 <FormInput name="state_code" label="State Code" />
                 <FormInput name="state_name" label="State Name" />
@@ -5166,21 +5190,71 @@ export const activationColumns = [
     cell: ({ row }) => {
       const formatted = row.getValue("failedActivationTime");
     
-      function formatISODate(isoString) {
-        const date = new Date(isoString);
+      return (
+        <div className="ml-6 uppercase">{formatISODate(String(formatted))}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "date",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Date</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("date");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  }
+]
+
+export const backupColumns = [
+  {
+    accessorKey: "backupId",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Backup ID</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("backupId");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "memorySize",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Memory Size</h2>;
+    },
+    cell: ({ row }) => {
+      const sizeInBytes = row.getValue("memorySize");
+      const formattedSize = formatBytes(sizeInBytes);
+      return (
+        <div className="ml-6">{formattedSize}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "startTime",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Start Time</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("startTime");
     
-        const hours = date.getUTCHours();
-        const minutes = date.getUTCMinutes();
-    
-        const timezoneOffsetMinutes = date.getTimezoneOffset();
-        const offsetHours = -Math.floor(timezoneOffsetMinutes / 60);
-        const offsetSign = offsetHours >= 0 ? '+' : '-';
-        const formattedOffset = `GMT ${offsetSign}${offsetHours}`;
-  
-        const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-    
-        return `${formattedTime} (${formattedOffset})`;
-      }
+      return (
+        <div className="ml-6 uppercase">{formatISODate(String(formatted))}</div>
+      );
+    },
+  }, 
+  {
+    accessorKey: "endTime",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>End Time</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("endTime");
     
       return (
         <div className="ml-6 uppercase">{formatISODate(String(formatted))}</div>
@@ -5199,4 +5273,257 @@ export const activationColumns = [
       );
     },
   }
+]
+
+export const restoreColumns = [
+  {
+    accessorKey: "backupId",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Backup ID</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("backupId");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "memorySize",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Memory Size</h2>;
+    },
+    cell: ({ row }) => {
+      const sizeInBytes = row.getValue("memorySize");
+      const formattedSize = formatBytes(sizeInBytes);
+      return (
+        <div className="ml-6">{formattedSize}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "backupDate",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Backup Date</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("date");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  }, 
+  {
+    header: () => <div className="ml-5 uppercase">Actions</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const [open, setIsOpen] = useState(false);
+
+      const title = row.original;
+
+      const Url = `${baseUrl}maintenance/restore/${title._id}`;
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["restore"],
+        url: Url,
+        title: "restore",
+      });
+
+      const postMutation = usePostData({
+        queryKey: ["restore"],
+        url: Url,
+        title: "restore",
+      });
+
+      async function onSubmit() {
+        const body = {
+          restore: true,
+        };
+
+        postMutation.mutateAsync(body);
+        setIsOpen(false);
+      }
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <Dialog open={open} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+              <TbRestore
+                  className="cursor-pointer"
+                  color="#0B6ED0"
+                  size={20}
+                  onClick={() => setIsOpen(true)}
+                />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Restore Data</DialogTitle>
+              </DialogHeader>
+              <hr className="border border-gray-100 w-full h-[1px]" />
+              <div className="leading-6 uppercase">Backup Information</div>
+              <div className="leading-6">Backup ID:</div>
+              <div className="leading-6">Backup Date:</div>
+              <div className="leading-6">Memory Size:</div>
+              <ScrollArea className={cn(`${"h-auto"}`)}>
+                <div className="w-full flex justify-between items-center my-4">
+                  <div
+                    className="w-auto border border-gray-300 rounded-md h-10 flex items-center p-2 cursor-pointer"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Cancel
+                  </div>
+                  <Button
+                    className="bg-vmtblue w-auto"
+                    variant="default"
+                    type="submit"
+                    onClick={() => onSubmit()} 
+                  >
+                    Restore
+                  </Button>
+                </div>
+              </ScrollArea>
+            </DialogContent>
+          </Dialog>
+
+          <ConfirmDeleteVariant
+            isWarning={true}
+            onClick={async () => {
+              await deleteMutation.mutateAsync();
+              setIsOpen(false);
+            }}
+          />
+        </div>
+      );
+    },
+  },
+]
+
+
+export const recoverColumns =  [
+  {
+    accessorKey: "backupId",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Backup ID</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("backupId");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "memorySize",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Memory Size</h2>;
+    },
+    cell: ({ row }) => {
+      const sizeInBytes = row.getValue("memorySize");
+      const formattedSize = formatBytes(sizeInBytes);
+      return (
+        <div className="ml-6">{formattedSize}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "dateDeleted",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Date Deleted</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateDeleted");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  }, 
+  {
+    header: () => <div className="ml-5 uppercase">Actions</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const [open, setIsOpen] = useState(false);
+
+      const title = row.original;
+
+      const Url = `${baseUrl}maintenance/recover/${title._id}`;
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["restore"],
+        url: Url,
+        title: "restore",
+      });
+
+      const postMutation = usePostData({
+        queryKey: ["recover"],
+        url: Url,
+        title: "recover",
+      });
+
+      async function onSubmit() {
+        const body = {
+          recover: true,
+        };
+
+        postMutation.mutateAsync(body);
+        setIsOpen(false);
+      }
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <Dialog open={open} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+              <LuArchiveRestore
+                  className="cursor-pointer"
+                  color="#0B6ED0"
+                  size={20}
+                  onClick={() => setIsOpen(true)}
+                />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Restore Data</DialogTitle>
+              </DialogHeader>
+              <hr className="border border-gray-100 w-full h-[1px]" />
+              <div className="leading-6 uppercase">Backup Information</div>
+              <div className="leading-6">Backup ID:</div>
+              <div className="leading-6">Date Deleted:</div>
+              <div className="leading-6">Memory Size:</div>
+              <ScrollArea className={cn(`${"h-auto"}`)}>
+                <div className="w-full flex justify-between items-center my-4">
+                  <div
+                    className="w-auto border border-gray-300 rounded-md h-10 flex items-center p-2 cursor-pointer"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Cancel
+                  </div>
+                  <Button
+                    className="bg-vmtblue w-auto"
+                    variant="default"
+                    type="submit"
+                    onClick={() => onSubmit()} 
+                  >
+                    Recover
+                  </Button>
+                </div>
+              </ScrollArea>
+            </DialogContent>
+          </Dialog>
+
+          <ConfirmDeleteVariant
+            isWarning={false}
+            onClick={async () => {
+              await deleteMutation.mutateAsync();
+              setIsOpen(false);
+            }}
+          />
+        </div>
+      );
+    },
+  },
 ]

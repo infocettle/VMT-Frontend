@@ -13,7 +13,7 @@ export const ServicesLinks = [
             {
                 id: 2,
                 name: "Registration",
-                href: "/services/contacts/",
+                href: "/services/contacts/registration",
             },
             {
                 id: 3,

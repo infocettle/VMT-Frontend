@@ -58,8 +58,10 @@ import PartnersPerformance from "./pages/Dashboard/PartnersPerformance";
 import SupportServicePerformance from "./pages/Dashboard/SupportServicePerformance";
 import ProtectedRoute from "./pages/Auth/ProtectedRoute";
 import ContactType from "./pages/Services/Contacts/Type";
-import Services from "./pages/Services/Services";
+import NewType from "./pages/Services/Contacts/NewType";
+import ContactRegistration from "./pages/Services/Contacts/Registration";
 import ServicesRoute from "./pages/Services/ServicesRoute";
+import RegistrationDetails from "./pages/Services/Contacts/RegistrationDetails";
 
 const queryClient = new QueryClient();
 
@@ -143,6 +145,19 @@ const router = createBrowserRouter([
                 path: "type",
                 element: <ContactType />,
               },
+              {
+                path: "newtype",
+                element: <NewType />,
+              },
+              {
+                path: "registration",
+                element: <ContactRegistration />,
+              },
+              {
+                path: "registrationdetails",
+                element: <RegistrationDetails />,
+              }
+              
             ],
           },
         ],

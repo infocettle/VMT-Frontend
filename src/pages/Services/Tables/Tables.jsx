@@ -30,7 +30,7 @@ function Tables({ headBg, headTextColor, headerText, headerArr, rowArr }) {
                         {rowArr && rowArr.map((row, rowIndex) => (
                             <TableRow className="border-0" key={rowIndex}>
                                 {headerArr && headerArr.map((header, colIndex) => (
-                                    <TableCell className="text-left" key={colIndex}>
+                                    <TableCell className="text-left" key={colIndex} style={{ color:"#181826"}}>
                                         {row[header.toLowerCase().replace(/ /g, '')]}
                                     </TableCell>
                                 ))}
@@ -43,7 +43,6 @@ function Tables({ headBg, headTextColor, headerText, headerArr, rowArr }) {
     );
 }
 
-// Example usage
 const tableHeader = [
     "CODE",
     "NAME",
@@ -58,7 +57,6 @@ const tableRows = [
         description: "Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on",
         datecreated: "15-JUN-2023",
     },
-    // Add more rows as needed
 ];
 
 <Tables headerArr={tableHeader} rowArr={tableRows} />

@@ -3,6 +3,7 @@ import React, {Component} from "react";
 import ServicesDiv from "../ServicesDiv";
 import "../services.css"
 import { IoFilter } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 const tableHeader = [
     "CODE",
@@ -35,10 +36,13 @@ const ContactType = () => {
                     <div className="main-container">
                         <div class="flex justify-between">
                             <div>
-                                <h2 className="uppercase performance_header">Type</h2>
+                                <h2 className="uppercase performance_header ml-4">Type</h2>
                             </div>
                             <div className="flex gap-1">
-                                <button className="services-bg-blue services-btn services-btn-sm services-no-radius">Create New</button>
+                                <Link to={"/services/contacts/newtype"}>
+                                    <button type="button" style={{height:"100%"}} className="services-bg-blue services-btn services-btn-sm services-no-radius">Create New</button>
+                                </Link>
+                               
                                 <div className="services-btn-border">
                                     <div className="filter-button-text-service flex justify-between">Filter &nbsp;<IoFilter /></div>
                                     

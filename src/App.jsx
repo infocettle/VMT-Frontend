@@ -57,15 +57,26 @@ import CompanyPerformance from "./pages/Dashboard/CompanyPerformance";
 import PartnersPerformance from "./pages/Dashboard/PartnersPerformance";
 import SupportServicePerformance from "./pages/Dashboard/SupportServicePerformance";
 import ProtectedRoute from "./pages/Auth/ProtectedRoute";
+import MaintenanceRoute from "./pages/Maintenance/MaintenanceRoute";
 import ContactType from "./pages/Services/Contacts/Type";
 import NewType from "./pages/Services/Contacts/NewType";
 import ContactRegistration from "./pages/Services/Contacts/Registration";
 import ServicesRoute from "./pages/Services/ServicesRoute";
 import RegistrationDetails from "./pages/Services/Contacts/RegistrationDetails";
 
+
+import { 
+  Activation,
+  Backup,
+  Restore,
+  Recover,
+  LockDomain,
+  CancelDomain
+} from "./pages/Maintenance";
+
 const queryClient = new QueryClient();
 
-export const baseUrl = "https://vmt-server.onrender.com/api/v1";
+export const baseUrl = "https://vmt-server.onrender.com/api/v1/";
 
 const router = createBrowserRouter([
   {
@@ -134,35 +145,6 @@ const router = createBrowserRouter([
           },
         ],
       },
-      {
-        path: "services/*",
-        element: <ServicesRoute />,
-        children: [
-          {
-            path: "contacts/*",
-            children: [
-              {
-                path: "type",
-                element: <ContactType />,
-              },
-              {
-                path: "newtype",
-                element: <NewType />,
-              },
-              {
-                path: "registration",
-                element: <ContactRegistration />,
-              },
-              {
-                path: "registrationdetails",
-                element: <RegistrationDetails />,
-              }
-              
-            ],
-          },
-        ],
-      },
-
       {
         path: "public_reg/*",
         element: <PublicRoute />,
@@ -292,6 +274,64 @@ const router = createBrowserRouter([
             ],
           },
         ],
+      },
+      {
+        path: "services/*",
+        element: <ServicesRoute />,
+        children: [
+          {
+            path: "contacts/*",
+            children: [
+              {
+                path: "type",
+                element: <ContactType />,
+              },
+              {
+                path: "newtype",
+                element: <NewType />,
+              },
+              {
+                path: "registration",
+                element: <ContactRegistration />,
+              },
+              {
+                path: "registrationdetails",
+                element: <RegistrationDetails />,
+              }
+
+            ],
+          },
+        ],
+      },
+      {
+        path: 'maintenance/*',
+        element: <MaintenanceRoute/>,
+        children: [
+          {
+            path: 'activation',
+            element: <Activation/>
+          },
+          {
+            path: "backup",
+            element: <Backup/>,
+          },
+          {
+            path: "restore",
+            element: <Restore/>,
+          },
+          {
+            path: "recover",
+            element: <Recover/>
+          },
+          {
+            path: 'lock_domain',
+            element: <LockDomain/>
+          },
+          {
+            path: "cancel_domain",
+            element: <CancelDomain/>
+          }
+        ]
       },
       // Add your children routes here
     ],

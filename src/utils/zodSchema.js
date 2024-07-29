@@ -929,3 +929,14 @@ export const medicalInformationFormSchema = z.object({
   otherMedicalDetails: z.string().optional(),
   knownAilments: z.string().optional(),
 });
+
+export const activationSchema = z.object({
+  subscriber_id: z.string({
+    invalid_type_error: "Subscriber's ID must be a number",
+    required_error: "This field is required",
+  })
+  .min(9, "Subscriber's ID must be 9 characters long")
+  .max(9, "Subscriber's ID must not exceed 9 characters")
+  .regex(/^\d+$/, "Subscriber's ID must only contain numeric characters")
+  .trim()
+})

@@ -1,7 +1,7 @@
+
 import Dashboard from "@/pages/Dashboard/Dashboard";
 import { PublicReg } from "@/pages/PublicRegistry";
-import { ServiceItems } from "@/pages/Services";
-import {  } from "@/pages/Services";
+import { Maintenance } from "@/pages/Maintenance";
 
 export const DashboardLinks = [
   {
@@ -18,5 +18,10 @@ export const DashboardLinks = [
     id: 6,
     name: "Services",
     component: <ServiceItems />,
+  },
+  {
+    id: 8,
+    name: "Maintenance",
+    component: <Maintenance />,
   },
 ];

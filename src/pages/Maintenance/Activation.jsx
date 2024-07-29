@@ -88,10 +88,13 @@ const Activation = () => {
                                 <DialogTitle>New Activation</DialogTitle>
                             </DialogHeader>
                             <hr className="border border-gray-100 w-full h-[1px]" />
+                            <div className="leading-6">Enter subscriber's ID to activate</div>
                             <GenericForm
                                 defaultValues={activationDefaultValues}
                                 validationSchema={activationRequiredForm}
                                 onSubmit={onSubmit}
+                                firstButton={"Cancel"}
+                                secondButton={"Confirm"}
                             >
                                 <FormInput name="subscriber_id" label="Subscriber's ID" />
                             </GenericForm>

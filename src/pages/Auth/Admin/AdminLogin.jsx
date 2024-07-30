@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { baseUrl } from "@/App";
 import { sendData } from "@/hooks/usePostData";
 import { Loader } from 'lucide-react';
-import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
+import { setTokenSubscriber, setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
 import { useDispatch } from "react-redux";
 function AdminLogin({ setFormType }) {
   const url = `${baseUrl}admin/auth/login`;
@@ -60,6 +60,10 @@ const dispatch = useDispatch()
               setLoading: setLoading 
             });
             dispatch(setUserSubscriber(returnedUser.admin));
+            dispatch(setTokenSubscriber({
+              user: returnedUser.admin,
+              token: returnedUser.token
+          }));
             navigate('/')
         } catch (error) {
           console.error("error", error);

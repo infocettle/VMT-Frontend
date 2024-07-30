@@ -73,6 +73,9 @@ import {
   // LockDomain,
   // CancelDomain
 } from "./pages/Maintenance";
+import AccessControlRoute from "./pages/AccessControl/AccessControlRoute";
+import PoliciesDetails from "./pages/AccessControl/PoliciesDetails";
+import Types from "./pages/AccessControl/Types";
 
 const queryClient = new QueryClient();
 
@@ -143,6 +146,32 @@ const router = createBrowserRouter([
             path: "overview",
             element: <Overview />,
           },
+        ],
+      },
+      {
+        path: "access_control/*",
+        element: <AccessControlRoute />,
+        children: [
+    
+          {
+            path: "policies/*",
+            element: <PoliciesDetails />,
+            children: [
+              {
+                path: "",
+                element: <Types />,
+              },
+              {
+                path: "types",
+                element: <Types />,
+              },
+              { path: "update", element: <Types/> },
+              { path: "restrictions", element: <Types /> },
+              { path: "agreement", element: <Types /> },
+             
+            ],
+          },
+         
         ],
       },
       {

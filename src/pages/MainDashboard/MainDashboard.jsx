@@ -39,7 +39,7 @@ const MainDashboard = () => {
     } 
     else if (url?.includes("services")) {
       setPageHeader("Services");
-      if (url?.includes("newtype")) {
+      if (url?.includes("newtype") || url?.includes("documentinformation")) { 
         setShowFooter(false)
       }
       else{

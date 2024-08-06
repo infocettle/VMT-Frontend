@@ -121,7 +121,9 @@
 .services-card-reg-side {
     background-color: #fff;
 }
-
+.beige-bg{
+    background-color: #F6F6F9;
+}
 .reg-left-menu p{
    font-size: 13px;
    color: #666687;

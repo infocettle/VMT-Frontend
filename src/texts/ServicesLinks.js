@@ -18,7 +18,7 @@ export const ServicesLinks = [
             {
                 id: 3,
                 name: "KYC",
-                href: "/services/contacts/",
+                href: "/services/contacts/kycverification",
             },
             {
                 id: 4,

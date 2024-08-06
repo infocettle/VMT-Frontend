@@ -73,6 +73,9 @@ import {
   // LockDomain,
   // CancelDomain
 } from "./pages/Maintenance";
+import KYCVerification from "./pages/Services/KYC/KYCVerification";
+import EditDocument from "./pages/Services/KYC/EditDocument";
+import ViewContactKYC from "./pages/Services/KYC/ViewContactKYC";
 
 const queryClient = new QueryClient();
 
@@ -99,9 +102,12 @@ const router = createBrowserRouter([
 
   {
     path: "/",
-    element:<ProtectedRoute>
-    <MainDashboard />
-  </ProtectedRoute>,
+  //   element:<ProtectedRoute>
+  //   <MainDashboard />
+  // </ProtectedRoute>,
+    element: 
+      <MainDashboard />,
+    
     children: [
       // All children routes here
       {
@@ -291,12 +297,24 @@ const router = createBrowserRouter([
                 element: <NewType />,
               },
               {
+                path: "documentinformation",
+                element: <EditDocument />,
+              },
+              {
+                path: "viewcontactkyc",
+                element: <ViewContactKYC />,
+              },
+              {
                 path: "registration",
                 element: <ContactRegistration />,
               },
               {
                 path: "registrationdetails",
                 element: <RegistrationDetails />,
+              },
+              {
+                path: "kycverification",
+                element: <KYCVerification />,
               }
 
             ],

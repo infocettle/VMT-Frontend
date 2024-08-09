@@ -930,7 +930,7 @@ export const medicalInformationFormSchema = z.object({
   knownAilments: z.string().optional(),
 });
 
-export const activationSchema = z.object({
+export const subscriberIDSchema = z.object({
   subscriber_id: z.string({
     invalid_type_error: "Subscriber's ID must be a number",
     required_error: "This field is required",

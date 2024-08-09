@@ -1,19 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-const fetchData = async (url) => {
+const fetchData = async (url, token) => {
   const headers = {
     Accept: "application/json",
+    Authorization: `Bearer ${token}`,
   };
 
   try {
     const { data } = await axios.get(url, { headers });
     return data;
   } catch (error) {
+    console.error(error);
     const errorBody = error.response?.data || { detail: error.message };
-    console.error(errorBody);
-    toast.error(`${errorBody}`, {
+    toast.error(errorBody.detail, {
       autoClose: 2000,
       theme: "light",
     });
@@ -22,9 +24,11 @@ const fetchData = async (url) => {
 };
 
 const useFetchData = (url, queryKey) => {
+  const token = useSelector((state) => state.auth.token);
+
   return useQuery({
     queryKey: [queryKey],
-    queryFn: () => fetchData(url),
+    queryFn: () => fetchData(url, token),
   });
 };
 

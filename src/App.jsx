@@ -76,6 +76,10 @@ import {
 import KYCVerification from "./pages/Services/KYC/KYCVerification";
 import EditDocument from "./pages/Services/KYC/EditDocument";
 import ViewContactKYC from "./pages/Services/KYC/ViewContactKYC";
+import ServicesPayment from "./pages/Services/Payment";
+import ViewContactPayment from "./pages/Services/Payment/ViewContactPayment";
+import UpdateSubscription from "./pages/Services/Payment/UpgradeSubscription";
+import RenewSubscription from "./pages/Services/Payment/RenewSubscription";
 
 const queryClient = new QueryClient();
 
@@ -97,17 +101,19 @@ const router = createBrowserRouter([
 
   {
     path: "/subscription",
-    element:(<ProtectedRoute><Subscription /></ProtectedRoute>) ,
+    element: (
+      <ProtectedRoute>
+        <Subscription />
+      </ProtectedRoute>
+    ),
   },
 
   {
     path: "/",
-  //   element:<ProtectedRoute>
-  //   <MainDashboard />
-  // </ProtectedRoute>,
-    element: 
-      <MainDashboard />,
-    
+      element:<ProtectedRoute>
+      <MainDashboard />
+    </ProtectedRoute>,
+
     children: [
       // All children routes here
       {
@@ -134,7 +140,7 @@ const router = createBrowserRouter([
                 path: "general",
                 element: <GeneralPerfomance />,
               },
-              { path: "business-kpi", element: <BusinessKpiPerformance/> },
+              { path: "business-kpi", element: <BusinessKpiPerformance /> },
               { path: "sales", element: <SalesPerformance /> },
               { path: "commission", element: <CommissionPerformance /> },
               { path: "company", element: <CompanyPerformance /> },
@@ -315,31 +321,46 @@ const router = createBrowserRouter([
               {
                 path: "kycverification",
                 element: <KYCVerification />,
-              }
-
+              },
+              {
+                path: "payments",
+                element: <ServicesPayment />,
+              },
+              {
+                path: "viewcontactpayments",
+                element: <ViewContactPayment />,
+              },
+              {
+                path: "updatesubscription",
+                element: <UpdateSubscription />,
+              },
+              {
+                path: "renewsubscription",
+                element: <RenewSubscription />,
+              },
             ],
           },
         ],
       },
       {
-        path: 'maintenance/*',
-        element: <MaintenanceRoute/>,
+        path: "maintenance/*",
+        element: <MaintenanceRoute />,
         children: [
           {
-            path: 'activation',
-            element: <Activation/>
+            path: "activation",
+            element: <Activation />,
           },
           {
             path: "backup",
-            element: <Backup/>,
+            element: <Backup />,
           },
           {
             path: "restore",
-            element: <Restore/>,
+            element: <Restore />,
           },
           {
             path: "recover",
-            element: <Recover/>
+            element: <Recover />,
           },
           // {
           //   path: 'lock_domain',
@@ -349,7 +370,7 @@ const router = createBrowserRouter([
           //   path: "cancel_domain",
           //   element: <CancelDomain/>
           // }
-        ]
+        ],
       },
       // Add your children routes here
     ],
@@ -357,9 +378,11 @@ const router = createBrowserRouter([
 
   {
     path: "/profile/*",
-    element:  <ProtectedRoute>
-    <ProfilePath />
-  </ProtectedRoute>,
+    element: (
+      <ProtectedRoute>
+        <ProfilePath />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "company-subscriber",

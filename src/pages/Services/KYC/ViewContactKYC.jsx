@@ -1,46 +1,105 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import { Table, Divider, Space } from "antd"
 import Tables from "@/pages/Services/Tables/Tables";
 import ServicesDiv from '../ServicesDiv';
 import { Link } from 'react-router-dom';
 import { BiLeftArrowAlt } from "react-icons/bi"
 import { BsEnvelopeFill, BsGeoAltFill, BsTelephoneFill, BsPencil, BsTrash } from "react-icons/bs";
+import "../services.css"
+import SubscriberIdentity from "./SubscriberIdentity";
+import SubscriberAddress from "./SubscriberAddress";
+import SubscriberTIN from "./SubscriberTIN";
 
 export default function ViewContactKYC() {
+    const [showSubscriberIdentity, setShowSubscriberIdentity] = useState(false);
+    const [showSubscriberAddress, setShowSubscriberAddress] = useState(false);
+    const [showSubscriberTIN, setShowSubscriberTIN] = useState(false);
+
+    const openSubscriberTIN = () => {
+        setShowSubscriberTIN(true);
+    };
+
+    const closeSubscriberTIN = () => {
+        setShowSubscriberTIN(false);
+    };
+
+     const openSubscriberIdentity = () => {
+        setShowSubscriberIdentity(true);
+    };
+
+    const closeSubscriberIdentity = () => {
+        setShowSubscriberIdentity(false);
+    };
+
+     const openSubscriberAddress = () => {
+        setShowSubscriberAddress(true);
+    };
+
+    const closeSubscriberAddress = () => {
+        setShowSubscriberAddress(false);
+    };
+
     const tableHeader = [
-        "DOCUMENT CODE",
-        "NAME",
-        "FUNCTIONAL DESCRIPTION",
-        "DATE CREATED",
+        "KYC ITEM",
+        "OBTAINED",
+        "RESULTS",
+        "REMARKS",
         "ACTION",
     ]
     const tableRows = [
         {
-            documentcode: "1",
-            name: <Link style={{ color: "#000" }} to={""}>TRADING</Link>,
-            functionaldescription: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-            datecreated: "15-JUN-2024",
+            kycitem: "Subscriber Identity",
+            obtained: "Yes",
+            results: "Pass",
+            remarks: "-",
             action: <>
-                <a href='#'>view</a>
+                <a className="cursor-pointer" onClick={openSubscriberIdentity}>view</a>
             </>
         },
         {
-            documentcode: "2",
-            name: <Link style={{ color: "#000" }} to={""}>EDUCATION</Link>,
-            functionaldescription: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-            datecreated: "15-JUN-2024",
+            kycitem: "Subscriber Address",
+            obtained: "No",
+            results: "Fail",
+            remarks: "Could not be located physically and on google",
             action: <>
-                <a href='#'>view</a>
+                <a className="cursor-pointer" onClick={openSubscriberAddress}>view</a>
             </>
         },
         {
-            documentcode: "3",
-            name: <Link style={{ color: "#000" }} to={""}>SERVICES</Link>,
-            functionaldescription: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-            datecreated: "15-JUN-2024",
+            kycitem: "Subscriber TIN",
+            obtained: "Waived",
+            results: "N/A",
+            remarks: "Not provided by subscriber",
             action: <>
-                <a href='#'>view</a>
+                <a className="cursor-pointer" onClick={openSubscriberTIN}>view</a>
             </>
+        },
+        {
+            kycitem: "Representative Identity",
+            obtained: "Yes",
+            results: "Pass",
+            remarks: "-",
+            action: <>
+                <a className="cursor-pointer">view</a>
+            </>
+        },
+        {
+            kycitem: "Representative Address",
+            obtained: "No",
+            results: "Pass",
+            remarks: "-",
+            action: <>
+                <a className="cursor-pointer">view</a>
+            </>
+        },
+        {
+            kycitem: "Verification Status",
+            // obtained: "Yes",
+            results: "Pending",
+            remarks: "Subscriber address verification still outstanding",
+            // action: <>
+            //     <a href='#'>view</a>
+            // </>
         },
 
 
@@ -48,7 +107,7 @@ export default function ViewContactKYC() {
     return (
       
 
-         <div className="w-full">
+        <div className="w-full">
             <ServicesDiv module={"Contacts"} />
             <div className="bg-gray-100 px-2 py-3  scrolled-height lg:px-10 w-full flex-col items-center">
 
@@ -112,6 +171,9 @@ export default function ViewContactKYC() {
                     Submit
                 </button>
             </div>
+            {showSubscriberIdentity && <SubscriberIdentity closeSubscriberIdentity={closeSubscriberIdentity} />}
+            {showSubscriberAddress && <SubscriberAddress closeSubscriberAddress={closeSubscriberAddress} />}
+            {showSubscriberTIN && <SubscriberTIN closeSubscriberTIN={closeSubscriberTIN} />}
         </div>
     )
 }

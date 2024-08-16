@@ -19,14 +19,14 @@ function Tables({ headBg, headTextColor, headerText, headerArr, rowArr }) {
             )}
             <div className='overflow-x-auto'>
                 <Table className="min-w-full services-table">
-                    <TableHeader>
+                    <TableHeader style={{fontSize:"13px"}}>
                         <TableRow className={"text-white " + headBg}>
                             {headerArr && headerArr.map((header, index) => (
                                 <TableHead className={"text-left " + headTextColor} key={index}>{header}</TableHead>
                             ))}
                         </TableRow>
                     </TableHeader>
-                    <TableBody>
+                    <TableBody style={{ fontSize: "13px" }}>
                         {rowArr && rowArr.map((row, rowIndex) => (
                             <TableRow className="border-0" key={rowIndex}>
                                 {headerArr && headerArr.map((header, colIndex) => (

@@ -8,7 +8,26 @@
     font-weight: bold;
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
+.vtm-btn-outline {
+    border: 2px solid grey;
+    /* Blue border */
+    background-color: transparent;
+    color: grey;
+    /* Blue text */
+    height: 38px;
+    /* padding: 10px 20px; */
+    border-radius: 5px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
 
+.vtm-btn-outline:hover {
+    background-color: #007bff;
+    /* Blue background on hover */
+    color: #fff;
+    /* White text on hover */
+}
 .vtm-btn-success {
     background-color: #EDFDF5;
     color: #0D7742;
@@ -125,10 +144,10 @@
     font-size: 13px!important;
 }
 .services-table tr td p {
-    font-size: 14px !important;
+    font-size: 14px;
 }
 .status-badge {
-    font-size: 12px;
+    /* font-size: 12px; */
     /* font-weight: 500; */
     padding: 5px;
     border-radius: 16px;

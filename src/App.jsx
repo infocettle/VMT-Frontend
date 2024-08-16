@@ -86,6 +86,10 @@ import ServicesUpdate from "./pages/Services/Contacts/Update";
 import UpdateDetails from "./pages/Services/Contacts/Update/UpdateDetails";
 import ServicesMessage from "./pages/Services/Contacts/Message";
 import ServicesDashboard from "./pages/Services/Contacts/Dashboard";
+import ContactRequestTypes from "./pages/Services/Support";
+import ServiceLevelAgreement from "./pages/Services/Support/Service-Level-Agreement";
+import ServiceKPI from "./pages/Services/Support/kpi";
+import ServiceRequests from "./pages/Services/Support/Request";
 
 const queryClient = new QueryClient();
 
@@ -116,10 +120,10 @@ const router = createBrowserRouter([
 
   {
     path: "/",
-      element:<ProtectedRoute>
-      <MainDashboard />
-    </ProtectedRoute>,
-
+    //   element:<ProtectedRoute>
+    //   <MainDashboard />
+    // </ProtectedRoute>,
+    element: <MainDashboard />,
     children: [
       // All children routes here
       {
@@ -369,6 +373,27 @@ const router = createBrowserRouter([
           {
             path: "newprospect",
             element: <NewProspect />,
+          },
+          {
+            path: "support/*",
+            children: [
+              {
+                path: "requesttypes",
+                element: <ContactRequestTypes />,
+              },
+              {
+                path: "service-level-agreement",
+                element: <ServiceLevelAgreement />,
+              },
+              {
+                path: "kpi",
+                element: <ServiceKPI />,
+              },
+              {
+                path: "requests",
+                element: <ServiceRequests />,
+              },
+            ],
           },
         ],
       },

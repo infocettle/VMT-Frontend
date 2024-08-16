@@ -50,22 +50,32 @@ export const ServicesLinks = [
         children: [
             {
                 id: 1,
-                name: "Banks",
-                href: "/services/support/",
+                name: "Request Types",
+                href: "/services/support/requesttypes",
             },
             {
                 id: 2,
-                name: "Type",
-                href: "/services/support/",
+                name: "Service Level Agreement",
+                href: "/services/support/service-level-agreement",
             },
             {
                 id: 3,
-                name: "License",
-                href: "/services/support/",
+                name: "KPI",
+                href: "/services/support/kpi",
             },
             {
                 id: 4,
-                name: "Pension Fund",
+                name: "Requests",
+                href: "/services/support/requests",
+            },
+            {
+                id: 5,
+                name: "Resolutions",
+                href: "/services/support/",
+            },
+            {
+                id: 6,
+                name: "Responses",
                 href: "/services/support/",
             },
         ],

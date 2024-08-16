@@ -18,7 +18,7 @@ function Tables({ headBg, headTextColor, headerText, headerArr, rowArr }) {
                 </div>
             )}
             <div className='overflow-x-auto'>
-                <Table className="min-w-full">
+                <Table className="min-w-full services-table">
                     <TableHeader>
                         <TableRow className={"text-white " + headBg}>
                             {headerArr && headerArr.map((header, index) => (

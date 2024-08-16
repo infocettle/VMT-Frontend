@@ -1,7 +1,7 @@
 import Tables from "@/pages/Services/Tables/Tables";
 import React, { Component, useState } from "react";
-import ServicesDiv from "../ServicesDiv";
-import "../services.css";
+import ServicesDiv from "../../ServicesDiv";
+import "../../services.css";
 import { IoFilter } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import {
@@ -18,51 +18,52 @@ const tableHeader = [
   "NAME",
   "CONTACT TYPE",
   "ENTITY TYPE",
+  "DATE JOINED",
   "STATUS",
-  "PAYMENT DATE",
+  
 ];
 const tableRows = [
   {
     contactid: "123-543-777",
-    name: <Link style={{ color: "#0B6ED0" }} to={"/services/contacts/viewcontactpayments"}>JAMES N.</Link>,
+    name: <Link style={{ color: "#0B6ED0" }} to={"/services/contacts/updatedetails"}>JAMES N.</Link>,
     contacttype: "SUBSCRIBER",
     entitytype: "INDIVIDUAL",
     status: (
       <>
         <p className="status-badge no-border status-badge--ofsted--outstanding text-center py-1" style={{ width: "91px" }}>
-          Successful
+          Active
         </p>
       </>
     ),
-    paymentdate: "15-JUN-2024",
+    datejoined: "15-JUN-2024",
   },
   {
     contactid: "123-543-777",
-    name: <Link style={{ color: "#0B6ED0" }} to={"/services/contacts/viewcontactpayments"}>LORETTA O.</Link>,
+    name: <Link style={{ color: "#0B6ED0" }} to={"/services/contacts/updatedetails"}>LORETTA O.</Link>,
     contacttype: "CONSULTANT",
     entitytype: "INDIVIDUAL",
     status: (
       <>
         <p className="status-badge no-border status-badge--ofsted--outstanding text-center py-1" style={{ width: "91px" }}>
-          Successful
+          Active
         </p>
       </>
     ),
-    paymentdate: "15-JUN-2024",
+    datejoined: "15-JUN-2024",
   },
   {
     contactid: "123-543-777",
-    name: <Link style={{ color: "#0B6ED0" }} to={"/services/contacts/viewcontactpayments"}>HO SERVICES</Link>,
+    name: <Link style={{ color: "#0B6ED0" }} to={"/services/contacts/updatedetails"}>HO SERVICES</Link>,
     contacttype: "SUBSCRIBER",
     entitytype: "COMPANY",
     status: (
       <>
-        <p className="status-badge no-border status-badge--ofsted--outstanding text-center py-1" style={{width:"91px"}}>
-          Successful
+        <p className="status-badge no-border status-badge--ofsted--outstanding text-center" style={{width:"91px"}}>
+          Active
         </p>
       </>
     ),
-    paymentdate: "15-JUN-2024",
+    datejoined: "15-JUN-2024",
   },
 ];
 
@@ -133,7 +134,7 @@ const tableRowsVerification = [
     ),
   },
 ];
-const ServicesPayment = () => {
+const ServicesUpdate = () => {
   const [displayType, setdisplayType] = useState("documents");
 
   const constToggleDisplayType = (x) => {
@@ -142,21 +143,21 @@ const ServicesPayment = () => {
 
   return (
     <div className="w-full">
-      <ServicesDiv module={"Contact"} />
+      <ServicesDiv module={"Contacts"} />
       <div className="bg-gray-100 px-2 py-3  scrolled-height lg:px-10 w-full flex-col items-center">
         <div className="flex justify-between w-full items-center">
           <div className="main-container">
             <div class="flex justify-between">
               <div className="flex gap-3">
                 <h2 className="uppercase performance_header my-auto">
-                  Payment
+                  Update
                 </h2>
-                <div className="services-btn-border">
+                <div className="negative-positive-btn bg-white">
                   <div className="filter-button-text-service flex justify-between">
                     A -
                   </div>
                 </div>
-                <div className="services-btn-border">
+                <div className="negative-positive-btn bg-white">
                   <div className="filter-button-text-service flex justify-between">
                     A +
                   </div>
@@ -206,4 +207,4 @@ const ServicesPayment = () => {
   );
 };
 
-export default ServicesPayment;
+export default ServicesUpdate;

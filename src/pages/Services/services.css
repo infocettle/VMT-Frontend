@@ -1,3 +1,35 @@
+.vtm-btn {
+    border: 2px solid transparent;
+    border-radius: 5px;
+    padding: 8px 16px;
+    background-color: transparent;
+    color: #0D7742;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.vtm-btn-success {
+    background-color: #EDFDF5;
+    color: #0D7742;
+    border-color: #63EEA8;
+}
+
+.vtm-btn-success:hover {
+    background-color: #63EEA8;
+    color: #fff;
+}
+
+.vtm-btn-sm {
+    padding: 4px 12px;
+    font-size: 12px;
+}
+
+.vtm-btn-lg {
+    padding: 12px 24px;
+    font-size: 18px;
+}
+
 .services-btn {
     display: inline-block;
     font-weight: 600;
@@ -89,11 +121,16 @@
 .ant-input {
     padding: 7px !important;
 }
-
+.services-table tr td a{
+    font-size: 13px!important;
+}
+.services-table tr td p {
+    font-size: 14px !important;
+}
 .status-badge {
     font-size: 12px;
-    font-weight: 500;
-    padding: 10px 15px;
+    /* font-weight: 500; */
+    padding: 5px;
     border-radius: 16px;
 }
 .status-badge--ofsted--outstanding {
@@ -162,9 +199,24 @@
     padding: 10px 10px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    width: 50% !important;
+    width: 40% !important;
 }
 
+.negative-positive-btn {
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    border: 1px solid #666687;
+    padding: 9px;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #212134;
+    border-radius: 5px;
+}
 @media (max-width: 768px) {
     .modal-layout {
         width: 100% !important;
@@ -190,7 +242,7 @@
 .kyc-header {
     color: #212134;
     font-family: Open Sans;
-    font-size: 2.7vh;
+    font-size: 18px;
     font-weight: 700;
     line-height: 40px;
     text-align: left;

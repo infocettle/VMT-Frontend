@@ -5,7 +5,7 @@ const SubscriberTIN = ({ closeSubscriberTIN }) => {
 
   return (
     <div className="modal-overlay">
-      <div className="modal-layout zoomsin p-8">
+      <div className="modal-layout zoomsin p-8 ">
         <div className="w-full flex items-center justify-between py-1 border-b-2">
           <div className="kyc-header">Subscriber TIN</div>
           <div className="kyc-close" onClick={closeSubscriberTIN}>

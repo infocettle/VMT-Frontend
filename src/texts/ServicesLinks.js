@@ -28,17 +28,17 @@ export const ServicesLinks = [
             {
                 id: 5,
                 name: "Update",
-                href: "/services/contacts/",
+                href: "/services/contacts/update",
             },
             {
                 id: 6,
                 name: "Message",
-                href: "/services/contacts/",
+                href: "/services/contacts/message",
             },
             {
                 id: 7,
                 name: "Dashboard",
-                href: "/services/contacts/",
+                href: "/services/contacts/dashboard",
             },
         ],
     },

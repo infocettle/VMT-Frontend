@@ -39,7 +39,7 @@ const MainDashboard = () => {
     } 
     else if (url?.includes("services")) {
       setPageHeader("Services");
-      if (url?.includes("newtype") || url?.includes("documentinformation")) { 
+      if (url?.includes("newtype") || url?.includes("documentinformation") || url?.includes("newprospect")) { 
         setShowFooter(false)
       }
       else{
@@ -199,7 +199,7 @@ const MainDashboard = () => {
               </div>
             ) : null}
 
-            <div className="relative xl:w-full overflow-x-scroll box-container-overall">
+            <div className="relative w-full overflow-x-scroll box-container-overall">
               <Outlet />
               {showFooter &&
                 <div className="w-full border-b py-5 px-4 flex items-center justify-between box-container-footer large_screen">

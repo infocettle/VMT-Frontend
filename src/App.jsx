@@ -80,6 +80,12 @@ import ServicesPayment from "./pages/Services/Payment";
 import ViewContactPayment from "./pages/Services/Payment/ViewContactPayment";
 import UpdateSubscription from "./pages/Services/Payment/UpgradeSubscription";
 import RenewSubscription from "./pages/Services/Payment/RenewSubscription";
+import Prospect from "./pages/Services/Prospect/index";
+import NewProspect from "./pages/Services/Prospect/NewProspect";
+import ServicesUpdate from "./pages/Services/Contacts/Update";
+import UpdateDetails from "./pages/Services/Contacts/Update/UpdateDetails";
+import ServicesMessage from "./pages/Services/Contacts/Message";
+import ServicesDashboard from "./pages/Services/Contacts/Dashboard";
 
 const queryClient = new QueryClient();
 
@@ -338,7 +344,31 @@ const router = createBrowserRouter([
                 path: "renewsubscription",
                 element: <RenewSubscription />,
               },
+              {
+                path: "update",
+                element: <ServicesUpdate />,
+              },
+              {
+                path: "updatedetails",
+                element: <UpdateDetails />,
+              },
+              {
+                path: "message",
+                element: <ServicesMessage />,
+              },
+              {
+                path: "dashboard",
+                element: <ServicesDashboard />,
+              },
             ],
+          },
+          {
+            path: "prospects",
+            element: <Prospect />,
+          },
+          {
+            path: "newprospect",
+            element: <NewProspect />,
           },
         ],
       },

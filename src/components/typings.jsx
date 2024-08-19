@@ -3,7 +3,7 @@ import useDeleteData from "@/hooks/useDeleteData";
 import useEditData from "@/hooks/useEditHook";
 import { usePostData } from "@/hooks/usePostData";
 import { baseUrl } from "@/App";
-import { PencilIcon, Trash2Icon, ChevronsUpDown } from "lucide-react";
+import { PencilIcon, Trash2Icon, ChevronsUpDown, Trash2 } from "lucide-react";
 import { TbRestore } from "react-icons/tb";
 import { LuArchiveRestore } from "react-icons/lu";
 import { Button } from "@/components/ui/button";
@@ -3736,6 +3736,7 @@ export const typeColumns = [
   },
 ];
 
+// services
 export const licenseColumns = [
   {
     accessorKey: "code",
@@ -5527,3 +5528,161 @@ export const recoverColumns =  [
     },
   },
 ]
+
+// access control
+export const accessControlTypeColumns = [
+  {
+    accessorKey: "documentName",
+    header: "DOCUMENT NAME",
+    cell: ({ row }) => {
+      const formatted = row.getValue("documentName");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "description",
+    header: "DESCRIPTION",
+    cell: ({ row }) => {
+      const formatted = row.getValue("description");
+      return <div className="ml-2">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "version",
+    header: "VERSION",
+    cell: ({ row }) => {
+      const formatted = row.getValue("version");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "initialDate",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          INITIAL DATE
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("initialDate");
+      return <div className="ml-6 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "revisedDate",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          REVISED DATE
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("revisedDate");
+      return <div className="ml-6 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "status",
+    header: "STATUS",
+    cell: ({ row }) => {
+      const formatted = row.getValue("status");
+      return (
+        <div
+          className={cn(
+            `${
+              formatted == "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : "bg-green-50 text-green-900 border border-green-500"
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+          )}
+        >
+          {String(formatted)}
+        </div>
+      );
+    },
+  },
+  {
+    header: () => <div className="ml-5 uppercase">ACTION</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <button
+            className="text-red-600 hover:text-red-900"
+            onClick={() => alert(`Delete ${row.getValue("documentName")}`)}
+          >
+            <Trash2 />
+          </button>
+        </div>
+      );
+    },
+  },
+];
+export const accessControlModuleColumns = [
+  {
+    accessorKey: "id",
+    header: "GROUP ID",
+    cell: ({ row }) => {
+      const formatted = row.getValue("id");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "groupName",
+    header: "GROUP NAME",
+    cell: ({ row }) => {
+      const formatted = row.getValue("groupName");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "functionalDescription",
+    header: "FUNCTIONAL DESCRIPTION",
+    cell: ({ row }) => {
+      const formatted = row.getValue("functionalDescription");
+      return <div className="ml-2">{String(formatted)}</div>;
+    },
+  },
+  
+  
+  {
+    header: () => <div className="ml-5 uppercase">ACTION</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <button
+            className="text-vmtblue"
+            onClick={() => alert(`Delete ${row.getValue("documentName")}`)}
+          >
+            <PencilIcon />
+          </button>
+          <button
+            className="text-red-600 hover:text-red-900"
+            onClick={() => alert(`Delete ${row.getValue("documentName")}`)}
+          >
+            <Trash2 />
+          </button>
+        </div>
+      );
+    },
+  },
+];

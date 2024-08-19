@@ -9,7 +9,7 @@ export const FormInput = ({ name, label, type = "text" }) => {
 
   return (
     <div className="w-full gap-1 flex flex-col ">
-      <label htmlFor={name} className="capitalize text-sm font-light">
+      <label htmlFor={name} className="access-control-modal-label">
         {label}
       </label>
       <Controller
@@ -18,7 +18,7 @@ export const FormInput = ({ name, label, type = "text" }) => {
         render={({ field }) => (
           <>
             <input
-              className="border border-gray-100 focus:outline-none rounded-md p-2 mb-2 capitalize"
+              className="access-control-modal-input"
               {...field}
               type={type}
               placeholder={`Enter ${label}`}

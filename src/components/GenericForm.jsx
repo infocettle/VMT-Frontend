@@ -33,6 +33,7 @@ export const GenericForm = ({
               className="w-auto border border-gray-300 rounded-md h-10 flex items-center p-2 cursor-pointer"
               onClick={() => methods.reset()}
             >
+              
               {firstButton}
             </div>
             <Button

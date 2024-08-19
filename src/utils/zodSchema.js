@@ -940,3 +940,16 @@ export const activationSchema = z.object({
   .regex(/^\d+$/, "Subscriber's ID must only contain numeric characters")
   .trim()
 })
+
+
+// access control
+export const accessControlTypesFormSchema = z.object({
+  policy_name: z
+    .string({
+      invalid_type_error: "title must be a string",
+      required_error: "This field is required",
+    })
+    .min(2, "Title must be minimum 2 characters")
+    .max(10, "Title must be maximum 10 characters")
+    .trim(),
+});

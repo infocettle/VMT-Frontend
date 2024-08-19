@@ -18,7 +18,7 @@ module.exports = {
     },
     extend: {
       colors: {
-        vmtblue: "#1B87F3",
+        vmtblue: "#0B6ED0",
         vmtgray: "#C0C0CF",
         vmtpurple: "#666687",
         border: "hsl(var(--border))",

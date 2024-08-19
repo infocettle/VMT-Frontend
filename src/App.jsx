@@ -75,7 +75,24 @@ import {
 } from "./pages/Maintenance";
 import AccessControlRoute from "./pages/AccessControl/AccessControlRoute";
 import PoliciesDetails from "./pages/AccessControl/PoliciesDetails";
-import Types from "./pages/AccessControl/Types";
+import Types from "./pages/AccessControl/Policies/Types";
+import DetailTypes from "./pages/AccessControl/components/DetailTypes";
+import DetailUpdate from "./pages/AccessControl/components/DetailUpdate";
+import DetailRestrictions from "./pages/AccessControl/components/DetailRestrictions";
+import DetailAgreement from "./pages/AccessControl/components/DetailAgreement";
+import Update from "./pages/AccessControl/Policies/Update";
+import Restrictions from "./pages/AccessControl/Policies/Restrictions";
+import Agreement from "./pages/AccessControl/Policies/Agreement";
+import ModulesDetails from "./pages/AccessControl/ModulesDetails";
+import Groups from "./pages/AccessControl/Modules/Groups";
+import Modules from "./pages/AccessControl/Modules/Modules";
+import Functions from "./pages/AccessControl/Modules/Functions";
+import Processes from "./pages/AccessControl/Modules/Processes";
+import DetailGroups from "./pages/AccessControl/components/DetailGroups";
+import DetailModules from "./pages/AccessControl/components/DetailModules";
+import DetailFunction from "./pages/AccessControl/components/DetailFunction";
+import DetailProcesses from "./pages/AccessControl/components/DetailProcesses";
+
 
 const queryClient = new QueryClient();
 
@@ -160,14 +177,96 @@ const router = createBrowserRouter([
               {
                 path: "",
                 element: <Types />,
+
               },
               {
                 path: "types",
                 element: <Types />,
+                
+              },
+              {
+                path: "update",
+                element: <Update />,
+                
+              },
+              {
+                path: "restrictions",
+                element: <Restrictions />,
+                
+              },
+              {
+                path: "agreement",
+                element: <Agreement />,
+                
+              },
+              {
+                path: "detail_types",
+                element: <DetailTypes />,
+              },
+              {
+                path: "detail_update",
+                element: <DetailUpdate />,
+              },
+              {
+                path: "detail_restrictions",
+                element: <DetailRestrictions />,
+              },
+              {
+                path: "detail_agreement",
+                element: <DetailAgreement />,
               },
               { path: "update", element: <Types/> },
               { path: "restrictions", element: <Types /> },
               { path: "agreement", element: <Types /> },
+             
+            ],
+          },
+          {
+            path: "modules/*",
+            element: <ModulesDetails />,
+            children: [
+              {
+                path: "",
+                element: <Groups />,
+
+              },
+              {
+                path: "groups",
+                element: <Groups />,
+                
+              },
+              {
+                path: "modules",
+                element: <Modules />,
+                
+              },
+              {
+                path: "functions",
+                element: <Functions />,
+                
+              },
+              {
+                path: "processes",
+                element: <Processes />,
+                
+              },
+              {
+                path: "detail_groups",
+                element: <DetailGroups />,
+              },
+              {
+                path: "detail_modules",
+                element: <DetailModules />,
+              },
+              {
+                path: "detail_functions",
+                element: <DetailFunction />,
+              },
+              {
+                path: "detail_processes",
+                element: <DetailProcesses />,
+              },
+         
              
             ],
           },

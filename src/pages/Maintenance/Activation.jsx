@@ -16,12 +16,12 @@ import {
 import { ReusableTableVariant } from '@/components/ReusableTableVariant';
 import { activationColumns } from '@/components/typings';
 import { GenericForm } from '@/components/GenericForm';
-import { activationSchema } from '@/utils/zodSchema';
+import { subscriberIDSchema } from '@/utils/zodSchema';
 import useFetchData from '@/hooks/useFetchData';
 import { usePostData } from '@/hooks/usePostData';
 import { baseUrl } from '@/App';
 
-export const activationRequiredForm = activationSchema.required();
+export const activationRequiredForm = subscriberIDSchema.required();
 const activationDefaultValues = {
     subscriber_id: ""
 }

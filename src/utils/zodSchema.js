@@ -941,6 +941,55 @@ export const subscriberIDSchema = z.object({
   .trim()
 })
 
+export const softwareSchema = z.object({
+  software_name: z.string({
+    required_error: "This field is required",
+  })
+  .min(6, "Software name must be at least 6 characters long")
+  .trim(),
+  purpose: z.string({
+    required_error: "This field is required",
+  })
+  .min(200, "Purpose must be at least 200 characters long")
+  .max(250, "Purpose must not exceed 250 characters")
+  .trim(),
+  api_key: z.string({
+    required_error: "This field is required",
+  })
+  .min(1, { message: "This field is required" })
+  .trim(),
+  client_id: z.string().optional()
+})
+
+export const thirdPartySchema = z.object({
+  software_name: z.string({
+    required_error: "This field is required",
+  })
+  .min(6, "Software name must be at least 6 characters long")
+  .trim(),
+  purpose: z.string({
+    required_error: "This field is required",
+  })
+  .min(200, "Purpose must be at least 200 characters long")
+  .max(250, "Purpose must not exceed 250 characters")
+  .trim(),
+  api_key: z.string({
+    required_error: "This field is required",
+  })
+  .min(1, { message: "This field is required" })
+  .trim(),
+})
+
+export const deviceSchema = z.object({
+  name: z.string().nullable().transform((value, ctx) => {
+    console.log(ctx)
+    return value;
+  }),
+  id: z.union([z.string(), z.number()]).transform((value) => {
+    return String(value);
+  }),
+});
+
 // access control
 export const accessControlTypesFormSchema = z.object({
   policy_name: z

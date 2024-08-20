@@ -64,8 +64,8 @@ import ContactRegistration from "./pages/Services/Contacts/Registration";
 import ServicesRoute from "./pages/Services/ServicesRoute";
 import RegistrationDetails from "./pages/Services/Contacts/RegistrationDetails";
 
-
-import { 
+import IntegrationRoute from "./pages/Integration/IntegrationRoute";
+import {
   Activation,
   Backup,
   Restore,
@@ -92,6 +92,15 @@ import DetailGroups from "./pages/AccessControl/components/DetailGroups";
 import DetailModules from "./pages/AccessControl/components/DetailModules";
 import DetailFunction from "./pages/AccessControl/components/DetailFunction";
 import DetailProcesses from "./pages/AccessControl/components/DetailProcesses";
+
+import {
+  Hardware,
+  Software,
+  ThirdParties,
+  Regulators,
+  TaxAuthorities,
+  Others
+} from "./pages/Integration";
 
 
 const queryClient = new QueryClient();
@@ -461,6 +470,38 @@ const router = createBrowserRouter([
           }
         ]
       },
+      {
+        path: 'integration/*',
+        element: <IntegrationRoute/>,
+        children: [
+          {
+            path: "software",
+            element: <Software/>,
+          },
+          {
+            path: "hardware",
+            element: <Hardware/>,
+          },
+          {
+            path: "third-parties/*",
+            element: <ThirdParties/>,
+            children: [
+              {
+                path: "regulators",
+                element: <Regulators/>,
+              },
+              {
+                path: "tax-authorities",
+                element: <TaxAuthorities/>,
+              },
+              {
+                path: "others",
+                element: <Others/>
+              }
+            ]
+          }
+        ]
+      }
       // Add your children routes here
     ],
   },

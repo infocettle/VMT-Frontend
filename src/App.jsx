@@ -64,8 +64,7 @@ import ContactRegistration from "./pages/Services/Contacts/Registration";
 import ServicesRoute from "./pages/Services/ServicesRoute";
 import RegistrationDetails from "./pages/Services/Contacts/RegistrationDetails";
 
-
-import { IntegrationRoute } from "./pages/Integration/IntegrationRoute";
+import IntegrationRoute from "./pages/Integration/IntegrationRoute";
 import {
   Activation,
   Backup,
@@ -173,114 +172,6 @@ const router = createBrowserRouter([
             path: "overview",
             element: <Overview />,
           },
-        ],
-      },
-      {
-        path: "access_control/*",
-        element: <AccessControlRoute />,
-        children: [
-    
-          {
-            path: "policies/*",
-            element: <PoliciesDetails />,
-            children: [
-              {
-                path: "",
-                element: <Types />,
-
-              },
-              {
-                path: "types",
-                element: <Types />,
-                
-              },
-              {
-                path: "update",
-                element: <Update />,
-                
-              },
-              {
-                path: "restrictions",
-                element: <Restrictions />,
-                
-              },
-              {
-                path: "agreement",
-                element: <Agreement />,
-                
-              },
-              {
-                path: "detail_types",
-                element: <DetailTypes />,
-              },
-              {
-                path: "detail_update",
-                element: <DetailUpdate />,
-              },
-              {
-                path: "detail_restrictions",
-                element: <DetailRestrictions />,
-              },
-              {
-                path: "detail_agreement",
-                element: <DetailAgreement />,
-              },
-              { path: "update", element: <Types/> },
-              { path: "restrictions", element: <Types /> },
-              { path: "agreement", element: <Types /> },
-             
-            ],
-          },
-          {
-            path: "modules/*",
-            element: <ModulesDetails />,
-            children: [
-              {
-                path: "",
-                element: <Groups />,
-
-              },
-              {
-                path: "groups",
-                element: <Groups />,
-                
-              },
-              {
-                path: "modules",
-                element: <Modules />,
-                
-              },
-              {
-                path: "functions",
-                element: <Functions />,
-                
-              },
-              {
-                path: "processes",
-                element: <Processes />,
-                
-              },
-              {
-                path: "detail_groups",
-                element: <DetailGroups />,
-              },
-              {
-                path: "detail_modules",
-                element: <DetailModules />,
-              },
-              {
-                path: "detail_functions",
-                element: <DetailFunction />,
-              },
-              {
-                path: "detail_processes",
-                element: <DetailProcesses />,
-              },
-         
-             
-            ],
-          },
-         
         ],
       },
       {
@@ -517,34 +408,6 @@ const router = createBrowserRouter([
                 path: "sub_sectors",
                 element: <SubSectors />,
               },
-            ],
-          },
-        ],
-      },
-      {
-        path: "services/*",
-        element: <ServicesRoute />,
-        children: [
-          {
-            path: "contacts/*",
-            children: [
-              {
-                path: "type",
-                element: <ContactType />,
-              },
-              {
-                path: "newtype",
-                element: <NewType />,
-              },
-              {
-                path: "registration",
-                element: <ContactRegistration />,
-              },
-              {
-                path: "registrationdetails",
-                element: <RegistrationDetails />,
-              }
-
             ],
           },
         ],

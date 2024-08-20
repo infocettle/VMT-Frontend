@@ -1,8 +1,11 @@
 import { cn } from "@/lib/utils";
 import useDeleteData from "@/hooks/useDeleteData";
 import useEditData from "@/hooks/useEditHook";
+import { usePostData } from "@/hooks/usePostData";
 import { baseUrl } from "@/App";
-import { PencilIcon, Trash2Icon, ChevronsUpDown } from "lucide-react";
+import { PencilIcon, Trash2Icon, ChevronsUpDown, Trash2 } from "lucide-react";
+import { TbRestore } from "react-icons/tb";
+import { LuArchiveRestore } from "react-icons/lu";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import {
@@ -14,11 +17,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import ConfirmDelete from "./ConfirmDelete";
+import ConfirmDeleteVariant from "./ConfirmDeleteVariant";
 import ReuseDialog from "./ReuseDialog";
 import { GenericForm } from "@/components/GenericForm";
 import { FormInput } from "@/components/FormInput";
 import { FormSelect } from "@/components/FormSelect";
 import { FormTextArea } from "./FormTextArea";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { requiredForm } from "@/pages/PublicRegistry/Title";
 import { genderRequiredForm } from "@/pages/PublicRegistry/Gender";
 import { maritalRequiredForm } from "@/pages/PublicRegistry/MaritalStatus";
@@ -879,6 +884,8 @@ export const bloodGroupGenotypeColumns = [
                 defaultValues={bgDefaultValues}
                 validationSchema={bGRequiredForm}
                 onSubmit={onSubmit}
+                firstButton={"Cancel"}
+                secondButton={"Submit"}
               >
                 <FormInput name="name" label="Name" />
                 <FormInput name="code" label="Code" />
@@ -1081,6 +1088,8 @@ export const ailmentColumns = [
                 defaultValues={ailDefaultValues}
                 validationSchema={ailRequiredForm}
                 onSubmit={onSubmit}
+                firstButton={"Cancel"}
+                secondButton={"Submit"}
               >
                 <FormInput name="name" label="Name" />
               </GenericForm>
@@ -1330,6 +1339,8 @@ export const bodyDataColumns = [
                 defaultValues={bodyDataDefaultValues}
                 validationSchema={bodyDataRequiredForm}
                 onSubmit={onSubmit}
+                firstButton={"Cancel"}
+                secondButton={"Submit"}
               >
                 <FormInput name="name" label="Name" />
               </GenericForm>
@@ -1533,6 +1544,8 @@ export const qualificationColumns = [
                 defaultValues={qualificationDefaultValues}
                 validationSchema={qualificationRequiredForm}
                 onSubmit={onSubmit}
+                firstButton={"Cancel"}
+                secondButton={"Submit"}
               >
                 <FormInput name="name" label="Name" />
                 <FormInput name="code" label="Code" />
@@ -1761,6 +1774,8 @@ export const currencyColumns = [
                 defaultValues={currencyDefaultValues}
                 validationSchema={currencyRequiredForm}
                 onSubmit={onSubmit}
+                firstButton={"Cancel"}
+                secondButton={"Submit"}
               >
                 <FormInput name="alphabet_code" label="Alphabet Code" />
                 <FormInput name="number_code" label="Number Code" />
@@ -1974,6 +1989,8 @@ export const continentColumns = [
                 defaultValues={continentDefaultValues}
                 validationSchema={continentRequiredForm}
                 onSubmit={onSubmit}
+                firstButton={"Cancel"}
+                secondButton={"Submit"}
               >
                 <FormInput name="name" label="Name" />
               </GenericForm>
@@ -2274,6 +2291,8 @@ export const countryColumns = [
                 defaultValues={countryDefaultValues}
                 validationSchema={countryRequiredForm}
                 onSubmit={onSubmit}
+                firstButton={"Cancel"}
+                secondButton={"Submit"}
               >
                 <FormInput name="country_code" label="Country Code" />
                 <FormInput name="country_name" label="Country Name" />
@@ -2515,6 +2534,8 @@ export const zoneColumns = [
                 validationSchema={zoneRequiredForm}
                 onSubmit={onSubmit}
                 long={false}
+                firstButton={"Cancel"}
+                secondButton={"Submit"}
               >
                 <FormInput name="code" label="Code" />
                 <FormInput name="zone_name" label="Zone Name" />
@@ -2769,6 +2790,8 @@ export const stateColumns = [
                 validationSchema={stateRequiredForm}
                 long={false}
                 onSubmit={onSubmit}
+                firstButton={"Cancel"}
+                secondButton={"Submit"}
               >
                 <FormInput name="state_code" label="State Code" />
                 <FormInput name="state_name" label="State Name" />
@@ -3715,6 +3738,7 @@ export const typeColumns = [
   },
 ];
 
+// services
 export const licenseColumns = [
   {
     accessorKey: "code",
@@ -5169,21 +5193,71 @@ export const activationColumns = [
     cell: ({ row }) => {
       const formatted = row.getValue("failedActivationTime");
     
-      function formatISODate(isoString) {
-        const date = new Date(isoString);
+      return (
+        <div className="ml-6 uppercase">{formatISODate(String(formatted))}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "date",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Date</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("date");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  }
+]
+
+export const backupColumns = [
+  {
+    accessorKey: "backupId",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Backup ID</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("backupId");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "memorySize",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Memory Size</h2>;
+    },
+    cell: ({ row }) => {
+      const sizeInBytes = row.getValue("memorySize");
+      const formattedSize = formatBytes(sizeInBytes);
+      return (
+        <div className="ml-6">{formattedSize}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "startTime",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Start Time</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("startTime");
     
-        const hours = date.getUTCHours();
-        const minutes = date.getUTCMinutes();
-    
-        const timezoneOffsetMinutes = date.getTimezoneOffset();
-        const offsetHours = -Math.floor(timezoneOffsetMinutes / 60);
-        const offsetSign = offsetHours >= 0 ? '+' : '-';
-        const formattedOffset = `GMT ${offsetSign}${offsetHours}`;
-  
-        const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-    
-        return `${formattedTime} (${formattedOffset})`;
-      }
+      return (
+        <div className="ml-6 uppercase">{formatISODate(String(formatted))}</div>
+      );
+    },
+  }, 
+  {
+    accessorKey: "endTime",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>End Time</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("endTime");
     
       return (
         <div className="ml-6 uppercase">{formatISODate(String(formatted))}</div>

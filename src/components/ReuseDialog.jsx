@@ -20,6 +20,7 @@ const ReuseDialog = ({
   onSubmit,
   long,
   children,
+  buttonText="Create new"
 }) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -33,13 +34,13 @@ const ReuseDialog = ({
           />
         ) : (
           <Button className="bg-vmtblue" size="sm" onClick={onClick}>
-            Create new
+            {buttonText}
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="mx-auto w-[95%] max-w-none  lg:w-[50%]">
         <DialogHeader>
-          <DialogTitle>{dialogTitle}</DialogTitle>
+          <DialogTitle className='access-control-modal-header'>{dialogTitle}</DialogTitle>
         </DialogHeader>
         <hr className="border border-gray-100 w-full h-[1px]" />
         <GenericForm
@@ -47,6 +48,8 @@ const ReuseDialog = ({
           validationSchema={validationSchema}
           onSubmit={onSubmit}
           long={long}
+          firstButton={"Cancel"}
+          secondButton={"Submit"}
         >
           {children}
         </GenericForm>

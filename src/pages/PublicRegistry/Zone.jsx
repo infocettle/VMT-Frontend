@@ -90,6 +90,8 @@ const Zone = () => {
                   validationSchema={zoneRequiredForm}
                   onSubmit={onSubmit}
                   long={false}
+                  firstButton={"Cancel"}
+                  secondButton={"Submit"}
                 >
                   <FormInput name="code" label="Code" />
                   <FormInput name="zone_name" label="Zone Name" />

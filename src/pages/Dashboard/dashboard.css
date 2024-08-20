@@ -42,6 +42,7 @@
 }
 .box-container-footer {
   position: absolute;
+  top: 89%;
   bottom: 0;
   background-color: white;
   z-index: 4;

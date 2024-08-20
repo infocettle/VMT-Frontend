@@ -22,7 +22,6 @@ const ActivationFailed = ({ open, onClose }) => {
                 <Button onClick={onClose} className="border bg-white text-sm text-[#212134] hover:text-white font-bold leading-4 text-center gap-2 h-10 w-[70px]">Close</Button>
             </DialogContent>
         </Dialog>
-    
   );
 };
 

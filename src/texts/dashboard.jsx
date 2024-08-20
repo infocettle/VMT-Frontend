@@ -1,4 +1,5 @@
 
+
 import Dashboard from "@/pages/Dashboard/Dashboard";
 import { PublicReg } from "@/pages/PublicRegistry";
 import { Maintenance } from "@/pages/Maintenance";
@@ -18,9 +19,19 @@ export const DashboardLinks = [
     component: <AccessControl />,
   },
   {
+    id: 4,
+    name: "Access Control",
+    component: <AccessControl />,
+  },
+  {
     id: 5,
     name: "Public Registry",
     component: <PublicReg />,
+  },
+  {
+    id: 6,
+    name: "Services",
+    component: <ServiceItems />,
   },
   {
     id: 6,

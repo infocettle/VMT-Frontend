@@ -88,6 +88,8 @@ const Qualification = () => {
                   defaultValues={qualificationDefaultValues}
                   validationSchema={qualificationRequiredForm}
                   onSubmit={onSubmit}
+                  firstButton={"Cancel"}
+                  secondButton={"Submit"}
                 >
                   <FormInput name="name" label="Name" />
                   <FormInput name="code" label="Code" />

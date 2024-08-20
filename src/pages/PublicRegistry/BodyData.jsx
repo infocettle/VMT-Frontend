@@ -144,6 +144,8 @@ const BodyData = () => {
                   defaultValues={bodyDataDefaultValues}
                   validationSchema={bodyDataRequiredForm}
                   onSubmit={onSubmit}
+                  firstButton={"Cancel"}
+                  secondButton={"Submit"}
                 >
                   <FormInput name="name" label="Name" />
                 </GenericForm>

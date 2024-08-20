@@ -21,6 +21,7 @@ module.exports = {
         vmtblue: "#1B87F3",
         vmtgray: "#C0C0CF",
         vmtpurple: "#666687",
+        vmtred: "#D02B20",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -33,6 +34,7 @@ module.exports = {
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+          vmtgreen_600: "#0D7742"
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",

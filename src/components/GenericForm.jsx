@@ -10,6 +10,9 @@ export const GenericForm = ({
   validationSchema,
   children,
   long,
+  firstButton,
+  secondButton,
+  className
 }) => {
   const methods = useForm({
     defaultValues,
@@ -31,14 +34,15 @@ export const GenericForm = ({
               className="w-auto border border-gray-300 rounded-md h-10 flex items-center p-2 cursor-pointer"
               onClick={() => methods.reset()}
             >
-              Cancel
+              
+              {firstButton}
             </div>
             <Button
-              className="bg-vmtblue w-auto"
+              className={cn("bg-vmtblue w-auto", className)}
               variant="default"
               type="submit"
             >
-              Submit
+              {secondButton}
             </Button>
           </div>
         </form>

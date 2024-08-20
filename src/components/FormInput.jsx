@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormContext, Controller } from "react-hook-form";
 
-export const FormInput = ({ name, label, type = "text" }) => {
+export const FormInput = ({ name, label, defaultValue, textArea, type = "text" }) => {
   const {
     control,
     formState: { errors },
@@ -15,14 +15,24 @@ export const FormInput = ({ name, label, type = "text" }) => {
       <Controller
         name={name}
         control={control}
+        defaultValue={defaultValue}
         render={({ field }) => (
           <>
-            <input
-              className="border border-gray-100 focus:outline-none rounded-md p-2 mb-2 capitalize"
-              {...field}
-              type={type}
-              placeholder={`Enter ${label}`}
+            {textArea ? (
+              <textarea
+                className="border border-gray-100 focus:outline-none rounded-md p-2 mb-2 capitalize h-36"
+                {...field}
+                type={type}
+                placeholder={`Enter ${label}`}
             />
+            ): (
+              <input
+                className="border border-gray-100 focus:outline-none rounded-md p-2 mb-2 capitalize"
+                {...field}
+                type={type}
+                placeholder={`Enter ${label}`}
+            />
+            )}
             {errors[name] && (
               <p className="text-red-500 text-sm">{errors[name]?.message}</p>
             )}

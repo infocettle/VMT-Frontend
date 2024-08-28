@@ -30,12 +30,15 @@ const MainDashboard = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const url = location.pathname; // Or location.href if needed
+    const url = location.pathname; 
     console.log(url, "url");
     if (url.includes("dashboard")) {
       setPageHeader("Dashboard");
     } else if (url.includes("public_reg")) {
       setPageHeader("Public Registry");
+    
+    } else if (url.includes("access_control")) {
+      setPageHeader("Access Control");
     } 
     else if (url?.includes("services")) {
       setPageHeader("Services");
@@ -47,7 +50,7 @@ const MainDashboard = () => {
       }
     }
     else {
-      setPageHeader("Dashboard"); // Default or other cases
+      setPageHeader("Dashboard"); 
       setShowFooter(true)
     }
   }, [location]);
@@ -201,7 +204,7 @@ const MainDashboard = () => {
 
             <div className="relative w-full overflow-x-scroll box-container-overall">
               <Outlet />
-              {showFooter &&
+              {/* {showFooter &&
                 <div className="w-full border-b py-5 px-4 flex items-center justify-between box-container-footer large_screen">
                   <div className="footer-copyright">
                     Copyright ©2023 <span>Valuemine.</span> All rights reserved
@@ -214,7 +217,7 @@ const MainDashboard = () => {
                     <a href="#">Service Terms</a>
                   </div>
                 </div>
-              }
+              } */}
             </div>
           </div>
         </div>

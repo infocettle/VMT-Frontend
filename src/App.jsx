@@ -64,14 +64,14 @@ import ContactRegistration from "./pages/Services/Contacts/Registration";
 import ServicesRoute from "./pages/Services/ServicesRoute";
 import RegistrationDetails from "./pages/Services/Contacts/RegistrationDetails";
 
-
-import { 
+import IntegrationRoute from "./pages/Integration/IntegrationRoute";
+import {
   Activation,
   Backup,
   Restore,
   Recover,
-  // LockDomain,
-  // CancelDomain
+  LockDomain,
+  CancelDomain
 } from "./pages/Maintenance";
 import KYCVerification from "./pages/Services/KYC/KYCVerification";
 import EditDocument from "./pages/Services/KYC/EditDocument";
@@ -90,6 +90,35 @@ import ContactRequestTypes from "./pages/Services/Support";
 import ServiceLevelAgreement from "./pages/Services/Support/Service-Level-Agreement";
 import ServiceKPI from "./pages/Services/Support/kpi";
 import ServiceRequests from "./pages/Services/Support/Request";
+import AccessControlRoute from "./pages/AccessControl/AccessControlRoute";
+import PoliciesDetails from "./pages/AccessControl/PoliciesDetails";
+import Types from "./pages/AccessControl/Policies/Types";
+import DetailTypes from "./pages/AccessControl/components/DetailTypes";
+import DetailUpdate from "./pages/AccessControl/components/DetailUpdate";
+import DetailRestrictions from "./pages/AccessControl/components/DetailRestrictions";
+import DetailAgreement from "./pages/AccessControl/components/DetailAgreement";
+import Update from "./pages/AccessControl/Policies/Update";
+import Restrictions from "./pages/AccessControl/Policies/Restrictions";
+import Agreement from "./pages/AccessControl/Policies/Agreement";
+import ModulesDetails from "./pages/AccessControl/ModulesDetails";
+import Groups from "./pages/AccessControl/Modules/Groups";
+import Modules from "./pages/AccessControl/Modules/Modules";
+import Functions from "./pages/AccessControl/Modules/Functions";
+import Processes from "./pages/AccessControl/Modules/Processes";
+import DetailGroups from "./pages/AccessControl/components/DetailGroups";
+import DetailModules from "./pages/AccessControl/components/DetailModules";
+import DetailFunction from "./pages/AccessControl/components/DetailFunction";
+import DetailProcesses from "./pages/AccessControl/components/DetailProcesses";
+
+import {
+  Hardware,
+  Software,
+  ThirdParties,
+  Regulators,
+  TaxAuthorities,
+  Others
+} from "./pages/Integration";
+
 
 const queryClient = new QueryClient();
 
@@ -164,6 +193,114 @@ const router = createBrowserRouter([
             path: "overview",
             element: <Overview />,
           },
+        ],
+      },
+      {
+        path: "access_control/*",
+        element: <AccessControlRoute />,
+        children: [
+    
+          {
+            path: "policies/*",
+            element: <PoliciesDetails />,
+            children: [
+              {
+                path: "",
+                element: <Types />,
+
+              },
+              {
+                path: "types",
+                element: <Types />,
+                
+              },
+              {
+                path: "update",
+                element: <Update />,
+                
+              },
+              {
+                path: "restrictions",
+                element: <Restrictions />,
+                
+              },
+              {
+                path: "agreement",
+                element: <Agreement />,
+                
+              },
+              {
+                path: "detail_types",
+                element: <DetailTypes />,
+              },
+              {
+                path: "detail_update",
+                element: <DetailUpdate />,
+              },
+              {
+                path: "detail_restrictions",
+                element: <DetailRestrictions />,
+              },
+              {
+                path: "detail_agreement",
+                element: <DetailAgreement />,
+              },
+              { path: "update", element: <Types/> },
+              { path: "restrictions", element: <Types /> },
+              { path: "agreement", element: <Types /> },
+             
+            ],
+          },
+          {
+            path: "modules/*",
+            element: <ModulesDetails />,
+            children: [
+              {
+                path: "",
+                element: <Groups />,
+
+              },
+              {
+                path: "groups",
+                element: <Groups />,
+                
+              },
+              {
+                path: "modules",
+                element: <Modules />,
+                
+              },
+              {
+                path: "functions",
+                element: <Functions />,
+                
+              },
+              {
+                path: "processes",
+                element: <Processes />,
+                
+              },
+              {
+                path: "detail_groups",
+                element: <DetailGroups />,
+              },
+              {
+                path: "detail_modules",
+                element: <DetailModules />,
+              },
+              {
+                path: "detail_functions",
+                element: <DetailFunction />,
+              },
+              {
+                path: "detail_processes",
+                element: <DetailProcesses />,
+              },
+         
+             
+            ],
+          },
+         
         ],
       },
       {
@@ -416,16 +553,48 @@ const router = createBrowserRouter([
             path: "recover",
             element: <Recover />,
           },
-          // {
-          //   path: 'lock_domain',
-          //   element: <LockDomain/>
-          // },
-          // {
-          //   path: "cancel_domain",
-          //   element: <CancelDomain/>
-          // }
-        ],
+          {
+            path: 'lock_domain',
+            element: <LockDomain/>
+          },
+          {
+            path: "cancel_domain",
+            element: <CancelDomain/>
+          }
+        ]
       },
+      {
+        path: 'integration/*',
+        element: <IntegrationRoute/>,
+        children: [
+          {
+            path: "software",
+            element: <Software/>,
+          },
+          {
+            path: "hardware",
+            element: <Hardware/>,
+          },
+          {
+            path: "third-parties/*",
+            element: <ThirdParties/>,
+            children: [
+              {
+                path: "regulators",
+                element: <Regulators/>,
+              },
+              {
+                path: "tax-authorities",
+                element: <TaxAuthorities/>,
+              },
+              {
+                path: "others",
+                element: <Others/>
+              }
+            ]
+          }
+        ]
+      }
       // Add your children routes here
     ],
   },

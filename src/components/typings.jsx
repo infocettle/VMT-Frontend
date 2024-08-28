@@ -3,7 +3,7 @@ import useDeleteData from "@/hooks/useDeleteData";
 import useEditData from "@/hooks/useEditHook";
 import { usePostData } from "@/hooks/usePostData";
 import { baseUrl } from "@/App";
-import { PencilIcon, Trash2Icon, ChevronsUpDown } from "lucide-react";
+import { PencilIcon, Trash2Icon, ChevronsUpDown, Trash2 } from "lucide-react";
 import { TbRestore } from "react-icons/tb";
 import { LuArchiveRestore } from "react-icons/lu";
 import { Button } from "@/components/ui/button";
@@ -59,6 +59,8 @@ import {
   pfcRequiredForm,
 } from "@/pages/PublicRegistry/PensionFund";
 import { formatISODate, formatBytes } from "@/lib/utils";
+import { softwareRequiredForm } from "@/pages/Integration/Software";
+import { thirdPartyRequiredForm } from "@/pages/Integration/ThirdParties/BaseThirdParty";
 
 export const titleColumns = [
   {
@@ -3736,6 +3738,7 @@ export const typeColumns = [
   },
 ];
 
+// services
 export const licenseColumns = [
   {
     accessorKey: "code",
@@ -5527,3 +5530,524 @@ export const recoverColumns =  [
     },
   },
 ]
+
+export const lockDomainColumns = [
+  {
+    accessorKey: "subscriberId",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Subscriber ID</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("subscriberId");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "memorySize",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Memory Size</h2>;
+    },
+    cell: ({ row }) => {
+      const sizeInBytes = row.getValue("memorySize");
+      const formattedSize = formatBytes(sizeInBytes);
+      return (
+        <div className="ml-6">{formattedSize}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "date",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Date</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("date");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  }
+]
+
+export const softwareColumns = [
+  {
+    accessorKey: "integrationId",
+    header:() => {
+      return <h2 className={"ml-4 uppercase"}>Integration ID</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("integrationId");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    }
+  },
+  {
+    accessorKey: "application",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Application</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("software_name");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    }
+  },
+  {
+    accessorKey: "description",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Description</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("purpose");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    }
+  },
+  {
+    accessorKey: "dateAdded",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Date Added</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateAdded");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "action",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Action</h2>;
+    },
+    cell: ({ row }) => {
+      const [open, setIsOpen] = useState(false);
+
+      const title = row.original;
+
+      const Url = `${baseUrl}integration/software/${title._id}`;
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["software"],
+        url: Url,
+        title: "software",
+      });
+
+      const editMutation = useEditData({
+        queryKey: ["software"],
+        url: Url,
+        title: "software",
+      });
+
+      const softwareDefaultValues = {
+        software_name: title.software_name,
+        purpose: title.purpose,
+        api_key: title.api_key,
+        client_id: title.client_id,
+      };
+
+      async function onSubmit(values) {
+        console.log(values);
+
+        const body = {
+          software_name: values.software_name,
+          purpose: values.purpose,
+          api_key: values.api_key,
+          client_id: values.client_id || null,
+        };
+
+        editMutation.mutateAsync(body);
+        setIsOpen(false);
+      }
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <ReuseDialog
+            isEdit={true}
+            open={open}
+            onOpenChange={setIsOpen}
+            onClick={() => setIsOpen(true)}
+            dialogTitle={"Edit Software"}
+            defaultValues={softwareDefaultValues}
+            validationSchema={softwareRequiredForm}
+            long={false}
+            onSubmit={onSubmit}
+          >
+            <FormInput name="software_name" label="Software Name" />
+            <FormInput name="purpose" label="Purpose" />
+            <FormInput name="api_key" label="API Key" />
+            <FormInput name="client_id" label="Client ID (Optional)" />
+          </ReuseDialog>
+
+          <ConfirmDelete
+            onClick={async () => {
+              await deleteMutation.mutateAsync();
+              setIsOpen(false);
+            }}
+          />
+        </div>
+      );
+    }
+
+
+
+  }
+]
+
+export const hardwareColumns = [
+  {
+    accessorKey: "integrationId",
+    header:() => {
+      return <h2 className={"ml-4 uppercase"}>Integration ID</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("integrationId");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    }
+  },
+  {
+    accessorKey: "name",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Name</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("software_name");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    }
+  },
+  {
+    accessorKey: "dateAdded",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Date Added</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateAdded");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "action",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Action</h2>;
+    },
+    cell: ({ row }) => {
+      const [open, setIsOpen] = useState(false);
+
+      const title = row.original;
+
+      const Url = `${baseUrl}/integration/hardware/${title._id}`;
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["hardware"],
+        url: Url,
+        title: "hardware",
+      });
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+
+          <ConfirmDelete
+            onClick={async () => {
+              await deleteMutation.mutateAsync();
+              setIsOpen(false);
+            }}
+          />
+        </div>
+      );
+    }
+
+
+
+  }
+]
+
+export const thirdPartyColumns = (pageUrl, editDialogTitle) => [
+  {
+    accessorKey: "integrationId",
+    header:() => {
+      return <h2 className={"ml-4 uppercase"}>Integration ID</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("integrationId");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    }
+  },
+  {
+    accessorKey: "name",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Name</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("software_name");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    }
+  },
+  {
+    accessorKey: "dateAdded",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Date Added</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("dateAdded");
+      return (
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "action",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Action</h2>;
+    },
+    cell: ({ row }) => {
+      const [open, setIsOpen] = useState(false);
+
+      const title = row.original;
+
+      const Url = `${pageUrl}/${title._id}`;
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["others"],
+        url: Url,
+        title: "others",
+      });
+
+      const editMutation = useEditData({
+        queryKey: ["others"],
+        url: Url,
+        title: "others",
+      });
+
+      const thirdPartyDefaultValues = {
+        software_name: title.software_name,
+        purpose: title.purpose,
+        api_key: title.api_key,
+      };
+
+      async function onSubmit(values) {
+        console.log(values);
+
+        const body = {
+          software_name: values.software_name,
+          purpose: values.purpose,
+          api_key: values.api_key,
+        };
+
+        editMutation.mutateAsync(body);
+        setIsOpen(false);
+      }
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <ReuseDialog
+            isEdit={true}
+            open={open}
+            onOpenChange={setIsOpen}
+            onClick={() => setIsOpen(true)}
+            dialogTitle={editDialogTitle}
+            defaultValues={thirdPartyDefaultValues}
+            validationSchema={thirdPartyRequiredForm}
+            long={false}
+            onSubmit={onSubmit}
+          >
+            <FormInput name="software_name" label="Software Name" />
+            <FormInput name="purpose" label="Purpose" />
+            <FormInput name="api_key" label="API Key" textArea={true}/>
+          </ReuseDialog>
+
+          <ConfirmDelete
+            onClick={async () => {
+              await deleteMutation.mutateAsync();
+              setIsOpen(false);
+            }}
+          />
+        </div>
+      );
+    }
+
+
+
+  }
+]
+
+// access control
+export const accessControlTypeColumns = [
+  {
+    accessorKey: "documentName",
+    header: "DOCUMENT NAME",
+    cell: ({ row }) => {
+      const formatted = row.getValue("documentName");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "description",
+    header: "DESCRIPTION",
+    cell: ({ row }) => {
+      const formatted = row.getValue("description");
+      return <div className="ml-2">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "version",
+    header: "VERSION",
+    cell: ({ row }) => {
+      const formatted = row.getValue("version");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "initialDate",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          INITIAL DATE
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("initialDate");
+      return <div className="ml-6 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "revisedDate",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          REVISED DATE
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("revisedDate");
+      return <div className="ml-6 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "status",
+    header: "STATUS",
+    cell: ({ row }) => {
+      const formatted = row.getValue("status");
+      return (
+        <div
+          className={cn(
+            `${
+              formatted == "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : "bg-green-50 text-green-900 border border-green-500"
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+          )}
+        >
+          {String(formatted)}
+        </div>
+      );
+    },
+  },
+  {
+    header: () => <div className="ml-5 uppercase">ACTION</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <button
+            className="text-red-600 hover:text-red-900"
+            onClick={() => alert(`Delete ${row.getValue("documentName")}`)}
+          >
+            <Trash2 />
+          </button>
+        </div>
+      );
+    },
+  },
+];
+export const accessControlModuleColumns = [
+  {
+    accessorKey: "id",
+    header: "GROUP ID",
+    cell: ({ row }) => {
+      const formatted = row.getValue("id");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "groupName",
+    header: "GROUP NAME",
+    cell: ({ row }) => {
+      const formatted = row.getValue("groupName");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "functionalDescription",
+    header: "FUNCTIONAL DESCRIPTION",
+    cell: ({ row }) => {
+      const formatted = row.getValue("functionalDescription");
+      return <div className="ml-2">{String(formatted)}</div>;
+    },
+  },
+  
+  
+  {
+    header: () => <div className="ml-5 uppercase">ACTION</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <button
+            className="text-vmtblue"
+            onClick={() => alert(`Delete ${row.getValue("documentName")}`)}
+          >
+            <PencilIcon />
+          </button>
+          <button
+            className="text-red-600 hover:text-red-900"
+            onClick={() => alert(`Delete ${row.getValue("documentName")}`)}
+          >
+            <Trash2 />
+          </button>
+        </div>
+      );
+    },
+  },
+];

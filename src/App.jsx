@@ -123,7 +123,7 @@ const router = createBrowserRouter([
 
   {
     path: "/subscription",
-    element:(<ProtectedRoute><Subscription /></ProtectedRoute>) ,
+    element:(<Subscription />) ,
   },
 
   {

@@ -120,10 +120,9 @@ const router = createBrowserRouter([
 
   {
     path: "/",
-    //   element:<ProtectedRoute>
-    //   <MainDashboard />
-    // </ProtectedRoute>,
-    element: <MainDashboard />,
+      element:<ProtectedRoute>
+      <MainDashboard />
+    </ProtectedRoute>,
     children: [
       // All children routes here
       {

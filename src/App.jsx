@@ -125,6 +125,7 @@ import DetailAccessPasswordChange from "./pages/AccessControl/components/DetailA
 const queryClient = new QueryClient();
 
 export const baseUrl = "https://vmt-server.onrender.com/api/v1/";
+export const baseUrlTrial = "https://vnt-domie.onrender.com";
 
 const router = createBrowserRouter([
   {

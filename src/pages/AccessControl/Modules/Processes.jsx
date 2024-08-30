@@ -5,14 +5,14 @@ import {
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu";
   import { ChevronDown } from "lucide-react";
-  import { accessControlModuleColumns, accessControlTypeColumns, titleColumns } from "@/components/typings";
+  import {  accessControlModuleProcessesColumns, } from "@/components/typings";
   import { ReusableTable } from "@/components/ReusableTable";
   import { FormInput } from "@/components/FormInput";
   import { titleFormSchema } from "@/utils/zodSchema";
   import { ReportLinks, handleExport } from "@/components/ReportLinks";
   import SecondHeader from "@/components/SecondHeader";
   import useFetchData from "@/hooks/useFetchData";
-  import { baseUrl } from "@/App";
+  import { baseUrl, baseUrlTrial } from "@/App";
   import { usePostData } from "@/hooks/usePostData";
   import { useState } from "react";
   import ReuseDialog from "@/components/ReuseDialog";
@@ -32,29 +32,21 @@ import { Link } from "react-router-dom";
   const Processes= () => {
     const [open, setIsOpen] = useState(false);
   
-    const titleUrl = `${baseUrl}public-registry/personal-details/title`;
+    const processUrl = `${baseUrlTrial}/api/v1/ac/modules/process/getProcesses`;
   
-    const { data, isPending } = useFetchData(titleUrl, "title");
-    console.log(data);
+    const { data, isLoading, error } = useFetchData(processUrl, "processes");
+
+    // Debugging output
+    console.log("Data fetched:", data?.data);
   
-    const postMutation = usePostData({
-      queryKey: ["title"],
-      url: titleUrl,
-      title: "title",
-    });
-  
-    async function onSubmit(values) {
-      const body = {
-        title: values.title,
-      };
-  
-      postMutation.mutateAsync(body);
-      setIsOpen(false);
+    if (isLoading) {
+      return <p>Loading...</p>;
     }
   
-    // if (isPending) {
-    //   return <span>Loading...</span>;
-    // }
+    if (error) {
+      return <p>Error loading processes</p>;
+    }
+  
   
     return (
       <div className="w-full">
@@ -77,7 +69,7 @@ import { Link } from "react-router-dom";
           </div>
   
           {/* Table */}
-          <ReusableTablePolicy columns={accessControlModuleColumns} data={sampleDataModules} tableParent={"modules"}  tableName={"processes"} tableChild={"detail_processes"}  />
+          <ReusableTablePolicy columns={accessControlModuleProcessesColumns} data={data?.data} tableParent={"modules"}  tableName={"processes"} tableChild={"detail_processes"}  />
         </div>
       </div>
     );

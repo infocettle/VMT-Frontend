@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import useDeleteData from "@/hooks/useDeleteData";
 import useEditData from "@/hooks/useEditHook";
 import { usePostData } from "@/hooks/usePostData";
-import { baseUrl } from "@/App";
+import { baseUrl, baseUrlTrial } from "@/App";
 import { PencilIcon, Trash2Icon, ChevronsUpDown, Trash2 } from "lucide-react";
 import { TbRestore } from "react-icons/tb";
 import { LuArchiveRestore } from "react-icons/lu";
@@ -61,6 +61,7 @@ import {
 import { formatISODate, formatBytes } from "@/lib/utils";
 import { softwareRequiredForm } from "@/pages/Integration/Software";
 import { thirdPartyRequiredForm } from "@/pages/Integration/ThirdParties/BaseThirdParty";
+import { Link } from "react-router-dom";
 
 export const titleColumns = [
   {
@@ -5998,7 +5999,7 @@ export const accessControlTypeColumns = [
     },
   },
 ];
-export const accessControlModuleColumns = [
+export const accessControlModuleGroupColumns = [
   {
     accessorKey: "id",
     header: "GROUP ID",
@@ -6008,18 +6009,18 @@ export const accessControlModuleColumns = [
     },
   },
   {
-    accessorKey: "groupName",
+    accessorKey: "name",
     header: "GROUP NAME",
     cell: ({ row }) => {
-      const formatted = row.getValue("groupName");
+      const formatted = row.getValue("name");
       return <div className="ml-2 uppercase">{String(formatted)}</div>;
     },
   },
   {
-    accessorKey: "functionalDescription",
+    accessorKey: "function",
     header: "FUNCTIONAL DESCRIPTION",
     cell: ({ row }) => {
-      const formatted = row.getValue("functionalDescription");
+      const formatted = row.getValue("function");
       return <div className="ml-2">{String(formatted)}</div>;
     },
   },
@@ -6029,20 +6030,292 @@ export const accessControlModuleColumns = [
     header: () => <div className="ml-5 uppercase">ACTION</div>,
     id: "actions",
     cell: ({ row }) => {
+      const group = row.original;
+
+      const Url = `${baseUrlTrial}/api/v1/ac/modules/groups/deleteGroup`;
+
+      const postMutation = usePostData({
+        queryKey: ["group"],
+        url: Url,
+        group: "group",
+      });
+
+      async function onSubmit() {
+        const body = {
+          id: group.id,
+        };
+
+        postMutation.mutateAsync(body);
+   
+      }
       return (
         <div
           align="center"
           className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
         >
-          <button
+          <Link to={`/access_control/modules/groups/detail_groups?mode=edit&id=${group.id}`}>
+             <button
             className="text-vmtblue"
-            onClick={() => alert(`Delete ${row.getValue("documentName")}`)}
+           
           >
             <PencilIcon />
           </button>
+          </Link>
+       
+          <button
+            className="text-red-600 hover:text-red-900"
+            onClick={() => onSubmit()}
+          >
+            <Trash2 />
+          </button>
+        </div>
+      );
+    },
+  },
+];
+export const accessControlModuleModulesColumns = [
+  {
+    accessorKey: "id",
+    header: "MODULE ID",
+    cell: ({ row }) => {
+      const formatted = row.getValue("id");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "name",
+    header: "MODULE",
+    cell: ({ row }) => {
+      const formatted = row.getValue("name");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "groupName",
+    header: "GROUP",
+    cell: ({ row }) => {
+      const formatted = row.getValue("groupName");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "function",
+    header: "FUNCTIONAL DESCRIPTION",
+    cell: ({ row }) => {
+      const formatted = row.getValue("function");
+      return <div className="ml-2">{String(formatted)}</div>;
+    },
+  },
+  
+  {
+    accessorKey: "permission",
+    header: "ACCESS",
+    cell: ({ row }) => {
+      const formatted = row.getValue("permission");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    header: () => <div className="ml-5 uppercase">ACTION</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const module = row.original;
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <Link to={`/access_control/modules/groups/detail_groups?mode=edit&id=${module.id}`}>
+             <button
+            className="text-vmtblue"
+           
+          >
+            <PencilIcon />
+          </button>
+          </Link>
+       
           <button
             className="text-red-600 hover:text-red-900"
             onClick={() => alert(`Delete ${row.getValue("documentName")}`)}
+          >
+            <Trash2 />
+          </button>
+        </div>
+      );
+    },
+  },
+];
+export const accessControlModuleProcessesColumns = [
+  {
+    accessorKey: "id",
+    header: "PROCESS ID",
+    cell: ({ row }) => {
+      const formatted = row.getValue("id");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "name",
+    header: "PROCESS NAME",
+    cell: ({ row }) => {
+      const formatted = row.getValue("name");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "moduleName",
+    header: "MODULE",
+    cell: ({ row }) => {
+      const formatted = row.getValue("moduleName");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "groupName",
+    header: "GROUP",
+    cell: ({ row }) => {
+      const formatted = row.getValue("groupName");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "function",
+    header: "FUNCTIONAL DESCRIPTION",
+    cell: ({ row }) => {
+      const formatted = row.getValue("function");
+      return <div className="ml-2">{String(formatted)}</div>;
+    },
+  },
+  
+  {
+    accessorKey: "permission",
+    header: "ACCESS",
+    cell: ({ row }) => {
+      const formatted = row.getValue("permission");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "service",
+    header: "SELF-SERVICE",
+    cell: ({ row }) => {
+      const formatted = row.getValue("service");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    header: () => <div className="ml-5 uppercase">ACTION</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const process = row.original;
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <Link to={`/access_control/modules/processes/detail_processes?mode=edit&id=${process.id}`}>
+             <button
+            className="text-vmtblue"
+           
+          >
+            <PencilIcon />
+          </button>
+          </Link>
+       
+          <button
+            className="text-red-600 hover:text-red-900"
+            onClick={() => alert(`Delete ${row.getValue("documentName")}`)}
+          >
+            <Trash2 />
+          </button>
+        </div>
+      );
+    },
+  },
+];
+export const accessControlModuleFunctionsColumns = [
+  {
+    accessorKey: "id",
+    header: "FUNCTION CODE",
+    cell: ({ row }) => {
+      const formatted = row.getValue("id");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "title",
+    header: "TITLE",
+    cell: ({ row }) => {
+      const formatted = row.getValue("title");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "description",
+    header: "FUNCTIONAL DESCRIPTION",
+    cell: ({ row }) => {
+      const formatted = row.getValue("description");
+      return <div className="ml-2">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "access",
+    header: "ACCESS",
+    cell: ({ row }) => {
+      const formatted = row.getValue("access");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "write",
+    header: "WRITE",
+    cell: ({ row }) => {
+      const formatted = row.getValue("write");
+      return <div className="ml-2 uppercase">{String(formatted)}</div>;
+    },
+  },
+  
+  {
+    header: () => <div className="ml-5 uppercase">ACTION</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const functions = row.original;
+
+      const Url = `${baseUrlTrial}/api/v1/ac/modules/functions/deleteFunction`;
+
+      const postMutation = usePostData({
+        queryKey: ["function"],
+        url: Url,
+        function: "function",
+      });
+
+      async function onSubmit() {
+        const body = {
+          id: functions.id,
+        };
+
+        postMutation.mutateAsync(body);
+   
+      }
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <Link to={`/access_control/modules/functions/detail_functions?mode=edit&id=${functions.id}`}>
+             <button
+            className="text-vmtblue"
+           
+          >
+            <PencilIcon />
+          </button>
+          </Link>
+       
+          <button
+            className="text-red-600 hover:text-red-900"
+            onClick={() => onSubmit()}
           >
             <Trash2 />
           </button>

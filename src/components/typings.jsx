@@ -5898,10 +5898,10 @@ export const thirdPartyColumns = (pageUrl, editDialogTitle) => [
 // access control
 export const accessControlTypeColumns = [
   {
-    accessorKey: "documentName",
-    header: "DOCUMENT NAME",
+    accessorKey: "policyName",
+    header: "POLICY NAME",
     cell: ({ row }) => {
-      const formatted = row.getValue("documentName");
+      const formatted = row.getValue("policyName");
       return <div className="ml-2 uppercase">{String(formatted)}</div>;
     },
   },

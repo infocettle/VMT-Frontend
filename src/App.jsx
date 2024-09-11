@@ -118,11 +118,31 @@ import {
   TaxAuthorities,
   Others
 } from "./pages/Integration";
+import { UserProfilesLinks } from "./texts/accessControlLinks";
+import UserGroups from "./pages/AccessControl/UserProfiles/UserGroups";
+import UserProfileDetails from "./pages/AccessControl/UserProfileDetails";
+import UserTypes from "./pages/AccessControl/UserProfiles/UserTypes";
+import UserRoles from "./pages/AccessControl/UserProfiles/UserRoles";
+import UserPrivilege from "./pages/AccessControl/UserProfiles/UserPrivilege";
+import UserUsers from "./pages/AccessControl/UserProfiles/UserUsers";
+import DetailUserGroups from "./pages/AccessControl/components/DetailUserGroups";
+import DetailUserTypes from "./pages/AccessControl/components/DetailUserTypes";
+import DetailUserPrivilege from "./pages/AccessControl/components/DetailUserPrivilege";
+import DetailUserUsers from "./pages/AccessControl/components/DetailUserUsers";
+import DetailUserRoles from "./pages/AccessControl/components/DetailUserRoles";
+import AccessDetails from "./pages/AccessControl/AccessDetails";
+import AccessSettings from "./pages/AccessControl/Access/AccessSettings";
+import AccessPasswordChange from "./pages/AccessControl/Access/AccessPasswordChange";
+import AccessAuth from "./pages/AccessControl/Access/AccessAuth";
+import DetailAccessSettings from "./pages/AccessControl/components/DetailAccessSettings";
+import DetailAccessAuth from "./pages/AccessControl/components/DetailAccessAuth";
+import DetailAccessPasswordChange from "./pages/AccessControl/components/DetailAccessPasswordChange";
 
 
 const queryClient = new QueryClient();
 
 export const baseUrl = "https://vmt-server.onrender.com/api/v1/";
+export const baseUrlTrial = "https://vnt-domie.onrender.com";
 
 const router = createBrowserRouter([
   {
@@ -140,11 +160,7 @@ const router = createBrowserRouter([
 
   {
     path: "/subscription",
-    element: (
-      <ProtectedRoute>
-        <Subscription />
-      </ProtectedRoute>
-    ),
+    element:(<Subscription />) ,
   },
 
   {
@@ -296,6 +312,70 @@ const router = createBrowserRouter([
                 path: "detail_processes",
                 element: <DetailProcesses />,
               },
+         
+             
+            ],
+          },
+          {
+            path: "user_profiles/*",
+            element: <UserProfileDetails />,
+            children: [
+              {
+                path: "",
+                element: <UserGroups />,
+
+              },
+              {
+                path: "groups",
+                element: <UserGroups />,
+                
+              },
+              {
+                path: "types",
+                element: <UserTypes />,
+                
+              },
+              {
+                path: "roles",
+                element: <UserRoles />,
+                
+              },
+              {
+                path: "privilege",
+                element: <UserPrivilege />,
+                
+              },
+              {
+                path: "users",
+                element: <UserUsers />,
+                
+              },
+              { path: "groups/detail_groups", element: <DetailUserGroups/> },
+              { path: "types/detail_types", element: <DetailUserTypes /> },
+              { path: "privilege/detail_privilege", element: <DetailUserPrivilege /> },
+              { path: "users/detail_users", element: <DetailUserUsers /> },
+              { path: "roles/detail_roles", element: <DetailUserRoles /> },
+         
+             
+            ],
+          },
+          {
+            path: "access/*",
+            element: <AccessDetails />,
+            children: [
+              {
+                path: "",
+                element: <AccessSettings />,
+
+              },
+              { path: "settings", element: <AccessSettings /> },
+              { path: "login_logout", element: <AccessAuth /> },
+              { path: "password_change", element: <AccessPasswordChange /> },
+          
+              { path: "settings/detail_settings", element: <DetailAccessSettings /> },
+              { path: "login_logout/detail_login_logout", element: <DetailAccessAuth /> },
+              { path: "password_change/detail_password_change", element: <DetailAccessPasswordChange /> },
+             
          
              
             ],

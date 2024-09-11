@@ -115,7 +115,7 @@ export default function ViewContactKYC() {
                     <div className="main-container">
                         <div class="flex justify-between">
                             <div>
-                                <h2 className="performance_header flex" style={{ color: "#0B6ED0", fontSize: "12px" }}><Link style={{ color: "#000", fontSize: "14px" }} to={"/services/contacts/registration"}><BiLeftArrowAlt size={20} /></Link> 123-343-232</h2>
+                                <h2 className="performance_header flex" style={{ color: "#0B6ED0", fontSize: "12px" }}><Link style={{ color: "#000", fontSize: "14px" }} to={"/services/contacts/kycverification"}><BiLeftArrowAlt size={20} /></Link> 123-343-232</h2>
                             </div>
                             <button className="bg-green-700 rounded p-2 text-white font-bold" style={{fontSize: "12px"}}>Process Verification</button>
                         </div>

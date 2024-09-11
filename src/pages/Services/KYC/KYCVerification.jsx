@@ -95,10 +95,16 @@ const tableRowsVerification = [
 ]
 const KYCVerification = () => {
     const [displayType, setdisplayType] = useState("documents")
+    const [activeButton, setActiveButton] = useState("documents");
 
-    const constToggleDisplayType = (x) => {
-        setdisplayType(x)
-    }   
+    const handleClick = (button) => {
+        setActiveButton(button);
+        setdisplayType(button)
+    };
+
+    // const constToggleDisplayType = (x) => {
+    //     setdisplayType(x)
+    // }   
 
     return (
         <div className="w-full">
@@ -112,7 +118,11 @@ const KYCVerification = () => {
                                 <h2 className="uppercase performance_header">KYC Verification</h2>
                             </div>
                             <div className="flex gap-1">
-                                <Link to={""}>
+                                <Link state={{
+                                    some: {
+                                        routeProps: null,
+                                    }
+                                }} to={"/services/contacts/documentinformation"}>
                                     <button type="button" style={{ height: "100%" }} className="services-bg-blue services-btn services-btn-sm services-no-radius">Create New</button>
                                 </Link>
                                 <div className="services-btn-border">
@@ -122,10 +132,24 @@ const KYCVerification = () => {
                         </div>
                         <div className="grid sm:grid-cols-1 md:grid-cols-1 gap-4 mt-5">
                             <div className="services-card ">
-                               <Space className="mb-5">
+                               {/* <Space className="mb-5">
                                     <button onClick={() => constToggleDisplayType("documents")} style={{ backgroundColor: "green", color: "#fff" }} className="status-badge no-border status-badge--ofsted--outstanding">Documents</button>
                                     <button onClick={() => constToggleDisplayType("verification")} className="status-badge no-border status-badge--ofsted--outstanding">Verification</button>
-                               </Space>
+                               </Space> */}
+                                <div className="button-container">
+                                    <button
+                                        className={`custom-button ${activeButton === 'documents' ? 'active' : ''}`}
+                                        onClick={() => handleClick('documents')}
+                                    >
+                                        Documents
+                                    </button>
+                                    <button
+                                        className={`custom-button ${activeButton === 'verification' ? 'active' : ''}`}
+                                        onClick={() => handleClick('verification')}
+                                    >
+                                        Verification
+                                    </button>
+                                </div>
                                 {displayType == "documents" && <Tables headerArr={tableHeader} rowArr={tableRows} />}
                                 {displayType == "verification" && <Tables headerArr={tableHeaderVerification} rowArr={tableRowsVerification} />}
                             </div>

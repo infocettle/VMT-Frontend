@@ -1,9 +1,14 @@
 import Tables from "@/pages/Services/Tables/Tables";
-import React, {Component} from "react";
+import React, {Component, useState} from "react";
 import ServicesDiv from "../ServicesDiv";
 import "../services.css"
 import { IoFilter } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import useFetchData from "@/hooks/useFetchData";
+import { baseUrl } from "@/App";
+import { usePostData } from "@/hooks/usePostData";
+import OverlayLoader from "@/components/OverlayLoader";
+
 
 const tableHeader = [
     "CODE",
@@ -11,22 +16,26 @@ const tableHeader = [
     "DESCRIPTION",
     "DATE CREATED",
 ]
-const tableRows = [
-    {
-        code:"123",
-        name:"AGENT",
-        description:"Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on",
-        datecreated:"15-JUN-2023",
-    },
-    {
-        code: "132",
-        name: "AGENT",
-        description: "Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on",
-        datecreated: "15-JUN-2023",
-    }
-]
-const ContactType = () => {
 
+const ContactType = () => {
+    const titleUrl = `${baseUrl}services/contacts/type`;
+    const { data, isPending } = useFetchData(titleUrl, "type");
+
+    const mappedArr = data?.map((x, i) => {
+        return{
+            code: x?.code,
+            name: x?.name?.toUpperCase(),
+            description: x?.description,
+            datecreated: x?.dateCreated?.substring(0,10),
+        }
+    })
+   
+
+
+
+    if (isPending) {
+        return <OverlayLoader/>;
+    }
     return(
         <div className="w-full">
             <ServicesDiv module={"Contact"} />
@@ -34,7 +43,7 @@ const ContactType = () => {
 
                 <div className="flex justify-between w-full items-center">
                     <div className="main-container">
-                        <div class="flex justify-between">
+                        <div className="flex justify-between">
                             <div>
                                 <h2 className="uppercase performance_header ml-4">Type</h2>
                             </div>
@@ -51,11 +60,9 @@ const ContactType = () => {
                         </div>
                         <div className="grid sm:grid-cols-1 md:grid-cols-1 gap-4 mt-5">
                             <div className="services-card ">
-                                <Tables headerArr={tableHeader} rowArr={tableRows}/>
+                                <Tables headerArr={tableHeader} rowArr={mappedArr}/>
                             </div>
                         </div>
-
-                       
                     </div>
                 </div>
             </div>

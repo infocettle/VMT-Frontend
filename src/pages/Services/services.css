@@ -282,3 +282,29 @@
 .kyc-close svg {
     color: #D02B20;
 }
+
+.button-container {
+    display: flex;
+    gap: 10px;
+}
+
+.custom-button {
+    padding: 9px 20px;
+    font-size: 14px;
+    /* border: 2px solid #ccc; */
+    border-radius: 25px;
+    background-color: grey;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.custom-button.active {
+    background-color: #12A55C;
+    border-color: none;
+    border: none!important;
+}
+
+.custom-button:hover {
+    background-color: lightgrey;
+}

@@ -73,6 +73,23 @@ import {
   LockDomain,
   CancelDomain
 } from "./pages/Maintenance";
+import KYCVerification from "./pages/Services/KYC/KYCVerification";
+import EditDocument from "./pages/Services/KYC/EditDocument";
+import ViewContactKYC from "./pages/Services/KYC/ViewContactKYC";
+import ServicesPayment from "./pages/Services/Payment";
+import ViewContactPayment from "./pages/Services/Payment/ViewContactPayment";
+import UpdateSubscription from "./pages/Services/Payment/UpgradeSubscription";
+import RenewSubscription from "./pages/Services/Payment/RenewSubscription";
+import Prospect from "./pages/Services/Prospect/index";
+import NewProspect from "./pages/Services/Prospect/NewProspect";
+import ServicesUpdate from "./pages/Services/Contacts/Update";
+import UpdateDetails from "./pages/Services/Contacts/Update/UpdateDetails";
+import ServicesMessage from "./pages/Services/Contacts/Message";
+import ServicesDashboard from "./pages/Services/Contacts/Dashboard";
+import ContactRequestTypes from "./pages/Services/Support";
+import ServiceLevelAgreement from "./pages/Services/Support/Service-Level-Agreement";
+import ServiceKPI from "./pages/Services/Support/kpi";
+import ServiceRequests from "./pages/Services/Support/Request";
 import AccessControlRoute from "./pages/AccessControl/AccessControlRoute";
 import PoliciesDetails from "./pages/AccessControl/PoliciesDetails";
 import Types from "./pages/AccessControl/Policies/Types";
@@ -148,9 +165,9 @@ const router = createBrowserRouter([
 
   {
     path: "/",
-    element:<ProtectedRoute>
-    <MainDashboard />
-  </ProtectedRoute>,
+      element:<ProtectedRoute>
+      <MainDashboard />
+    </ProtectedRoute>,
     children: [
       // All children routes here
       {
@@ -177,7 +194,7 @@ const router = createBrowserRouter([
                 path: "general",
                 element: <GeneralPerfomance />,
               },
-              { path: "business-kpi", element: <BusinessKpiPerformance/> },
+              { path: "business-kpi", element: <BusinessKpiPerformance /> },
               { path: "sales", element: <SalesPerformance /> },
               { path: "commission", element: <CommissionPerformance /> },
               { path: "company", element: <CompanyPerformance /> },
@@ -512,37 +529,109 @@ const router = createBrowserRouter([
                 element: <NewType />,
               },
               {
+                path: "documentinformation",
+                element: <EditDocument />,
+              },
+              {
+                path: "viewcontactkyc",
+                element: <ViewContactKYC />,
+              },
+              {
                 path: "registration",
                 element: <ContactRegistration />,
               },
               {
                 path: "registrationdetails",
                 element: <RegistrationDetails />,
-              }
-
+              },
+              {
+                path: "kycverification",
+                element: <KYCVerification />,
+              },
+              {
+                path: "payments",
+                element: <ServicesPayment />,
+              },
+              {
+                path: "viewcontactpayments",
+                element: <ViewContactPayment />,
+              },
+              {
+                path: "updatesubscription",
+                element: <UpdateSubscription />,
+              },
+              {
+                path: "renewsubscription",
+                element: <RenewSubscription />,
+              },
+              {
+                path: "update",
+                element: <ServicesUpdate />,
+              },
+              {
+                path: "updatedetails",
+                element: <UpdateDetails />,
+              },
+              {
+                path: "message",
+                element: <ServicesMessage />,
+              },
+              {
+                path: "dashboard",
+                element: <ServicesDashboard />,
+              },
+            ],
+          },
+          {
+            path: "prospects",
+            element: <Prospect />,
+          },
+          {
+            path: "newprospect",
+            element: <NewProspect />,
+          },
+          {
+            path: "support/*",
+            children: [
+              {
+                path: "requesttypes",
+                element: <ContactRequestTypes />,
+              },
+              {
+                path: "service-level-agreement",
+                element: <ServiceLevelAgreement />,
+              },
+              {
+                path: "kpi",
+                element: <ServiceKPI />,
+              },
+              {
+                path: "requests",
+                element: <ServiceRequests />,
+              },
             ],
           },
         ],
       },
       {
-        path: 'maintenance/*',
-        element: <MaintenanceRoute/>,
+        path: "maintenance/*",
+        element: <MaintenanceRoute />,
         children: [
           {
-            path: 'activation',
-            element: <Activation/>
+            path: "activation",
+            element: <Activation />,
           },
           {
             path: "backup",
-            element: <Backup/>,
+            element: <Backup />,
           },
           {
             path: "restore",
-            element: <Restore/>,
+            element: <Restore />,
           },
           {
             path: "recover",
-            element: <Recover/>
+            element: <Recover />,
           },
           {
             path: 'lock_domain',
@@ -592,9 +681,11 @@ const router = createBrowserRouter([
 
   {
     path: "/profile/*",
-    element:  <ProtectedRoute>
-    <ProfilePath />
-  </ProtectedRoute>,
+    element: (
+      <ProtectedRoute>
+        <ProfilePath />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "company-subscriber",

@@ -59,8 +59,9 @@ import {
   pfcRequiredForm,
 } from "@/pages/PublicRegistry/PensionFund";
 import { formatISODate, formatBytes } from "@/lib/utils";
-import { softwareRequiredForm } from "@/pages/Integration/Software";
+// import { softwareRequiredForm } from "@/pages/Integration/Software";
 import { thirdPartyRequiredForm } from "@/pages/Integration/ThirdParties/BaseThirdParty";
+import { EditAWS, EditAzure, EditDropbox, EditGoogleAds, EditGoogleCloud } from "@/pages/Integration";
 
 export const titleColumns = [
   {
@@ -5590,7 +5591,7 @@ export const softwareColumns = [
       return <h2 className={"ml-4 uppercase"}>Application</h2>;
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("software_name");
+      const formatted = row.getValue("type");
       return (
         <div className="ml-6">{String(formatted)}</div>
       );
@@ -5602,7 +5603,7 @@ export const softwareColumns = [
       return <h2 className={"ml-4 uppercase"}>Description</h2>;
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("purpose");
+      const formatted = row.getValue("description");
       return (
         <div className="ml-6">{String(formatted)}</div>
       );
@@ -5614,7 +5615,7 @@ export const softwareColumns = [
       return <h2 className={"ml-4 uppercase"}>Date Added</h2>;
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("dateAdded");
+      const formatted = row.getValue("dateCreated");
       return (
         <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
       );
@@ -5631,7 +5632,6 @@ export const softwareColumns = [
       const title = row.original;
 
       const Url = `${baseUrl}integration/software/${title._id}`;
-
       const deleteMutation = useDeleteData({
         queryKey: ["software"],
         url: Url,
@@ -5644,61 +5644,22 @@ export const softwareColumns = [
         title: "software",
       });
 
-      const softwareDefaultValues = {
-        software_name: title.software_name,
-        purpose: title.purpose,
-        api_key: title.api_key,
-        client_id: title.client_id,
-      };
-
-      async function onSubmit(values) {
-        console.log(values);
-
-        const body = {
-          software_name: values.software_name,
-          purpose: values.purpose,
-          api_key: values.api_key,
-          client_id: values.client_id || null,
-        };
-
-        editMutation.mutateAsync(body);
-        setIsOpen(false);
+      switch (title.type ) {
+        case "AWS": return EditAWS(editMutation, deleteMutation, title, open, setIsOpen);
+        break
+        case "Azure": return EditAzure(editMutation, deleteMutation, title, open, setIsOpen);
+        break
+        case "Dropbox": return EditDropbox(editMutation, deleteMutation, title, open, setIsOpen);
+        break
+        case "Google Ads": return EditGoogleAds(editMutation, deleteMutation, title, open, setIsOpen);
+        break
+        case "Google Cloud": return EditGoogleCloud(editMutation, deleteMutation, title, open, setIsOpen);
+        break
+        case "Zoom": return EditZoom(editMutation, deleteMutation, title, open, setIsOpen);
+        break
       }
 
-      return (
-        <div
-          align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
-          <ReuseDialog
-            isEdit={true}
-            open={open}
-            onOpenChange={setIsOpen}
-            onClick={() => setIsOpen(true)}
-            dialogTitle={"Edit Software"}
-            defaultValues={softwareDefaultValues}
-            validationSchema={softwareRequiredForm}
-            long={false}
-            onSubmit={onSubmit}
-          >
-            <FormInput name="software_name" label="Software Name" />
-            <FormInput name="purpose" label="Purpose" />
-            <FormInput name="api_key" label="API Key" />
-            <FormInput name="client_id" label="Client ID (Optional)" />
-          </ReuseDialog>
-
-          <ConfirmDelete
-            onClick={async () => {
-              await deleteMutation.mutateAsync();
-              setIsOpen(false);
-            }}
-          />
-        </div>
-      );
     }
-
-
-
   }
 ]
 
@@ -5721,7 +5682,7 @@ export const hardwareColumns = [
       return <h2 className={"ml-4 uppercase"}>Name</h2>;
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("software_name");
+      const formatted = row.getValue("hardwareName");
       return (
         <div className="ml-6">{String(formatted)}</div>
       );

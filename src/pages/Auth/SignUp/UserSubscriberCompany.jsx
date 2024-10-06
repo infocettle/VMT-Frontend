@@ -13,7 +13,7 @@ import { Loader } from 'lucide-react';
 import axios from "axios";
 function UserSubscriberCompany({ setFormType,userType,partnerType }) {
   const navigate = useNavigate();
-  const url = `${baseUrl}v1/${userType}/company/auth/register`;
+  const url = `${baseUrl}${userType}/company/auth/register`;
   const dispatch = useDispatch()
   const [selectedCountry, setSelectedCountry] = useState("NG");
   const [selectedCountryTwo, setSelectedCountryTwo] = useState("NG");

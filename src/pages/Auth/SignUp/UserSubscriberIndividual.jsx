@@ -11,7 +11,7 @@ import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
 import { Loader } from 'lucide-react';
 import axios from "axios";
 function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
-  const url = `${baseUrl}v1/${userType}/individual/auth/register`;
+  const url = `${baseUrl}${userType}/individual/auth/register`;
   const [loading, setLoading] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState("NG");
   const [countryCode, setCountryCode] = useState("+234");

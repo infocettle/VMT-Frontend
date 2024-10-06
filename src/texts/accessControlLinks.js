@@ -59,11 +59,7 @@ export const ModulesLinks = [
           name: "Functions",
           href: "/access_control/modules/functions",
         },
-        {
-          id: 5,
-          name: "Privilege",
-          href: "/access_control/modules/privilege",
-        },
+   
        
       ],
     },
@@ -92,6 +88,11 @@ export const UserProfilesLinks = [
         },
         {
           id: 4,
+          name: "Privilege",
+          href: "/access_control/user_profiles/privilege",
+        },
+        {
+          id: 5,
           name: "Users",
           href: "/access_control/user_profiles/users",
         },

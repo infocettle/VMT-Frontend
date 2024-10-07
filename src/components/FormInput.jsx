@@ -20,14 +20,14 @@ export const FormInput = ({ name, label, defaultValue, textArea, type = "text" }
           <>
             {textArea ? (
               <textarea
-                className="border border-gray-100 focus:outline-none rounded-md p-2 mb-2 capitalize h-36"
+                className="access-control-modal-textarea p-2 mb-2 capitalize h-36"
                 {...field}
                 type={type}
                 placeholder={`Enter ${label}`}
             />
             ): (
               <input
-                className="border border-gray-100 focus:outline-none rounded-md p-2 mb-2 capitalize"
+                className="access-control-modal-input mb-2 capitalize"
                 {...field}
                 type={type}
                 placeholder={`Enter ${label}`}

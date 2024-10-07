@@ -19,7 +19,8 @@ import { toast } from 'react-toastify';
 export const googleCloudRequiredForm = googleCloudSchema.required();
 const googleCloudDefaultValues = {
     type: "Google Cloud",
-    description: ""
+    description: "",
+    bucketName: ""
 }
 
 const GoogleCloud = () => {
@@ -65,6 +66,7 @@ const GoogleCloud = () => {
     const body = {
       type: values.type,
       description: values.description,
+      bucketName: values.bucketName,
       credentialType: jsonData.type,
       authUri: jsonData.auth_uri,
       authProviderX509CertUrl: jsonData.auth_provider_x509_cert_url,
@@ -126,6 +128,7 @@ const GoogleCloud = () => {
                     </div>
                     </label>
                 </div>
+                <FormInput textArea={true} name="bucketName" label="bucketName" />
                 <FormInput textArea={true} name="description" label="Description" />
             </GenericForm>
         </DialogContent>

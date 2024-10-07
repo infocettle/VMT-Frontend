@@ -960,6 +960,9 @@ export const googleCloudSchema = z.object({
   }).refine(value => value === "Google Cloud", {
     message: "The type must be Google Cloud",
   }),
+  bucketName: z.string({
+    required_error: "Bucket Name is required",
+  }).min(1, "Bucket Name cannot be empty"),
   description: z.string({
     required_error: "This field is required",
   })
@@ -1035,6 +1038,9 @@ export const azureSchema = z.object({
   clientSecret: z.string({
     required_error: "Client Secret is required",
   }).min(1, "Client Secret cannot be empty"),
+  containerName: z.string({
+    required_error: "Container Name is required",
+  }).min(1, "Container Name cannot be empty"),
   subscriptionId: z.string({
     required_error: "Subscription ID is required",
   }).min(1, "Subscription ID cannot be empty"),

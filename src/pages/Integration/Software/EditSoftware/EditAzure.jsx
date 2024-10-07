@@ -14,6 +14,7 @@ const EditAzure = ({editMutation, deleteMutation, title, open, setIsOpen}) => {
         tenantId: title.azure.tenantId,
         clientId: title.azure.clientId,
         clientSecret: title.azure.clientSecret,
+        containerName: values.containerName,
         subscriptionId: title.azure.subscriptionId,
         storageAccountName: title.azure.storageAccountName
     }
@@ -54,6 +55,7 @@ const EditAzure = ({editMutation, deleteMutation, title, open, setIsOpen}) => {
         <FormInput name="tenantId" label="Tenant ID" />
         <FormInput name="clientId" label="Client ID" />
         <FormInput name="clientSecret" label="Client Secret"/>
+        <FormInput name="containerName" label="Container Name"/>
         <FormInput name="subscriptionId" label="Subscription ID" />
         <FormInput name="storageAccountName" label="Storage Account Name" />
         <FormInput textArea={true} name="description" label="Description" />

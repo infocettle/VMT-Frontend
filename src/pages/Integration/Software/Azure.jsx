@@ -21,6 +21,7 @@ const azureDefaultValues = {
     tenantId: "",
     clientId: "",
     clientSecret: "",
+    containerName: "",
     subscriptionId: "",
     storageAccountName: "",
 }
@@ -43,6 +44,7 @@ const Azure = () => {
       tenantId: values.tenantId,
       clientId: values.clientId,
       clientSecret: values.clientSecret,
+      containerName: values.containerName,
       subscriptionId: values.subscriptionId,
       storageAccountName: values.storageAccountName
     };
@@ -81,6 +83,7 @@ const Azure = () => {
                 <FormInput name="tenantId" label="Tenant ID" />
                 <FormInput name="clientId" label="Client ID" />
                 <FormInput name="clientSecret" label="Client Secret"/>
+                <FormInput name="containerName" label="Container Name"/>
                 <FormInput name="subscriptionId" label="Subscription ID" />
                 <FormInput name="storageAccountName" label="Storage Account Name" />
                 <FormInput textArea={true} name="description" label="Description" />

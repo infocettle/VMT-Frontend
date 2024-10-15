@@ -942,25 +942,130 @@ export const subscriberIDSchema = z.object({
   .trim()
 })
 
-export const softwareSchema = z.object({
-  software_name: z.string({
+export const dropboxSchema = z.object({
+  type: z.string({
+    required_error: "This field is required",
+  }).refine(value => value === "Dropbox", {
+    message: "The type must be Dropbox",
+  }),
+  description: z.string({
     required_error: "This field is required",
   })
-  .min(6, "Software name must be at least 6 characters long")
+  .min(250, "Description must be at least 250 characters long")
   .trim(),
-  purpose: z.string({
+});
+
+export const googleCloudSchema = z.object({
+  type: z.string({
+    required_error: "This field is required",
+  }).refine(value => value === "Google Cloud", {
+    message: "The type must be Google Cloud",
+  }),
+  bucketName: z.string({
+    required_error: "Bucket Name is required",
+  }).min(1, "Bucket Name cannot be empty"),
+  description: z.string({
     required_error: "This field is required",
   })
-  .min(200, "Purpose must be at least 200 characters long")
-  .max(250, "Purpose must not exceed 250 characters")
+  .min(250, "Description must be at least 250 characters long")
   .trim(),
-  api_key: z.string({
+});
+
+export const googleAdsSchema = z.object({
+  type: z.string({
+    required_error: "Type is required",
+  }).refine(value => value === "Google Ads", {
+    message: "The type must be Google Ads",
+  }),
+  description: z.string({
+    required_error: "Description is required",
+  }).min(250, "Description must be at least 250 characters long")
+  .trim(),
+  clientId: z.string({
+    required_error: "Client ID is required",
+  }).min(1, "Client ID cannot be empty"),
+  clientSecret: z.string({
+    required_error: "Client Secret is required",
+  }).min(1, "Client Secret cannot be empty"),
+  customerId: z.string({
+    required_error: "Customer ID is required",
+  }).min(1, "Customer ID cannot be empty"),
+  developerToken: z.string({
+    required_error: "Developer Token is required",
+  }).min(1, "Developer Token cannot be empty"),
+  refreshToken: z.string({
+    required_error: "Refresh Token is required",
+  }).min(1, "Refresh Token cannot be empty"),
+});
+
+export const AWSSchema = z.object({
+  type: z.string({
     required_error: "This field is required",
-  })
-  .min(1, { message: "This field is required" })
-  .trim(),
-  client_id: z.string().optional()
-})
+  }).refine(value => value === "AWS", {
+    message: "The type must be AWS",
+  }),
+  description: z.string({
+    required_error: "This field is required",
+  }).min(250, "Description must be at least 250 characters long").trim(),
+  awsRegion: z.string({
+    required_error: "AWS Region is required",
+  }).min(1, "AWS Region cannot be empty"),
+  awsAccessKeyId: z.string({
+    required_error: "AWS Access Key ID is required",
+  }).min(1, "AWS Access Key ID cannot be empty"),
+  awsAccessKeySecret: z.string({
+    required_error: "AWS Access Key Secret is required",
+  }).min(1, "AWS Access Key Secret cannot be empty"),
+  bucketName: z.string({
+    required_error: "Bucket Name is required",
+  }).min(1, "Bucket Name cannot be empty"),
+});
+
+export const azureSchema = z.object({
+  type: z.string({
+    required_error: "Type is required",
+  }).refine(value => value === "Azure", {
+    message: "The type must be Azure",
+  }),
+  description: z.string({
+    required_error: "Description is required",
+  }).min(250, "Description must be at least 250 characters long").trim(),
+  tenantId: z.string({
+    required_error: "Tenant ID is required",
+  }).min(1, "Tenant ID cannot be empty"),
+  clientId: z.string({
+    required_error: "Client ID is required",
+  }).min(1, "Client ID cannot be empty"),
+  clientSecret: z.string({
+    required_error: "Client Secret is required",
+  }).min(1, "Client Secret cannot be empty"),
+  containerName: z.string({
+    required_error: "Container Name is required",
+  }).min(1, "Container Name cannot be empty"),
+  subscriptionId: z.string({
+    required_error: "Subscription ID is required",
+  }).min(1, "Subscription ID cannot be empty"),
+  storageAccountName: z.string({
+    required_error: "Storage Account Name is required",
+  }).min(1, "Storage Account Name cannot be empty"),
+});
+
+export const zoomSchema = z.object({
+  type: z.string({
+    required_error: "This field is required",
+  }).refine(value => value === "AWS", {
+    message: "The type must be AWS",
+  }),
+  description: z.string({
+    required_error: "This field is required",
+  }).min(250, "Description must be at least 250 characters long").trim(),
+  zoomAPIKey: z.string({
+    required_error: "AWS Access Key ID is required",
+  }).min(1, "Zoom API Key cannot be empty"),
+  zoomAPISecret: z.string({
+    required_error: "AWS Access Key Secret is required",
+  }).min(1, "Zoom API Secret Key Secret cannot be empty"),
+});
 
 export const thirdPartySchema = z.object({
   software_name: z.string({

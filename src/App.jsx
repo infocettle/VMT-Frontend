@@ -64,8 +64,8 @@ import ContactRegistration from "./pages/Services/Contacts/Registration";
 import ServicesRoute from "./pages/Services/ServicesRoute";
 import RegistrationDetails from "./pages/Services/Contacts/RegistrationDetails";
 
-
-import { 
+import IntegrationRoute from "./pages/Integration/IntegrationRoute";
+import {
   Activation,
   Backup,
   Restore,
@@ -73,6 +73,23 @@ import {
   LockDomain,
   CancelDomain
 } from "./pages/Maintenance";
+import KYCVerification from "./pages/Services/KYC/KYCVerification";
+import EditDocument from "./pages/Services/KYC/EditDocument";
+import ViewContactKYC from "./pages/Services/KYC/ViewContactKYC";
+import ServicesPayment from "./pages/Services/Payment";
+import ViewContactPayment from "./pages/Services/Payment/ViewContactPayment";
+import UpdateSubscription from "./pages/Services/Payment/UpgradeSubscription";
+import RenewSubscription from "./pages/Services/Payment/RenewSubscription";
+import Prospect from "./pages/Services/Prospect/index";
+import NewProspect from "./pages/Services/Prospect/NewProspect";
+import ServicesUpdate from "./pages/Services/Contacts/Update";
+import UpdateDetails from "./pages/Services/Contacts/Update/UpdateDetails";
+import ServicesMessage from "./pages/Services/Contacts/Message";
+import ServicesDashboard from "./pages/Services/Contacts/Dashboard";
+import ContactRequestTypes from "./pages/Services/Support";
+import ServiceLevelAgreement from "./pages/Services/Support/Service-Level-Agreement";
+import ServiceKPI from "./pages/Services/Support/kpi";
+import ServiceRequests from "./pages/Services/Support/Request";
 import AccessControlRoute from "./pages/AccessControl/AccessControlRoute";
 import PoliciesDetails from "./pages/AccessControl/PoliciesDetails";
 import Types from "./pages/AccessControl/Policies/Types";
@@ -92,6 +109,34 @@ import DetailGroups from "./pages/AccessControl/components/DetailGroups";
 import DetailModules from "./pages/AccessControl/components/DetailModules";
 import DetailFunction from "./pages/AccessControl/components/DetailFunction";
 import DetailProcesses from "./pages/AccessControl/components/DetailProcesses";
+
+import {
+  Hardware,
+  Software,
+  ThirdParties,
+  Regulators,
+  TaxAuthorities,
+  Others
+} from "./pages/Integration";
+import { UserProfilesLinks } from "./texts/accessControlLinks";
+import UserGroups from "./pages/AccessControl/UserProfiles/UserGroups";
+import UserProfileDetails from "./pages/AccessControl/UserProfileDetails";
+import UserTypes from "./pages/AccessControl/UserProfiles/UserTypes";
+import UserRoles from "./pages/AccessControl/UserProfiles/UserRoles";
+import UserPrivilege from "./pages/AccessControl/UserProfiles/UserPrivilege";
+import UserUsers from "./pages/AccessControl/UserProfiles/UserUsers";
+import DetailUserGroups from "./pages/AccessControl/components/DetailUserGroups";
+import DetailUserTypes from "./pages/AccessControl/components/DetailUserTypes";
+import DetailUserPrivilege from "./pages/AccessControl/components/DetailUserPrivilege";
+import DetailUserUsers from "./pages/AccessControl/components/DetailUserUsers";
+import DetailUserRoles from "./pages/AccessControl/components/DetailUserRoles";
+import AccessDetails from "./pages/AccessControl/AccessDetails";
+import AccessSettings from "./pages/AccessControl/Access/AccessSettings";
+import AccessPasswordChange from "./pages/AccessControl/Access/AccessPasswordChange";
+import AccessAuth from "./pages/AccessControl/Access/AccessAuth";
+import DetailAccessSettings from "./pages/AccessControl/components/DetailAccessSettings";
+import DetailAccessAuth from "./pages/AccessControl/components/DetailAccessAuth";
+import DetailAccessPasswordChange from "./pages/AccessControl/components/DetailAccessPasswordChange";
 import PlansPricesRoute from "./pages/Plans-Prices/PlansPricesRoute";
 import Plans from "./pages/Plans-Prices/PlansRoute";
 import { Charges, ChargesTypes, Commission, CommissionTypes, Differentiators, Discounts, DiscountTypes, Group, Plan, ServiceListing } from "./pages/Plans-Prices";
@@ -99,10 +144,10 @@ import Discount from "./pages/Plans-Prices/DiscountRoute";
 import Charge from "./pages/Plans-Prices/ChargesRoute";
 import Commissions from "./pages/Plans-Prices/CommissionsRoute";
 
-
 const queryClient = new QueryClient();
 
 export const baseUrl = "https://vmt-server.onrender.com/api/v1/";
+export const baseUrlTrial = "https://vnt-domie.onrender.com";
 
 const router = createBrowserRouter([
   {
@@ -120,14 +165,14 @@ const router = createBrowserRouter([
 
   {
     path: "/subscription",
-    element:(<ProtectedRoute><Subscription /></ProtectedRoute>) ,
+    element:(<Subscription />) ,
   },
 
   {
     path: "/",
-    element:<ProtectedRoute>
-    <MainDashboard />
-  </ProtectedRoute>,
+      element:<ProtectedRoute>
+      <MainDashboard />
+    </ProtectedRoute>,
     children: [
       // All children routes here
       {
@@ -154,7 +199,7 @@ const router = createBrowserRouter([
                 path: "general",
                 element: <GeneralPerfomance />,
               },
-              { path: "business-kpi", element: <BusinessKpiPerformance/> },
+              { path: "business-kpi", element: <BusinessKpiPerformance /> },
               { path: "sales", element: <SalesPerformance /> },
               { path: "commission", element: <CommissionPerformance /> },
               { path: "company", element: <CompanyPerformance /> },
@@ -272,6 +317,70 @@ const router = createBrowserRouter([
                 path: "detail_processes",
                 element: <DetailProcesses />,
               },
+         
+             
+            ],
+          },
+          {
+            path: "user_profiles/*",
+            element: <UserProfileDetails />,
+            children: [
+              {
+                path: "",
+                element: <UserGroups />,
+
+              },
+              {
+                path: "groups",
+                element: <UserGroups />,
+                
+              },
+              {
+                path: "types",
+                element: <UserTypes />,
+                
+              },
+              {
+                path: "roles",
+                element: <UserRoles />,
+                
+              },
+              {
+                path: "privilege",
+                element: <UserPrivilege />,
+                
+              },
+              {
+                path: "users",
+                element: <UserUsers />,
+                
+              },
+              { path: "groups/detail_groups", element: <DetailUserGroups/> },
+              { path: "types/detail_types", element: <DetailUserTypes /> },
+              { path: "privilege/detail_privilege", element: <DetailUserPrivilege /> },
+              { path: "users/detail_users", element: <DetailUserUsers /> },
+              { path: "roles/detail_roles", element: <DetailUserRoles /> },
+         
+             
+            ],
+          },
+          {
+            path: "access/*",
+            element: <AccessDetails />,
+            children: [
+              {
+                path: "",
+                element: <AccessSettings />,
+
+              },
+              { path: "settings", element: <AccessSettings /> },
+              { path: "login_logout", element: <AccessAuth /> },
+              { path: "password_change", element: <AccessPasswordChange /> },
+          
+              { path: "settings/detail_settings", element: <DetailAccessSettings /> },
+              { path: "login_logout/detail_login_logout", element: <DetailAccessAuth /> },
+              { path: "password_change/detail_password_change", element: <DetailAccessPasswordChange /> },
+             
          
              
             ],
@@ -425,37 +534,109 @@ const router = createBrowserRouter([
                 element: <NewType />,
               },
               {
+                path: "documentinformation",
+                element: <EditDocument />,
+              },
+              {
+                path: "viewcontactkyc",
+                element: <ViewContactKYC />,
+              },
+              {
                 path: "registration",
                 element: <ContactRegistration />,
               },
               {
                 path: "registrationdetails",
                 element: <RegistrationDetails />,
-              }
-
+              },
+              {
+                path: "kycverification",
+                element: <KYCVerification />,
+              },
+              {
+                path: "payments",
+                element: <ServicesPayment />,
+              },
+              {
+                path: "viewcontactpayments",
+                element: <ViewContactPayment />,
+              },
+              {
+                path: "updatesubscription",
+                element: <UpdateSubscription />,
+              },
+              {
+                path: "renewsubscription",
+                element: <RenewSubscription />,
+              },
+              {
+                path: "update",
+                element: <ServicesUpdate />,
+              },
+              {
+                path: "updatedetails",
+                element: <UpdateDetails />,
+              },
+              {
+                path: "message",
+                element: <ServicesMessage />,
+              },
+              {
+                path: "dashboard",
+                element: <ServicesDashboard />,
+              },
+            ],
+          },
+          {
+            path: "prospects",
+            element: <Prospect />,
+          },
+          {
+            path: "newprospect",
+            element: <NewProspect />,
+          },
+          {
+            path: "support/*",
+            children: [
+              {
+                path: "requesttypes",
+                element: <ContactRequestTypes />,
+              },
+              {
+                path: "service-level-agreement",
+                element: <ServiceLevelAgreement />,
+              },
+              {
+                path: "kpi",
+                element: <ServiceKPI />,
+              },
+              {
+                path: "requests",
+                element: <ServiceRequests />,
+              },
             ],
           },
         ],
       },
       {
-        path: 'maintenance/*',
-        element: <MaintenanceRoute/>,
+        path: "maintenance/*",
+        element: <MaintenanceRoute />,
         children: [
           {
-            path: 'activation',
-            element: <Activation/>
+            path: "activation",
+            element: <Activation />,
           },
           {
             path: "backup",
-            element: <Backup/>,
+            element: <Backup />,
           },
           {
             path: "restore",
-            element: <Restore/>,
+            element: <Restore />,
           },
           {
             path: "recover",
-            element: <Recover/>
+            element: <Recover />,
           },
           {
             path: 'lock_domain',
@@ -464,6 +645,38 @@ const router = createBrowserRouter([
           {
             path: "cancel_domain",
             element: <CancelDomain/>
+          }
+        ]
+      },
+      {
+        path: 'integration/*',
+        element: <IntegrationRoute/>,
+        children: [
+          {
+            path: "software",
+            element: <Software/>,
+          },
+          {
+            path: "hardware",
+            element: <Hardware/>,
+          },
+          {
+            path: "third-parties/*",
+            element: <ThirdParties/>,
+            children: [
+              {
+                path: "regulators",
+                element: <Regulators/>,
+              },
+              {
+                path: "tax-authorities",
+                element: <TaxAuthorities/>,
+              },
+              {
+                path: "others",
+                element: <Others/>
+              }
+            ]
           }
         ]
       },
@@ -543,9 +756,11 @@ const router = createBrowserRouter([
 
   {
     path: "/profile/*",
-    element:  <ProtectedRoute>
-    <ProfilePath />
-  </ProtectedRoute>,
+    element: (
+      <ProtectedRoute>
+        <ProfilePath />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "company-subscriber",

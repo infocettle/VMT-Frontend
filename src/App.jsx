@@ -92,6 +92,12 @@ import DetailGroups from "./pages/AccessControl/components/DetailGroups";
 import DetailModules from "./pages/AccessControl/components/DetailModules";
 import DetailFunction from "./pages/AccessControl/components/DetailFunction";
 import DetailProcesses from "./pages/AccessControl/components/DetailProcesses";
+import PlansPricesRoute from "./pages/Plans-Prices/PlansPricesRoute";
+import Plans from "./pages/Plans-Prices/PlansRoute";
+import { Charges, ChargesTypes, Commission, CommissionTypes, Differentiators, Discounts, DiscountTypes, Group, Plan, ServiceListing } from "./pages/Plans-Prices";
+import Discount from "./pages/Plans-Prices/DiscountRoute";
+import Charge from "./pages/Plans-Prices/ChargesRoute";
+import Commissions from "./pages/Plans-Prices/CommissionsRoute";
 
 
 const queryClient = new QueryClient();
@@ -461,6 +467,76 @@ const router = createBrowserRouter([
           }
         ]
       },
+      {
+        path: 'plans_prices/*',
+        element: <PlansPricesRoute/>,
+        children: [
+          {
+            path: 'plans/*',
+            element: <Plans/>,
+            children: [
+              {
+                path: 'group',
+                element: <Group/>
+              },
+              {
+                path: 'plan',
+                element: <Plan/>
+              }
+            ]
+          },
+          {
+            path: 'discount/*',
+            element: <Discount/>,
+            children: [
+              {
+                path: 'types',
+                element: <DiscountTypes/>
+              },
+              {
+                path: 'discounts',
+                element: <Discounts/>
+              }
+            ]
+          },
+          {
+            path: 'charges/*',
+            element: <Charge/>,
+            children: [
+              {
+                path: 'types',
+                element: <ChargesTypes/>
+              },
+              {
+                path: 'charge',
+                element: <Charges/>
+              }
+            ]
+          },
+          {
+            path: 'commissions/*',
+            element: <Commissions/>,
+            children: [
+              {
+                path: 'types',
+                element: <CommissionTypes/>
+              },
+              {
+                path: 'commission',
+                element: <Commission/>
+              }
+            ]
+          },
+          {
+            path: 'differentiators',
+            element: <Differentiators/>
+          },
+          {
+            path: 'service_listing',
+            element: <ServiceListing/>
+          }
+        ]
+      }
       // Add your children routes here
     ],
   },

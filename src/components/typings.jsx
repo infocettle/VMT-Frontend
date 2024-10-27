@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import useDeleteData from "@/hooks/useDeleteData";
 import useEditData from "@/hooks/useEditHook";
@@ -23,6 +24,7 @@ import { GenericForm } from "@/components/GenericForm";
 import { FormInput } from "@/components/FormInput";
 import { FormSelect } from "@/components/FormSelect";
 import { FormTextArea } from "./FormTextArea";
+import { FormRadio } from "./FormRadio";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { requiredForm } from "@/pages/PublicRegistry/Title";
 import { genderRequiredForm } from "@/pages/PublicRegistry/Gender";
@@ -59,6 +61,17 @@ import {
   pfcRequiredForm,
 } from "@/pages/PublicRegistry/PensionFund";
 import { formatISODate, formatBytes } from "@/lib/utils";
+import { serviceListingRequiredForm } from "@/pages/Plans-Prices/ServiceListing";
+import { commissionTypesRequiredForm } from "@/pages/Plans-Prices/Commissions/Types";
+import { chargesTypesRequiredForm } from "@/pages/Plans-Prices/Charges/Types";
+import { discountTypesRequiredForm } from "@/pages/Plans-Prices/Discount/Types";
+import { chargesRequiredForm } from "@/pages/Plans-Prices/Charges/Charges";
+import { discountsRequiredForm } from "@/pages/Plans-Prices/Discount/Discounts";
+import { commissionRequiredForm } from "@/pages/Plans-Prices/Commissions/Commission";
+import { groupRequiredForm } from "@/pages/Plans-Prices/Plans/Group";
+import { planSchema } from "@/utils/zodSchema";
+import { planRequiredForm } from "@/pages/Plans-Prices/Plans/Plan";
+import { toast } from "react-toastify";
 
 export const titleColumns = [
   {
@@ -5681,6 +5694,1809 @@ export const accessControlModuleColumns = [
           >
             <Trash2 />
           </button>
+        </div>
+      );
+    },
+  },
+];
+
+export const groupColumns = [
+  {
+    accessorKey: "groupName",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Group Name</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("groupName");
+      return (
+        <div className="ml-6 uppercase">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "description",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Description</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("description");
+      return (
+        <div className="ml-6 uppercase">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "controlGL",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Control GL</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("controlGL");
+      return (
+        <div className="ml-6 uppercase">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "planCondition",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>planCondition</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("planCondition");
+      return (
+        <div className="ml-6 uppercase">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Status
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("status");
+      // const formatted = new Intl.NumberFormat("en-US", {
+      //   style: "currency",
+      //   currency: "USD",
+      // }).format(amount);
+
+      return (
+        <div
+          className={cn(
+            `${
+              formatted == "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : "bg-green-50 text-green-900 border border-green-500"
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+          )}
+        >
+          {String(formatted)}
+        </div>
+      );
+    },
+  },{
+    header: () => <div className="ml-5 uppercase">Actions</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const [open, setIsOpen] = useState(false);
+      const [controlAccounts, setControlAccounts] = useState([])
+
+    useEffect(() => {
+      const fetchControlGL = async () => {
+          try {
+              const url = `${baseUrl}settings/controlGL`;  ///remember to edit it to the correct URL.
+              const response = await axios.get(url);
+              const controlGL = response.data
+                  .map(item => ({ value: item.controlGL.toUpperCase(), label: item.controlGL.toUpperCase() }));
+              setControlAccounts(controlGL);
+          } catch (error) {
+              toast.error('Error fetching Control GLs');
+          }
+      };
+
+      fetchControlGL();
+  }, [baseUrl]);
+
+      const title = row.original;
+
+      const Url = `${baseUrl}plans-prices/plans/group/${title._id}`;
+
+      const defaultValues = {
+        groupName: title.groupName,
+        description: title.description,
+        controlGL: title.controlGL,
+        planCondition: title.planCondition,
+      }
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["group"],
+        url: Url,
+        title: "group",
+      });
+
+      const postMutation = usePostData({
+        queryKey: ["group"],
+        url: Url,
+        title: "group",
+      });
+
+      async function onSubmit(values) {
+        const body = {
+          groupName: values.groupName,
+          description: values.description,
+          controlGL: values.controlGL,
+          planCondition: values.planCondition,
+        };
+
+        postMutation.mutateAsync(body);
+        setIsOpen(false);
+      }
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <ReuseDialog
+            isEdit={true}
+            open={open}
+            onOpenChange={setIsOpen}
+            onClick={() => setIsOpen(true)}
+            dialogTitle={"Edit Group"}
+            defaultValues={defaultValues}
+            validationSchema={groupRequiredForm}
+            onSubmit={onSubmit}
+            long={false}
+          >
+              <FormInput name="groupName" label="Group Name" />
+              <FormInput name="description" label="Description" />
+              <FormSelect
+                name="controlGL"
+                label="Select Control Account"
+                options={controlAccounts}
+              />
+              <FormInput name="planCondition" label="planCondition" />
+          </ReuseDialog>
+
+          <ConfirmDelete
+            onClick={async () => {
+              await deleteMutation.mutateAsync();
+              setIsOpen(false);
+            }}
+          />
+        </div>
+      );
+    },
+  }
+]
+
+export const commissionColumns = [
+  {
+    accessorKey: "name",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Name</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("name");
+      return (
+        <div className="ml-6 uppercase">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "rate",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Rate</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("rate");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "description",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Description</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("description");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Status
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("status");
+      // const formatted = new Intl.NumberFormat("en-US", {
+      //   style: "currency",
+      //   currency: "USD",
+      // }).format(amount);
+
+      return (
+        <div
+          className={cn(
+            `${
+              formatted == "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : "bg-green-50 text-green-900 border border-green-500"
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+          )}
+        >
+          {String(formatted)}
+        </div>
+      );
+    },
+  },
+  {
+    header: () => <div className="ml-5 uppercase">Actions</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const [open, setIsOpen] = useState(false);
+
+      const title = row.original;
+
+      const Url = `${baseUrl}plans-prices/commissions/commission/${title._id}`;
+
+      const defaultValues = {
+        name: title.name,
+        percent: title.percent,
+        rate: title.rate,
+        description: title.description,
+      }
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["commission-types"],
+        url: Url,
+        title: "commission-types",
+      });
+
+      const postMutation = usePostData({
+        queryKey: ["commission-types"],
+        url: Url,
+        title: "commission-types",
+      });
+
+      async function onSubmit(values) {
+        const body = {
+          name: values.name,
+          percent: values.percent,
+          rate: values.rate,
+          description: values.description,
+        };
+
+        postMutation.mutateAsync(body);
+        setIsOpen(false);
+      }
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <ReuseDialog
+            isEdit={true}
+            open={open}
+            onOpenChange={setIsOpen}
+            onClick={() => setIsOpen(true)}
+            dialogTitle={"Edit Commission"}
+            defaultValues={defaultValues}
+            validationSchema={commissionRequiredForm}
+            onSubmit={onSubmit}
+            long={false}
+          >
+              <FormInput name="name" label="Name" />
+              <div className="flex gap-2">
+                <div className="w-1/5">
+                  <FormSelect
+                    name="percent"
+                    label="Percent"
+                    options={[
+                      { value: 'percentages', label: '%' },
+                    ]}
+                    className="h-12"
+                  />
+                </div>
+                <div className="w-4/5">
+                  <FormInput
+                    name="rate"
+                    label="Rate"
+                    type="number"
+                    placeholder="0"
+                  />
+                </div>
+              </div>
+              <FormTextArea name="description" label="Description" />
+          </ReuseDialog>
+
+          <ConfirmDelete
+            onClick={async () => {
+              await deleteMutation.mutateAsync();
+              setIsOpen(false);
+            }}
+          />
+        </div>
+      );
+    },
+  },
+]
+
+export const commissionTypesColumns = [
+  {
+    accessorKey: "name",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Name</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("name");
+      return (
+        <div className="ml-6 uppercase">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "description",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Description</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("description");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "controlGL",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Control GL</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("controlGL");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    header: () => <div className="ml-5 uppercase">Actions</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const [open, setIsOpen] = useState(false);
+
+      const title = row.original;
+
+      const Url = `${baseUrl}plans-prices/commissions/types/${title._id}`;
+
+      const defaultValues = {
+        name: title.name,
+        description: title.description,
+        controlGL: title.controlGL
+      }
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["commission-types"],
+        url: Url,
+        title: "commission-types",
+      });
+
+      const postMutation = usePostData({
+        queryKey: ["commission-types"],
+        url: Url,
+        title: "commission-types",
+      });
+
+      async function onSubmit(values) {
+        const body = {
+          name: values.name,
+          description: values.description,
+          controlGL: values.controlGL
+        };
+
+        postMutation.mutateAsync(body);
+        setIsOpen(false);
+      }
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <ReuseDialog
+            isEdit={true}
+            open={open}
+            onOpenChange={setIsOpen}
+            onClick={() => setIsOpen(true)}
+            dialogTitle={"Edit Commission Type"}
+            defaultValues={defaultValues}
+            validationSchema={commissionTypesRequiredForm}
+            onSubmit={onSubmit}
+            long={false}
+          >
+            <FormInput name="name" label="Name" />
+            <FormInput name="description" label="Description" />
+          </ReuseDialog>
+
+          <ConfirmDelete
+            onClick={async () => {
+              await deleteMutation.mutateAsync();
+              setIsOpen(false);
+            }}
+          />
+        </div>
+      );
+    },
+  },
+]
+
+export const chargesColumns = [
+  {
+    accessorKey: "name",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Name</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("name");
+      return (
+        <div className="ml-6 uppercase">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "alias",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Alias</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("alias");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "type",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Type</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("type");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "basis",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Basis</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("basis");
+      return (
+        <div className="ml-6 uppercase">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "rate",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Rate</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("rate");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "controlGL",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Control GL</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("controlGL");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    header: () => <div className="ml-5 uppercase">Actions</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const [open, setIsOpen] = useState(false);
+      const [groupOptions, setGroupOptions] = useState([])
+      const [chargeTypes, setChargeTypes] = useState([])
+
+      useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const groupUrl = `${baseUrl}plans-prices/plans/group`;
+            const chargeUrl = `${baseUrl}plans-prices/charges/types`;
+
+            const [groupResponse, chargeResponse] = await Promise.all([
+              axios.get(groupUrl),
+              axios.get(chargeUrl),
+            ]);
+
+            const activeGroups = groupResponse.data
+              .filter(item => item.status === 'Active')
+              .map(item => ({
+                value: item.groupName.toUpperCase(),
+                label: item.groupName.toUpperCase(),
+              }));
+
+            const chargeTypesData = chargeResponse.data.map(item => ({
+              value: item.chargeType.toUpperCase(),
+              label: item.chargeType.toUpperCase(),
+            }));
+
+            setGroupOptions(activeGroups);
+            setChargeTypes(chargeTypesData);
+
+          } catch (error) {
+            toast.error('Error fetching data');
+          }
+        };
+
+        fetchData();
+      }, [baseUrl]);
+
+      const title = row.original;
+
+      const Url = `${baseUrl}plans-prices/charges/charge/${title._id}`;
+
+      const defaultValues = {
+        name: title.name,
+        alias: title.alias,
+        group: title.group,
+        basis: title.basis,
+        currency: title.currency,
+        rate: title.rate
+      }
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["charges-types"],
+        url: Url,
+        title: "charges-types",
+      });
+
+      const postMutation = usePostData({
+        queryKey: ["charges-types"],
+        url: Url,
+        title: "charges-types",
+      });
+
+      async function onSubmit(values) {
+        const body = {
+          name: values.name,
+          alias: values.alias,
+          group: values.group,
+          basis: values.basis,
+          currency: values.currency,
+          rate: values.rate
+        };
+
+        postMutation.mutateAsync(body);
+        setIsOpen(false);
+      }
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <ReuseDialog
+            isEdit={true}
+            open={open}
+            onOpenChange={setIsOpen}
+            onClick={() => setIsOpen(true)}
+            dialogTitle={"Edit Charge"}
+            defaultValues={defaultValues}
+            validationSchema={chargesRequiredForm}
+            onSubmit={onSubmit}
+            long={false}
+          >
+            <FormInput name="name" label="Name" />
+            <FormTextArea name="alias" label="Alias" />
+            <FormSelect
+                name="group"
+                label="Group"
+                options={groupOptions}
+            />
+            <FormSelect
+                name="type"
+                label="Type"
+                options={chargeTypes}
+            />
+            <div className="flex gap-4">
+              <div className="w-1/2">
+                <FormSelect
+                    name="basis"
+                    label="Basis"
+                    options={[
+                      { value: 'fixed amount', label: 'Fixed amount' },
+                      { value: 'percentages', label: 'Percentages' }
+                    ]}
+                  />
+              </div>
+                <div className="flex gap-2 w-1/2">
+                  <div className="w-1/5">
+                    <FormSelect
+                      name="currency"
+                      label="Currency"
+                      options={[
+                        { value: 'ngn', label: '₦' },
+                        { value: 'usd', label: '$' },
+                        { value: 'eur', label: '€' },
+                        { value: 'gbp', label: '£' }
+                      ]}
+                      className="h-12"
+                    />
+                  </div>
+                  <div className="w-4/5">
+                    <FormInput
+                      name="rate"
+                      label="Rate"
+                      type="number"
+                      placeholder="0"
+                    />
+                  </div>
+                </div>
+            </div>
+          </ReuseDialog>
+
+          <ConfirmDelete
+            onClick={async () => {
+              await deleteMutation.mutateAsync();
+              setIsOpen(false);
+            }}
+          />
+        </div>
+      );
+    },
+  },
+]
+
+export const chargesTypesColumns = [
+  {
+    accessorKey: "name",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Name</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("name");
+      return (
+        <div className="ml-6 uppercase">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "description",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Description</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("description");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "controlGL",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Control GL</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("controlGL");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    header: () => <div className="ml-5 uppercase">Actions</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const [open, setIsOpen] = useState(false);
+
+      const title = row.original;
+
+      const Url = `${baseUrl}plans-prices/charges/types/${title._id}`;
+
+      const defaultValues = {
+        name: title.name,
+        description: title.description,
+        controlGL: title.controlGL
+      }
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["charges-types"],
+        url: Url,
+        title: "charges-types",
+      });
+
+      const postMutation = usePostData({
+        queryKey: ["charges-types"],
+        url: Url,
+        title: "charges-types",
+      });
+
+      async function onSubmit(values) {
+        const body = {
+          name: values.name,
+          description: values.description,
+          controlGL: values.controlGL
+        };
+
+        postMutation.mutateAsync(body);
+        setIsOpen(false);
+      }
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <ReuseDialog
+            isEdit={true}
+            open={open}
+            onOpenChange={setIsOpen}
+            onClick={() => setIsOpen(true)}
+            dialogTitle={"Edit Charge Type"}
+            defaultValues={defaultValues}
+            validationSchema={chargesTypesRequiredForm}
+            onSubmit={onSubmit}
+            long={false}
+          >
+            <FormInput name="name" label="Name" />
+            <FormInput name="description" label="Description" />
+          </ReuseDialog>
+
+          <ConfirmDelete
+            onClick={async () => {
+              await deleteMutation.mutateAsync();
+              setIsOpen(false);
+            }}
+          />
+        </div>
+      );
+    },
+  },
+]
+
+export const discountTypesColumns = [
+  {
+    accessorKey: "name",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Name</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("name");
+      return (
+        <div className="ml-6 uppercase">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "description",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Description</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("description");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "controlGL",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Control GL</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("controlGL");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    header: () => <div className="ml-5 uppercase">Actions</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const [open, setIsOpen] = useState(false);
+
+      const title = row.original;
+
+      const Url = `${baseUrl}plans-prices/discount/types/${title._id}`;
+
+      const defaultValues = {
+        name: title.name,
+        description: title.description
+      }
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["discount-types"],
+        url: Url,
+        title: "discount-types",
+      });
+
+      const postMutation = usePostData({
+        queryKey: ["discount-types"],
+        url: Url,
+        title: "discount-types",
+      });
+
+      async function onSubmit(values) {
+        const body = {
+          name: values.name,
+          description: values.description
+        };
+
+        postMutation.mutateAsync(body);
+        setIsOpen(false);
+      }
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <ReuseDialog
+            isEdit={true}
+            open={open}
+            onOpenChange={setIsOpen}
+            onClick={() => setIsOpen(true)}
+            dialogTitle={"Edit Discount Type"}
+            defaultValues={defaultValues}
+            validationSchema={discountTypesRequiredForm}
+            onSubmit={onSubmit}
+            long={false}
+          >
+            <FormInput name="name" label="Name" />
+            <FormInput name="description" label="Description" />
+          </ReuseDialog>
+
+          <ConfirmDelete
+            onClick={async () => {
+              await deleteMutation.mutateAsync();
+              setIsOpen(false);
+            }}
+          />
+        </div>
+      );
+    },
+  },
+]
+
+export const discountsColumns = [
+  {
+    accessorKey: "name",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Name</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("name");
+      return (
+        <div className="ml-6 uppercase">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "alias",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Alias</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("alias");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "type",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Type</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("type");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "basis",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Basis</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("basis");
+      return (
+        <div className="ml-6 uppercase">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "rate",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Rate</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("rate");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "startTime",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Start Time</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("startTime");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "endTime",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>End Time</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("endTime");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Status
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("status");
+      // const formatted = new Intl.NumberFormat("en-US", {
+      //   style: "currency",
+      //   currency: "USD",
+      // }).format(amount);
+
+      return (
+        <div
+          className={cn(
+            `${
+              formatted == "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : "bg-green-50 text-green-900 border border-green-500"
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+          )}
+        >
+          {String(formatted)}
+        </div>
+      );
+    },
+  },
+  {
+    header: () => <div className="ml-5 uppercase">Actions</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const [open, setIsOpen] = useState(false);
+      const [chargeTypes, setChargeTypes] = useState([])
+
+      useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const chargeUrl = `${baseUrl}plans-prices/charges/types`;
+
+            const [chargeResponse] = await Promise.all([
+              axios.get(chargeUrl),
+            ]);
+
+            const chargeTypesData = chargeResponse.data.map(item => ({
+              value: item.chargeType.toUpperCase(),
+              label: item.chargeType.toUpperCase(),
+            }));
+
+            setChargeTypes(chargeTypesData);
+
+          } catch (error) {
+            toast.error('Error fetching data');
+          }
+        };
+
+        fetchData();
+      }, [baseUrl]);
+
+      const title = row.original;
+
+      const Url = `${baseUrl}plans-prices/discount/types/${title._id}`;
+
+      const defaultValues = {
+        name: title.name,
+        alias: title.alias,
+        type: title.type,
+        basis: title.basis,
+        currency: title.currency,
+        rate: title.rate,
+        startTime: title.startTime,
+        endTime: title.endTime
+      }
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["discount-types"],
+        url: Url,
+        title: "discount-types",
+      });
+
+      const postMutation = usePostData({
+        queryKey: ["discount-types"],
+        url: Url,
+        title: "discount-types",
+      });
+
+      async function onSubmit(values) {
+        const body = {
+          name: values.name,
+          alias: values.alias,
+          type: values.type,
+          basis: values.basis,
+          currency: values.currency,
+          rate: values.rate,
+          startTime: values.startTime,
+          endTime: values.endTime
+        };
+
+        postMutation.mutateAsync(body);
+        setIsOpen(false);
+      }
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <ReuseDialog
+            isEdit={true}
+            open={open}
+            onOpenChange={setIsOpen}
+            onClick={() => setIsOpen(true)}
+            dialogTitle={"Edit Discount"}
+            defaultValues={defaultValues}
+            validationSchema={discountsRequiredForm}
+            onSubmit={onSubmit}
+            long={false}
+          >
+            <FormInput name="name" label="Name" />
+            <FormTextArea name="alias" label="Alias" />
+            <FormSelect
+                name="type"
+                label="Type"
+                options={chargeTypes}
+            />
+            <div className="flex gap-4">
+              <div className="w-1/2">
+                <FormSelect
+                    name="basis"
+                    label="Basis"
+                    options={[
+                      { value: 'fixed amount', label: 'Fixed amount' },
+                      { value: 'percentages', label: 'Percentages' }
+                    ]}
+                  />
+              </div>
+                <div className="flex gap-2 w-1/2">
+                  <div className="w-1/5">
+                    <FormSelect
+                      name="currency"
+                      label="Currency"
+                      options={[
+                        { value: 'ngn', label: '₦' },
+                        { value: 'usd', label: '$' },
+                        { value: 'eur', label: '€' },
+                        { value: 'gbp', label: '£' }
+                      ]}
+                      className="h-12"
+                    />
+                  </div>
+                  <div className="w-4/5">
+                    <FormInput
+                      name="rate"
+                      label="Rate"
+                      type="number"
+                      placeholder="0"
+                    />
+                  </div>
+                </div>
+            </div>
+            <div className="flex gap-4">
+              <FormInput name="startTime" label="Start Time" type="date" />
+              <FormInput name="endTime" label="End Time" type="date" />
+            </div>
+          </ReuseDialog>
+
+          <ConfirmDelete
+            onClick={async () => {
+              await deleteMutation.mutateAsync();
+              setIsOpen(false);
+            }}
+          />
+        </div>
+      );
+    },
+  },
+]
+
+export const serviceListingColumns = [
+  {
+    accessorKey: "name",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Name</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("name");
+      return (
+        <div className="ml-6 uppercase">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "description",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Description</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("description");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    header: () => <div className="ml-5 uppercase">Actions</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const [open, setIsOpen] = useState(false);
+
+      const title = row.original;
+
+      const Url = `${baseUrl}plans-prices/service-listing/${title._id}`;
+
+      const defaultValues = {
+        name: title.name,
+        description: title.description
+      }
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["service-listing"],
+        url: Url,
+        title: "service-listing",
+      });
+
+      const postMutation = usePostData({
+        queryKey: ["service-listing"],
+        url: Url,
+        title: "service-listing",
+      });
+
+      async function onSubmit(values) {
+        const body = {
+          name: values.name,
+          description: values.description
+        };
+
+        postMutation.mutateAsync(body);
+        setIsOpen(false);
+      }
+
+      return (
+        <div
+          align="center"
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+        >
+          <ReuseDialog
+            isEdit={true}
+            open={open}
+            onOpenChange={setIsOpen}
+            onClick={() => setIsOpen(true)}
+            dialogTitle={"Edit Service Listing"}
+            defaultValues={defaultValues}
+            validationSchema={serviceListingRequiredForm}
+            onSubmit={onSubmit}
+            long={false}
+          >
+            <FormInput name="name" label="Name" />
+            <FormInput name="description" label="Description" />
+          </ReuseDialog>
+
+          <ConfirmDelete
+            onClick={async () => {
+              await deleteMutation.mutateAsync();
+              setIsOpen(false);
+            }}
+          />
+        </div>
+      );
+    },
+  },
+]
+
+export const differentiatorsColumns = [
+  {
+    accessorKey: "name",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Plan Name</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("name");
+      return (
+        <div className="ml-6 uppercase">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "group",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Group</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("group");
+      return (
+        <div className="ml-6 uppercase">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "maxProcessUsers",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Max Process Users</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("maxProcessUsers");
+      return (
+        <div className="ml-6 uppercase">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "maxSelfServiceUsers",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Max Self-Service Users</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("maxSelfServiceUsers");
+      return (
+        <div className="ml-6 uppercase">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "storageMaxAnalytics",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Storage Max Analytics</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("storageMaxAnalytics");
+      return (
+        <div className="ml-6 uppercase">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "storageGB",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Storage GB</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("storageGB");
+      return (
+        <div className="ml-6 uppercase">{String(formatted)}</div>
+      );
+    },
+  },
+]
+
+export const planColumns = [
+  {
+    accessorKey: "name",
+    header: () => {
+      return <h2 className="ml-4 uppercase">Name</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("name");
+      return <div className="ml-6">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "group",
+    header: () => {
+      return <h2 className="ml-4 uppercase">Group</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("group");
+      return <div className="ml-6">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "rateMonth",
+    header: () => {
+      return <h2 className="ml-4 uppercase">1 Month</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("rateMonth");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "rateQuarter",
+    header: () => {
+      return <h2 className="ml-4 uppercase">3 Months</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("rateQuarter");
+      return (
+        <div className="ml-6">
+          {new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+          }).format(formatted)}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "rateBiAnnual",
+    header: () => {
+      return <h2 className="ml-4 uppercase">6 Months</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("rateBiAnnual");
+      return (
+        <div className="ml-6">
+          {new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+          }).format(formatted)}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "rateAnnum",
+    header: () => {
+      return <h2 className="ml-4 uppercase">12 Months</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("rateAnnum");
+      return (
+        <div className="ml-6">
+          {new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+          }).format(formatted)}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "charges",
+    header: () => {
+      return <h2 className="ml-4 uppercase">Charges</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("charges");
+      return <div className="uppercase ml-6">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "discounts",
+    header: () => {
+      return <h2 className="ml-4 uppercase">Discounts</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("discounts");
+      return <div className="uppercase ml-6">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "commissions",
+    header: () => {
+      return <h2 className="ml-4 uppercase">Commissions</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("commissions");
+      return <div className="uppercase ml-6">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase"}
+        >
+          Status
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("status");
+      // const formatted = new Intl.NumberFormat("en-US", {
+      //   style: "currency",
+      //   currency: "USD",
+      // }).format(amount);
+
+      return (
+        <div
+          className={cn(
+            `${
+              formatted == "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : "bg-green-50 text-green-900 border border-green-500"
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+          )}
+        >
+          {String(formatted)}
+        </div>
+      );
+    },
+  },
+  {
+    header: () => <div className="ml-5 uppercase">Actions</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const [open, setIsOpen] = useState(false);
+      const [groupOptions, setGroupOptions] = useState([])
+      const [chargeOptions, setChargeOptions] = useState([]);
+      const [discountOptions, setDiscountOptions] = useState([]);
+      const [commissionOptions, setCommissionOptions] = useState([]);
+      const [controlGLOptions, setControlGLOptions] = useState([])
+      const [showChargeDropdown, setShowChargeDropdown] = useState(false);
+      const [showDiscountDropdown, setShowDiscountDropdown] = useState(false);
+      const [showCommissionDropdown, setShowCommissionDropdown] = useState(false);
+
+      const fetchOptions = async (url, name, filterStatus = true) => {
+        try {
+          const response = await axios.get(url);
+          return response.data
+            .filter(item => !filterStatus || item.status === 'Active')
+            .map(item => ({ value: item.groupName.toUpperCase(), label: item.groupName.toUpperCase() }));
+        } catch (error) {
+          throw new Error(`Error fetching ${name}`);
+        }
+      };
+  
+      useEffect(() => {
+        const fetchAllData = async () => {
+          try {
+            const groupUrl = `${baseUrl}plans-prices/plans/group`;
+            const chargeUrl = `${baseUrl}plans-prices/charges/charge`;
+            const discountUrl = `${baseUrl}plans-prices/discount/discounts`;
+            const commissionUrl = `${baseUrl}plans-prices/commissions/commission`;
+            const controlUrl = `${baseUrl}settings/controlGL`;
+  
+            const [groups, charges, discounts, commissions, controls] = await Promise.all([
+              fetchOptions(groupUrl, "Group"),
+              fetchOptions(chargeUrl, "Charges"),
+              fetchOptions(discountUrl, "Discounts"),
+              fetchOptions(commissionUrl, "Commissions"),
+              fetchOptions(controlUrl, "Control GL Account", false)
+            ]);
+  
+            setGroupOptions(groups);
+            setChargeOptions(charges);
+            setDiscountOptions(discounts);
+            setCommissionOptions(commissions);
+            setControlGLOptions(controls);
+          } catch (error) {
+            toast.error(error.message);
+          }
+        };
+  
+        fetchAllData();
+      }, [baseUrl]);
+
+      const title = row.original;
+      const Url = `${baseUrl}plans-prices/plans/plan/${title._id}`;
+
+      const defaultValues = {
+        group: title.group,
+        name: title.name,
+        rateMonth: title.rateMonth,
+        rateBiAnnual: title.rateBiAnnual,
+        rateQuarter: title.rateQuarter,
+        rateAnnum: title.rateAnnum,
+        controlGL: title.controlGL,
+        taxes: title.taxes,
+        charges: title.charges,
+        chargesDropdown: title.chargesDropdown,
+        discounts: title.discounts,
+        discountsDropdown: title.discountsDropdown,
+        commissions: title.commissions,
+        commissionsDropdown: title.commissionsDropdown
+      };
+
+      const deleteMutation = useDeleteData({
+        queryKey: ["plan"],
+        url: Url,
+        title: "",
+      });
+
+      const postMutation = usePostData({
+        queryKey: ["plan"],
+        url: Url,
+        title: "plan",
+      });
+
+      async function onSubmit(values) {
+        const body = {
+          group: values.group,
+          name: values.name,
+          rateMonth: values.rateMonth,
+          rateQuarter: values.rateQuarter,
+          rateBiAnnual: values.rateBiAnnual,
+          rateAnnual: values.rateAnnual,
+          controlGL: values.controlGL,
+          taxes: values.taxes,
+          charges: values.charges,
+          chargesDropdown: values.chargesDropdown,
+          discounts: values.discounts,
+          discountsDropdown: values.discountsDropdown,
+          commissions: values.commissions,
+          commissionsDropdown: values.commissionsDropdown
+      };
+
+        postMutation.mutateAsync(body);
+        setIsOpen(false);
+      }
+
+      return (
+        <div align="center" className="ml-2 flex items-center space-x-2 w-20 h-10">
+          <ReuseDialog
+            isEdit={true}
+            open={open}
+            onOpenChange={setIsOpen}
+            onClick={() => setIsOpen(true)}
+            dialogTitle={"Edit Plan"}
+            defaultValues={defaultValues}
+            validationSchema={planRequiredForm}
+            onSubmit={onSubmit}
+          >
+            <div className="overflow-y-auto max-h-[500px]">
+                  <FormSelect
+                      name="group"
+                      label="Group"
+                      options={groupOptions}
+                  />
+                  <FormInput name="name" label="Name" />
+                  <div className="flex gap-4">
+                    <div className="flex gap-2 w-1/2">
+                        <div className="w-1/5">
+                          <FormSelect
+                            name="monthCurrency"
+                            label="Currency"
+                            options={[
+                              { value: 'ngn', label: '₦' },
+                              { value: 'usd', label: '$' },
+                              { value: 'eur', label: '€' },
+                              { value: 'gbp', label: '£' }
+                            ]}
+                            className="h-12"
+                          />
+                        </div>
+                        <div className="w-4/5">
+                          <FormInput
+                            name="rateMonth"
+                            label="Rate/month"
+                            type="number"
+                            placeholder="0"
+                          />
+                        </div>
+                    </div>
+                    <div className="flex gap-2 w-1/2">
+                        <div className="w-1/5">
+                          <FormSelect
+                            name="halfCurrency"
+                            label="Currency"
+                            options={[
+                              { value: 'ngn', label: '₦' },
+                              { value: 'usd', label: '$' },
+                              { value: 'eur', label: '€' },
+                              { value: 'gbp', label: '£' }
+                            ]}
+                            className="h-12"
+                          />
+                        </div>
+                        <div className="w-4/5">
+                          <FormInput
+                            name="rateBiAnnual"
+                            label="Rate/half"
+                            type="number"
+                            placeholder="0"
+                          />
+                        </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="flex gap-2 w-1/2">
+                        <div className="w-1/5">
+                          <FormSelect
+                            name="quarterCurrency"
+                            label="Currency"
+                            options={[
+                              { value: 'ngn', label: '₦' },
+                              { value: 'usd', label: '$' },
+                              { value: 'eur', label: '€' },
+                              { value: 'gbp', label: '£' }
+                            ]}
+                            className="h-12"
+                          />
+                        </div>
+                        <div className="w-4/5">
+                          <FormInput
+                            name="rateQuarter"
+                            label="Rate/quarter"
+                            type="number"
+                            placeholder="0"
+                          />
+                        </div>
+                    </div>
+                    <div className="flex gap-2 w-1/2">
+                        <div className="w-1/5">
+                          <FormSelect
+                            name="annumCurrency"
+                            label="Currency"
+                            options={[
+                              { value: 'ngn', label: '₦' },
+                              { value: 'usd', label: '$' },
+                              { value: 'eur', label: '€' },
+                              { value: 'gbp', label: '£' }
+                            ]}
+                            className="h-12"
+                          />
+                        </div>
+                        <div className="w-4/5">
+                          <FormInput
+                            name="rateAnnum"
+                            label="Rate/annum"
+                            type="number"
+                            placeholder="0"
+                          />
+                        </div>
+                    </div>
+                  </div>
+                  <FormSelect
+                      name="controlGL"
+                      label="Control GL"
+                      options={controlGLOptions}
+                  />
+                    {/* Taxes Field */}
+                    <div className="mb-4">
+                      <FormRadio
+                        name="taxes"
+                        label="Taxes"
+                        options={[
+                          { value: "yes", label: "Yes" },
+                          { value: "no", label: "No" }
+                        ]}
+                      />
+                    </div>
+
+                    {/* Charges Field */}
+                    <div className="mb-4">
+                      <FormRadio
+                        name="charges"
+                        label="Charges"
+                        options={[
+                          { value: "yes", label: "Yes" },
+                          { value: "no", label: "No" }
+                        ]}
+                        onChange={(value) => setShowChargeDropdown(value === "yes")}
+                      />
+                      {showChargeDropdown && (
+                        <FormSelect
+                          name="chargesDropdown"
+                          label="Select Charges"
+                          options={chargeOptions}
+                        />
+                      )}
+                    </div>
+
+                    {/* Discounts Field */}
+                    <div className="mb-4">
+                      <FormRadio
+                        name="discounts"
+                        label="Discounts"
+                        options={[
+                          { value: "yes", label: "Yes" },
+                          { value: "no", label: "No" }
+                        ]}
+                        onChange={(value) => setShowDiscountDropdown(value === "yes")}
+                      />
+                      {showDiscountDropdown && (
+                        <FormSelect
+                          name="discountsDropdown"
+                          label="Select Discount"
+                          options={discountOptions}
+                        />
+                      )}
+                    </div>
+
+                    {/* Commissions Field */}
+                    <div className="mb-4">
+                      <FormRadio
+                        name="commissions"
+                        label="Commissions"
+                        options={[
+                          { value: "yes", label: "Yes" },
+                          { value: "no", label: "No" }
+                        ]}
+                        onChange={(value) => setShowCommissionDropdown(value === "yes")}
+                      />
+                      {showCommissionDropdown && (
+                        <FormSelect
+                          name="commissionsDropdown"
+                          label="Select Commission"
+                          options={commissionOptions}
+                        />
+                      )}
+                    </div>
+              </div>
+          </ReuseDialog>
+          <ConfirmDelete
+            onClick={async () => {
+              await deleteMutation.mutateAsync();
+              setIsOpen(false);
+            }}
+          />
         </div>
       );
     },

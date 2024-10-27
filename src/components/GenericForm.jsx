@@ -11,7 +11,8 @@ export const GenericForm = ({
   children,
   long,
   firstButton,
-  secondButton
+  secondButton,
+  className
 }) => {
   const methods = useForm({
     defaultValues,
@@ -37,7 +38,7 @@ export const GenericForm = ({
               {firstButton}
             </div>
             <Button
-              className="bg-vmtblue w-auto"
+              className={cn("bg-vmtblue w-auto", className)}
               variant="default"
               type="submit"
             >

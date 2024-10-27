@@ -5,14 +5,14 @@ import {
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu";
   import { ChevronDown } from "lucide-react";
-  import { accessControlModuleColumns, accessControlTypeColumns, titleColumns } from "@/components/typings";
+  import { accessControlModuleGroupColumns } from "@/components/typings";
   import { ReusableTable } from "@/components/ReusableTable";
   import { FormInput } from "@/components/FormInput";
   import { titleFormSchema } from "@/utils/zodSchema";
   import { ReportLinks, handleExport } from "@/components/ReportLinks";
   import SecondHeader from "@/components/SecondHeader";
   import useFetchData from "@/hooks/useFetchData";
-  import { baseUrl } from "@/App";
+  import { baseUrl, baseUrlTrial } from "@/App";
   import { usePostData } from "@/hooks/usePostData";
   import { useState } from "react";
   import ReuseDialog from "@/components/ReuseDialog";
@@ -32,25 +32,22 @@ import { Link } from "react-router-dom";
   const Groups= () => {
     const [open, setIsOpen] = useState(false);
   
-    const titleUrl = `${baseUrl}public-registry/personal-details/title`;
+    const groupsUrl = `${baseUrlTrial}/api/v1/ac/modules/groups/getGroups`;
   
-    const { data, isPending } = useFetchData(titleUrl, "title");
-    console.log(data);
+    const { data, isLoading, error } = useFetchData(groupsUrl, "groups");
+
+    // Debugging output
+    console.log("Data fetched:", data?.data);
   
-    const postMutation = usePostData({
-      queryKey: ["title"],
-      url: titleUrl,
-      title: "title",
-    });
-  
-    async function onSubmit(values) {
-      const body = {
-        title: values.title,
-      };
-  
-      postMutation.mutateAsync(body);
-      setIsOpen(false);
+    if (isLoading) {
+      return <p>Loading...</p>;
     }
+  
+    if (error) {
+      return <p>Error loading groups</p>;
+    }
+  
+ 
   
     // if (isPending) {
     //   return <span>Loading...</span>;
@@ -66,7 +63,7 @@ import { Link } from "react-router-dom";
             <SecondHeader title={"Groups"} />
   
             <div className="flex items-center w-auto px-2 space-x-4 mt-5">
-        <Link to="/access_control/modules/groups/detail_groups">
+        <Link to="/access_control/modules/groups/detail_groups?mode=create">
           <Button className="bg-vmtblue" size="sm" >
            Create new
           </Button>
@@ -77,7 +74,7 @@ import { Link } from "react-router-dom";
           </div>
   
           {/* Table */}
-          <ReusableTablePolicy columns={accessControlModuleColumns} data={sampleDataModules} tableParent={"modules"}  tableName={"groups"} tableChild={"detail_groups"}  />
+          <ReusableTablePolicy columns={accessControlModuleGroupColumns} data={data?.data} tableParent={"modules"}  tableName={"groups"} tableChild={"detail_groups"}  />
         </div>
       </div>
     );

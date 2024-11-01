@@ -1237,6 +1237,12 @@ export const commissionSchema = z.object({
     .min(1, "Name cannot be empty")
     .max(100, "Name must be maximum 100 characters")
     .trim(),
+  type: z
+    .string({
+      invalid_type_error: "Type must be a string",
+      required_error: "Type is required",
+    })
+    .min(1, "Type must be selected"),
   rate: z
     .number({
       invalid_type_error: "Rate must be a number",

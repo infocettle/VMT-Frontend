@@ -111,7 +111,7 @@ export const chargesRequiredForm = chargesSchema.required();
 const chargesDefaultValues = {
     name: "",
     alias: "",
-    group: "",
+    type: "",
     basis: "",
     currency: "ngn",
     rate: ""
@@ -136,13 +136,15 @@ const Charges = () => {
           const activeGroups = groupResponse.data
             .filter(item => item.status === 'Active')
             .map(item => ({
-              value: item.groupName.toUpperCase(),
+              value: item._id,
               label: item.groupName.toUpperCase(),
             }));
 
-          const chargeTypesData = chargeResponse.data.map(item => ({
-            value: item.chargeType.toUpperCase(),
-            label: item.chargeType.toUpperCase(),
+          const chargeTypesData = chargeResponse.data
+          .filter(item => item.status === 'Active')
+          .map(item => ({
+            value: item._id,
+            label: item.name.toUpperCase(),
           }));
 
           setGroupOptions(activeGroups);
@@ -172,7 +174,7 @@ const Charges = () => {
         const body = {
             name: values.name,
             alias: values.alias,
-            group: values.group,
+            type: values.type,
             basis: values.basis,
             currency: values.currency,
             rate: values.rate
@@ -217,11 +219,6 @@ const Charges = () => {
                               >
                                     <FormInput name="name" label="Name" />
                                     <FormTextArea name="alias" label="Alias" />
-                                    <FormSelect
-                                        name="group"
-                                        label="Group"
-                                        options={groupOptions}
-                                    />
                                     <FormSelect
                                         name="type"
                                         label="Type"

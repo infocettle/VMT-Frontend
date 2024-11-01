@@ -170,9 +170,13 @@ const planDefaultValues = {
   group: "",
   name: "",
   rateMonth: "",
+  monthCurrency: "",
   rateQuarter: "",
+  quarterCurrency: "",
   rateBiAnnual: "",
+  halfCurrency: "",
   rateAnnual: "",
+  annumCurrency: "",
   controlGL: "",
   taxes: "",
   charges: "",
@@ -203,7 +207,10 @@ const Plan = () => {
         const response = await axios.get(url);
         return response.data
           .filter(item => !filterStatus || item.status === 'Active')
-          .map(item => ({ value: item.groupName.toUpperCase(), label: item.groupName.toUpperCase() }));
+          .map(item => ({
+            value: item._id,
+            label: name === "Groups" ? item.groupName.toUpperCase() : item.name.toUpperCase()
+          }));
       } catch (error) {
         throw new Error(`Error fetching ${name}`);
       }
@@ -250,9 +257,13 @@ const Plan = () => {
             group: values.group,
             name: values.name,
             rateMonth: values.rateMonth,
+            monthCurrency: values.monthCurrency,
             rateQuarter: values.rateQuarter,
+            quarterCurrency: values.quarterCurrency,
             rateBiAnnual: values.rateBiAnnual,
+            halfCurrency: values.halfCurrency,
             rateAnnual: values.rateAnnual,
+            annumCurrency: values.annumCurrency,
             controlGL: values.controlGL,
             taxes: values.taxes,
             charges: values.charges,

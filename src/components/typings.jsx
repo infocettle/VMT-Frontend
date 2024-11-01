@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import useDeleteData from "@/hooks/useDeleteData";
 import useEditData from "@/hooks/useEditHook";
-import { usePostData } from "@/hooks/usePostData";
 import { baseUrl, baseUrlTrial } from "@/App";
 import { PencilIcon, Trash2Icon, ChevronsUpDown, Trash2 } from "lucide-react";
 import { TbRestore } from "react-icons/tb";
@@ -5347,7 +5346,7 @@ export const restoreColumns = [
         title: "restore",
       });
 
-      const postMutation = usePostData({
+      const editMutation = useEditData({
         queryKey: ["restore"],
         url: Url,
         title: "restore",
@@ -5358,7 +5357,7 @@ export const restoreColumns = [
           restore: true,
         };
 
-        postMutation.mutateAsync(body);
+        editMutation.mutateAsync(body);
         setIsOpen(false);
       }
 
@@ -5474,7 +5473,7 @@ export const recoverColumns =  [
         title: "restore",
       });
 
-      const postMutation = usePostData({
+      const editMutation = useEditData({
         queryKey: ["recover"],
         url: Url,
         title: "recover",
@@ -5485,7 +5484,7 @@ export const recoverColumns =  [
           recover: true,
         };
 
-        postMutation.mutateAsync(body);
+        editMutation.mutateAsync(body);
         setIsOpen(false);
       }
 
@@ -6008,7 +6007,7 @@ export const accessControlModuleGroupColumns = [
 
       const Url = `${baseUrlTrial}/api/v1/ac/modules/groups/deleteGroup`;
 
-      const postMutation = usePostData({
+      const editMutation = usePostData({
         queryKey: ["group"],
         url: Url,
         group: "group",
@@ -6019,7 +6018,7 @@ export const accessControlModuleGroupColumns = [
           id: group.id,
         };
 
-        postMutation.mutateAsync(body);
+        editMutation.mutateAsync(body);
    
       }
       return (
@@ -6259,7 +6258,7 @@ export const accessControlModuleFunctionsColumns = [
 
       const Url = `${baseUrlTrial}/api/v1/ac/modules/functions/deleteFunction`;
 
-      const postMutation = usePostData({
+      const editMutation = useEditData({
         queryKey: ["function"],
         url: Url,
         function: "function",
@@ -6270,7 +6269,7 @@ export const accessControlModuleFunctionsColumns = [
           id: functions.id,
         };
 
-        postMutation.mutateAsync(body);
+        editMutation.mutateAsync(body);
    
       }
       return (
@@ -6422,7 +6421,7 @@ export const groupColumns = [
         title: "group",
       });
 
-      const postMutation = usePostData({
+      const editMutation = useEditData({
         queryKey: ["group"],
         url: Url,
         title: "group",
@@ -6436,7 +6435,7 @@ export const groupColumns = [
           planCondition: values.planCondition,
         };
 
-        postMutation.mutateAsync(body);
+        editMutation.mutateAsync(body);
         setIsOpen(false);
       }
 
@@ -6574,7 +6573,7 @@ export const commissionColumns = [
         title: "commission-types",
       });
 
-      const postMutation = usePostData({
+      const editMutation = useEditData({
         queryKey: ["commission-types"],
         url: Url,
         title: "commission-types",
@@ -6588,7 +6587,7 @@ export const commissionColumns = [
           description: values.description,
         };
 
-        postMutation.mutateAsync(body);
+        editMutation.mutateAsync(body);
         setIsOpen(false);
       }
 
@@ -6703,7 +6702,7 @@ export const commissionTypesColumns = [
         title: "commission-types",
       });
 
-      const postMutation = usePostData({
+      const editMutation = useEditData({
         queryKey: ["commission-types"],
         url: Url,
         title: "commission-types",
@@ -6716,7 +6715,7 @@ export const commissionTypesColumns = [
           controlGL: values.controlGL
         };
 
-        postMutation.mutateAsync(body);
+        editMutation.mutateAsync(body);
         setIsOpen(false);
       }
 
@@ -6875,6 +6874,7 @@ export const chargesColumns = [
         name: title.name,
         alias: title.alias,
         group: title.group,
+        type: title.type,
         basis: title.basis,
         currency: title.currency,
         rate: title.rate
@@ -6886,7 +6886,7 @@ export const chargesColumns = [
         title: "charges-types",
       });
 
-      const postMutation = usePostData({
+      const editMutation = useEditData({
         queryKey: ["charges-types"],
         url: Url,
         title: "charges-types",
@@ -6897,12 +6897,13 @@ export const chargesColumns = [
           name: values.name,
           alias: values.alias,
           group: values.group,
+          type: values.type,
           basis: values.basis,
           currency: values.currency,
           rate: values.rate
         };
 
-        postMutation.mutateAsync(body);
+        editMutation.mutateAsync(body);
         setIsOpen(false);
       }
 
@@ -7042,7 +7043,7 @@ export const chargesTypesColumns = [
         title: "charges-types",
       });
 
-      const postMutation = usePostData({
+      const editMutation = useEditData({
         queryKey: ["charges-types"],
         url: Url,
         title: "charges-types",
@@ -7055,7 +7056,7 @@ export const chargesTypesColumns = [
           controlGL: values.controlGL
         };
 
-        postMutation.mutateAsync(body);
+        editMutation.mutateAsync(body);
         setIsOpen(false);
       }
 
@@ -7149,7 +7150,7 @@ export const discountTypesColumns = [
         title: "discount-types",
       });
 
-      const postMutation = usePostData({
+      const editMutation = useEditData({
         queryKey: ["discount-types"],
         url: Url,
         title: "discount-types",
@@ -7161,7 +7162,7 @@ export const discountTypesColumns = [
           description: values.description
         };
 
-        postMutation.mutateAsync(body);
+        editMutation.mutateAsync(body);
         setIsOpen(false);
       }
 
@@ -7370,7 +7371,7 @@ export const discountsColumns = [
         title: "discount-types",
       });
 
-      const postMutation = usePostData({
+      const editMutation = useEditData({
         queryKey: ["discount-types"],
         url: Url,
         title: "discount-types",
@@ -7388,7 +7389,7 @@ export const discountsColumns = [
           endTime: values.endTime
         };
 
-        postMutation.mutateAsync(body);
+        editMutation.mutateAsync(body);
         setIsOpen(false);
       }
 
@@ -7514,7 +7515,7 @@ export const serviceListingColumns = [
         title: "service-listing",
       });
 
-      const postMutation = usePostData({
+      const editMutation = useEditData({
         queryKey: ["service-listing"],
         url: Url,
         title: "service-listing",
@@ -7526,7 +7527,7 @@ export const serviceListingColumns = [
           description: values.description
         };
 
-        postMutation.mutateAsync(body);
+        editMutation.mutateAsync(body);
         setIsOpen(false);
       }
 
@@ -7806,7 +7807,10 @@ export const planColumns = [
           const response = await axios.get(url);
           return response.data
             .filter(item => !filterStatus || item.status === 'Active')
-            .map(item => ({ value: item.groupName.toUpperCase(), label: item.groupName.toUpperCase() }));
+            .map(item => ({
+              value: item._id,
+              label: name === "Groups" ? item.groupName.toUpperCase() : item.name.toUpperCase()
+            }));
         } catch (error) {
           throw new Error(`Error fetching ${name}`);
         }
@@ -7849,9 +7853,13 @@ export const planColumns = [
         group: title.group,
         name: title.name,
         rateMonth: title.rateMonth,
+        monthCurrency: title.monthCurrency,
         rateBiAnnual: title.rateBiAnnual,
+        halfCurrency: title.halfCurrency,
         rateQuarter: title.rateQuarter,
+        quarterCurrency: title.quarterCurrency,
         rateAnnum: title.rateAnnum,
+        annumCurrency: title.annumCurrency,
         controlGL: title.controlGL,
         taxes: title.taxes,
         charges: title.charges,
@@ -7868,7 +7876,7 @@ export const planColumns = [
         title: "",
       });
 
-      const postMutation = usePostData({
+      const editMutation = useEditData({
         queryKey: ["plan"],
         url: Url,
         title: "plan",
@@ -7879,9 +7887,13 @@ export const planColumns = [
           group: values.group,
           name: values.name,
           rateMonth: values.rateMonth,
+          monthCurrency: values.monthCurrency,
           rateQuarter: values.rateQuarter,
+          quarterCurrency: values.quarterCurrency,
           rateBiAnnual: values.rateBiAnnual,
+          halfCurrency: values.halfCurrency,
           rateAnnual: values.rateAnnual,
+          annumCurrency: values.annumCurrency,
           controlGL: values.controlGL,
           taxes: values.taxes,
           charges: values.charges,
@@ -7892,7 +7904,7 @@ export const planColumns = [
           commissionsDropdown: values.commissionsDropdown
       };
 
-        postMutation.mutateAsync(body);
+        editMutation.mutateAsync(body);
         setIsOpen(false);
       }
 

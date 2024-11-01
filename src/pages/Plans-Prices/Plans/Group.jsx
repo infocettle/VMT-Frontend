@@ -151,7 +151,7 @@ const Group = () => {
   return (
     <div className='w-full'>
          <SecondDiv parentModule={"Plans & Prices"} module={"Group"} />
-         <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
+         <div className="bg-gray-100 py-3 px-2 w-full flex-col items-center">
             <div className="flex justify-between w-full items-center pt-5">
                 <SecondHeader title={"Group"} />
 

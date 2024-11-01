@@ -132,6 +132,7 @@ const discountsDefaultValues = {
   name: "",
   alias: "",
   basis: "",
+  type: "",
   currency: "ngn",
   rate: "",
   startTime: "",
@@ -140,23 +141,25 @@ const discountsDefaultValues = {
 
 const Discounts = () => {
     const [open, setIsOpen] = useState(false);
-    const [chargeTypes, setChargeTypes] = useState([])
+    const [discountTypes, setDiscountTypes] = useState([])
 
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const chargeUrl = `${baseUrl}plans-prices/charges/types`;
+          const discountUrl = `${baseUrl}plans-prices/discounts/types`;
 
-          const [chargeResponse] = await Promise.all([
-            axios.get(chargeUrl),
+          const [discountResponse] = await Promise.all([
+            axios.get(discountUrl),
           ]);
 
-          const chargeTypesData = chargeResponse.data.map(item => ({
-            value: item.chargeType.toUpperCase(),
-            label: item.chargeType.toUpperCase(),
+          const discountTypesData = discountResponse.data
+          .filter(item => item.status === 'Active')
+          .map(item => ({
+            value: item._id,
+            label: item.name.toUpperCase(),
           }));
 
-          setChargeTypes(chargeTypesData);
+          setDiscountTypes(discountTypesData);
 
         } catch (error) {
           toast.error('Error fetching data');
@@ -230,7 +233,7 @@ const Discounts = () => {
                                     <FormSelect
                                         name="type"
                                         label="Type"
-                                        options={chargeTypes}
+                                        options={discountTypes}
                                     />
                                     <div className="flex gap-4">
                                       <div className="w-1/2">

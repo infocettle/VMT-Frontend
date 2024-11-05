@@ -78,10 +78,11 @@ export const differentiatorsRequiredForm = differentiatorsSchema.required();
 const differentiatorsDefaultValues = {
     name: "",
     group: "",
-    maxProcessUsers: "",
-    maxSelfServiceUsers: "",
-    storageMaxAnalytics: "",
-    storageGB: ""
+    maxProcessUsers: null,
+    maxSelfServiceUsers: null,
+    storageMaxAnalytics: null,
+    storageGB: null,
+    rate: null
 
 }
 
@@ -91,7 +92,7 @@ const Differentiators = () => {
 
     const differentiatorsUrl = `${baseUrl}plans-prices/differentiators`;
 
-    const { data, isPending } = useFetchData(differentiatorsUrl, "service-listing");
+    const { data, isPending } = useFetchData(differentiatorsUrl, "differentiators");
 
     useEffect(() => {
         const fetchGroups = async () => {
@@ -120,6 +121,7 @@ const Differentiators = () => {
         const body = {
             name: values.name,
             group: values.group,
+            rate: values.rate,
             maxProcessUsers: values.maxProcessUsers,
             maxSelfServiceUsers: values.maxSelfServiceUsers,
             storageMaxAnalytics: values.storageMaxAnalytics,
@@ -169,6 +171,14 @@ const Differentiators = () => {
                                         label="Group"
                                         options={groupOptions}
                                     />
+                                    <div className="w-5/6">
+                                            <FormInput
+                                              name="rate"
+                                              label="Rate"
+                                              type="number"
+                                              placeholder="0"
+                                            />
+                                          </div>
                                     <div className="flex gap-4">
                                         <FormInput name="maxProcessUsers" label="Max Process Users" type="number" />
                                         <FormInput name="maxSelfServiceUsers" label="Max Self-Service Users" type="number" />

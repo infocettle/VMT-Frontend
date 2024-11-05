@@ -75,6 +75,8 @@ import { groupRequiredForm } from "@/pages/Plans-Prices/Plans/Group";
 import { planSchema } from "@/utils/zodSchema";
 import { planRequiredForm } from "@/pages/Plans-Prices/Plans/Plan";
 import { toast } from "react-toastify";
+import { FormCheckbox } from "./FormCheckBox";
+import useFetchData from "@/hooks/useFetchData";
 
 export const titleColumns = [
   {
@@ -7495,6 +7497,18 @@ export const serviceListingColumns = [
     },
   },
   {
+    accessorKey: "rate",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Rate</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("rate");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
     header: () => <div className="ml-5 uppercase">Actions</div>,
     id: "actions",
     cell: ({ row }) => {
@@ -7506,7 +7520,8 @@ export const serviceListingColumns = [
 
       const defaultValues = {
         name: title.name,
-        description: title.description
+        description: title.description,
+        rate: title.rate,
       }
 
       const deleteMutation = useDeleteData({
@@ -7524,7 +7539,8 @@ export const serviceListingColumns = [
       async function onSubmit(values) {
         const body = {
           name: values.name,
-          description: values.description
+          description: values.description,
+          rate: values.rate
         };
 
         editMutation.mutateAsync(body);
@@ -7585,6 +7601,18 @@ export const differentiatorsColumns = [
       const formatted = row.getValue("group");
       return (
         <div className="ml-6 uppercase">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "rate",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Rate</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("rate");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
       );
     },
   },
@@ -7753,6 +7781,26 @@ export const planColumns = [
     },
   },
   {
+    accessorKey: "differentiators",
+    header: () => {
+      return <h2 className="ml-4 uppercase">Differentiators</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("commissions");
+      return <div className="uppercase ml-6">{String(formatted)}</div>;
+    },
+  },
+  {
+    accessorKey: "serviceListing",
+    header: () => {
+      return <h2 className="ml-4 uppercase">Service Listing</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("commissions");
+      return <div className="uppercase ml-6">{String(formatted)}</div>;
+    },
+  },
+  {
     accessorKey: "status",
     header: ({ column }) => {
       return (
@@ -7801,50 +7849,61 @@ export const planColumns = [
       const [showChargeDropdown, setShowChargeDropdown] = useState(false);
       const [showDiscountDropdown, setShowDiscountDropdown] = useState(false);
       const [showCommissionDropdown, setShowCommissionDropdown] = useState(false);
+      const [ serviceListingOptions, setServiceListingOptions ] = useState([]);
+      const [ differentiatorsOptions, setDifferentiatorsOptions ] = useState([]);
+      const [showServiceListingDropdown, setShowServiceListingDropdown] = useState(false);
+      const [showDifferentiatorDropdown, setShowDiffentiatorDropdown] = useState(false);
 
-      const fetchOptions = async (url, name, filterStatus = true) => {
-        try {
-          const response = await axios.get(url);
-          return response.data
-            .filter(item => !filterStatus || item.status === 'Active')
-            .map(item => ({
-              value: item._id,
-              label: name === "Groups" ? item.groupName.toUpperCase() : item.name.toUpperCase()
-            }));
-        } catch (error) {
-          throw new Error(`Error fetching ${name}`);
-        }
-      };
-  
+      const groupUrl = `${baseUrl}plans-prices/plans/group`;
+      const chargeUrl = `${baseUrl}plans-prices/charges/charge`;
+      const discountUrl = `${baseUrl}plans-prices/discount/discounts`;
+      const commissionUrl = `${baseUrl}plans-prices/commissions/commission`;
+      const controlUrl = `${baseUrl}settings/controlGL`;
+      const serviceListingUrl = `${baseUrl}plans-prices/service-listing`;
+      const differentiatorsUrl = `${baseUrl}plans-prices/differentiators`;
+
+      const { data: groupData, isPending: isGroupPending } = useFetchData(groupUrl, "group");
+      const { data: chargeData, isPending: isChargePending } = useFetchData(chargeUrl, "charge");
+      const { data: discountData, isPending: isDiscountPending } = useFetchData(discountUrl, "discounts");
+      const { data: commissionData, isPending: isCommissionPending } = useFetchData(commissionUrl, "commission");
+      const { data: controlGLData, isPending: isControlGLPending } = useFetchData(controlUrl, "control-gl-accounts");
+      const { data: serviceListingData, isPending: isServiceListingPending } = useFetchData(serviceListingUrl, "service-listing");
+      const { data: differentiatorsData, isPending: isDifferentiatorsPending } = useFetchData(differentiatorsUrl, "differentiator");
+
       useEffect(() => {
-        const fetchAllData = async () => {
-          try {
-            const groupUrl = `${baseUrl}plans-prices/plans/group`;
-            const chargeUrl = `${baseUrl}plans-prices/charges/charge`;
-            const discountUrl = `${baseUrl}plans-prices/discount/discounts`;
-            const commissionUrl = `${baseUrl}plans-prices/commissions/commission`;
-            const controlUrl = `${baseUrl}settings/controlGL`;
-  
-            const [groups, charges, discounts, commissions, controls] = await Promise.all([
-              fetchOptions(groupUrl, "Group"),
-              fetchOptions(chargeUrl, "Charges"),
-              fetchOptions(discountUrl, "Discounts"),
-              fetchOptions(commissionUrl, "Commissions"),
-              fetchOptions(controlUrl, "Control GL Account", false)
-            ]);
-  
-            setGroupOptions(groups);
-            setChargeOptions(charges);
-            setDiscountOptions(discounts);
-            setCommissionOptions(commissions);
-            setControlGLOptions(controls);
-          } catch (error) {
-            toast.error(error.message);
+        const formatData = (response, name) => {
+          if (!response || response.error) {
+            toast.error(`Error fetching ${name}`);
+            return [];
           }
+
+          const items = response.data || [];
+
+          return items
+            .filter((item) => item.status === "Active" || name === "Control GL Accounts")
+            .map((item) => ({
+              value: item._id,
+              label: name === "Groups" ? item.groupName.toUpperCase() : item.name.toUpperCase(),
+            }));
         };
-  
-        fetchAllData();
-      }, [baseUrl]);
+
+
+        setGroupOptions(formatData(groupData, "Groups"));
+        setChargeOptions(formatData(chargeData, "Charges"));
+        setDiscountOptions(formatData(discountData, "Discounts"));
+        setCommissionOptions(formatData(commissionData, "Commissions"));
+        setControlGLOptions(formatData(controlGLData, "Control GL Accounts"));
+        setServiceListingOptions(formatData(serviceListingData, "Service Listing"));
+        setDifferentiatorsOptions(formatData(differentiatorsData, "Differentiators"));
+      }, [
+        groupData,
+        chargeData,
+        discountData,
+        commissionData,
+        controlGLData,
+        serviceListingData,
+        differentiatorsData,
+      ]);
 
       const title = row.original;
       const Url = `${baseUrl}plans-prices/plans/plan/${title._id}`;
@@ -7867,7 +7926,11 @@ export const planColumns = [
         discounts: title.discounts,
         discountsDropdown: title.discountsDropdown,
         commissions: title.commissions,
-        commissionsDropdown: title.commissionsDropdown
+        commissionsDropdown: title.commissionsDropdown,
+        serviceListing: title.serviceListing,
+        serviceListingDropdown: title.serviceListingDropdown,
+        differentiators: title.differentiators,
+        differentiatorsDropdown: title.differentiatorsDropdown
       };
 
       const deleteMutation = useDeleteData({
@@ -7901,7 +7964,11 @@ export const planColumns = [
           discounts: values.discounts,
           discountsDropdown: values.discountsDropdown,
           commissions: values.commissions,
-          commissionsDropdown: values.commissionsDropdown
+          commissionsDropdown: values.commissionsDropdown,
+          serviceListing: values.serviceListing,
+          serviceListingDropdown: values.serviceListingDropdown,
+          differentiators: values.differentiators,
+          differentiatorsDropdown: values.differentiatorsDropdown
       };
 
         editMutation.mutateAsync(body);
@@ -8096,6 +8163,46 @@ export const planColumns = [
                           name="commissionsDropdown"
                           label="Select Commission"
                           options={commissionOptions}
+                        />
+                      )}
+                    </div>
+
+                    {/* Service Listing Field */}
+                    <div className="mb-4">
+                      <FormRadio
+                        name="serviceListing"
+                        label="Service Listing"
+                        options={[
+                          { value: "yes", label: "Yes" },
+                          { value: "no", label: "No" }
+                        ]}
+                        onChange={(value) => setShowServiceListingDropdown(value === "yes")}
+                      />
+                      {showServiceListingDropdown && (
+                        <FormCheckbox
+                          name="serviceListingDropdown"
+                          label="Select Service Listing"
+                          options={serviceListingOptions}
+                        />
+                      )}
+                    </div>
+
+                    {/* Differentiator Field */}
+                    <div className="mb-4">
+                      <FormRadio
+                        name="differentiators"
+                        label="Differentiators"
+                        options={[
+                          { value: "yes", label: "Yes" },
+                          { value: "no", label: "No" }
+                        ]}
+                        onChange={(value) => setShowDiffentiatorDropdown(value === "yes")}
+                      />
+                      {showDifferentiatorDropdown && (
+                        <FormCheckbox
+                          name="differentiatorsDropdown"
+                          label="Select Differentiator"
+                          options={differentiatorsOptions}
                         />
                       )}
                     </div>

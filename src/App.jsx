@@ -146,7 +146,7 @@ import Commissions from "./pages/Plans-Prices/CommissionsRoute";
 
 const queryClient = new QueryClient();
 
-export const baseUrl = "https://vmt-server.onrender.com/api/v1/";
+export const baseUrl =  "http://localhost:3000/api/v1/"; //"https://vmt-server.onrender.com/api/v1/";
 export const baseUrlTrial = "https://vnt-domie.onrender.com";
 
 const router = createBrowserRouter([

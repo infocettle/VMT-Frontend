@@ -78,21 +78,19 @@ const DiscountTypes = () => {
     const [open, setIsOpen] = useState(false);
     const [controlAccounts, setControlAccounts] = useState([])
 
-    useEffect(() => {
-      const fetchControlGL = async () => {
-          try {
-              const url = `${baseUrl}settings/controlGL`;  ///remember to edit it to the correct URL.
-              const response = await axios.get(url);
-              const controlGL = response.data
-                  .map(item => ({ value: item.controlGL.toUpperCase(), label: item.controlGL.toUpperCase() }));
-              setControlAccounts(controlGL);
-          } catch (error) {
-              toast.error('Error fetching Control GLs');
-          }
-      };
+    const controlGLUrl = `${baseUrl}settings/controlGL`;
 
-      fetchControlGL();
-   }, [baseUrl]);
+    const { data: controlGLData, isPending: isControlGLPending } = useFetchData(controlGLUrl, "control-gl-accounts");
+
+    useEffect(() => {
+        if (controlGLData) {
+            const formattedControlGL = controlGLData.map(item => ({
+                value: item._id,
+                label: item.controlGL.toUpperCase(),
+            }));
+            setControlAccounts(formattedControlGL);
+        }
+    }, [controlGLData]);
 
 
     const discountTypesUrl = `${baseUrl}plans-prices/discount/types`;

@@ -170,13 +170,13 @@ export const planRequiredForm = planSchema.required();
 const planDefaultValues = {
   group: "",
   name: "",
-  rateMonth: "",
+  rateMonth: null,
   monthCurrency: "",
-  rateQuarter: "",
+  rateQuarter: null,
   quarterCurrency: "",
-  rateBiAnnual: "",
+  rateBiAnnual: null,
   halfCurrency: "",
-  rateAnnual: "",
+  rateAnnual: null,
   annumCurrency: "",
   controlGL: "",
   taxes: "",
@@ -347,10 +347,9 @@ const Plan = () => {
                                               name="monthCurrency"
                                               label="Currency"
                                               options={[
-                                                { value: 'ngn', label: '₦' },
-                                                { value: 'usd', label: '$' },
-                                                { value: 'eur', label: '€' },
-                                                { value: 'gbp', label: '£' }
+                                                { value: 'NGN', label: '₦' },
+                                                { value: 'USD', label: '$' },
+
                                               ]}
                                               className="h-12"
                                             />
@@ -370,10 +369,9 @@ const Plan = () => {
                                               name="halfCurrency"
                                               label="Currency"
                                               options={[
-                                                { value: 'ngn', label: '₦' },
-                                                { value: 'usd', label: '$' },
-                                                { value: 'eur', label: '€' },
-                                                { value: 'gbp', label: '£' }
+                                                { value: 'NGN', label: '₦' },
+                                                { value: 'USD', label: '$' },
+
                                               ]}
                                               className="h-12"
                                             />
@@ -395,10 +393,9 @@ const Plan = () => {
                                               name="quarterCurrency"
                                               label="Currency"
                                               options={[
-                                                { value: 'ngn', label: '₦' },
-                                                { value: 'usd', label: '$' },
-                                                { value: 'eur', label: '€' },
-                                                { value: 'gbp', label: '£' }
+                                                { value: 'NGN', label: '₦' },
+                                                { value: 'USD', label: '$' },
+
                                               ]}
                                               className="h-12"
                                             />
@@ -418,10 +415,9 @@ const Plan = () => {
                                               name="annumCurrency"
                                               label="Currency"
                                               options={[
-                                                { value: 'ngn', label: '₦' },
-                                                { value: 'usd', label: '$' },
-                                                { value: 'eur', label: '€' },
-                                                { value: 'gbp', label: '£' }
+                                                { value: 'NGN', label: '₦' },
+                                                { value: 'USD', label: '$' },
+
                                               ]}
                                               className="h-12"
                                             />

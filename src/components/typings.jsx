@@ -6954,10 +6954,9 @@ export const chargesColumns = [
                       name="currency"
                       label="Currency"
                       options={[
-                        { value: 'ngn', label: '₦' },
-                        { value: 'usd', label: '$' },
-                        { value: 'eur', label: '€' },
-                        { value: 'gbp', label: '£' }
+                        { value: 'NGN', label: '₦' },
+                        { value: 'USD', label: '$' },
+
                       ]}
                       className="h-12"
                     />
@@ -7435,10 +7434,9 @@ export const discountsColumns = [
                       name="currency"
                       label="Currency"
                       options={[
-                        { value: 'ngn', label: '₦' },
-                        { value: 'usd', label: '$' },
-                        { value: 'eur', label: '€' },
-                        { value: 'gbp', label: '£' }
+                        { value: 'NGN', label: '₦' },
+                        { value: 'USD', label: '$' },
+
                       ]}
                       className="h-12"
                     />
@@ -8001,10 +7999,9 @@ export const planColumns = [
                             name="monthCurrency"
                             label="Currency"
                             options={[
-                              { value: 'ngn', label: '₦' },
-                              { value: 'usd', label: '$' },
-                              { value: 'eur', label: '€' },
-                              { value: 'gbp', label: '£' }
+                              { value: 'NGN', label: '₦' },
+                              { value: 'USD', label: '$' },
+
                             ]}
                             className="h-12"
                           />
@@ -8024,10 +8021,9 @@ export const planColumns = [
                             name="halfCurrency"
                             label="Currency"
                             options={[
-                              { value: 'ngn', label: '₦' },
-                              { value: 'usd', label: '$' },
-                              { value: 'eur', label: '€' },
-                              { value: 'gbp', label: '£' }
+                              { value: 'NGN', label: '₦' },
+                              { value: 'USD', label: '$' },
+
                             ]}
                             className="h-12"
                           />
@@ -8049,10 +8045,9 @@ export const planColumns = [
                             name="quarterCurrency"
                             label="Currency"
                             options={[
-                              { value: 'ngn', label: '₦' },
-                              { value: 'usd', label: '$' },
-                              { value: 'eur', label: '€' },
-                              { value: 'gbp', label: '£' }
+                              { value: 'NGN', label: '₦' },
+                              { value: 'USD', label: '$' },
+
                             ]}
                             className="h-12"
                           />
@@ -8072,10 +8067,9 @@ export const planColumns = [
                             name="annumCurrency"
                             label="Currency"
                             options={[
-                              { value: 'ngn', label: '₦' },
-                              { value: 'usd', label: '$' },
-                              { value: 'eur', label: '€' },
-                              { value: 'gbp', label: '£' }
+                              { value: 'NGN', label: '₦' },
+                              { value: 'USD', label: '$' },
+
                             ]}
                             className="h-12"
                           />

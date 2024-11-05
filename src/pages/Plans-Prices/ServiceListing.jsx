@@ -69,7 +69,7 @@ export const serviceListingRequiredForm = serviceListingSchema.required();
 const serviceListingDefaultValues = {
     name: "",
     description: "",
-    rate: 0
+    rate: null
 }
 
 const ServiceListing = () => {
@@ -79,7 +79,6 @@ const ServiceListing = () => {
     const serviceListingUrl = `${baseUrl}plans-prices/service-listing`;
 
     const { data, isPending } = useFetchData(serviceListingUrl, "service-listing");
-    console.log(data)
 
     const postMutation = usePostData({
         queryKey: ["service-listing"],

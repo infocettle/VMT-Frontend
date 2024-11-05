@@ -100,7 +100,7 @@ export const commissionRequiredForm = commissionSchema.required();
 const commissionDefaultValues = {
     name: "",
     percent: "",
-    rate: "",
+    rate: null,
     type: "",
     description: "",
 }
@@ -109,31 +109,21 @@ const CommissionTypes = () => {
     const [open, setIsOpen] = useState(false);
     const [commissionTypes, setCommissionTypes] = useState([])
 
+    const commissionTypesUrl = `${baseUrl}plans-prices/commissions/types`;
+
+    const { data: commissionData, isPending: isCommissionPending } = useFetchData(commissionTypesUrl, "commission-types");
+
     useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const commissionUrl = `${baseUrl}plans-prices/commissions/commission`;
-
-          const [commissionResponse] = await Promise.all([
-            axios.get(commissionUrl),
-          ]);
-
-          const commissionTypesData = commissionResponse.data
-          .filter(item => item.status === 'Active')
-          .map(item => ({
-            value: item._id,
-            label: item.name.toUpperCase(),
-          }));
-
-          setCommissionTypes(commissionTypesData);
-
-        } catch (error) {
-          toast.error('Error fetching data');
+        if (commissionData) {
+            const commissionTypesData = commissionData
+                .filter(item => item.status === 'Active')
+                .map(item => ({
+                    value: item._id,
+                    label: item.name.toUpperCase(),
+                }));
+            setCommissionTypes(commissionTypesData);
         }
-      };
-
-      fetchData();
-    }, [baseUrl]);
+    }, [commissionData]);
 
     const commissionUrl = `${baseUrl}plans-prices/commissions/commission`;
 

@@ -113,8 +113,8 @@ const chargesDefaultValues = {
     alias: "",
     type: "",
     basis: "",
-    currency: "ngn",
-    rate: ""
+    currency: "NGN",
+    rate: null
 }
 
 const Charges = () => {
@@ -122,41 +122,35 @@ const Charges = () => {
     const [groupOptions, setGroupOptions] = useState([])
     const [chargeTypes, setChargeTypes] = useState([])
 
+    const groupUrl = `${baseUrl}plans-prices/plans/group`;
+    const chargeUrl = `${baseUrl}plans-prices/charges/types`;
+
+    const { data: groupData, isPending: isGroupPending } = useFetchData(groupUrl, "group");
+    const { data: chargeData, isPending: isChargePending } = useFetchData(chargeUrl, "charge");
+
     useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const groupUrl = `${baseUrl}plans-prices/plans/group`;
-          const chargeUrl = `${baseUrl}plans-prices/charges/types`;
+        if (groupData || chargeData) {
+            if (groupData) {
+                const activeGroups = groupData
+                    .filter(item => item.status === 'Active')
+                    .map(item => ({
+                        value: item._id,
+                        label: item.groupName.toUpperCase(),
+                    }));
+                setGroupOptions(activeGroups);
+            }
 
-          const [groupResponse, chargeResponse] = await Promise.all([
-            axios.get(groupUrl),
-            axios.get(chargeUrl),
-          ]);
-
-          const activeGroups = groupResponse.data
-            .filter(item => item.status === 'Active')
-            .map(item => ({
-              value: item._id,
-              label: item.groupName.toUpperCase(),
-            }));
-
-          const chargeTypesData = chargeResponse.data
-          .filter(item => item.status === 'Active')
-          .map(item => ({
-            value: item._id,
-            label: item.name.toUpperCase(),
-          }));
-
-          setGroupOptions(activeGroups);
-          setChargeTypes(chargeTypesData);
-
-        } catch (error) {
-          toast.error('Error fetching data');
+            if (chargeData) {
+                const chargeTypesData = chargeData
+                    .filter(item => item.status === 'Active')
+                    .map(item => ({
+                        value: item._id,
+                        label: item.name.toUpperCase(),
+                    }));
+                setChargeTypes(chargeTypesData);
+            }
         }
-      };
-
-      fetchData();
-    }, [baseUrl]);
+    }, [groupData, chargeData]);
 
 
     const chargesUrl = `${baseUrl}plans-prices/charges/charge`;
@@ -241,10 +235,9 @@ const Charges = () => {
                                               name="currency"
                                               label="Currency"
                                               options={[
-                                                { value: 'ngn', label: '₦' },
-                                                { value: 'usd', label: '$' },
-                                                { value: 'eur', label: '€' },
-                                                { value: 'gbp', label: '£' }
+                                                { value: 'NGN', label: '₦' },
+                                                { value: 'USD', label: '$' },
+
                                               ]}
                                               className="h-12"
                                             />

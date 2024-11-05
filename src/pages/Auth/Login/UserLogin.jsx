@@ -5,9 +5,9 @@ import { HiEye, HiEyeOff } from "react-icons/hi";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { Loader } from 'lucide-react';
-import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
+import { setSubscriber, setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
 function UserLogin({ setFormType ,setUserEmail}) {
-  const url = `${baseUrl}v1/auth/login`;
+  const url = `${baseUrl}auth/login`;
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -59,6 +59,7 @@ function UserLogin({ setFormType ,setUserEmail}) {
         });
         console.log(returnedUser);
         dispatch(setUserSubscriber(returnedUser.user));
+        dispatch(setSubscriber(returnedUser.subscriber));
       setFormType("otp");
     } catch (error) {
       console.error("error", error);

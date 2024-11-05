@@ -133,8 +133,8 @@ const discountsDefaultValues = {
   alias: "",
   basis: "",
   type: "",
-  currency: "ngn",
-  rate: "",
+  currency: "NGN",
+  rate: null,
   startTime: "",
   endTime: ""
 }
@@ -143,33 +143,22 @@ const Discounts = () => {
     const [open, setIsOpen] = useState(false);
     const [discountTypes, setDiscountTypes] = useState([])
 
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const discountUrl = `${baseUrl}plans-prices/discounts/types`;
-
-          const [discountResponse] = await Promise.all([
-            axios.get(discountUrl),
-          ]);
-
-          const discountTypesData = discountResponse.data
-          .filter(item => item.status === 'Active')
-          .map(item => ({
-            value: item._id,
-            label: item.name.toUpperCase(),
-          }));
-
-          setDiscountTypes(discountTypesData);
-
-        } catch (error) {
-          toast.error('Error fetching data');
-        }
-      };
-
-      fetchData();
-    }, [baseUrl]);
-
+    const discountUrl = `${baseUrl}plans-prices/discounts/types`;
     const discountsUrl = `${baseUrl}plans-prices/discount/discounts`;
+
+    const { data: discountData, isPending: isDiscountPending } = useFetchData(discountUrl, "discount");
+
+    useEffect(() => {
+        if (discountData) {
+            const discountTypesData = discountData
+                .filter(item => item.status === 'Active')
+                .map(item => ({
+                    value: item._id,
+                    label: item.name.toUpperCase(),
+                }));
+            setDiscountTypes(discountTypesData);
+        }
+    }, [discountData]);
 
     const { data, isPending } = useFetchData(discountsUrl, "discounts");
 
@@ -252,10 +241,9 @@ const Discounts = () => {
                                               name="currency"
                                               label="Currency"
                                               options={[
-                                                { value: 'ngn', label: '₦' },
-                                                { value: 'usd', label: '$' },
-                                                { value: 'eur', label: '€' },
-                                                { value: 'gbp', label: '£' }
+                                                { value: 'NGN', label: '₦' },
+                                                { value: 'USD', label: '$' },
+
                                               ]}
                                               className="h-12"
                                             />

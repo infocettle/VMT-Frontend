@@ -6,7 +6,7 @@ import { sendData } from "@/hooks/usePostData";
 import { toast } from "react-toastify";
 import { Loader } from 'lucide-react';
 function AdminUserResetPassword({ setFormType,setUserEmail }) {
-  const url = `${baseUrl}v1/user/admin/auth/forgot-password`;
+  const url = `${baseUrl}user/admin/auth/forgot-password`;
     
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");

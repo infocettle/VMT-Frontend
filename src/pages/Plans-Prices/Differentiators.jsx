@@ -91,25 +91,23 @@ const Differentiators = () => {
     const [groupOptions, setGroupOptions] = useState([])
 
     const differentiatorsUrl = `${baseUrl}plans-prices/differentiators`;
+    const groupUrl = `${baseUrl}plans-prices/plans/group`;
 
     const { data, isPending } = useFetchData(differentiatorsUrl, "differentiators");
 
-    useEffect(() => {
-        const fetchGroups = async () => {
-            try {
-                const url = `${baseUrl}plans-prices/plans/group`;
-                const response = await axios.get(url);
-                const activeGroups = response.data
-                    .filter(item => item.status === 'Active')
-                    .map(item => ({ value: item.groupName.toUpperCase(), label: item.groupName.toUpperCase() }));
-                setGroupOptions(activeGroups);
-            } catch (error) {
-                toast.error('Error fetching Groups');
-            }
-        };
+    const { data: groupData, isPending: isGroupPending } = useFetchData(groupUrl, "group");
 
-        fetchGroups();
-    }, [baseUrl]);
+    useEffect(() => {
+        if (groupData) {
+            const activeGroups = groupData
+                .filter(item => item.status === 'Active')
+                .map(item => ({
+                    value: item._id,
+                    label: item.groupName.toUpperCase(),
+                }));
+            setGroupOptions(activeGroups);
+        }
+    }, [groupData]);
 
     const postMutation = usePostData({
         queryKey: ["differentiators"],

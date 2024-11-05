@@ -22,7 +22,7 @@ const UpdateProfile = ({ setUpdateNow }) => {
 
   const fileRef = register("picture");
 
-  const indiPatBasicUrl = `${baseUrl}v1/partner/individual/profile/basic-details/${userData._id}`;
+  const indiPatBasicUrl = `${baseUrl}partner/individual/profile/basic-details/${userData._id}`;
 
   const { data } = useFetchData(
     indiPatBasicUrl,

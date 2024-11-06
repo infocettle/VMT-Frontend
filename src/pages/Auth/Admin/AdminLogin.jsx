@@ -42,7 +42,7 @@ const dispatch = useDispatch()
         }
         return true;
       };
-    
+
       const handleContinue = async () => {
         if (!validateForm()) return;
     

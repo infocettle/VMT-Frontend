@@ -26,10 +26,10 @@ const UpdateOther = ({ setUpdateNow, type }) => {
   const certRef = register("certOfIncorp");
   const meansID = register("meansOfID");
 
-  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/other-details/${userData._id}`;
-  const companySubscriberUrl = `${baseUrl}v1/subscriber/company/profile/${userData._id}/other-details`;
-  const companyPartnerUrl = `${baseUrl}v1/partner/company/profile/${userData._id}/other-details`;
-  const individualPartnerUrl = `${baseUrl}v1/partner/individual/profile/other-details/${userData._id}`;
+  const indiSubBasicUrl = `${baseUrl}subscriber/individual/profile/other-details/${userData._id}`;
+  const companySubscriberUrl = `${baseUrl}subscriber/company/profile/${userData._id}/other-details`;
+  const companyPartnerUrl = `${baseUrl}partner/company/profile/${userData._id}/other-details`;
+  const individualPartnerUrl = `${baseUrl}partner/individual/profile/other-details/${userData._id}`;
 
   const bankUrl = `${baseUrl}public-registry/financial-institutions/bank`;
   const { data: bankData } = useFetchData(bankUrl, "bank");

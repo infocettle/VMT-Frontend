@@ -26,10 +26,10 @@ const UpdateAddress = ({ setUpdateNow, type }) => {
     resolver: zodResolver(addressInformationFormSchema),
   });
 
-  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/address/${userData._id}`;
-  const companySubscriberUrl = `${baseUrl}v1/subscriber/company/profile/${userData._id}/address`;
-  const companyPartnerUrl = `${baseUrl}v1/partner/company/profile/${userData._id}/address`;
-  const individualPartnerUrl = `${baseUrl}v1/partner/individual/profile/address/${userData._id}`;
+  const indiSubBasicUrl = `${baseUrl}subscriber/individual/profile/address/${userData._id}`;
+  const companySubscriberUrl = `${baseUrl}subscriber/company/profile/${userData._id}/address`;
+  const companyPartnerUrl = `${baseUrl}partner/company/profile/${userData._id}/address`;
+  const individualPartnerUrl = `${baseUrl}partner/individual/profile/address/${userData._id}`;
 
   const countryUrl = `${baseUrl}public-registry/address/country`;
   const { data: countryData } = useFetchData(countryUrl, "country");

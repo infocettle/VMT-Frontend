@@ -20,8 +20,8 @@ const UpdateProfile = ({ setUpdateNow, type }) => {
 
   const userData = useSelector((state) => state.auth.user);
 
-  const companySubscriberUrl = `${baseUrl}v1/subscriber/company/profile/${userData._id}/basic-details`;
-  const companyPartnerUrl = `${baseUrl}v1/partner/company/profile/${userData._id}/basic-details`;
+  const companySubscriberUrl = `${baseUrl}subscriber/company/profile/${userData._id}/basic-details`;
+  const companyPartnerUrl = `${baseUrl}partner/company/profile/${userData._id}/basic-details`;
 
   const { data, isFetching } = useFetchData(
     type === "company subscriber" ? companySubscriberUrl : companyPartnerUrl,

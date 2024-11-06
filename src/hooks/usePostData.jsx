@@ -19,7 +19,8 @@ const postData = async ({ url, body, title,token }) => {
     });
     return data;
   } catch (error) {
-    const errorBody = error.response?.data || { detail: error.message };
+    console.log(error)
+    const errorBody = error.response?.data.message || { detail: error.message };
     console.error(errorBody);
     toast.error(`${errorBody}`, {
       autoClose: 2000,

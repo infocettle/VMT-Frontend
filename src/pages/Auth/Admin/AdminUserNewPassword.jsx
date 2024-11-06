@@ -6,7 +6,7 @@ import Logo from "../../../assets/img/Logo.svg";
 import { useSelector } from "react-redux";
 import { baseUrl } from "@/App";
 function AdminUserNewPassword({setFormType,userEmail}) {
-  const url = `${baseUrl}v1/user/admin/auth/reset-password`;
+  const url = `${baseUrl}user/admin/auth/reset-password`;
   const token = useSelector((state) => state.auth.token);
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");

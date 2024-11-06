@@ -5,6 +5,7 @@ const authSubscriberSlice = createSlice({
     user: null,
     authenticated: false,
     token: null,
+    subscriber: null,
     // subscriptionStatus: 'inactive', // Initialize subscription status as 'inactive'
   },
   reducers: {
@@ -13,7 +14,9 @@ const authSubscriberSlice = createSlice({
       state.authenticated = action.payload ? true : false;
       state.token = null;
     },
-
+    setSubscriber: (state, action) => {
+      state.subscriber = action.payload;
+    },
     setUpdatedUserSubscriber: (state, action) => {
       state.user = action.payload;
       state.authenticated = true;
@@ -42,4 +45,4 @@ const authSubscriberSlice = createSlice({
 
 export const authReducer = authSubscriberSlice.reducer;
 
-export const { setUserSubscriber, logOutUserSubscriber,setTokenSubscriber } = authSubscriberSlice.actions;
+export const { setUserSubscriber, logOutUserSubscriber,setTokenSubscriber, setSubscriber } = authSubscriberSlice.actions;

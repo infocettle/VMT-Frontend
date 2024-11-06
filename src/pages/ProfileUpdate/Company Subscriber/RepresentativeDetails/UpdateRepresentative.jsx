@@ -20,8 +20,8 @@ const UpdateRepresentative = ({ setUpdateNow, type }) => {
 
   const userData = useSelector((state) => state.auth.user);
 
-  const companySubscriberUrl = `${baseUrl}v1/subscriber/company/profile/${userData._id}/representative-details`;
-  const companyPartnerUrl = `${baseUrl}v1/partner/company/profile/${userData._id}/representative-details`;
+  const companySubscriberUrl = `${baseUrl}subscriber/company/profile/${userData._id}/representative-details`;
+  const companyPartnerUrl = `${baseUrl}partner/company/profile/${userData._id}/representative-details`;
 
   const titleUrl = `${baseUrl}public-registry/personal-details/title`;
   const { data: titleData } = useFetchData(titleUrl, "title");

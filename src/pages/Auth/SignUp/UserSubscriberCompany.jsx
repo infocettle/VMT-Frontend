@@ -6,7 +6,7 @@ import MobileLogo from "../../../assets/img/MobileLogo.svg";
 import { baseUrl } from "@/App";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
+import { setSubscriber, setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
 import { useDispatch } from "react-redux";
 import { sendData } from "@/hooks/usePostData";
 import { Loader } from 'lucide-react';
@@ -245,6 +245,7 @@ function UserSubscriberCompany({ setFormType,userType,partnerType }) {
         setLoading: setLoading 
       });
       dispatch(setUserSubscriber(returnedData.newUser));
+      dispatch(setSubscriber(returnedUser.newCompanySubscriber));
       setFormType("company-create-password");
     } catch (error) {
       toast.error(`Error: ${error.message}`);

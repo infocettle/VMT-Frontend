@@ -5,8 +5,9 @@ import { baseUrl } from "@/App";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { sendData } from "@/hooks/usePostData";
+import { setSubscriber } from "@/pages/Redux/authSubscriber.slice";
 function AdminUserVerifyEmail({ setFormType }) {
-  const url = `${baseUrl}v1/user/admin/auth/verify-otp`;
+  const url = `${baseUrl}user/admin/auth/verify-otp`;
   const [loading, setLoading] = useState(false);
   const [otp, setOTP] = useState("");
   const dispatch = useDispatch()
@@ -39,7 +40,8 @@ function AdminUserVerifyEmail({ setFormType }) {
         setLoading: setLoading 
       });
       console.log(returnedUser);
-      dispatch(setUserSubscriber(returnedUser.newUser)) 
+      dispatch(setUserSubscriber(returnedUser.newUser));
+      dispatch(setSubscriber(returnedUser.subscriber));
       setFormType("admin-user-new-password");
 
     } catch (error) {

@@ -9,7 +9,7 @@ export const FormSelect = ({ name, label, options }) => {
 
   return (
     <div className="w-full gap-1 flex flex-col">
-      <label htmlFor={name} className="capitalize text-sm font-light">
+      <label htmlFor={name} className="capitalize text-sm">
         {label}
       </label>
       <Controller
@@ -19,7 +19,7 @@ export const FormSelect = ({ name, label, options }) => {
           <>
             <select
               {...field}
-              className="border border-gray-100 focus:outline-none rounded-md p-2 mb-2"
+              className="border border-gray-100 focus:outline-none rounded-md p-3.75 mb-2"
             >
               <option value="">Select {label}</option>
               {options.map((option) => (

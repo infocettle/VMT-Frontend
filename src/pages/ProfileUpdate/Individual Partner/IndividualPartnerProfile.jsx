@@ -32,7 +32,7 @@ const IndividualPartnerProfile = () => {
   const [type, setType] = useState("individual partner");
   const [progress, setProgress] = useState(0);
 
-  const indiPartnerBasicUrl = `${baseUrl}v1/partner/individual/profile/basic-details/${userData._id}`;
+  const indiPartnerBasicUrl = `${baseUrl}partner/individual/profile/basic-details/${userData._id}`;
 
   const { data, isFetching } = useFetchData(
     indiPartnerBasicUrl,

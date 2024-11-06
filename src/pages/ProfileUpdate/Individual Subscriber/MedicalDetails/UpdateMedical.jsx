@@ -18,7 +18,7 @@ const UpdateMedical = ({ setUpdateNow }) => {
   });
 
   const userData = useSelector((state) => state.auth.user);
-  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/medical-information/${userData._id}`;
+  const indiSubBasicUrl = `${baseUrl}subscriber/individual/profile/medical-information/${userData._id}`;
 
   const bloodUrl = `${baseUrl}public-registry/personal-details/blood-group/`;
   const genotypeUrl = `${baseUrl}public-registry/personal-details/genotype/`;

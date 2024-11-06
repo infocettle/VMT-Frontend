@@ -1,13 +1,13 @@
 import { baseUrl } from "@/App";
 import { sendData } from "@/hooks/usePostData";
-import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
+import { setSubscriber, setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
 import React, { useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { Loader } from 'lucide-react';
 function OTP({ setFormType,userEmail }) {
-  const url = `${baseUrl}v1/auth/verify-login`;
+  const url = `${baseUrl}auth/verify-login`;
   const [otp, setOTP] = useState("");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch()
@@ -40,7 +40,8 @@ function OTP({ setFormType,userEmail }) {
           setLoading: setLoading 
         });
         console.log(returnedUser);
-        dispatch(setUserSubscriber(returnedUser.user)) 
+        dispatch(setUserSubscriber(returnedUser.user));
+        dispatch(setSubscriber(returnedUser.subscriber));
         setFormType("governance-page");
 
       } catch (error) {

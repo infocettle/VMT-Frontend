@@ -16,7 +16,7 @@ const DisplayReferee = ({
   };
 
   const userData = useSelector((state) => state.auth.user);
-  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/referee-information/${userData._id}`;
+  const indiSubBasicUrl = `${baseUrl}subscriber/individual/profile/referee-information/${userData._id}`;
 
   const { data, isFetching } = useFetchData(
     indiSubBasicUrl,

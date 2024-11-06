@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { Loader } from 'lucide-react';
 function VerifyEmail({ setFormType,userEmail }) {
-  const url = `${baseUrl}v1/auth/verify-otp`;
+  const url = `${baseUrl}auth/verify-otp`;
     const [otp, setOTP] = useState("");
     const dispatch = useDispatch()
     const [showPassword, setShowPassword] = useState(false);

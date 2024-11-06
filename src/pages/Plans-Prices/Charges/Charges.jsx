@@ -129,28 +129,30 @@ const Charges = () => {
     const { data: chargeData, isPending: isChargePending } = useFetchData(chargeUrl, "charge");
 
     useEffect(() => {
-        if (groupData || chargeData) {
-            if (groupData) {
-                const activeGroups = groupData
-                    .filter(item => item.status === 'Active')
-                    .map(item => ({
-                        value: item._id,
-                        label: item.groupName.toUpperCase(),
-                    }));
-                setGroupOptions(activeGroups);
-            }
-
-            if (chargeData) {
-                const chargeTypesData = chargeData
-                    .filter(item => item.status === 'Active')
-                    .map(item => ({
-                        value: item._id,
-                        label: item.name.toUpperCase(),
-                    }));
-                setChargeTypes(chargeTypesData);
-            }
-        }
-    }, [groupData, chargeData]);
+      if (Array.isArray(groupData) && groupData.length > 0) {
+          const activeGroups = groupData
+              .filter(item => item.status === 'Active')
+              .map(item => ({
+                  value: item._id,
+                  label: item.groupName.toUpperCase(),
+              }));
+          setGroupOptions(activeGroups);
+      } else {
+          setGroupOptions([]);
+      }
+  
+      if (Array.isArray(chargeData) && chargeData.length > 0) {
+          const chargeTypesData = chargeData
+              .filter(item => item.status === 'Active')
+              .map(item => ({
+                  value: item._id,
+                  label: item.name.toUpperCase(),
+              }));
+          setChargeTypes(chargeTypesData);
+      } else {
+          setChargeTypes([]);
+      }
+  }, [groupData, chargeData]);
 
 
     const chargesUrl = `${baseUrl}plans-prices/charges/charge`;

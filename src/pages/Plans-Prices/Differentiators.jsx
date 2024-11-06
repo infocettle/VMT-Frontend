@@ -98,16 +98,19 @@ const Differentiators = () => {
     const { data: groupData, isPending: isGroupPending } = useFetchData(groupUrl, "group");
 
     useEffect(() => {
-        if (groupData) {
-            const activeGroups = groupData
-                .filter(item => item.status === 'Active')
-                .map(item => ({
-                    value: item._id,
-                    label: item.groupName.toUpperCase(),
-                }));
-            setGroupOptions(activeGroups);
-        }
-    }, [groupData]);
+      if (Array.isArray(groupData) && groupData.length > 0) {
+          const activeGroups = groupData
+              .filter(item => item.status === 'Active')
+              .map(item => ({
+                  value: item._id,
+                  label: item.groupName.toUpperCase(),
+              }));
+          setGroupOptions(activeGroups);
+      } else {
+          setGroupOptions([]);
+      }
+  }, [groupData]);
+
 
     const postMutation = usePostData({
         queryKey: ["differentiators"],

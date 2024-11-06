@@ -103,6 +103,8 @@ const commissionDefaultValues = {
     rate: null,
     type: "",
     description: "",
+    startTime: null,
+    endTime: null
 }
 
 const CommissionTypes = () => {
@@ -114,16 +116,18 @@ const CommissionTypes = () => {
     const { data: commissionData, isPending: isCommissionPending } = useFetchData(commissionTypesUrl, "commission-types");
 
     useEffect(() => {
-        if (commissionData) {
-            const commissionTypesData = commissionData
-                .filter(item => item.status === 'Active')
-                .map(item => ({
-                    value: item._id,
-                    label: item.name.toUpperCase(),
-                }));
-            setCommissionTypes(commissionTypesData);
-        }
-    }, [commissionData]);
+      if (Array.isArray(commissionData) && commissionData.length > 0) {
+          const commissionTypesData = commissionData
+              .filter(item => item.status === 'Active')
+              .map(item => ({
+                  value: item._id,
+                  label: item.name.toUpperCase(),
+              }));
+          setCommissionTypes(commissionTypesData);
+      } else {
+          setCommissionTypes([]);
+      }
+  }, [commissionData]);
 
     const commissionUrl = `${baseUrl}plans-prices/commissions/commission`;
 
@@ -142,6 +146,8 @@ const CommissionTypes = () => {
             rate: values.rate,
             type: values.type,
             description: values.description,
+            startTime: values.startTime,
+            endTime: values.endTime
         };
 
         postMutation.mutateAsync(body);
@@ -208,6 +214,10 @@ const CommissionTypes = () => {
                                           </div>
                                         </div>
                                     <FormTextArea name="description" label="Description" />
+                                    <div className="flex gap-4">
+                                      <FormInput name="startTime" label="Start Time" type="date" />
+                                      <FormInput name="endTime" label="End Time" type="date" />
+                                    </div>
                               </GenericForm>
                           </DialogContent>
                   </Dialog>
@@ -228,6 +238,7 @@ const CommissionTypes = () => {
                 data={sampleData}
                 tableName={"Commission"}
                 width={"w-[755px]"}
+                options={{commissionTypes}}
             />
         </div>
     </div>

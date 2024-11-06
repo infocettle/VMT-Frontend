@@ -85,16 +85,17 @@ const CommissionTypes = () => {
     const { data: controlGLData, isPending: isControlGLPending } = useFetchData(controlGLUrl, "control-gl-accounts");
 
     useEffect(() => {
-        if (controlGLData) {
-            const formattedControlGL = controlGLData
-            .filter((item) => item.status === "Active")
-            .map(item => ({
-                value: item._id,
-                label: item.controlGL.toUpperCase(),
-            }));
-            setControlAccounts(formattedControlGL);
-        }
-    }, [controlGLData]);
+      if (Array.isArray(controlGLData) && controlGLData.length > 0) {
+          const formattedControlGL = controlGLData.map(item => ({
+              value: item._id,
+              label: item.controlGL.toUpperCase(),
+          }));
+          setControlAccounts(formattedControlGL);
+      } else {
+          setControlAccounts([]);
+      }
+  }, [controlGLData]);
+
 
     const postMutation = usePostData({
         queryKey: ["commission-types"],

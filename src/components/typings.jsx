@@ -6390,21 +6390,17 @@ export const groupColumns = [
       const [open, setIsOpen] = useState(false);
       const [controlAccounts, setControlAccounts] = useState([])
 
-    useEffect(() => {
-      const fetchControlGL = async () => {
-          try {
-              const url = `${baseUrl}settings/controlGL`;  ///remember to edit it to the correct URL.
-              const response = await axios.get(url);
-              const controlGL = response.data
-                  .map(item => ({ value: item.controlGL.toUpperCase(), label: item.controlGL.toUpperCase() }));
-              setControlAccounts(controlGL);
-          } catch (error) {
-              toast.error('Error fetching Control GLs');
-          }
-      };
+      const { data: controlGLData, isPending: isControlGLPending } = useFetchData(controlGLUrl, "control-gl-accounts");
 
-      fetchControlGL();
-  }, [baseUrl]);
+      useEffect(() => {
+          if (controlGLData) {
+              const formattedControlGL = controlGLData.map(item => ({
+                  value: item._id,
+                  label: item.controlGL.toUpperCase(),
+              }));
+              setControlAccounts(formattedControlGL);
+          }
+      }, [controlGLData]);
 
       const title = row.original;
 
@@ -6517,6 +6513,30 @@ export const commissionColumns = [
     },
   },
   {
+    accessorKey: "startTime",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>Start Time</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("startTime");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "endTime",
+    header: () => {
+      return <h2 className={"ml-4 uppercase"}>End Time</h2>;
+    },
+    cell: ({ row }) => {
+      const formatted = row.getValue("endTime");
+      return (
+        <div className="ml-6">{String(formatted)}</div>
+      );
+    },
+  },
+  {
     accessorKey: "status",
     header: ({ column }) => {
       return (
@@ -6557,6 +6577,25 @@ export const commissionColumns = [
     id: "actions",
     cell: ({ row }) => {
       const [open, setIsOpen] = useState(false);
+      const [commissionTypes, setCommissionTypes] = useState([])
+
+    const commissionTypesUrl = `${baseUrl}plans-prices/commissions/types`;
+
+    const { data: commissionData, isPending: isCommissionPending } = useFetchData(commissionTypesUrl, "commission-types");
+
+    useEffect(() => {
+      if (Array.isArray(commissionData) && commissionData.length > 0) {
+          const commissionTypesData = commissionData
+              .filter(item => item.status === 'Active')
+              .map(item => ({
+                  value: item._id,
+                  label: item.name.toUpperCase(),
+              }));
+          setCommissionTypes(commissionTypesData);
+      } else {
+          setCommissionTypes([]);
+      }
+  }, [commissionData]);
 
       const title = row.original;
 
@@ -6565,8 +6604,11 @@ export const commissionColumns = [
       const defaultValues = {
         name: title.name,
         percent: title.percent,
+        type: title.type,
         rate: title.rate,
         description: title.description,
+        startTime: title.startTime,
+        endTime: title.endTime
       }
 
       const deleteMutation = useDeleteData({
@@ -6585,8 +6627,11 @@ export const commissionColumns = [
         const body = {
           name: values.name,
           percent: values.percent,
+          type: values.type,
           rate: values.rate,
           description: values.description,
+          startTime: values.startTime,
+          endTime: values.endTime
         };
 
         editMutation.mutateAsync(body);
@@ -6610,6 +6655,11 @@ export const commissionColumns = [
             long={false}
           >
               <FormInput name="name" label="Name" />
+              <FormSelect
+                    name="type"
+                    label="Type"
+                    options={commissionTypes}
+                />
               <div className="flex gap-2">
                 <div className="w-1/5">
                   <FormSelect
@@ -6631,6 +6681,10 @@ export const commissionColumns = [
                 </div>
               </div>
               <FormTextArea name="description" label="Description" />
+              <div className="flex gap-4">
+                <FormInput name="startTime" label="Start Time" type="date" />
+                <FormInput name="endTime" label="End Time" type="date" />
+              </div>
           </ReuseDialog>
 
           <ConfirmDelete
@@ -6834,39 +6888,38 @@ export const chargesColumns = [
       const [groupOptions, setGroupOptions] = useState([])
       const [chargeTypes, setChargeTypes] = useState([])
 
+      const groupUrl = `${baseUrl}plans-prices/plans/group`;
+      const chargeUrl = `${baseUrl}plans-prices/charges/types`;
+
+      const { data: groupData, isPending: isGroupPending } = useFetchData(groupUrl, "group");
+      const { data: chargeData, isPending: isChargePending } = useFetchData(chargeUrl, "charge");
+
       useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const groupUrl = `${baseUrl}plans-prices/plans/group`;
-            const chargeUrl = `${baseUrl}plans-prices/charges/types`;
-
-            const [groupResponse, chargeResponse] = await Promise.all([
-              axios.get(groupUrl),
-              axios.get(chargeUrl),
-            ]);
-
-            const activeGroups = groupResponse.data
-              .filter(item => item.status === 'Active')
-              .map(item => ({
-                value: item.groupName.toUpperCase(),
-                label: item.groupName.toUpperCase(),
-              }));
-
-            const chargeTypesData = chargeResponse.data.map(item => ({
-              value: item.chargeType.toUpperCase(),
-              label: item.chargeType.toUpperCase(),
-            }));
-
+        if (Array.isArray(groupData) && groupData.length > 0) {
+            const activeGroups = groupData
+                .filter(item => item.status === 'Active')
+                .map(item => ({
+                    value: item._id,
+                    label: item.groupName.toUpperCase(),
+                }));
             setGroupOptions(activeGroups);
+        } else {
+            setGroupOptions([]);
+        }
+    
+        if (Array.isArray(chargeData) && chargeData.length > 0) {
+            const chargeTypesData = chargeData
+                .filter(item => item.status === 'Active')
+                .map(item => ({
+                    value: item._id,
+                    label: item.name.toUpperCase(),
+                }));
             setChargeTypes(chargeTypesData);
+        } else {
+            setChargeTypes([]);
+        }
+    }, [groupData, chargeData]);
 
-          } catch (error) {
-            toast.error('Error fetching data');
-          }
-        };
-
-        fetchData();
-      }, [baseUrl]);
 
       const title = row.original;
 
@@ -7027,6 +7080,23 @@ export const chargesTypesColumns = [
     id: "actions",
     cell: ({ row }) => {
       const [open, setIsOpen] = useState(false);
+      const [controlAccounts, setControlAccounts] = useState([])
+
+      const controlGLUrl = `${baseUrl}settings/controlGL`;
+
+      const { data: controlGLData, isPending: isControlGLPending } = useFetchData(controlGLUrl, "control-gl-accounts");
+  
+      useEffect(() => {
+        if (Array.isArray(controlGLData) && controlGLData.length > 0) {
+            const formattedControlGL = controlGLData.map(item => ({
+                value: item._id,
+                label: item.controlGL.toUpperCase(),
+            }));
+            setControlAccounts(formattedControlGL);
+        } else {
+            setControlAccounts([]);
+        }
+    }, [controlGLData]);
 
       const title = row.original;
 
@@ -7079,6 +7149,11 @@ export const chargesTypesColumns = [
           >
             <FormInput name="name" label="Name" />
             <FormInput name="description" label="Description" />
+            <FormSelect
+              name="controlGL"
+              label="Select Control Account"
+              options={controlAccounts}
+          />
           </ReuseDialog>
 
           <ConfirmDelete
@@ -7142,7 +7217,9 @@ export const discountTypesColumns = [
 
       const defaultValues = {
         name: title.name,
-        description: title.description
+        description: title.description,
+        startTime: title.startTime,
+        endTime: title.endTime
       }
 
       const deleteMutation = useDeleteData({
@@ -7325,35 +7402,30 @@ export const discountsColumns = [
     id: "actions",
     cell: ({ row }) => {
       const [open, setIsOpen] = useState(false);
-      const [chargeTypes, setChargeTypes] = useState([])
+      const [discountTypes, setDiscountTypes] = useState([])
+
+      const discountUrl = `${baseUrl}plans-prices/discounts/types`;
+
+      const { data: discountData, isPending: isDiscountPending } = useFetchData(discountUrl, "discount");
 
       useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const chargeUrl = `${baseUrl}plans-prices/charges/types`;
+        if (Array.isArray(discountData) && discountData.length > 0) {
+            const discountTypesData = discountData
+                .filter(item => item.status === 'Active')
+                .map(item => ({
+                    value: item._id,
+                    label: item.name.toUpperCase(),
+                }));
+            setDiscountTypes(discountTypesData);
+        } else {
+            setDiscountTypes([]);
+        }
+    }, [discountData]);
 
-            const [chargeResponse] = await Promise.all([
-              axios.get(chargeUrl),
-            ]);
-
-            const chargeTypesData = chargeResponse.data.map(item => ({
-              value: item.chargeType.toUpperCase(),
-              label: item.chargeType.toUpperCase(),
-            }));
-
-            setChargeTypes(chargeTypesData);
-
-          } catch (error) {
-            toast.error('Error fetching data');
-          }
-        };
-
-        fetchData();
-      }, [baseUrl]);
 
       const title = row.original;
 
-      const Url = `${baseUrl}plans-prices/discount/types/${title._id}`;
+      const Url = `${baseUrl}plans-prices/discount/discounts/${title._id}`;
 
       const defaultValues = {
         name: title.name,
@@ -7415,7 +7487,7 @@ export const discountsColumns = [
             <FormSelect
                 name="type"
                 label="Type"
-                options={chargeTypes}
+                options={discountTypes}
             />
             <div className="flex gap-4">
               <div className="w-1/2">

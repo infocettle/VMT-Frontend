@@ -2004,11 +2004,30 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                       defaultValue={tableValue.name}
                     />
                   </div>
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 font-bold mb-2"
+                      htmlFor="type"
+                    >
+                      Type
+                    </label>
+                    <select
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="type"
+                      defaultValue={tableValue.type}
+                    >
+                      {options.commissionTypes.map((option, index) => (
+                        <option key={index} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                   <div className="flex gap-2">
                       <div className="w-1/12">
                         <label
                           className="block text-gray-700 font-bold mb-2"
-                          htmlFor="currency"
+                          htmlFor="percent"
                         >
                           Percent
                         </label>
@@ -2037,18 +2056,38 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                       </div>
                     </div>
                     <div className="mb-4">
-                    <label
-                      className="block text-gray-700 font-bold mb-2"
-                      htmlFor="description"
-                    >
-                      Description
-                    </label>
-                    <textarea
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      id="description"
-                      type="text"
-                      defaultValue={tableValue.description}
-                    />
+                      <label
+                        className="block text-gray-700 font-bold mb-2"
+                        htmlFor="description"
+                      >
+                        Description
+                      </label>
+                      <textarea
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="description"
+                        type="text"
+                        defaultValue={tableValue.description}
+                      />
+                  </div>
+                  <div class="flex gap-4">
+                    <div class="w-1/2">
+                      <label class="block text-gray-700 font-bold mb-2" for="startTime">Start Time</label>
+                      <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="startTime"
+                        type="date"
+                        defaultValue={tableValue.startTime}
+                      />
+                    </div>
+                    <div class="w-1/2">
+                      <label class="block text-gray-700 font-bold mb-2" for="endTime">End Time</label>
+                      <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="endTime"
+                        type="date"
+                        defaultValue={tableValue.endTime}
+                      />
+                    </div>
                   </div>
                   <ApproveButtons handleCloseModal={handleCloseModal} />
                 </form>
@@ -2116,7 +2155,7 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                       id="type"
                       defaultValue={tableValue.type}
                     >
-                      {options.groupTypes.map((option, index) => (
+                      {options.chargeTypes.map((option, index) => (
                         <option key={index} value={option.value}>
                           {option.label}
                         </option>
@@ -2155,10 +2194,8 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                           id="currency"
                           defaultValue={tableValue.currency}
                         >
-                          <option value="ngn">₦</option>
-                          <option value="usd">$</option>
-                          <option value="eur">€</option>
-                          <option value="gbp">£</option>
+                          <option value="NGN">₦</option>
+                          <option value="USD">$</option>
                         </select>
                       </div>
                       <div className="w-4/5 mb-4">
@@ -2208,10 +2245,8 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                       <div className="flex gap-2 items-center">
                       <select name="monthCurrency" className="p-2 border border-gray-300 rounded"
                         defaultValue={tableValue.monthCurrency}>
-                          <option value="ngn">₦</option>
-                          <option value="usd">$</option>
-                          <option value="eur">€</option>
-                          <option value="gbp">£</option>
+                          <option value="NGN">₦</option>
+                          <option value="USD">$</option>
                         </select>
                         <input type="number" name="rateMonth" placeholder="0" className="w-full p-2 border border-gray-300 rounded"
                         defaultValue={tableValue.rateMonth} />
@@ -2224,10 +2259,8 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                        <div className="flex items-center gap-2">
                        <select name="halfCurrency" className="p-2 border border-gray-300 rounded"
                         defaultValue={tableValue.halfCurrency}>
-                          <option value="ngn">₦</option>
-                          <option value="usd">$</option>
-                          <option value="eur">€</option>
-                          <option value="gbp">£</option>
+                          <option value="NGN">₦</option>
+                          <option value="USD">$</option>
                         </select>
                         <input type="number" name="rateBiAnnual" placeholder="0" className="w-full p-2 border border-gray-300 rounded"
                         defaultValue={tableValue.rateBiAnnual}/>
@@ -2242,10 +2275,8 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                         <div className="flex gap-2 items-center">
                           <select name="quarterCurrency" className="p-2 border border-gray-300 rounded"
                           defaultValue={tableValue.quarterCurrency}>
-                            <option value="ngn">₦</option>
-                            <option value="usd">$</option>
-                            <option value="eur">€</option>
-                            <option value="gbp">£</option>
+                            <option value="NGN">₦</option>
+                            <option value="USD">$</option>
                           </select>
                           <input type="number" name="rateQuarter" placeholder="0" className="w-full p-2 border border-gray-300 rounded"
                           defaultValue={tableValue.rateQuarter}/>
@@ -2258,10 +2289,8 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                         <div className="flex gap-2 items-center">
                           <select name="annumCurrency" className="p-2 border border-gray-300 rounded"
                           defaultValue={tableValue.annumCurrency}>
-                            <option value="ngn">₦</option>
-                            <option value="usd">$</option>
-                            <option value="eur">€</option>
-                            <option value="gbp">£</option>
+                            <option value="NGN">₦</option>
+                            <option value="USD">$</option>
                           </select>
                           <input type="number" name="rateAnnum" placeholder="0" className="w-full p-2 border border-gray-300 rounded"
                           defaultValue={tableValue.rateAnnum}/>
@@ -2664,7 +2693,7 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                       id="type"
                       defaultValue={tableValue.type}
                     >
-                      {options.chargeTypes.map((option, index) => (
+                      {options.discountTypes.map((option, index) => (
                         <option key={index} value={option.value}>
                           {option.label}
                         </option>
@@ -2692,10 +2721,8 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                           id="currency"
                           defaultValue={tableValue.currency}
                         >
-                          <option value="ngn">₦</option>
-                          <option value="usd">$</option>
-                          <option value="eur">€</option>
-                          <option value="gbp">£</option>
+                          <option value="NGN">₦</option>
+                          <option value="USD">$</option>
                         </select>
                       </div>
                       <div class="w-4/5">

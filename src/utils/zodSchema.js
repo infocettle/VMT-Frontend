@@ -1317,8 +1317,8 @@ export const discountsSchema = z.object({
     }),
 
   currency: z
-    .enum(["ngn", "usd", "eur", "gbp"], {
-      invalid_type_error: "Currency must be either '₦', '$', '€', or '£'",
+    .enum(["NGN", "USD"], {
+      invalid_type_error: "Currency must be either '₦' or '$'",
       required_error: "Currency is required",
     }),
 

@@ -135,8 +135,8 @@ const discountsDefaultValues = {
   type: "",
   currency: "NGN",
   rate: null,
-  startTime: "",
-  endTime: ""
+  startTime: null,
+  endTime: null
 }
 
 const Discounts = () => {
@@ -147,18 +147,22 @@ const Discounts = () => {
     const discountsUrl = `${baseUrl}plans-prices/discount/discounts`;
 
     const { data: discountData, isPending: isDiscountPending } = useFetchData(discountUrl, "discount");
+    console.log(discountTypes)
 
     useEffect(() => {
-        if (discountData) {
-            const discountTypesData = discountData
-                .filter(item => item.status === 'Active')
-                .map(item => ({
-                    value: item._id,
-                    label: item.name.toUpperCase(),
-                }));
-            setDiscountTypes(discountTypesData);
-        }
-    }, [discountData]);
+      if (Array.isArray(discountData) && discountData.length > 0) {
+          const discountTypesData = discountData
+              .filter(item => item.status === 'Active')
+              .map(item => ({
+                  value: item._id,
+                  label: item.name.toUpperCase(),
+              }));
+          setDiscountTypes(discountTypesData);
+      } else {
+          setDiscountTypes([]);
+      }
+  }, [discountData]);
+
 
     const { data, isPending } = useFetchData(discountsUrl, "discounts");
 
@@ -282,7 +286,7 @@ const Discounts = () => {
                 data={sampleData}
                 tableName={"Discounts"}
                 width={"w-[755px]"}
-                options={{chargeTypes}}
+                options={{discountTypes}}
             />
         </div>
     </div>

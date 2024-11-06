@@ -12,7 +12,6 @@ import {
     DialogTrigger,
   } from "@/components/ui/dialog";
 import { ReusableTableVariant } from '@/components/ReusableTableVariant';
-import { lockDomainColumns } from '@/components/typings';
 import { GenericForm } from '@/components/GenericForm';
 import { subscriberIDSchema } from '@/utils/zodSchema';
 import useFetchData from '@/hooks/useFetchData';
@@ -122,7 +121,7 @@ const CancelDomain = () => {
 
         {/* Table */}
         <ReusableTableVariant
-            columns={lockDomainColumns}
+            columns={subscriberIDSchema}
             tableData={allSubscribers}
             // tableName={"Activation"}
             />

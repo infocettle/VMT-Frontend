@@ -132,41 +132,33 @@ const discountsDefaultValues = {
   name: "",
   alias: "",
   basis: "",
-  currency: "ngn",
-  rate: "",
+  type: "",
+  currency: "NGN",
+  rate: null,
   startTime: "",
   endTime: ""
 }
 
 const Discounts = () => {
     const [open, setIsOpen] = useState(false);
-    const [chargeTypes, setChargeTypes] = useState([])
+    const [discountTypes, setDiscountTypes] = useState([])
+
+    const discountUrl = `${baseUrl}plans-prices/discounts/types`;
+    const discountsUrl = `${baseUrl}plans-prices/discount/discounts`;
+
+    const { data: discountData, isPending: isDiscountPending } = useFetchData(discountUrl, "discount");
 
     useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const chargeUrl = `${baseUrl}plans-prices/charges/types`;
-
-          const [chargeResponse] = await Promise.all([
-            axios.get(chargeUrl),
-          ]);
-
-          const chargeTypesData = chargeResponse.data.map(item => ({
-            value: item.chargeType.toUpperCase(),
-            label: item.chargeType.toUpperCase(),
-          }));
-
-          setChargeTypes(chargeTypesData);
-
-        } catch (error) {
-          toast.error('Error fetching data');
+        if (discountData) {
+            const discountTypesData = discountData
+                .filter(item => item.status === 'Active')
+                .map(item => ({
+                    value: item._id,
+                    label: item.name.toUpperCase(),
+                }));
+            setDiscountTypes(discountTypesData);
         }
-      };
-
-      fetchData();
-    }, [baseUrl]);
-
-    const discountsUrl = `${baseUrl}plans-prices/discount/discounts`;
+    }, [discountData]);
 
     const { data, isPending } = useFetchData(discountsUrl, "discounts");
 
@@ -230,7 +222,7 @@ const Discounts = () => {
                                     <FormSelect
                                         name="type"
                                         label="Type"
-                                        options={chargeTypes}
+                                        options={discountTypes}
                                     />
                                     <div className="flex gap-4">
                                       <div className="w-1/2">
@@ -249,10 +241,9 @@ const Discounts = () => {
                                               name="currency"
                                               label="Currency"
                                               options={[
-                                                { value: 'ngn', label: '₦' },
-                                                { value: 'usd', label: '$' },
-                                                { value: 'eur', label: '€' },
-                                                { value: 'gbp', label: '£' }
+                                                { value: 'NGN', label: '₦' },
+                                                { value: 'USD', label: '$' },
+
                                               ]}
                                               className="h-12"
                                             />

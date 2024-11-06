@@ -100,12 +100,30 @@ export const commissionRequiredForm = commissionSchema.required();
 const commissionDefaultValues = {
     name: "",
     percent: "",
-    rate: "",
+    rate: null,
+    type: "",
     description: "",
 }
 
 const CommissionTypes = () => {
     const [open, setIsOpen] = useState(false);
+    const [commissionTypes, setCommissionTypes] = useState([])
+
+    const commissionTypesUrl = `${baseUrl}plans-prices/commissions/types`;
+
+    const { data: commissionData, isPending: isCommissionPending } = useFetchData(commissionTypesUrl, "commission-types");
+
+    useEffect(() => {
+        if (commissionData) {
+            const commissionTypesData = commissionData
+                .filter(item => item.status === 'Active')
+                .map(item => ({
+                    value: item._id,
+                    label: item.name.toUpperCase(),
+                }));
+            setCommissionTypes(commissionTypesData);
+        }
+    }, [commissionData]);
 
     const commissionUrl = `${baseUrl}plans-prices/commissions/commission`;
 
@@ -122,6 +140,7 @@ const CommissionTypes = () => {
             name: values.name,
             percent: values.percent,
             rate: values.rate,
+            type: values.type,
             description: values.description,
         };
 
@@ -163,6 +182,11 @@ const CommissionTypes = () => {
                                   secondButton={"Submit"}
                               >
                                     <FormInput name="name" label="Name" />
+                                    <FormSelect
+                                        name="type"
+                                        label="Type"
+                                        options={commissionTypes}
+                                    />
                                        <div className="flex gap-2">
                                           <div className="w-1/6">
                                             <FormSelect

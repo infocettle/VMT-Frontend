@@ -1192,8 +1192,8 @@ export const chargesSchema = z.object({
   basis: z.enum(['fixed', 'percentages'], {
     invalid_type_error: "Basis must be either 'fixed' or 'percentages'",
   }),
-  currency: z.enum(['usd', 'eur', 'gbp', 'ngn'], {
-    invalid_type_error: "Currency must be either 'ngn', 'usd', 'eur', or 'gbp'",
+  currency: z.enum(['NGN', 'USD'], {
+    invalid_type_error: "Currency must be either 'NGN' or 'USD'",
   }),
   rate: z
     .number({
@@ -1237,6 +1237,12 @@ export const commissionSchema = z.object({
     .min(1, "Name cannot be empty")
     .max(100, "Name must be maximum 100 characters")
     .trim(),
+  type: z
+    .string({
+      invalid_type_error: "Type must be a string",
+      required_error: "Type is required",
+    })
+    .min(1, "Type must be selected"),
   rate: z
     .number({
       invalid_type_error: "Rate must be a number",

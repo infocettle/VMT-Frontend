@@ -78,10 +78,11 @@ export const differentiatorsRequiredForm = differentiatorsSchema.required();
 const differentiatorsDefaultValues = {
     name: "",
     group: "",
-    maxProcessUsers: "",
-    maxSelfServiceUsers: "",
-    storageMaxAnalytics: "",
-    storageGB: ""
+    maxProcessUsers: null,
+    maxSelfServiceUsers: null,
+    storageMaxAnalytics: null,
+    storageGB: null,
+    rate: null
 
 }
 
@@ -90,25 +91,23 @@ const Differentiators = () => {
     const [groupOptions, setGroupOptions] = useState([])
 
     const differentiatorsUrl = `${baseUrl}plans-prices/differentiators`;
+    const groupUrl = `${baseUrl}plans-prices/plans/group`;
 
-    const { data, isPending } = useFetchData(differentiatorsUrl, "service-listing");
+    const { data, isPending } = useFetchData(differentiatorsUrl, "differentiators");
+
+    const { data: groupData, isPending: isGroupPending } = useFetchData(groupUrl, "group");
 
     useEffect(() => {
-        const fetchGroups = async () => {
-            try {
-                const url = `${baseUrl}plans-prices/plans/group`;
-                const response = await axios.get(url);
-                const activeGroups = response.data
-                    .filter(item => item.status === 'Active')
-                    .map(item => ({ value: item.groupName.toUpperCase(), label: item.groupName.toUpperCase() }));
-                setGroupOptions(activeGroups);
-            } catch (error) {
-                toast.error('Error fetching Groups');
-            }
-        };
-
-        fetchGroups();
-    }, [baseUrl]);
+        if (groupData) {
+            const activeGroups = groupData
+                .filter(item => item.status === 'Active')
+                .map(item => ({
+                    value: item._id,
+                    label: item.groupName.toUpperCase(),
+                }));
+            setGroupOptions(activeGroups);
+        }
+    }, [groupData]);
 
     const postMutation = usePostData({
         queryKey: ["differentiators"],
@@ -120,6 +119,7 @@ const Differentiators = () => {
         const body = {
             name: values.name,
             group: values.group,
+            rate: values.rate,
             maxProcessUsers: values.maxProcessUsers,
             maxSelfServiceUsers: values.maxSelfServiceUsers,
             storageMaxAnalytics: values.storageMaxAnalytics,
@@ -169,6 +169,14 @@ const Differentiators = () => {
                                         label="Group"
                                         options={groupOptions}
                                     />
+                                    <div className="w-5/6">
+                                            <FormInput
+                                              name="rate"
+                                              label="Rate"
+                                              type="number"
+                                              placeholder="0"
+                                            />
+                                          </div>
                                     <div className="flex gap-4">
                                         <FormInput name="maxProcessUsers" label="Max Process Users" type="number" />
                                         <FormInput name="maxSelfServiceUsers" label="Max Self-Service Users" type="number" />

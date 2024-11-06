@@ -77,28 +77,24 @@ const ChargesTypes = () => {
     const [open, setIsOpen] = useState(false);
     const [controlAccounts, setControlAccounts] = useState([])
 
-    useEffect(() => {
-      const fetchControlGL = async () => {
-          try {
-              const url = `${baseUrl}settings/controlGL`;  ///remember to edit it to the correct URL.
-              const response = await axios.get(url);
-              const controlGL = response.data
-                  .map(item => ({ value: item.controlGL.toUpperCase(), label: item.controlGL.toUpperCase() }));
-              setControlAccounts(controlGL);
-          } catch (error) {
-              toast.error('Error fetching Control GLs');
-          }
-      };
-
-      fetchControlGL();
-  }, [baseUrl]);
-
-
-
     const chargesTypesUrl = `${baseUrl}plans-prices/charges/types`;
+    const controlGLUrl = `${baseUrl}settings/controlGL`;
 
     const { data, isPending } = useFetchData(chargesTypesUrl, "charges-types");
 
+    const { data: controlGLData, isPending: isControlGLPending } = useFetchData(controlGLUrl, "control-gl-accounts");
+
+    useEffect(() => {
+        if (controlGLData) {
+            const formattedControlGL = controlGLData
+            .filter((item) => item.status === "Active")
+            .map(item => ({
+                value: item._id,
+                label: item.controlGL.toUpperCase(),
+            }));
+            setControlAccounts(formattedControlGL);
+        }
+    }, [controlGLData]);
 
     const postMutation = usePostData({
         queryKey: ["charges-types"],

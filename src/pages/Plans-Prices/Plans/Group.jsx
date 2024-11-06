@@ -107,25 +107,23 @@ const Group = () => {
     const [open, setIsOpen] = useState(false);
     const [controlAccounts, setControlAccounts] = useState([])
 
-    useEffect(() => {
-      const fetchControlGL = async () => {
-          try {
-              const url = `${baseUrl}settings/controlGL`;  ///remember to edit it to the correct URL.
-              const response = await axios.get(url);
-              const controlGL = response.data
-                  .map(item => ({ value: item.controlGL.toUpperCase(), label: item.controlGL.toUpperCase() }));
-              setControlAccounts(controlGL);
-          } catch (error) {
-              toast.error('Error fetching Control GLs');
-          }
-      };
-
-      fetchControlGL();
-  }, [baseUrl]);
 
     const groupUrl = `${baseUrl}plans-prices/plans/group`;
+    const controlGLUrl = `${baseUrl}settings/controlGL`;
 
     const { data, isPending } = useFetchData(groupUrl, "group");
+
+    const { data: controlGLData, isPending: isControlGLPending } = useFetchData(controlGLUrl, "control-gl-accounts");
+
+    useEffect(() => {
+        if (controlGLData) {
+            const formattedControlGL = controlGLData.map(item => ({
+                value: item._id,
+                label: item.controlGL.toUpperCase(),
+            }));
+            setControlAccounts(formattedControlGL);
+        }
+    }, [controlGLData]);
 
     const postMutation = usePostData({
         queryKey: ["group"],
@@ -151,7 +149,7 @@ const Group = () => {
   return (
     <div className='w-full'>
          <SecondDiv parentModule={"Plans & Prices"} module={"Group"} />
-         <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
+         <div className="bg-gray-100 py-3 px-2 w-full flex-col items-center">
             <div className="flex justify-between w-full items-center pt-5">
                 <SecondHeader title={"Group"} />
 

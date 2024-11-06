@@ -29,6 +29,10 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
   const [showChargeDropdown, setShowChargeDropdown] = useState(false);
   const [showDiscountDropdown, setShowDiscountDropdown] = useState(false);
   const [showCommissionDropdown, setShowCommissionDropdown] = useState(false);
+  const [showServiceListing, setShowServiceListing] = useState(false);
+  const [showDifferentiators, setShowDifferentiators] = useState(false);
+  const [selectedDifferentiators, setSelectedDifferentiators] = useState([]);
+  const [selectedServiceListings, setSelectedServiceListings] = useState([]);
 
   const patchMutation = usePatchData({
     queryKey: [
@@ -2371,6 +2375,112 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                       </select>
                     )}
 
+                    {/* Differentiators */}
+                    <div className="flex gap-4">
+                      <label className="block font-medium">Differentiators</label>
+                      <div className="flex items-center gap-4 mb-4">
+                        <label className="flex items-center">
+                          <input
+                            type="radio"
+                            name="differentiatorsAvailable"
+                            value="yes"
+                            className="mr-2"
+                            onChange={() => setShowDifferentiators(true)}
+                            defaultChecked={tableValue.differentiators === "yes"}
+                          />
+                          Yes
+                        </label>
+                        <label className="flex items-center">
+                          <input
+                            type="radio"
+                            name="differentiatorsAvailable"
+                            value="no"
+                            className="mr-2"
+                            onChange={() => setShowDifferentiators(false)}
+                            defaultChecked={tableValue.differentiators === "no"}
+                          />
+                          No
+                        </label>
+                      </div>
+                    </div>
+                    {showDifferentiators && (
+                      <div className="flex flex-col gap-2 mb-4">
+                        {options.differentiatorsOptions.map((option, index) => (
+                          <label key={index} className="flex items-center">
+                            <input
+                              type="checkbox"
+                              name= "differentiatorsDropdown"
+                              value={option.value}
+                              className="mr-2"
+                              onChange={(e) => {
+                                const isChecked = e.target.checked;
+                                if (isChecked) {
+                                  setSelectedDifferentiators((prev) => [...prev, option.value]);
+                                } else {
+                                  setSelectedDifferentiators((prev) => prev.filter((value) => value !== option.value));
+                                }
+                              }}
+                              defaultChecked={selectedDifferentiators.includes(option.value)}
+                            />
+                            {option.label}
+                          </label>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Service Listing */}
+                    <div className="flex gap-4">
+                      <label className="block font-medium">Service Listing</label>
+                      <div className="flex items-center gap-4 mb-4">
+                        <label className="flex items-center">
+                          <input
+                            type="radio"
+                            name="serviceListingAvailable"
+                            value="yes"
+                            className="mr-2"
+                            onChange={() => setShowServiceListing(true)}
+                            defaultChecked={tableValue.serviceListing === "yes"}
+                          />
+                          Yes
+                        </label>
+                        <label className="flex items-center">
+                          <input
+                            type="radio"
+                            name="serviceListingAvailable"
+                            value="no"
+                            className="mr-2"
+                            onChange={() => setShowServiceListing(false)}
+                            defaultChecked={tableValue.serviceListing === "yes"}
+                          />
+                          No
+                        </label>
+                      </div>
+                    </div>
+                    {showServiceListing && (
+                      <div className="flex flex-col gap-2 mb-4">
+                        {options.serviceListingOptions.map((option, index) => (
+                          <label key={index} className="flex items-center">
+                            <input
+                              type="checkbox"
+                              name="serviceListingDropdown"
+                              value={option.value}
+                              className="mr-2"
+                              onChange={(e) => {
+                                const isChecked = e.target.checked;
+                                if (isChecked) {
+                                  setSelectedServiceListings((prev) => [...prev, option.value]);
+                                } else {
+                                  setSelectedServiceListings((prev) => prev.filter((value) => value !== option.value));
+                                }
+                              }}
+                              defaultChecked={selectedServiceListings.includes(option.value)}
+                            />
+                            {option.label}
+                          </label>
+                        ))}
+                      </div>
+                    )}
+
                     {/* Commissions */}
                     <div className="flex gap-4">
                       <label className="block font-medium">Commissions</label>
@@ -2658,6 +2768,15 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                         ))}
                       </select>
                   </div>
+                  <div class="mb-4">
+                        <label class="block text-gray-700 font-bold mb-2" for="rate">Rate</label>
+                        <input
+                          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          id="rate"
+                          type="number"
+                          defaultValue={tableValue.rate}
+                        />
+                      </div>
                   <div className="flex gap-4">
                     <div className="mb-4 w-full">
                       <label
@@ -2751,6 +2870,15 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                       defaultValue={tableValue.description}
                     />
                   </div>
+                  <div class="mb-4">
+                        <label class="block text-gray-700 font-bold mb-2" for="rate">Rate</label>
+                        <input
+                          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          id="rate"
+                          type="number"
+                          defaultValue={tableValue.rate}
+                        />
+                      </div>
                   <ApproveButtons handleCloseModal={handleCloseModal} />
                 </form>
               )}

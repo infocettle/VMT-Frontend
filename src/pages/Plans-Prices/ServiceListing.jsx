@@ -68,7 +68,8 @@ const sampleData = [
 export const serviceListingRequiredForm = serviceListingSchema.required();
 const serviceListingDefaultValues = {
     name: "",
-    description: ""
+    description: "",
+    rate: null
 }
 
 const ServiceListing = () => {
@@ -88,7 +89,8 @@ const ServiceListing = () => {
     async function onSubmit(values) {
         const body = {
             name: values.name,
-            description: values.description
+            description: values.description,
+            rate: values.rate
         };
 
         postMutation.mutateAsync(body);
@@ -130,6 +132,14 @@ const ServiceListing = () => {
                               >
                                     <FormInput name="name" label="Name" />
                                     <FormTextArea name="description" label="description" />
+                                    <div className="w-5/6">
+                                            <FormInput
+                                              name="rate"
+                                              label="Rate"
+                                              type="number"
+                                              placeholder="0"
+                                            />
+                                          </div>
                               </GenericForm>
                           </DialogContent>
                   </Dialog>
@@ -147,7 +157,7 @@ const ServiceListing = () => {
             {/* Table */}
             <ReusableTable
                 columns={serviceListingColumns}
-                data={sampleData}
+                data={data.data}
                 tableName={"Service Listing"}
                 width={"w-[425px]"}
             />

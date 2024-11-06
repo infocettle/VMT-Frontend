@@ -6388,7 +6388,8 @@ export const groupColumns = [
     id: "actions",
     cell: ({ row }) => {
       const [open, setIsOpen] = useState(false);
-      
+      const [controlAccounts, setControlAccounts] = useState([])
+    
       const controlGLUrl = `${baseUrl}settings/controlGL`;
 
       const { data: controlGLData, isPending: isControlGLPending } = useFetchData(controlGLUrl, "control-gl-accounts");

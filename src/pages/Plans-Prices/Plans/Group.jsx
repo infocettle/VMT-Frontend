@@ -19,6 +19,78 @@ import { usePostData } from '@/hooks/usePostData';
 import { IoFilter } from 'react-icons/io5';
 import { baseUrl } from '@/App';
 
+const sampleData = [
+    {
+      groupName: "Premium Group",
+      description: "This group provides access to premium features and support.",
+      controlGL: "option1",
+      planCondition: "User must be subscribed to a yearly plan.",
+      status: "Active"
+    },
+    {
+      groupName: "Basic Group",
+      description: "This group offers essential features with limited support.",
+      controlGL: "option2",
+      planCondition: "Available to all users by default.",
+      status: "Pending"
+    },
+    {
+      groupName: "Enterprise Group",
+      description: "Designed for large organizations with customized solutions.",
+      controlGL: "option3",
+      planCondition: "Custom contract required.",
+      status: "Inactive"
+    },
+    {
+      groupName: "Student Group",
+      description: "Special discounted group for students.",
+      controlGL: "option1",
+      planCondition: "Valid student ID required.",
+      status: "Active"
+    },
+    {
+      groupName: "Trial Group",
+      description: "Free access for a limited time period.",
+      controlGL: "option2",
+      planCondition: "Valid for 30 days.",
+      status: "Pending"
+    },
+    {
+      groupName: "Non-Profit Group",
+      description: "Discounted access for non-profit organizations.",
+      controlGL: "option3",
+      planCondition: "Proof of non-profit status required.",
+      status: "Active"
+    },
+    {
+      groupName: "VIP Group",
+      description: "Exclusive group with highest level of support and features.",
+      controlGL: "option1",
+      planCondition: "Invitation only.",
+      status: "Inactive"
+    },
+    {
+      groupName: "Corporate Group",
+      description: "Access for corporate clients with specific requirements.",
+      controlGL: "option2",
+      planCondition: "Company verification needed.",
+      status: "Active"
+    },
+    {
+      groupName: "Seasonal Group",
+      description: "Temporary group for seasonal promotions.",
+      controlGL: "option1",
+      planCondition: "Available during promotional periods.",
+      status: "Pending"
+    },
+    {
+      groupName: "Early Access Group",
+      description: "Provides early access to new features.",
+      controlGL: "option3",
+      planCondition: "Users selected based on activity.",
+      status: "Active"
+    }
+  ];
 
 export const groupRequiredForm = groupSchema.required();
 const groupDefaultValues = {
@@ -106,7 +178,7 @@ const Group = () => {
             {/* Table */}
             <ReusableTable
                 columns={groupColumns}
-                data={data.data}
+                data={sampleData} //data.data
                 tableName={"Group"}
                 width={"w-[755px]"}
             />

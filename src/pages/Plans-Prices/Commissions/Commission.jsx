@@ -22,6 +22,78 @@ import { usePostData } from '@/hooks/usePostData';
 import { IoFilter } from 'react-icons/io5';
 import { baseUrl } from '@/App';
 
+const sampleData = [
+  {
+    name: "Holiday Discount",
+    percent: "10%",
+    rate: 500,
+    description: "Discount for holiday season",
+    status: "Active",
+  },
+  {
+    name: "Student Discount",
+    percent: "15%",
+    rate: 200,
+    description: "Discount available for students",
+    status: "Pending",
+  },
+  {
+    name: "Senior Citizen Discount",
+    percent: "20%",
+    rate: 300,
+    description: "Discount for senior citizens",
+    status: "Active",
+  },
+  {
+    name: "New Customer Discount",
+    percent: "5%",
+    rate: 100,
+    description: "Welcome discount for new customers",
+    status: "Pending",
+  },
+  {
+    name: "Seasonal Discount",
+    percent: "12%",
+    rate: 450,
+    description: "Limited-time seasonal discount",
+    status: "Inactive",
+  },
+  {
+    name: "Referral Discount",
+    percent: "8%",
+    rate: 150,
+    description: "Discount for customer referrals",
+    status: "Active",
+  },
+  {
+    name: "Black Friday Discount",
+    percent: "25%",
+    rate: 600,
+    description: "Special Black Friday discount",
+    status: "Pending",
+  },
+  {
+    name: "Loyalty Discount",
+    percent: "10%",
+    rate: 250,
+    description: "Discount for loyal customers",
+    status: "Active",
+  },
+  {
+    name: "Weekend Discount",
+    percent: "7%",
+    rate: 100,
+    description: "Discount for weekend shopping",
+    status: "Inactive",
+  },
+  {
+    name: "Clearance Discount",
+    percent: "30%",
+    rate: 500,
+    description: "Discount for clearance items",
+    status: "Pending",
+  },
+];
 
 export const commissionRequiredForm = commissionSchema.required();
 const commissionDefaultValues = {
@@ -152,7 +224,7 @@ const CommissionTypes = () => {
             {/* Table */}
             <ReusableTable
                 columns={commissionColumns}
-                data={data.data}
+                data={sampleData}  //data.data
                 tableName={"Commission"}
                 width={"w-[755px]"}
                 options={{commissionTypes}}

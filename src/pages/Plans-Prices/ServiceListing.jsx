@@ -21,6 +21,49 @@ import { usePostData } from '@/hooks/usePostData';
 import { IoFilter } from 'react-icons/io5';
 import { baseUrl } from '@/App';
 
+const sampleData = [
+    {
+      name: "Basic Plan",
+      description: "A starter subscription plan with limited access to features."
+    },
+    {
+      name: "Premium Plan",
+      description: "A premium subscription plan offering full access to all features."
+    },
+    {
+      name: "Annual Discount",
+      description: "A 10% discount for customers who opt for an annual subscription."
+    },
+    {
+      name: "Service Charge",
+      description: "A flat fee applied to all transactions for processing and handling."
+    },
+    {
+      name: "VAT Tax",
+      description: "Value-added tax applied to all eligible purchases."
+    },
+    {
+      name: "Sales Commission",
+      description: "A commission paid out to partners for sales generated through referrals."
+    },
+    {
+      name: "Monthly Charge",
+      description: "A recurring monthly charge for access to subscription services."
+    },
+    {
+      name: "Transaction Fee",
+      description: "A small fee deducted per transaction for payment gateway processing."
+    },
+    {
+      name: "Referral Bonus",
+      description: "A bonus offered to users for referring new subscribers to the service."
+    },
+    {
+      name: "Quarterly Plan",
+      description: "A subscription plan billed every three months."
+    }
+  ];
+
 export const serviceListingRequiredForm = serviceListingSchema.required();
 const serviceListingDefaultValues = {
     name: "",
@@ -103,7 +146,7 @@ const ServiceListing = () => {
             {/* Table */}
             <ReusableTable
                 columns={serviceListingColumns}
-                data={data.data}
+                data={sampleData}  //data.data
                 tableName={"Service Listing"}
                 width={"w-[755px]"}
             />

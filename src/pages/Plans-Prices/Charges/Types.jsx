@@ -148,7 +148,7 @@ const ChargesTypes = () => {
             {/* Table */}
             <ReusableTable
                 columns={chargesTypesColumns}
-                data={data.data}
+                data={sampleData} //data.data
                 tableName={"Charges Types"}
                 width={"w-[755px]"}
             />

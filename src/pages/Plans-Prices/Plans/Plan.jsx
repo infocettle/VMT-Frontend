@@ -497,7 +497,7 @@ const Plan = () => {
             {/* Table */}
             <ReusableTable
                 columns={planColumns}
-                data={data.data}
+                data={sampleData}  //data.data
                 tableName={"Plan"}
                 width={"w-[755px]"}
                 options={{

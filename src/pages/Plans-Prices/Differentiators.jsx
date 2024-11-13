@@ -22,6 +22,57 @@ import { baseUrl } from '@/App';
 import { FormSelect } from '@/components/FormSelect';
 
 
+const sampleData = [
+    {
+      name: "Enterprise Plan",
+      group: "commercial",
+      maxProcessUsers: 100,
+      maxSelfServiceUsers: 500,
+      storageMaxAnalytics: 200,
+      storageGB: 1000,
+    },
+    {
+      name: "Small Business Plan",
+      group: "retail",
+      maxProcessUsers: 50,
+      maxSelfServiceUsers: 200,
+      storageMaxAnalytics: 100,
+      storageGB: 500,
+    },
+    {
+      name: "Startup Plan",
+      group: "investment",
+      maxProcessUsers: 10,
+      maxSelfServiceUsers: 50,
+      storageMaxAnalytics: 25,
+      storageGB: 100,
+    },
+    {
+      name: "Corporate Plan",
+      group: "central",
+      maxProcessUsers: 300,
+      maxSelfServiceUsers: 1000,
+      storageMaxAnalytics: 500,
+      storageGB: 2000,
+    },
+    {
+      name: "Freelancer Plan",
+      group: "shadow",
+      maxProcessUsers: 5,
+      maxSelfServiceUsers: 10,
+      storageMaxAnalytics: 10,
+      storageGB: 50,
+    },
+    {
+      name: "Non-Profit Plan",
+      group: "cooperative",
+      maxProcessUsers: 20,
+      maxSelfServiceUsers: 100,
+      storageMaxAnalytics: 50,
+      storageGB: 200,
+    }
+  ];
+
 export const differentiatorsRequiredForm = differentiatorsSchema.required();
 const differentiatorsDefaultValues = {
     name: "",
@@ -138,7 +189,7 @@ const Differentiators = () => {
             {/* Table */}
             <ReusableTable
                 columns={differentiatorsColumns}
-                data={data.data}
+                data={sampleData}  //data.data
                 tableName={"Differentiators"}
                 width={"w-[755px]"}
                 options={{groupOptions}}

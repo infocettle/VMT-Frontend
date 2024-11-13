@@ -16,13 +16,13 @@ export const FormCheckbox = ({ name, label, options }) => {
       <label className="capitalize text-sm">{label}</label>
       <div
         onClick={toggleDropdown}
-        className="flex items-center justify-between border border-gray-300 rounded-md p-2 cursor-pointer"
+        className="flex items-center justify-between access-control-modal-input text-[#8E8EA9] rounded-md p-2 cursor-pointer"
       >
         <span>Select {label}</span>
         {isOpen ? <FaChevronUp /> : <FaChevronDown />}
       </div>
       {isOpen && (
-        <div className="absolute top-full mt-2 w-full bg-white border border-gray-300 rounded-md shadow-md p-3 z-10">
+        <div className="absolute top-full mt-2 w-full bg-white access-control-modal-input text-[#8E8EA9] rounded-md shadow-md p-3 z-10">
           <Controller
             name={name}
             control={control}

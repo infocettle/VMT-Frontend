@@ -18,7 +18,7 @@ export const FormTextArea = ({ name, label, type = "text" }) => {
         render={({ field }) => (
           <>
             <textarea
-              className="border border-gray-100 focus:outline-none rounded-md p-2 mb-2"
+              className="access-control-modal-input rounded-md p-2 mb-2"
               {...field}
               type={type}
               placeholder={`Enter ${label}`}

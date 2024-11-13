@@ -3,6 +3,7 @@ import {
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -20,94 +21,95 @@ import { cn } from "@/lib/utils";
 
 
 export function ReusableTableVariant({ columns, tableData }) {
+  const [sorting, setSorting] = useState([]);
 
 
-  // const sampleData = [
-  //   {
-  //     subscriberId: '123456789',
-  //     entityType: 'Type A',
-  //     failedActivationTime: '2024-07-24T12:34:56.789Z',
-  //     date: '2024-07-24T12:00:00.000Z'
-  //   },
-  //   {
-  //     subscriberId: '987654321',
-  //     entityType: 'Type B',
-  //     failedActivationTime: '2024-07-23T11:22:33.456Z',
-  //     date: '2024-07-23T11:00:00.000Z'
-  //   },
-  //   {
-  //     subscriberId: '456123789',
-  //     entityType: 'Type C',
-  //     failedActivationTime: '2024-07-22T10:11:22.345Z',
-  //     date: '2024-07-22T10:00:00.000Z'
-  //   },
-  //   {
-  //     subscriberId: '321654987',
-  //     entityType: 'Type D',
-  //     failedActivationTime: '2024-07-21T09:10:11.234Z',
-  //     date: '2024-07-21T09:00:00.000Z'
-  //   }, 
-  //   {
-  //       subscriberId: '123456789',
-  //       entityType: 'Type A',
-  //       failedActivationTime: '2024-07-24T12:34:56.789Z',
-  //       date: '2024-07-24T12:00:00.000Z'
-  //     },
-  //     {
-  //       subscriberId: '987654321',
-  //       entityType: 'Type B',
-  //       failedActivationTime: '2024-07-23T11:22:33.456Z',
-  //       date: '2024-07-23T11:00:00.000Z'
-  //     },
-  //     {
-  //       subscriberId: '456123789',
-  //       entityType: 'Type C',
-  //       failedActivationTime: '2024-07-22T10:11:22.345Z',
-  //       date: '2024-07-22T10:00:00.000Z'
-  //     },
-  //     {
-  //       subscriberId: '321654987',
-  //       entityType: 'Type D',
-  //       failedActivationTime: '2024-07-21T09:10:11.234Z',
-  //       date: '2024-07-21T09:00:00.000Z'
-  //     },
-  //     {
-  //       subscriberId: '123456789',
-  //       entityType: 'Type A',
-  //       failedActivationTime: '2024-07-24T12:34:56.789Z',
-  //       date: '2024-07-24T12:00:00.000Z'
-  //     },
-  //     {
-  //       subscriberId: '987654321',
-  //       entityType: 'Type B',
-  //       failedActivationTime: '2024-07-23T11:22:33.456Z',
-  //       date: '2024-07-23T11:00:00.000Z'
-  //     },
-  //     {
-  //       subscriberId: '456123789',
-  //       entityType: 'Type C',
-  //       failedActivationTime: '2024-07-22T10:11:22.345Z',
-  //       date: '2024-07-22T10:00:00.000Z'
-  //     },
-  //     {
-  //       subscriberId: '321654987',
-  //       entityType: 'Type D',
-  //       failedActivationTime: '2024-07-21T09:10:11.234Z',
-  //       date: '2024-07-21T09:00:00.000Z'
-  //     }
-  // ];
-    
+  const sampleData = [
+    {
+      subscriberId: '123456789',
+      entityType: 'Type A',
+      failedActivationTime: '2024-07-24T12:34:56.789Z',
+      date: '2024-07-24T12:00:00.000Z'
+    },
+    {
+      subscriberId: '987654321',
+      entityType: 'Type B',
+      failedActivationTime: '2024-07-23T11:22:33.456Z',
+      date: '2024-07-23T11:00:00.000Z'
+    },
+    {
+      subscriberId: '456123789',
+      entityType: 'Type C',
+      failedActivationTime: '2024-07-22T10:11:22.345Z',
+      date: '2024-07-22T10:00:00.000Z'
+    },
+    {
+      subscriberId: '321654987',
+      entityType: 'Type D',
+      failedActivationTime: '2024-07-21T09:10:11.234Z',
+      date: '2024-07-21T09:00:00.000Z'
+    }, 
+    {
+        subscriberId: '123456789',
+        entityType: 'Type A',
+        failedActivationTime: '2024-07-24T12:34:56.789Z',
+        date: '2024-07-24T12:00:00.000Z'
+      },
+      {
+        subscriberId: '987654321',
+        entityType: 'Type B',
+        failedActivationTime: '2024-07-23T11:22:33.456Z',
+        date: '2024-07-23T11:00:00.000Z'
+      },
+      {
+        subscriberId: '456123789',
+        entityType: 'Type C',
+        failedActivationTime: '2024-07-22T10:11:22.345Z',
+        date: '2024-07-22T10:00:00.000Z'
+      },
+      {
+        subscriberId: '321654987',
+        entityType: 'Type D',
+        failedActivationTime: '2024-07-21T09:10:11.234Z',
+        date: '2024-07-21T09:00:00.000Z'
+      },
+      {
+        subscriberId: '123456789',
+        entityType: 'Type A',
+        failedActivationTime: '2024-07-24T12:34:56.789Z',
+        date: '2024-07-24T12:00:00.000Z'
+      },
+      {
+        subscriberId: '987654321',
+        entityType: 'Type B',
+        failedActivationTime: '2024-07-23T11:22:33.456Z',
+        date: '2024-07-23T11:00:00.000Z'
+      },
+      {
+        subscriberId: '456123789',
+        entityType: 'Type C',
+        failedActivationTime: '2024-07-22T10:11:22.345Z',
+        date: '2024-07-22T10:00:00.000Z'
+      },
+      {
+        subscriberId: '321654987',
+        entityType: 'Type D',
+        failedActivationTime: '2024-07-21T09:10:11.234Z',
+        date: '2024-07-21T09:00:00.000Z'
+      }
+  ];
+
     const data = useMemo(() => tableData, []);
     const table = useReactTable({
         data,
         columns: columns,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
-        // onSortingChange: setSorting,
-        // getSortedRowModel: getSortedRowModel(),
-        // state: {
-        //   sorting,
-        // },
+        onSortingChange: setSorting,
+        getSortedRowModel: getSortedRowModel(),
+        state: {
+          sorting,
+        },
       });
 
 
@@ -122,7 +124,7 @@ export function ReusableTableVariant({ columns, tableData }) {
                     return (
                         <TableHead
                         key={header.id}
-                        className="font-medium text-vmtgray"
+                        className="text-xs font-medium text-vmtgray px-6 py-1"
                         >
                         {header.isPlaceholder
                             ? null
@@ -146,6 +148,7 @@ export function ReusableTableVariant({ columns, tableData }) {
                     {row.getVisibleCells().map((cell) => (
                         <TableCell
                             key={cell.id}
+                            className= {`w-1/${columns.length} pl-4`}
                             // onClick={
                             //     console.log(cell.column.id)
                             //     cell.column.id != "actions"

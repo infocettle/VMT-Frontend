@@ -26,13 +26,9 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
   const [sorting, setSorting] = useState([]);
   const [tableValue, setTableValueData] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showChargeDropdown, setShowChargeDropdown] = useState(false);
-  const [showDiscountDropdown, setShowDiscountDropdown] = useState(false);
-  const [showCommissionDropdown, setShowCommissionDropdown] = useState(false);
-  const [showServiceListing, setShowServiceListing] = useState(false);
-  const [showDifferentiators, setShowDifferentiators] = useState(false);
-  const [selectedDifferentiators, setSelectedDifferentiators] = useState([]);
-  const [selectedServiceListings, setSelectedServiceListings] = useState([]);
+  // const [showChargeDropdown, setShowChargeDropdown] = useState(false);
+  // const [showDiscountDropdown, setShowDiscountDropdown] = useState(false);
+  // const [showCommissionDropdown, setShowCommissionDropdown] = useState(false);
 
   const patchMutation = usePatchData({
     queryKey: [
@@ -178,7 +174,7 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
          * Note: The URLs below are for Plan and Prices
          */
         : tableName === "Group"
-        ? `${baseUrl}plans-prices/plans/group`
+        ? `${baseUrl}plans-prices/plans/group/${tableValue._id}`
         : tableName === "Plan"
         ? `${baseUrl}plans-prices/plans/plan/${tableValue._id}`
         : tableName === "Commission Types"
@@ -332,7 +328,7 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                   return (
                     <TableHead
                       key={header.id}
-                      className="font-medium text-vmtgray px-2 py-1"
+                      className="text-xs font-medium text-vmtgray px-6 py-1"
                     >
                       {header.isPlaceholder
                         ? null
@@ -356,6 +352,7 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
+                      className= {`w-1/${columns.length} pl-4`}
                       onClick={
                         // console.log(cell.column.id)
                         cell.column.id != "actions"
@@ -1902,25 +1899,6 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                   <div className="mb-4">
                     <label
                       className="block text-gray-700 font-bold mb-2"
-                      htmlFor="controlGL"
-                    >
-                      Control GL
-                    </label>
-                    <select
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="controlGL"
-                        defaultValue={tableValue.controlGL}
-                      >
-                        {options.controlAccounts.map((option, index) => (
-                          <option key={index} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
-                  </div>
-                  <div className="mb-4">
-                    <label
-                      className="block text-gray-700 font-bold mb-2"
                       htmlFor="planCondition"
                     >
                       Plan Conditions
@@ -1965,25 +1943,6 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                       type="text"
                       defaultValue={tableValue.description}
                     />
-                  </div>
-                  <div className="mb-4">
-                    <label
-                      className="block text-gray-700 font-bold mb-2"
-                      htmlFor="controlGL"
-                    >
-                      Control GL
-                    </label>
-                    <select
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="controlGL"
-                        defaultValue={tableValue.controlGL}
-                      >
-                        {options.controlAccounts.map((option, index) => (
-                          <option key={index} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
                   </div>
                   <ApproveButtons handleCloseModal={handleCloseModal} />
                 </form>
@@ -2069,7 +2028,7 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                         defaultValue={tableValue.description}
                       />
                   </div>
-                  <div class="flex gap-4">
+                  <div class="mb-4 flex gap-4">
                     <div class="w-1/2">
                       <label class="block text-gray-700 font-bold mb-2" for="startTime">Start Time</label>
                       <input
@@ -2210,6 +2169,7 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                           id="rate"
                           type="number"
                           placeholder="0"
+                          step="0.01"
                           defaultValue={tableValue.rate}
                         />
                       </div>
@@ -2292,24 +2252,14 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                             <option value="NGN">₦</option>
                             <option value="USD">$</option>
                           </select>
-                          <input type="number" name="rateAnnum" placeholder="0" className="w-full p-2 border border-gray-300 rounded"
-                          defaultValue={tableValue.rateAnnum}/>
+                          <input type="number" name="rateAnnual" placeholder="0" className="w-full p-2 border border-gray-300 rounded"
+                          defaultValue={tableValue.rateAnnual}/>
                         </div>
                       </div>
                     </div>
 
-                    {/* Control GL */}
-                    <label className="block font-medium mt-4">Control GL</label>
-                    <select name="controlGL" className="w-full p-2 border border-gray-300 rounded mb-4"
-                    defaultValue={tableValue.controlGL}>
-                      {options.controlGLOptions.map((option, index) => (
-                        <option key={index} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-
-                    {/* Taxes */}
+                    <div className="mt-4">
+                       {/* Taxes */}
                     <div className="flex gap-4">
                       <label className="block font-medium">Taxes</label>
                       <div className="flex items-center gap-4 mb-4">
@@ -2336,8 +2286,8 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                             name="charges"
                             value="yes"
                             className="mr-2"
-                            onChange={() => setShowChargeDropdown(true)}
-                            defaultChecked={tableValue.charges === "yes"}
+                            defaultChecked={tableValue.taxes === "yes"}
+                            // onChange={() => setShowChargeDropdown(true)}
                           />
                           Yes
                         </label>
@@ -2347,14 +2297,14 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                             name="charges"
                             value="no"
                             className="mr-2"
-                            onChange={() => setShowChargeDropdown(false)}
+                            // onChange={() => setShowChargeDropdown(false)}
                             defaultChecked={tableValue.charges === "no"}
                           />
                           No
                         </label>
                       </div>
                     </div>
-                    {showChargeDropdown && (
+                    {/* {showChargeDropdown && (
                       <select name="chargesDropdown" className="w-full p-2 border border-gray-300 rounded mb-4"
                       defaultValue={tableValue.chargesDropdown}>
                         {options.chargeOptions.map((option, index) => (
@@ -2363,7 +2313,7 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                           </option>
                         ))}
                       </select>
-                    )}
+                    )} */}
 
                     {/* Discounts */}
                     <div className="flex gap-4">
@@ -2375,8 +2325,8 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                             name="discounts"
                             value="yes"
                             className="mr-2"
-                            onChange={() => setShowDiscountDropdown(true)}
-                            defaultChecked={tableValue.discounts === "yes"}
+                            defaultChecked={tableValue.taxes === "yes"}
+                            // onChange={() => setShowDiscountDropdown(true)}
                           />
                           Yes
                         </label>
@@ -2386,14 +2336,14 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                             name="discounts"
                             value="no"
                             className="mr-2"
-                            onChange={() => setShowDiscountDropdown(false)}
+                            // onChange={() => setShowDiscountDropdown(false)}
                             defaultChecked={tableValue.discounts === "no"}
                           />
                           No
                         </label>
                       </div>
                     </div>
-                    {showDiscountDropdown && (
+                    {/* {showDiscountDropdown && (
                       <select name="discountsDropdown" className="w-full p-2 border border-gray-300 rounded mb-4"
                       defaultValue={tableValue.discountsDropdown}>
                         {options.discountOptions.map((option, index) => (
@@ -2402,113 +2352,7 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                           </option>
                         ))}
                       </select>
-                    )}
-
-                    {/* Differentiators */}
-                    <div className="flex gap-4">
-                      <label className="block font-medium">Differentiators</label>
-                      <div className="flex items-center gap-4 mb-4">
-                        <label className="flex items-center">
-                          <input
-                            type="radio"
-                            name="differentiatorsAvailable"
-                            value="yes"
-                            className="mr-2"
-                            onChange={() => setShowDifferentiators(true)}
-                            defaultChecked={tableValue.differentiators === "yes"}
-                          />
-                          Yes
-                        </label>
-                        <label className="flex items-center">
-                          <input
-                            type="radio"
-                            name="differentiatorsAvailable"
-                            value="no"
-                            className="mr-2"
-                            onChange={() => setShowDifferentiators(false)}
-                            defaultChecked={tableValue.differentiators === "no"}
-                          />
-                          No
-                        </label>
-                      </div>
-                    </div>
-                    {showDifferentiators && (
-                      <div className="flex flex-col gap-2 mb-4">
-                        {options.differentiatorsOptions.map((option, index) => (
-                          <label key={index} className="flex items-center">
-                            <input
-                              type="checkbox"
-                              name= "differentiatorsDropdown"
-                              value={option.value}
-                              className="mr-2"
-                              onChange={(e) => {
-                                const isChecked = e.target.checked;
-                                if (isChecked) {
-                                  setSelectedDifferentiators((prev) => [...prev, option.value]);
-                                } else {
-                                  setSelectedDifferentiators((prev) => prev.filter((value) => value !== option.value));
-                                }
-                              }}
-                              defaultChecked={selectedDifferentiators.includes(option.value)}
-                            />
-                            {option.label}
-                          </label>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Service Listing */}
-                    <div className="flex gap-4">
-                      <label className="block font-medium">Service Listing</label>
-                      <div className="flex items-center gap-4 mb-4">
-                        <label className="flex items-center">
-                          <input
-                            type="radio"
-                            name="serviceListingAvailable"
-                            value="yes"
-                            className="mr-2"
-                            onChange={() => setShowServiceListing(true)}
-                            defaultChecked={tableValue.serviceListing === "yes"}
-                          />
-                          Yes
-                        </label>
-                        <label className="flex items-center">
-                          <input
-                            type="radio"
-                            name="serviceListingAvailable"
-                            value="no"
-                            className="mr-2"
-                            onChange={() => setShowServiceListing(false)}
-                            defaultChecked={tableValue.serviceListing === "yes"}
-                          />
-                          No
-                        </label>
-                      </div>
-                    </div>
-                    {showServiceListing && (
-                      <div className="flex flex-col gap-2 mb-4">
-                        {options.serviceListingOptions.map((option, index) => (
-                          <label key={index} className="flex items-center">
-                            <input
-                              type="checkbox"
-                              name="serviceListingDropdown"
-                              value={option.value}
-                              className="mr-2"
-                              onChange={(e) => {
-                                const isChecked = e.target.checked;
-                                if (isChecked) {
-                                  setSelectedServiceListings((prev) => [...prev, option.value]);
-                                } else {
-                                  setSelectedServiceListings((prev) => prev.filter((value) => value !== option.value));
-                                }
-                              }}
-                              defaultChecked={selectedServiceListings.includes(option.value)}
-                            />
-                            {option.label}
-                          </label>
-                        ))}
-                      </div>
-                    )}
+                    )} */}
 
                     {/* Commissions */}
                     <div className="flex gap-4">
@@ -2520,8 +2364,8 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                             name="commissions"
                             value="yes"
                             className="mr-2"
-                            onChange={() => setShowCommissionDropdown(true)}
-                            defaultChecked={tableValue.commissions === "yes"}
+                            defaultChecked={tableValue.taxes === "yes"}
+                            // onChange={() => setShowCommissionDropdown(true)}
                           />
                           Yes
                         </label>
@@ -2531,14 +2375,14 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                             name="commissions"
                             value="no"
                             className="mr-2"
-                            onChange={() => setShowCommissionDropdown(false)}
+                            // onChange={() => setShowCommissionDropdown(false)}
                             defaultChecked={tableValue.commissions === "no"}
                           />
                           No
                         </label>
                       </div>
                     </div>
-                    {showCommissionDropdown && (
+                    {/* {showCommissionDropdown && (
                       <select
                       name="commissionsDropdown"
                       className="w-full p-2 border border-gray-300 rounded mb-4"
@@ -2550,7 +2394,8 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                           </option>
                         ))}
                       </select>
-                    )}
+                    )} */}
+                    </div>
                   </div>
                   <ApproveButtons handleCloseModal={handleCloseModal} />
                 </form>
@@ -2585,25 +2430,6 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                       defaultValue={tableValue.description}
                     />
                   </div>
-                  <div className="mb-4">
-                    <label
-                      className="block text-gray-700 font-bold mb-2"
-                      htmlFor="controlGL"
-                    >
-                      Control GL
-                    </label>
-                    <select
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="controlGL"
-                        defaultValue={tableValue.controlGL}
-                      >
-                        {options.controlAccounts.map((option, index) => (
-                          <option key={index} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
-                  </div>
                   <ApproveButtons handleCloseModal={handleCloseModal} />
                 </form>
               )}
@@ -2636,25 +2462,6 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                       type="text"
                       defaultValue={tableValue.description}
                     />
-                  </div>
-                  <div className="mb-4">
-                    <label
-                      className="block text-gray-700 font-bold mb-2"
-                      htmlFor="controlGL"
-                    >
-                      Control GL
-                    </label>
-                    <select
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="controlGL"
-                        defaultValue={tableValue.controlGL}
-                      >
-                        {options.controlAccounts.map((option, index) => (
-                          <option key={index} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
                   </div>
                   <ApproveButtons handleCloseModal={handleCloseModal} />
                 </form>
@@ -2700,7 +2507,7 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                       ))}
                     </select>
                   </div>
-                  <div class="flex gap-4">
+                  <div class="mb-4 flex gap-4">
                     <div class="w-1/2">
                       <label class="block text-gray-700 font-bold mb-2" for="basis">Basis</label>
                       <select
@@ -2713,7 +2520,7 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                       </select>
                     </div>
                 
-                    <div class="flex gap-2 w-1/2">
+                    <div class="mb-4 flex gap-2 w-1/2">
                       <div class="w-1/5">
                         <label class="block text-gray-700 font-bold mb-2" for="currency">Currency</label>
                         <select
@@ -2736,8 +2543,8 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                       </div>
                     </div>
                   </div>
-                
-                  <div class="flex gap-4">
+
+                  <div class="mb-4 flex gap-4">
                     <div class="w-1/2">
                       <label class="block text-gray-700 font-bold mb-2" for="startTime">Start Time</label>
                       <input
@@ -2795,15 +2602,6 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                         ))}
                       </select>
                   </div>
-                  <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2" for="rate">Rate</label>
-                        <input
-                          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                          id="rate"
-                          type="number"
-                          defaultValue={tableValue.rate}
-                        />
-                      </div>
                   <div className="flex gap-4">
                     <div className="mb-4 w-full">
                       <label
@@ -2897,15 +2695,6 @@ export function ReusableTable({ columns, data, tableName, width, options }) {
                       defaultValue={tableValue.description}
                     />
                   </div>
-                  <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2" for="rate">Rate</label>
-                        <input
-                          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                          id="rate"
-                          type="number"
-                          defaultValue={tableValue.rate}
-                        />
-                      </div>
                   <ApproveButtons handleCloseModal={handleCloseModal} />
                 </form>
               )}

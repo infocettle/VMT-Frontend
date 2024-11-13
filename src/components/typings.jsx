@@ -77,6 +77,7 @@ import { planRequiredForm } from "@/pages/Plans-Prices/Plans/Plan";
 import { toast } from "react-toastify";
 import { FormCheckbox } from "./FormCheckBox";
 import useFetchData from "@/hooks/useFetchData";
+import { usePostData } from "@/hooks/usePostData";
 
 export const titleColumns = [
   {
@@ -154,10 +155,12 @@ export const titleColumns = [
         <div
           className={cn(
             `${
-              formatted == "Pending"
+              formatted === "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
           )}
         >
           {String(formatted)}
@@ -317,10 +320,12 @@ export const genderColumns = [
         <div
           className={cn(
             `${
-              formatted == "Pending"
+              formatted === "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
           )}
         >
           {String(formatted)}
@@ -483,10 +488,12 @@ export const maritalStatusColumns = [
         <div
           className={cn(
             `${
-              formatted == "Pending"
+              formatted === "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
           )}
         >
           {String(formatted)}
@@ -641,10 +648,12 @@ export const relationshipColumns = [
         <div
           className={cn(
             `${
-              formatted == "Pending"
+              formatted === "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
           )}
         >
           {String(formatted)}
@@ -821,10 +830,12 @@ export const bloodGroupGenotypeColumns = [
         <div
           className={cn(
             `${
-              formatted == "Pending"
+              formatted === "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
           )}
         >
           {String(formatted)}
@@ -1030,13 +1041,15 @@ export const ailmentColumns = [
 
       return (
         <div
-          className={cn(
-            `${
-              formatted == "Pending"
-                ? "bg-orange-50 border border-orange-500 text-orange-900"
-                : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
+        className={cn(
+          `${
+            formatted === "Pending"
+              ? "bg-orange-50 border border-orange-500 text-orange-900"
+              : formatted === "Inactive"
+              ? "bg-red-50 text-red-900 border border-red-500"
+              : "bg-green-50 text-green-900 border border-green-500"
+          } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+        )}
         >
           {String(formatted)}
         </div>
@@ -1224,13 +1237,15 @@ export const bodyDataColumns = [
 
       return (
         <div
-          className={cn(
-            `${
-              formatted == "Pending"
-                ? "bg-orange-50 border border-orange-500 text-orange-900"
-                : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
+        className={cn(
+          `${
+            formatted === "Pending"
+              ? "bg-orange-50 border border-orange-500 text-orange-900"
+              : formatted === "Inactive"
+              ? "bg-red-50 text-red-900 border border-red-500"
+              : "bg-green-50 text-green-900 border border-green-500"
+          } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+        )}
         >
           {String(formatted)}
         </div>
@@ -1484,13 +1499,15 @@ export const qualificationColumns = [
 
       return (
         <div
-          className={cn(
-            `${
-              formatted == "Pending"
-                ? "bg-orange-50 border border-orange-500 text-orange-900"
-                : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
+        className={cn(
+          `${
+            formatted === "Pending"
+              ? "bg-orange-50 border border-orange-500 text-orange-900"
+              : formatted === "Inactive"
+              ? "bg-red-50 text-red-900 border border-red-500"
+              : "bg-green-50 text-green-900 border border-green-500"
+          } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+        )}
         >
           {String(formatted)}
         </div>
@@ -1710,13 +1727,15 @@ export const currencyColumns = [
 
       return (
         <div
-          className={cn(
-            `${
-              formatted == "Pending"
-                ? "bg-orange-50 border border-orange-500 text-orange-900"
-                : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
+        className={cn(
+          `${
+            formatted === "Pending"
+              ? "bg-orange-50 border border-orange-500 text-orange-900"
+              : formatted === "Inactive"
+              ? "bg-red-50 text-red-900 border border-red-500"
+              : "bg-green-50 text-green-900 border border-green-500"
+          } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+        )}
         >
           {String(formatted)}
         </div>
@@ -1930,15 +1949,15 @@ export const continentColumns = [
 
       return (
         <div
-          className={cn(
-            `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
-                : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
+        className={cn(
+          `${
+            formatted === "Pending"
+              ? "bg-orange-50 border border-orange-500 text-orange-900"
+              : formatted === "Inactive"
+              ? "bg-red-50 text-red-900 border border-red-500"
+              : "bg-green-50 text-green-900 border border-green-500"
+          } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+        )}
         >
           {String(formatted)}
         </div>
@@ -2215,14 +2234,14 @@ export const countryColumns = [
       return (
         <div
           className={cn(
-            `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
-                : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
+          `${
+            formatted === "Pending"
+              ? "bg-orange-50 border border-orange-500 text-orange-900"
+              : formatted === "Inactive"
+              ? "bg-red-50 text-red-900 border border-red-500"
+              : "bg-green-50 text-green-900 border border-green-500"
+          } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+        )}
         >
           {String(formatted)}
         </div>
@@ -2469,15 +2488,15 @@ export const zoneColumns = [
 
       return (
         <div
-          className={cn(
-            `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
-                : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
+        className={cn(
+          `${
+            formatted === "Pending"
+              ? "bg-orange-50 border border-orange-500 text-orange-900"
+              : formatted === "Inactive"
+              ? "bg-red-50 text-red-900 border border-red-500"
+              : "bg-green-50 text-green-900 border border-green-500"
+          } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+        )}
         >
           {String(formatted)}
         </div>
@@ -2721,15 +2740,15 @@ export const stateColumns = [
 
       return (
         <div
-          className={cn(
-            `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
-                : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
+        className={cn(
+          `${
+            formatted === "Pending"
+              ? "bg-orange-50 border border-orange-500 text-orange-900"
+              : formatted === "Inactive"
+              ? "bg-red-50 text-red-900 border border-red-500"
+              : "bg-green-50 text-green-900 border border-green-500"
+          } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+        )}
         >
           {String(formatted)}
         </div>
@@ -2988,14 +3007,14 @@ export const lgaColumns = [
       return (
         <div
           className={cn(
-            `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
-                : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
+          `${
+            formatted === "Pending"
+              ? "bg-orange-50 border border-orange-500 text-orange-900"
+              : formatted === "Inactive"
+              ? "bg-red-50 text-red-900 border border-red-500"
+              : "bg-green-50 text-green-900 border border-green-500"
+          } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+        )}
         >
           {String(formatted)}
         </div>
@@ -3219,15 +3238,15 @@ export const wardColumns = [
 
       return (
         <div
-          className={cn(
-            `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
-                : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
+        className={cn(
+          `${
+            formatted === "Pending"
+              ? "bg-orange-50 border border-orange-500 text-orange-900"
+              : formatted === "Inactive"
+              ? "bg-red-50 text-red-900 border border-red-500"
+              : "bg-green-50 text-green-900 border border-green-500"
+          } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+        )}
         >
           {String(formatted)}
         </div>
@@ -3443,15 +3462,15 @@ export const bankColumns = [
 
       return (
         <div
-          className={cn(
-            `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
-                : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
+        className={cn(
+          `${
+            formatted === "Pending"
+              ? "bg-orange-50 border border-orange-500 text-orange-900"
+              : formatted === "Inactive"
+              ? "bg-red-50 text-red-900 border border-red-500"
+              : "bg-green-50 text-green-900 border border-green-500"
+          } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+        )}
         >
           {String(formatted)}
         </div>
@@ -3665,15 +3684,15 @@ export const typeColumns = [
 
       return (
         <div
-          className={cn(
-            `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
-                : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
+        className={cn(
+          `${
+            formatted === "Pending"
+              ? "bg-orange-50 border border-orange-500 text-orange-900"
+              : formatted === "Inactive"
+              ? "bg-red-50 text-red-900 border border-red-500"
+              : "bg-green-50 text-green-900 border border-green-500"
+          } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+        )}
         >
           {String(formatted)}
         </div>
@@ -3865,15 +3884,15 @@ export const licenseColumns = [
 
       return (
         <div
-          className={cn(
-            `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
-                : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
+        className={cn(
+          `${
+            formatted === "Pending"
+              ? "bg-orange-50 border border-orange-500 text-orange-900"
+              : formatted === "Inactive"
+              ? "bg-red-50 text-red-900 border border-red-500"
+              : "bg-green-50 text-green-900 border border-green-500"
+          } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+        )}
         >
           {String(formatted)}
         </div>
@@ -4092,15 +4111,15 @@ export const taxColumns = [
 
       return (
         <div
-          className={cn(
-            `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
-                : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
+        className={cn(
+          `${
+            formatted === "Pending"
+              ? "bg-orange-50 border border-orange-500 text-orange-900"
+              : formatted === "Inactive"
+              ? "bg-red-50 text-red-900 border border-red-500"
+              : "bg-green-50 text-green-900 border border-green-500"
+          } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+        )}
         >
           {String(formatted)}
         </div>
@@ -4289,15 +4308,15 @@ export const sectorColumns = [
 
       return (
         <div
-          className={cn(
-            `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
-                : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
+        className={cn(
+          `${
+            formatted === "Pending"
+              ? "bg-orange-50 border border-orange-500 text-orange-900"
+              : formatted === "Inactive"
+              ? "bg-red-50 text-red-900 border border-red-500"
+              : "bg-green-50 text-green-900 border border-green-500"
+          } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+        )}
         >
           {String(formatted)}
         </div>
@@ -4476,15 +4495,15 @@ export const subSectorColumns = [
 
       return (
         <div
-          className={cn(
-            `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
-                : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
+        className={cn(
+          `${
+            formatted === "Pending"
+              ? "bg-orange-50 border border-orange-500 text-orange-900"
+              : formatted === "Inactive"
+              ? "bg-red-50 text-red-900 border border-red-500"
+              : "bg-green-50 text-green-900 border border-green-500"
+          } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+        )}
         >
           {String(formatted)}
         </div>
@@ -4675,13 +4694,15 @@ export const pfcColumns = [
 
       return (
         <div
-          className={cn(
-            `${
-              formatted == "Pending"
-                ? "bg-orange-50 border border-orange-500 text-orange-900"
-                : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
+        className={cn(
+          `${
+            formatted === "Pending"
+              ? "bg-orange-50 border border-orange-500 text-orange-900"
+              : formatted === "Inactive"
+              ? "bg-red-50 text-red-900 border border-red-500"
+              : "bg-green-50 text-green-900 border border-green-500"
+          } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+        )}
         >
           {String(formatted)}
         </div>
@@ -4863,13 +4884,15 @@ export const pfaColumns = [
 
       return (
         <div
-          className={cn(
-            `${
-              formatted == "Pending"
-                ? "bg-orange-50 border border-orange-500 text-orange-900"
-                : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
+        className={cn(
+          `${
+            formatted === "Pending"
+              ? "bg-orange-50 border border-orange-500 text-orange-900"
+              : formatted === "Inactive"
+              ? "bg-red-50 text-red-900 border border-red-500"
+              : "bg-green-50 text-green-900 border border-green-500"
+          } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+        )}
         >
           {String(formatted)}
         </div>
@@ -5078,13 +5101,15 @@ export const pfaAcctColumns = [
 
       return (
         <div
-          className={cn(
-            `${
-              formatted == "Pending"
-                ? "bg-orange-50 border border-orange-500 text-orange-900"
-                : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
+        className={cn(
+          `${
+            formatted === "Pending"
+              ? "bg-orange-50 border border-orange-500 text-orange-900"
+              : formatted === "Inactive"
+              ? "bg-red-50 text-red-900 border border-red-500"
+              : "bg-green-50 text-green-900 border border-green-500"
+          } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+        )}
         >
           {String(formatted)}
         </div>
@@ -5222,7 +5247,7 @@ export const activationColumns = [
     cell: ({ row }) => {
       const formatted = row.getValue("date");
       return (
-        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0].split('-').reverse().join('-')}</div>
       );
     },
   }
@@ -5230,12 +5255,12 @@ export const activationColumns = [
 
 export const backupColumns = [
   {
-    accessorKey: "backupId",
+    accessorKey: "backupID",
     header: () => {
       return <h2 className={"ml-4 uppercase"}>Backup ID</h2>;
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("backupId");
+      const formatted = row.getValue("backupID");
       return (
         <div className="ml-6">{String(formatted)}</div>
       );
@@ -5288,7 +5313,7 @@ export const backupColumns = [
     cell: ({ row }) => {
       const formatted = row.getValue("date");
       return (
-        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0].split('-').reverse().join('-')}</div>
       );
     },
   }
@@ -5296,12 +5321,12 @@ export const backupColumns = [
 
 export const restoreColumns = [
   {
-    accessorKey: "backupId",
+    accessorKey: "backupID",
     header: () => {
       return <h2 className={"ml-4 uppercase"}>Backup ID</h2>;
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("backupId");
+      const formatted = row.getValue("backupID");
       return (
         <div className="ml-6">{String(formatted)}</div>
       );
@@ -5321,14 +5346,14 @@ export const restoreColumns = [
     },
   },
   {
-    accessorKey: "backupDate",
+    accessorKey: "date",
     header: () => {
       return <h2 className={"ml-4 uppercase"}>Backup Date</h2>;
     },
     cell: ({ row }) => {
       const formatted = row.getValue("date");
       return (
-        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0].split('-').reverse().join('-')}</div>
       );
     },
   }, 
@@ -5348,7 +5373,7 @@ export const restoreColumns = [
         title: "restore",
       });
 
-      const editMutation = useEditData({
+      const postMutation = usePostData({
         queryKey: ["restore"],
         url: Url,
         title: "restore",
@@ -5359,9 +5384,10 @@ export const restoreColumns = [
           restore: true,
         };
 
-        editMutation.mutateAsync(body);
+        postMutation.mutateAsync(body);
         setIsOpen(false);
       }
+
 
       return (
         <div
@@ -5383,9 +5409,15 @@ export const restoreColumns = [
               </DialogHeader>
               <hr className="border border-gray-100 w-full h-[1px]" />
               <div className="leading-6 uppercase">Backup Information</div>
-              <div className="leading-6">Backup ID:</div>
-              <div className="leading-6">Backup Date:</div>
-              <div className="leading-6">Memory Size:</div>
+              <div className="leading-6 text-base">
+                Backup ID: <span className="font-semibold">{title.backupID}</span>
+              </div>
+              <div className="leading-6 text-base">
+                Backup Date: <span className="font-semibold">{String(title.date).split("T")[0]}</span>
+              </div>
+              <div className="leading-6 text-base">
+                Memory Size: <span className="font-semibold">{formatBytes(title.memorySize)}</span>
+              </div>
               <ScrollArea className={cn(`${"h-auto"}`)}>
                 <div className="w-full flex justify-between items-center my-4">
                   <div
@@ -5455,7 +5487,7 @@ export const recoverColumns =  [
     cell: ({ row }) => {
       const formatted = row.getValue("dateDeleted");
       return (
-        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0].split('-').reverse().join('-')}</div>
       );
     },
   }, 
@@ -5581,7 +5613,7 @@ export const lockDomainColumns = [
     cell: ({ row }) => {
       const formatted = row.getValue("date");
       return (
-        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0].split('-').reverse().join('-')}</div>
       );
     },
   }
@@ -5601,7 +5633,7 @@ export const softwareColumns = [
     }
   },
   {
-    accessorKey: "application",
+    accessorKey: "type",
     header: () => {
       return <h2 className={"ml-4 uppercase"}>Application</h2>;
     },
@@ -5619,20 +5651,21 @@ export const softwareColumns = [
     },
     cell: ({ row }) => {
       const formatted = row.getValue("description");
+      const truncated = String(formatted).slice(0, 20);
       return (
-        <div className="ml-6">{String(formatted)}</div>
+        <div className="ml-6">{truncated}...</div>
       );
     }
   },
   {
-    accessorKey: "dateAdded",
+    accessorKey: "dateCreated",
     header: () => {
       return <h2 className={"ml-4 uppercase"}>Date Added</h2>;
     },
     cell: ({ row }) => {
       const formatted = row.getValue("dateCreated");
       return (
-        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0].split('-').reverse().join('-')}</div>
       );
     },
   },
@@ -5659,21 +5692,22 @@ export const softwareColumns = [
         title: "software",
       });
 
-      switch (title.type ) {
-        case "AWS": return EditAWS(editMutation, deleteMutation, title, open, setIsOpen);
-        break
-        case "Azure": return EditAzure(editMutation, deleteMutation, title, open, setIsOpen);
-        break
-        case "Dropbox": return EditDropbox(editMutation, deleteMutation, title, open, setIsOpen);
-        break
-        case "Google Ads": return EditGoogleAds(editMutation, deleteMutation, title, open, setIsOpen);
-        break
-        case "Google Cloud": return EditGoogleCloud(editMutation, deleteMutation, title, open, setIsOpen);
-        break
-        case "Zoom": return EditZoom(editMutation, deleteMutation, title, open, setIsOpen);
-        break
+      switch (title.type) {
+        case "AWS": 
+          return <EditAWS editMutation={editMutation} deleteMutation={deleteMutation} title={title} open={open} setIsOpen={setIsOpen} />;
+        case "Azure": 
+          return <EditAzure editMutation={editMutation} deleteMutation={deleteMutation} title={title} open={open} setIsOpen={setIsOpen} />;
+        case "Dropbox": 
+          return <EditDropbox editMutation={editMutation} deleteMutation={deleteMutation} title={title} open={open} setIsOpen={setIsOpen} />;
+        case "Google Ads": 
+          return <EditGoogleAds editMutation={editMutation} deleteMutation={deleteMutation} title={title} open={open} setIsOpen={setIsOpen} />;
+        case "Google Cloud": 
+          return <EditGoogleCloud editMutation={editMutation} deleteMutation={deleteMutation} title={title} open={open} setIsOpen={setIsOpen} />;
+        case "Zoom": 
+          return <EditZoom editMutation={editMutation} deleteMutation={deleteMutation} title={title} open={open} setIsOpen={setIsOpen} />;
+        default:
+          return null;
       }
-
     }
   }
 ]
@@ -5704,14 +5738,14 @@ export const hardwareColumns = [
     }
   },
   {
-    accessorKey: "dateAdded",
+    accessorKey: "dateCreated",
     header: () => {
       return <h2 className={"ml-4 uppercase"}>Date Added</h2>;
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("dateAdded");
+      const formatted = row.getValue("dateCreated");
       return (
-        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+        <div className="ml-6 uppercase">{String(formatted).split("T")[0].split('-').reverse().join('-')}</div>
       );
     },
   },
@@ -5941,13 +5975,15 @@ export const accessControlTypeColumns = [
       const formatted = row.getValue("status");
       return (
         <div
-          className={cn(
-            `${
-              formatted == "Pending"
-                ? "bg-orange-50 border border-orange-500 text-orange-900"
-                : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
+        className={cn(
+          `${
+            formatted === "Pending"
+              ? "bg-orange-50 border border-orange-500 text-orange-900"
+              : formatted === "Inactive"
+              ? "bg-red-50 text-red-900 border border-red-500"
+              : "bg-green-50 text-green-900 border border-green-500"
+          } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+        )}
         >
           {String(formatted)}
         </div>
@@ -6308,7 +6344,7 @@ export const groupColumns = [
     cell: ({ row }) => {
       const formatted = row.getValue("groupName");
       return (
-        <div className="ml-6 uppercase">{String(formatted)}</div>
+        <div className="ml-4 font-normal uppercase">{String(formatted)}</div>
       );
     },
   },
@@ -6320,31 +6356,19 @@ export const groupColumns = [
     cell: ({ row }) => {
       const formatted = row.getValue("description");
       return (
-        <div className="ml-6 uppercase">{String(formatted)}</div>
-      );
-    },
-  },
-  {
-    accessorKey: "controlGL",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>Control GL</h2>;
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("controlGL");
-      return (
-        <div className="ml-6 uppercase">{String(formatted)}</div>
+        <div className="font-normal">{String(formatted)}</div>
       );
     },
   },
   {
     accessorKey: "planCondition",
     header: () => {
-      return <h2 className={"ml-4 uppercase"}>planCondition</h2>;
+      return <h2 className={"ml-4 uppercase"}>Plan Condition</h2>;
     },
     cell: ({ row }) => {
       const formatted = row.getValue("planCondition");
       return (
-        <div className="ml-6 uppercase">{String(formatted)}</div>
+        <div className="font-normal">{String(formatted)}</div>
       );
     },
   },
@@ -6355,7 +6379,7 @@ export const groupColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
+          className={"uppercase text-xs"}
         >
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
@@ -6371,38 +6395,25 @@ export const groupColumns = [
 
       return (
         <div
-          className={cn(
-            `${
-              formatted == "Pending"
-                ? "bg-orange-50 border border-orange-500 text-orange-900"
-                : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
+        className={cn(
+          `${
+            formatted === "Pending"
+              ? "bg-orange-50 border border-orange-500 text-orange-900"
+              : formatted === "Inactive"
+              ? "bg-red-50 text-red-900 border border-red-500"
+              : "bg-green-50 text-green-900 border border-green-500"
+          } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+        )}
         >
           {String(formatted)}
         </div>
       );
     },
   },{
-    header: () => <div className="ml-5 uppercase">Actions</div>,
+    header: () => <div className="font-normal uppercase">Actions</div>,
     id: "actions",
     cell: ({ row }) => {
       const [open, setIsOpen] = useState(false);
-      const [controlAccounts, setControlAccounts] = useState([])
-    
-      const controlGLUrl = `${baseUrl}settings/controlGL`;
-
-      const { data: controlGLData, isPending: isControlGLPending } = useFetchData(controlGLUrl, "control-gl-accounts");
-
-      useEffect(() => {
-          if (controlGLData) {
-              const formattedControlGL = controlGLData.map(item => ({
-                  value: item._id,
-                  label: item.controlGL.toUpperCase(),
-              }));
-              setControlAccounts(formattedControlGL);
-          }
-      }, [controlGLData]);
 
       const title = row.original;
 
@@ -6411,7 +6422,6 @@ export const groupColumns = [
       const defaultValues = {
         groupName: title.groupName,
         description: title.description,
-        controlGL: title.controlGL,
         planCondition: title.planCondition,
       }
 
@@ -6431,7 +6441,6 @@ export const groupColumns = [
         const body = {
           groupName: values.groupName,
           description: values.description,
-          controlGL: values.controlGL,
           planCondition: values.planCondition,
         };
 
@@ -6442,7 +6451,7 @@ export const groupColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
+          className="flex items-center justify-center space-x-2 w-20 h-10"
         >
           <ReuseDialog
             isEdit={true}
@@ -6457,11 +6466,6 @@ export const groupColumns = [
           >
               <FormInput name="groupName" label="Group Name" />
               <FormInput name="description" label="Description" />
-              <FormSelect
-                name="controlGL"
-                label="Select Control Account"
-                options={controlAccounts}
-              />
               <FormInput name="planCondition" label="planCondition" />
           </ReuseDialog>
 
@@ -6496,7 +6500,7 @@ export const commissionColumns = [
       return <h2 className={"ml-4 uppercase"}>Rate</h2>;
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("rate");
+      const formatted = parseFloat(row.getValue("rate")).toFixed(2);
       return (
         <div className="ml-6">{String(formatted)}</div>
       );
@@ -6515,37 +6519,13 @@ export const commissionColumns = [
     },
   },
   {
-    accessorKey: "startTime",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>Start Time</h2>;
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("startTime");
-      return (
-        <div className="ml-6">{String(formatted)}</div>
-      );
-    },
-  },
-  {
-    accessorKey: "endTime",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>End Time</h2>;
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("endTime");
-      return (
-        <div className="ml-6">{String(formatted)}</div>
-      );
-    },
-  },
-  {
     accessorKey: "status",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
+          className={"text-xs uppercase"}
         >
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
@@ -6563,10 +6543,12 @@ export const commissionColumns = [
         <div
           className={cn(
             `${
-              formatted == "Pending"
+              formatted === "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
           )}
         >
           {String(formatted)}
@@ -6586,17 +6568,13 @@ export const commissionColumns = [
     const { data: commissionData, isPending: isCommissionPending } = useFetchData(commissionTypesUrl, "commission-types");
 
     useEffect(() => {
-      if (Array.isArray(commissionData) && commissionData.length > 0) {
-          const commissionTypesData = commissionData
+          const commissionTypesData = commissionData?.data
               .filter(item => item.status === 'Active')
               .map(item => ({
                   value: item._id,
                   label: item.name.toUpperCase(),
               }));
           setCommissionTypes(commissionTypesData);
-      } else {
-          setCommissionTypes([]);
-      }
   }, [commissionData]);
 
       const title = row.original;
@@ -6609,8 +6587,6 @@ export const commissionColumns = [
         type: title.type,
         rate: title.rate,
         description: title.description,
-        startTime: title.startTime,
-        endTime: title.endTime
       }
 
       const deleteMutation = useDeleteData({
@@ -6632,8 +6608,6 @@ export const commissionColumns = [
           type: values.type,
           rate: values.rate,
           description: values.description,
-          startTime: values.startTime,
-          endTime: values.endTime
         };
 
         editMutation.mutateAsync(body);
@@ -6683,10 +6657,6 @@ export const commissionColumns = [
                 </div>
               </div>
               <FormTextArea name="description" label="Description" />
-              <div className="flex gap-4">
-                <FormInput name="startTime" label="Start Time" type="date" />
-                <FormInput name="endTime" label="End Time" type="date" />
-              </div>
           </ReuseDialog>
 
           <ConfirmDelete
@@ -6727,14 +6697,40 @@ export const commissionTypesColumns = [
     },
   },
   {
-    accessorKey: "controlGL",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>Control GL</h2>;
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase text-xs"}
+        >
+          Status
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("controlGL");
+      const formatted = row.getValue("status");
+      // const formatted = new Intl.NumberFormat("en-US", {
+      //   style: "currency",
+      //   currency: "USD",
+      // }).format(amount);
+
       return (
-        <div className="ml-6">{String(formatted)}</div>
+        <div
+          className={cn(
+            `${
+              formatted === "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
+                : "bg-green-50 text-green-900 border border-green-500"
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}
+        >
+          {String(formatted)}
+        </div>
       );
     },
   },
@@ -6751,7 +6747,6 @@ export const commissionTypesColumns = [
       const defaultValues = {
         name: title.name,
         description: title.description,
-        controlGL: title.controlGL
       }
 
       const deleteMutation = useDeleteData({
@@ -6770,7 +6765,6 @@ export const commissionTypesColumns = [
         const body = {
           name: values.name,
           description: values.description,
-          controlGL: values.controlGL
         };
 
         editMutation.mutateAsync(body);
@@ -6840,10 +6834,8 @@ export const chargesColumns = [
       return <h2 className={"ml-4 uppercase"}>Type</h2>;
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("type");
-      return (
-        <div className="ml-6">{String(formatted)}</div>
-      );
+      const name = row.original.type?.name;
+      return <div className="ml-6 uppercase">{name ? String(name) : "N/A"}</div>;
     },
   },
   {
@@ -6864,21 +6856,47 @@ export const chargesColumns = [
       return <h2 className={"ml-4 uppercase"}>Rate</h2>;
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("rate");
+      const formatted = parseFloat(row.getValue("rate")).toFixed(2);
       return (
         <div className="ml-6">{String(formatted)}</div>
       );
     },
   },
   {
-    accessorKey: "controlGL",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>Control GL</h2>;
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase text-xs"}
+        >
+          Status
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("controlGL");
+      const formatted = row.getValue("status");
+      // const formatted = new Intl.NumberFormat("en-US", {
+      //   style: "currency",
+      //   currency: "USD",
+      // }).format(amount);
+
       return (
-        <div className="ml-6">{String(formatted)}</div>
+        <div
+          className={cn(
+            `${
+              formatted === "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
+                : "bg-green-50 text-green-900 border border-green-500"
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}
+        >
+          {String(formatted)}
+        </div>
       );
     },
   },
@@ -6887,40 +6905,21 @@ export const chargesColumns = [
     id: "actions",
     cell: ({ row }) => {
       const [open, setIsOpen] = useState(false);
-      const [groupOptions, setGroupOptions] = useState([])
       const [chargeTypes, setChargeTypes] = useState([])
 
-      const groupUrl = `${baseUrl}plans-prices/plans/group`;
       const chargeUrl = `${baseUrl}plans-prices/charges/types`;
 
-      const { data: groupData, isPending: isGroupPending } = useFetchData(groupUrl, "group");
-      const { data: chargeData, isPending: isChargePending } = useFetchData(chargeUrl, "charge");
+      const { data: chargeData, isPending: isChargePending } = useFetchData(chargeUrl, "charges-types");
 
       useEffect(() => {
-        if (Array.isArray(groupData) && groupData.length > 0) {
-            const activeGroups = groupData
-                .filter(item => item.status === 'Active')
-                .map(item => ({
-                    value: item._id,
-                    label: item.groupName.toUpperCase(),
-                }));
-            setGroupOptions(activeGroups);
-        } else {
-            setGroupOptions([]);
-        }
-    
-        if (Array.isArray(chargeData) && chargeData.length > 0) {
-            const chargeTypesData = chargeData
+            const chargeTypesData = chargeData?.data
                 .filter(item => item.status === 'Active')
                 .map(item => ({
                     value: item._id,
                     label: item.name.toUpperCase(),
                 }));
             setChargeTypes(chargeTypesData);
-        } else {
-            setChargeTypes([]);
-        }
-    }, [groupData, chargeData]);
+    }, [chargeData]);
 
 
       const title = row.original;
@@ -6938,15 +6937,15 @@ export const chargesColumns = [
       }
 
       const deleteMutation = useDeleteData({
-        queryKey: ["charges-types"],
+        queryKey: ["charges"],
         url: Url,
-        title: "charges-types",
+        title: "charges",
       });
 
       const editMutation = useEditData({
-        queryKey: ["charges-types"],
+        queryKey: ["charges"],
         url: Url,
-        title: "charges-types",
+        title: "charges",
       });
 
       async function onSubmit(values) {
@@ -6982,11 +6981,6 @@ export const chargesColumns = [
           >
             <FormInput name="name" label="Name" />
             <FormTextArea name="alias" label="Alias" />
-            <FormSelect
-                name="group"
-                label="Group"
-                options={groupOptions}
-            />
             <FormSelect
                 name="type"
                 label="Type"
@@ -7066,14 +7060,40 @@ export const chargesTypesColumns = [
     },
   },
   {
-    accessorKey: "controlGL",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>Control GL</h2>;
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase text-xs"}
+        >
+          Status
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("controlGL");
+      const formatted = row.getValue("status");
+      // const formatted = new Intl.NumberFormat("en-US", {
+      //   style: "currency",
+      //   currency: "USD",
+      // }).format(amount);
+
       return (
-        <div className="ml-6">{String(formatted)}</div>
+        <div
+          className={cn(
+            `${
+              formatted === "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
+                : "bg-green-50 text-green-900 border border-green-500"
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}
+        >
+          {String(formatted)}
+        </div>
       );
     },
   },
@@ -7082,23 +7102,6 @@ export const chargesTypesColumns = [
     id: "actions",
     cell: ({ row }) => {
       const [open, setIsOpen] = useState(false);
-      const [controlAccounts, setControlAccounts] = useState([])
-
-      const controlGLUrl = `${baseUrl}settings/controlGL`;
-
-      const { data: controlGLData, isPending: isControlGLPending } = useFetchData(controlGLUrl, "control-gl-accounts");
-  
-      useEffect(() => {
-        if (Array.isArray(controlGLData) && controlGLData.length > 0) {
-            const formattedControlGL = controlGLData.map(item => ({
-                value: item._id,
-                label: item.controlGL.toUpperCase(),
-            }));
-            setControlAccounts(formattedControlGL);
-        } else {
-            setControlAccounts([]);
-        }
-    }, [controlGLData]);
 
       const title = row.original;
 
@@ -7107,7 +7110,6 @@ export const chargesTypesColumns = [
       const defaultValues = {
         name: title.name,
         description: title.description,
-        controlGL: title.controlGL
       }
 
       const deleteMutation = useDeleteData({
@@ -7126,7 +7128,6 @@ export const chargesTypesColumns = [
         const body = {
           name: values.name,
           description: values.description,
-          controlGL: values.controlGL
         };
 
         editMutation.mutateAsync(body);
@@ -7151,11 +7152,6 @@ export const chargesTypesColumns = [
           >
             <FormInput name="name" label="Name" />
             <FormInput name="description" label="Description" />
-            <FormSelect
-              name="controlGL"
-              label="Select Control Account"
-              options={controlAccounts}
-          />
           </ReuseDialog>
 
           <ConfirmDelete
@@ -7196,14 +7192,40 @@ export const discountTypesColumns = [
     },
   },
   {
-    accessorKey: "controlGL",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>Control GL</h2>;
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase text-xs"}
+        >
+          Status
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("controlGL");
+      const formatted = row.getValue("status");
+      // const formatted = new Intl.NumberFormat("en-US", {
+      //   style: "currency",
+      //   currency: "USD",
+      // }).format(amount);
+
       return (
-        <div className="ml-6">{String(formatted)}</div>
+        <div
+          className={cn(
+            `${
+              formatted === "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
+                : "bg-green-50 text-green-900 border border-green-500"
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}
+        >
+          {String(formatted)}
+        </div>
       );
     },
   },
@@ -7220,8 +7242,6 @@ export const discountTypesColumns = [
       const defaultValues = {
         name: title.name,
         description: title.description,
-        startTime: title.startTime,
-        endTime: title.endTime
       }
 
       const deleteMutation = useDeleteData({
@@ -7239,7 +7259,7 @@ export const discountTypesColumns = [
       async function onSubmit(values) {
         const body = {
           name: values.name,
-          description: values.description
+          description: values.description,
         };
 
         editMutation.mutateAsync(body);
@@ -7263,7 +7283,7 @@ export const discountTypesColumns = [
             long={false}
           >
             <FormInput name="name" label="Name" />
-            <FormInput name="description" label="Description" />
+            <FormTextArea name="description" label="Description" />
           </ReuseDialog>
 
           <ConfirmDelete
@@ -7299,7 +7319,7 @@ export const discountsColumns = [
     cell: ({ row }) => {
       const formatted = row.getValue("alias");
       return (
-        <div className="ml-6">{String(formatted)}</div>
+        <div className="ml-6 capitalize">{String(formatted)}</div>
       );
     },
   },
@@ -7309,10 +7329,8 @@ export const discountsColumns = [
       return <h2 className={"ml-4 uppercase"}>Type</h2>;
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("type");
-      return (
-        <div className="ml-6">{String(formatted)}</div>
-      );
+      const name = row.original.type?.name;
+      return <div className="ml-6 uppercase">{name ? String(name) : "N/A"}</div>;
     },
   },
   {
@@ -7333,24 +7351,24 @@ export const discountsColumns = [
       return <h2 className={"ml-4 uppercase"}>Rate</h2>;
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("rate");
+      const formatted = parseFloat(row.getValue("rate")).toFixed(2);
       return (
         <div className="ml-6">{String(formatted)}</div>
       );
     },
   },
-  {
-    accessorKey: "startTime",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>Start Time</h2>;
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("startTime");
-      return (
-        <div className="ml-6">{String(formatted)}</div>
-      );
-    },
-  },
+  // {
+  //   accessorKey: "startTime",
+  //   header: () => {
+  //     return <h2 className={"ml-4 uppercase"}>Start Time</h2>;
+  //   },
+  //   cell: ({ row }) => {
+  //     const formatted = row.getValue("startTime");
+  //     return (
+  //       <div className="ml-6">{String(formatted)}</div>
+  //     );
+  //   },
+  // },
   {
     accessorKey: "endTime",
     header: () => {
@@ -7359,7 +7377,7 @@ export const discountsColumns = [
     cell: ({ row }) => {
       const formatted = row.getValue("endTime");
       return (
-        <div className="ml-6">{String(formatted)}</div>
+        <div className="ml-6">{String(formatted).split("T")[0].split('-').reverse().join('-')}</div>
       );
     },
   },
@@ -7370,7 +7388,7 @@ export const discountsColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
+          className={"uppercase text-xs"}
         >
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
@@ -7388,10 +7406,12 @@ export const discountsColumns = [
         <div
           className={cn(
             `${
-              formatted == "Pending"
+              formatted === "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
           )}
         >
           {String(formatted)}
@@ -7406,22 +7426,18 @@ export const discountsColumns = [
       const [open, setIsOpen] = useState(false);
       const [discountTypes, setDiscountTypes] = useState([])
 
-      const discountUrl = `${baseUrl}plans-prices/discounts/types`;
+      const discountUrl = `${baseUrl}plans-prices/discount/types`;
 
       const { data: discountData, isPending: isDiscountPending } = useFetchData(discountUrl, "discount");
 
       useEffect(() => {
-        if (Array.isArray(discountData) && discountData.length > 0) {
-            const discountTypesData = discountData
+            const discountTypesData = discountData?.data
                 .filter(item => item.status === 'Active')
                 .map(item => ({
                     value: item._id,
                     label: item.name.toUpperCase(),
                 }));
             setDiscountTypes(discountTypesData);
-        } else {
-            setDiscountTypes([]);
-        }
     }, [discountData]);
 
 
@@ -7485,7 +7501,7 @@ export const discountsColumns = [
             long={false}
           >
             <FormInput name="name" label="Name" />
-            <FormTextArea name="alias" label="Alias" />
+            <FormInput name="alias" label="Alias" />
             <FormSelect
                 name="type"
                 label="Type"
@@ -7569,14 +7585,40 @@ export const serviceListingColumns = [
     },
   },
   {
-    accessorKey: "rate",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>Rate</h2>;
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={"uppercase text-xs"}
+        >
+          Status
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("rate");
+      const formatted = row.getValue("status");
+      // const formatted = new Intl.NumberFormat("en-US", {
+      //   style: "currency",
+      //   currency: "USD",
+      // }).format(amount);
+
       return (
-        <div className="ml-6">{String(formatted)}</div>
+        <div
+          className={cn(
+            `${
+              formatted === "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
+                : "bg-green-50 text-green-900 border border-green-500"
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}
+        >
+          {String(formatted)}
+        </div>
       );
     },
   },
@@ -7593,7 +7635,6 @@ export const serviceListingColumns = [
       const defaultValues = {
         name: title.name,
         description: title.description,
-        rate: title.rate,
       }
 
       const deleteMutation = useDeleteData({
@@ -7612,7 +7653,6 @@ export const serviceListingColumns = [
         const body = {
           name: values.name,
           description: values.description,
-          rate: values.rate
         };
 
         editMutation.mutateAsync(body);
@@ -7658,10 +7698,8 @@ export const differentiatorsColumns = [
       return <h2 className={"ml-4 uppercase"}>Plan Name</h2>;
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("name");
-      return (
-        <div className="ml-6 uppercase">{String(formatted)}</div>
-      );
+      const groupName = row.original.group?.groupName;
+      return <div className="ml-6 uppercase">{groupName ? String(groupName) : "N/A"}</div>;
     },
   },
   {
@@ -7670,22 +7708,8 @@ export const differentiatorsColumns = [
       return <h2 className={"ml-4 uppercase"}>Group</h2>;
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("group");
-      return (
-        <div className="ml-6 uppercase">{String(formatted)}</div>
-      );
-    },
-  },
-  {
-    accessorKey: "rate",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>Rate</h2>;
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("rate");
-      return (
-        <div className="ml-6">{String(formatted)}</div>
-      );
+      const groupName = row.original.group?.groupName;
+      return <div className="ml-6 uppercase">{groupName ? String(groupName) : "N/A"}</div>;
     },
   },
   {
@@ -7732,7 +7756,7 @@ export const differentiatorsColumns = [
     cell: ({ row }) => {
       const formatted = row.getValue("storageGB");
       return (
-        <div className="ml-6 uppercase">{String(formatted)}</div>
+        <div className="ml-6 uppercase">{String(formatted)}GB</div>
       );
     },
   },
@@ -7746,7 +7770,7 @@ export const planColumns = [
     },
     cell: ({ row }) => {
       const formatted = row.getValue("name");
-      return <div className="ml-6">{String(formatted)}</div>;
+      return <div className="ml-6 uppercase">{String(formatted)}</div>;
     },
   },
   {
@@ -7755,17 +7779,18 @@ export const planColumns = [
       return <h2 className="ml-4 uppercase">Group</h2>;
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("group");
-      return <div className="ml-6">{String(formatted)}</div>;
+      const groupName = row.original.group?.groupName;
+      return <div className="ml-6 uppercase">{groupName ? String(groupName) : "N/A"}</div>;
     },
   },
+
   {
     accessorKey: "rateMonth",
     header: () => {
       return <h2 className="ml-4 uppercase">1 Month</h2>;
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("rateMonth");
+      const formatted = parseFloat(row.getValue("rateMonth")).toFixed(2);
       return (
         <div className="ml-6">{String(formatted)}</div>
       );
@@ -7777,13 +7802,10 @@ export const planColumns = [
       return <h2 className="ml-4 uppercase">3 Months</h2>;
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("rateQuarter");
+      const formatted = parseFloat(row.getValue("rateQuarter")).toFixed(2);
       return (
         <div className="ml-6">
-          {new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-          }).format(formatted)}
+          {String(formatted)}
         </div>
       );
     },
@@ -7794,84 +7816,59 @@ export const planColumns = [
       return <h2 className="ml-4 uppercase">6 Months</h2>;
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("rateBiAnnual");
+      const formatted = parseFloat(row.getValue("rateBiAnnual")).toFixed(2);
       return (
         <div className="ml-6">
-          {new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-          }).format(formatted)}
+         {String(formatted)}
         </div>
       );
     },
   },
   {
-    accessorKey: "rateAnnum",
+    accessorKey: "rateAnnual",
     header: () => {
       return <h2 className="ml-4 uppercase">12 Months</h2>;
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("rateAnnum");
+      const formatted = parseFloat(row.getValue("rateAnnual")).toFixed(2);
       return (
         <div className="ml-6">
-          {new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-          }).format(formatted)}
+          {String(formatted)}
         </div>
       );
     },
   },
-  {
-    accessorKey: "charges",
-    header: () => {
-      return <h2 className="ml-4 uppercase">Charges</h2>;
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("charges");
-      return <div className="uppercase ml-6">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "discounts",
-    header: () => {
-      return <h2 className="ml-4 uppercase">Discounts</h2>;
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("discounts");
-      return <div className="uppercase ml-6">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "commissions",
-    header: () => {
-      return <h2 className="ml-4 uppercase">Commissions</h2>;
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("commissions");
-      return <div className="uppercase ml-6">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "differentiators",
-    header: () => {
-      return <h2 className="ml-4 uppercase">Differentiators</h2>;
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("commissions");
-      return <div className="uppercase ml-6">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "serviceListing",
-    header: () => {
-      return <h2 className="ml-4 uppercase">Service Listing</h2>;
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("commissions");
-      return <div className="uppercase ml-6">{String(formatted)}</div>;
-    },
-  },
+  // {
+  //   accessorKey: "charges",
+  //   header: () => {
+  //     return <h2 className="ml-4 uppercase">Charges</h2>;
+  //   },
+  //   cell: ({ row }) => {
+  //     const formatted = row.getValue("charges");
+  //     return <div className="uppercase ml-6">{String(formatted)}</div>;
+  //   },
+  // },
+  // {
+  //   accessorKey: "discounts",
+  //   header: () => {
+  //     return <h2 className="ml-4 uppercase">Discounts</h2>;
+  //   },
+  //   cell: ({ row }) => {
+  //     const formatted = row.getValue("discounts");
+  //     return <div className="uppercase ml-6">{String(formatted)}</div>;
+  //   },
+  // },
+  // {
+  //   accessorKey: "commissions",
+  //   header: () => {
+  //     return <h2 className="ml-4 uppercase">Commissions</h2>;
+  //   },
+  //   cell: ({ row }) => {
+  //     const formatted = row.getValue("commissions");
+  //     return <div className="uppercase ml-6">{String(formatted)}</div>;
+  //   },
+  // },
+  // {
   {
     accessorKey: "status",
     header: ({ column }) => {
@@ -7897,10 +7894,12 @@ export const planColumns = [
         <div
           className={cn(
             `${
-              formatted == "Pending"
+              formatted === "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
           )}
         >
           {String(formatted)}
@@ -7914,33 +7913,20 @@ export const planColumns = [
     cell: ({ row }) => {
       const [open, setIsOpen] = useState(false);
       const [groupOptions, setGroupOptions] = useState([])
-      const [chargeOptions, setChargeOptions] = useState([]);
-      const [discountOptions, setDiscountOptions] = useState([]);
-      const [commissionOptions, setCommissionOptions] = useState([]);
-      const [controlGLOptions, setControlGLOptions] = useState([])
-      const [showChargeDropdown, setShowChargeDropdown] = useState(false);
-      const [showDiscountDropdown, setShowDiscountDropdown] = useState(false);
-      const [showCommissionDropdown, setShowCommissionDropdown] = useState(false);
-      const [ serviceListingOptions, setServiceListingOptions ] = useState([]);
-      const [ differentiatorsOptions, setDifferentiatorsOptions ] = useState([]);
-      const [showServiceListingDropdown, setShowServiceListingDropdown] = useState(false);
-      const [showDifferentiatorDropdown, setShowDiffentiatorDropdown] = useState(false);
+      // const [chargeOptions, setChargeOptions] = useState([]);
+      // const [discountOptions, setDiscountOptions] = useState([]);
+      // const [commissionOptions, setCommissionOptions] = useState([]);
 
       const groupUrl = `${baseUrl}plans-prices/plans/group`;
-      const chargeUrl = `${baseUrl}plans-prices/charges/charge`;
-      const discountUrl = `${baseUrl}plans-prices/discount/discounts`;
-      const commissionUrl = `${baseUrl}plans-prices/commissions/commission`;
-      const controlUrl = `${baseUrl}settings/controlGL`;
-      const serviceListingUrl = `${baseUrl}plans-prices/service-listing`;
-      const differentiatorsUrl = `${baseUrl}plans-prices/differentiators`;
+      // const chargeUrl = `${baseUrl}plans-prices/charges/charge`;
+      // const discountUrl = `${baseUrl}plans-prices/discount/discounts`;
+      // const commissionUrl = `${baseUrl}plans-prices/commissions/commission`;
+
 
       const { data: groupData, isPending: isGroupPending } = useFetchData(groupUrl, "group");
-      const { data: chargeData, isPending: isChargePending } = useFetchData(chargeUrl, "charge");
-      const { data: discountData, isPending: isDiscountPending } = useFetchData(discountUrl, "discounts");
-      const { data: commissionData, isPending: isCommissionPending } = useFetchData(commissionUrl, "commission");
-      const { data: controlGLData, isPending: isControlGLPending } = useFetchData(controlUrl, "control-gl-accounts");
-      const { data: serviceListingData, isPending: isServiceListingPending } = useFetchData(serviceListingUrl, "service-listing");
-      const { data: differentiatorsData, isPending: isDifferentiatorsPending } = useFetchData(differentiatorsUrl, "differentiator");
+      // const { data: chargeData, isPending: isChargePending } = useFetchData(chargeUrl, "charge");
+      // const { data: discountData, isPending: isDiscountPending } = useFetchData(discountUrl, "discounts");
+      // const { data: commissionData, isPending: isCommissionPending } = useFetchData(commissionUrl, "commission");
 
       useEffect(() => {
         const formatData = (response, name) => {
@@ -7961,20 +7947,14 @@ export const planColumns = [
 
 
         setGroupOptions(formatData(groupData, "Groups"));
-        setChargeOptions(formatData(chargeData, "Charges"));
-        setDiscountOptions(formatData(discountData, "Discounts"));
-        setCommissionOptions(formatData(commissionData, "Commissions"));
-        setControlGLOptions(formatData(controlGLData, "Control GL Accounts"));
-        setServiceListingOptions(formatData(serviceListingData, "Service Listing"));
-        setDifferentiatorsOptions(formatData(differentiatorsData, "Differentiators"));
+        // setChargeOptions(formatData(chargeData, "Charges"));
+        // setDiscountOptions(formatData(discountData, "Discounts"));
+        // setCommissionOptions(formatData(commissionData, "Commissions"));
       }, [
         groupData,
-        chargeData,
-        discountData,
-        commissionData,
-        controlGLData,
-        serviceListingData,
-        differentiatorsData,
+        // chargeData,
+        // discountData,
+        // commissionData,
       ]);
 
       const title = row.original;
@@ -7989,20 +7969,15 @@ export const planColumns = [
         halfCurrency: title.halfCurrency,
         rateQuarter: title.rateQuarter,
         quarterCurrency: title.quarterCurrency,
-        rateAnnum: title.rateAnnum,
+        rateAnnual: title.rateAnnual,
         annumCurrency: title.annumCurrency,
-        controlGL: title.controlGL,
         taxes: title.taxes,
         charges: title.charges,
-        chargesDropdown: title.chargesDropdown,
+        // chargesDropdown: title.chargesDropdown,
         discounts: title.discounts,
-        discountsDropdown: title.discountsDropdown,
+        // discountsDropdown: title.discountsDropdown,
         commissions: title.commissions,
-        commissionsDropdown: title.commissionsDropdown,
-        serviceListing: title.serviceListing,
-        serviceListingDropdown: title.serviceListingDropdown,
-        differentiators: title.differentiators,
-        differentiatorsDropdown: title.differentiatorsDropdown
+        // commissionsDropdown: title.commissionsDropdown,
       };
 
       const deleteMutation = useDeleteData({
@@ -8029,18 +8004,13 @@ export const planColumns = [
           halfCurrency: values.halfCurrency,
           rateAnnual: values.rateAnnual,
           annumCurrency: values.annumCurrency,
-          controlGL: values.controlGL,
           taxes: values.taxes,
           charges: values.charges,
-          chargesDropdown: values.chargesDropdown,
+          // chargesDropdown: values.chargesDropdown,
           discounts: values.discounts,
-          discountsDropdown: values.discountsDropdown,
+          // discountsDropdown: values.discountsDropdown,
           commissions: values.commissions,
-          commissionsDropdown: values.commissionsDropdown,
-          serviceListing: values.serviceListing,
-          serviceListingDropdown: values.serviceListingDropdown,
-          differentiators: values.differentiators,
-          differentiatorsDropdown: values.differentiatorsDropdown
+          // commissionsDropdown: values.commissionsDropdown,
       };
 
         editMutation.mutateAsync(body);
@@ -8150,7 +8120,7 @@ export const planColumns = [
                         </div>
                         <div className="w-4/5">
                           <FormInput
-                            name="rateAnnum"
+                            name="rateAnnual"
                             label="Rate/annum"
                             type="number"
                             placeholder="0"
@@ -8158,11 +8128,6 @@ export const planColumns = [
                         </div>
                     </div>
                   </div>
-                  <FormSelect
-                      name="controlGL"
-                      label="Control GL"
-                      options={controlGLOptions}
-                  />
                     {/* Taxes Field */}
                     <div className="mb-4">
                       <FormRadio
@@ -8184,15 +8149,15 @@ export const planColumns = [
                           { value: "yes", label: "Yes" },
                           { value: "no", label: "No" }
                         ]}
-                        onChange={(value) => setShowChargeDropdown(value === "yes")}
+                        // onChange={(value) => setShowChargeDropdown(value === "yes")}
                       />
-                      {showChargeDropdown && (
+                      {/* {showChargeDropdown && (
                         <FormSelect
                           name="chargesDropdown"
                           label="Select Charges"
                           options={chargeOptions}
                         />
-                      )}
+                      )} */}
                     </div>
 
                     {/* Discounts Field */}
@@ -8204,15 +8169,15 @@ export const planColumns = [
                           { value: "yes", label: "Yes" },
                           { value: "no", label: "No" }
                         ]}
-                        onChange={(value) => setShowDiscountDropdown(value === "yes")}
+                        // onChange={(value) => setShowDiscountDropdown(value === "yes")}
                       />
-                      {showDiscountDropdown && (
+                      {/* {showDiscountDropdown && (
                         <FormSelect
                           name="discountsDropdown"
                           label="Select Discount"
                           options={discountOptions}
                         />
-                      )}
+                      )} */}
                     </div>
 
                     {/* Commissions Field */}
@@ -8224,55 +8189,15 @@ export const planColumns = [
                           { value: "yes", label: "Yes" },
                           { value: "no", label: "No" }
                         ]}
-                        onChange={(value) => setShowCommissionDropdown(value === "yes")}
+                        // onChange={(value) => setShowCommissionDropdown(value === "yes")}
                       />
-                      {showCommissionDropdown && (
+                      {/* {showCommissionDropdown && (
                         <FormSelect
                           name="commissionsDropdown"
                           label="Select Commission"
                           options={commissionOptions}
                         />
-                      )}
-                    </div>
-
-                    {/* Service Listing Field */}
-                    <div className="mb-4">
-                      <FormRadio
-                        name="serviceListing"
-                        label="Service Listing"
-                        options={[
-                          { value: "yes", label: "Yes" },
-                          { value: "no", label: "No" }
-                        ]}
-                        onChange={(value) => setShowServiceListingDropdown(value === "yes")}
-                      />
-                      {showServiceListingDropdown && (
-                        <FormCheckbox
-                          name="serviceListingDropdown"
-                          label="Select Service Listing"
-                          options={serviceListingOptions}
-                        />
-                      )}
-                    </div>
-
-                    {/* Differentiator Field */}
-                    <div className="mb-4">
-                      <FormRadio
-                        name="differentiators"
-                        label="Differentiators"
-                        options={[
-                          { value: "yes", label: "Yes" },
-                          { value: "no", label: "No" }
-                        ]}
-                        onChange={(value) => setShowDiffentiatorDropdown(value === "yes")}
-                      />
-                      {showDifferentiatorDropdown && (
-                        <FormCheckbox
-                          name="differentiatorsDropdown"
-                          label="Select Differentiator"
-                          options={differentiatorsOptions}
-                        />
-                      )}
+                      )} */}
                     </div>
               </div>
           </ReuseDialog>

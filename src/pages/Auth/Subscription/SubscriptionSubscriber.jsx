@@ -3,8 +3,7 @@ import "./subscription.css";
 import Table from "./FirstSubTable";
 import Select from "react-select";
 import { useSelector } from "react-redux";
-function SubscriptionSubscriber({ setSubscriptionType }) {
-  const userData = useSelector((state) => state.auth.user);
+function SubscriptionSubscriber({ setSubscriptionType, userData }) {
   const subscriber = useSelector((state) => state.auth.subscriber);
   const [selectedDateType, setSelectedDateType] = useState("1-month");
   const [endDate, setEndDate] = useState(null);

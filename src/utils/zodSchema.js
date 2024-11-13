@@ -942,6 +942,14 @@ export const subscriberIDSchema = z.object({
   .trim()
 })
 
+export const backupSchema = z.object({
+  backupID: z
+  .string({
+    invalid_type_error: "backupID must be a string",
+    required_error: "This field is required",
+  })
+})
+
 export const dropboxSchema = z.object({
   type: z.string({
     required_error: "This field is required",
@@ -1125,12 +1133,6 @@ export const chargesTypesSchema = z.object({
     .min(1, "Description cannot be empty")
     .max(3000, "Description must be maximum 3000 character")
     .trim(),
-  controlGL: z
-    .string({
-      invalid_type_error: "Control Account must be a string",
-      required_error: "Contorl Account is required",
-    })
-    .min(1, "Control Account must be selected"),
 });
 
 export const groupSchema = z.object({
@@ -1150,12 +1152,6 @@ export const groupSchema = z.object({
     .min(1, "Description cannot be empty")
     .max(3000, "Description must be a maximum of 3000 characters")
     .trim(),
-  controlGL: z
-    .string({
-      invalid_type_error: "Control Account must be a string",
-      required_error: "Contorl Account is required",
-    })
-    .min(1, "Control Account must be selected"),
   planCondition: z
     .string({
       invalid_type_error: "Plan condition must be a string",
@@ -1183,20 +1179,20 @@ export const chargesSchema = z.object({
     .min(1, "Alias cannot be empty")
     .max(100, "Alias must be a maximum of 100 characters")
     .trim(),
-  group: z
+  type: z
     .string({
       invalid_type_error: "Group must be a string",
       required_error: "This field is required",
     })
     .min(1, "Group cannot be empty"),
-  basis: z.enum(['fixed', 'percentages'], {
-    invalid_type_error: "Basis must be either 'fixed' or 'percentages'",
+  basis: z.enum(['fixed amount', 'percentages'], {
+    invalid_type_error: "Basis must be either 'fixed amount' or 'percentages'",
   }),
-  currency: z.enum(['NGN', 'USD'], {
+  currency: z.enum(['NGN', 'USD', ''], {
     invalid_type_error: "Currency must be either 'NGN' or 'USD'",
   }),
   rate: z
-    .number({
+    .string({
       invalid_type_error: "Rate must be a number",
       required_error: "This field is required",
     })
@@ -1220,12 +1216,6 @@ export const commissionTypesSchema = z.object({
     .min(1, "Description cannot be empty")
     .max(3000, "Description must be maximum 3000 character")
     .trim(),
-  controlGL: z
-    .string({
-      invalid_type_error: "Control Account must be a string",
-      required_error: "Contorl Account is required",
-    })
-    .min(1, "Control Account must be selected"),
 });
 
 export const commissionSchema = z.object({
@@ -1243,12 +1233,14 @@ export const commissionSchema = z.object({
       required_error: "Type is required",
     })
     .min(1, "Type must be selected"),
+  percent: z.enum(['percentages'], {
+      invalid_type_error: "Basis must be 'percentages'",
+    }),
   rate: z
-    .number({
+    .string({
       invalid_type_error: "Rate must be a number",
       required_error: "Rate is required",
-    })
-    .nonnegative("Rate must be a positive number"),
+    }),
   description: z
     .string({
       invalid_type_error: "Description must be a string",
@@ -1276,12 +1268,6 @@ export const discountTypesSchema = z.object({
     .min(1, "Description cannot be empty")
     .max(3000, "Description must be maximum 3000 character")
     .trim(),
-  controlGL: z
-    .string({
-      invalid_type_error: "Control Account must be a string",
-      required_error: "Contorl Account is required",
-    })
-    .min(1, "Control Account must be selected"),
 });
 
 export const discountsSchema = z.object({
@@ -1317,17 +1303,16 @@ export const discountsSchema = z.object({
     }),
 
   currency: z
-    .enum(["NGN", "USD"], {
+    .enum(["NGN", "USD", ''], {
       invalid_type_error: "Currency must be either '₦' or '$'",
       required_error: "Currency is required",
     }),
 
   rate: z
-    .number({
+    .string({
       invalid_type_error: "Rate must be a number",
       required_error: "Rate is required",
-    })
-    .nonnegative("Rate must be a positive number"),
+    }),
 
   startTime: z
     .string({
@@ -1346,13 +1331,6 @@ export const discountsSchema = z.object({
     .refine((value) => !isNaN(Date.parse(value)), {
       message: "End time must be a valid date",
     }),
-
-  controlGL: z
-    .string({
-      invalid_type_error: "Control Account must be a string",
-      required_error: "Contorl Account is required",
-    })
-    .min(1, "Control Account must be selected"),
 });
 
 
@@ -1393,36 +1371,28 @@ export const differentiatorsSchema =  z.object({
     .min(1, "Group cannot be empty"),
   
   maxProcessUsers: z
-    .number({
+    .string({
       invalid_type_error: "Max Process Users must be a number",
       required_error: "Max Process Users is required",
-    })
-    .int("Max Process Users must be an integer")
-    .nonnegative("Max Process Users must be a non-negative number"),
-  
+    }),
+
   maxSelfServiceUsers: z
-    .number({
+    .string({
       invalid_type_error: "Max Self-Service Users must be a number",
       required_error: "Max Self-Service Users is required",
-    })
-    .int("Max Self-Service Users must be an integer")
-    .nonnegative("Max Self-Service Users must be a non-negative number"),
-  
+    }),
+
   storageMaxAnalytics: z
-    .number({
+    .string({
       invalid_type_error: "Storage Max Analytics must be a number",
       required_error: "Storage Max Analytics is required",
-    })
-    .int("Storage Max Analytics must be an integer")
-    .nonnegative("Storage Max Analytics must be a non-negative number"),
-  
+    }),
+
   storageGB: z
-    .number({
+    .string({
       invalid_type_error: "Storage GB must be a number",
       required_error: "Storage GB is required",
-    })
-    .int("Storage GB must be an integer")
-    .nonnegative("Storage GB must be a non-negative number"),
+    }),
 });
 
 
@@ -1449,11 +1419,10 @@ export const planSchema = z.object({
     })
     .min(1, "Currency must be selected"),
   rateMonth: z
-    .number({
+    .string({
       invalid_type_error: "Rate/month must be a number",
       required_error: "This field is required",
-    })
-    .nonnegative("Rate/month cannot be negative"),
+    }),
   halfCurrency: z
     .string({
       invalid_type_error: "Currency must be a string",
@@ -1461,11 +1430,10 @@ export const planSchema = z.object({
     })
     .min(1, "Currency must be selected"),
   rateBiAnnual: z
-    .number({
+    .string({
       invalid_type_error: "Rate/half must be a number",
       required_error: "This field is required",
-    })
-    .nonnegative("Rate/half cannot be negative"),
+    }),
   quarterCurrency: z
     .string({
       invalid_type_error: "Currency must be a string",
@@ -1473,29 +1441,21 @@ export const planSchema = z.object({
     })
     .min(1, "Currency must be selected"),
   rateQuarter: z
-    .number({
+    .string({
       invalid_type_error: "Rate/quarter must be a number",
       required_error: "This field is required",
-    })
-    .nonnegative("Rate/quarter cannot be negative"),
+    }),
   annumCurrency: z
     .string({
       invalid_type_error: "Currency must be a string",
       required_error: "This field is required",
     })
     .min(1, "Currency must be selected"),
-  rateAnnum: z
-    .number({
+  rateAnnual: z
+    .string({
       invalid_type_error: "Rate/annum must be a number",
       required_error: "This field is required",
-    })
-    .nonnegative("Rate/annum cannot be negative"),
-  controlGL: z
-    .string({
-      invalid_type_error: "Control Account must be a string",
-      required_error: "Control Account is required",
-    })
-    .min(1, "Control Account must be selected"),
+    }),
   taxes: z
     .enum(["yes", "no"], {
       required_error: "Please specify if taxes are included",
@@ -1506,44 +1466,44 @@ export const planSchema = z.object({
       required_error: "Please specify if charges are included",
     })
     .default("no"),
-  chargesDropdown: z
-    .string()
-    .optional()
-    .nullable()
-    .refine((data) => {
-      if (data.charges === "yes" && !value) {
-        return false;
-      }
-      return true;
-    }, "Please select a charge"),
+  // chargesDropdown: z
+  //   .string()
+  //   .optional()
+  //   .nullable()
+  //   .refine((data) => {
+  //     if (data.charges === "yes" && !value) {
+  //       return false;
+  //     }
+  //     return true;
+  //   }, "Please select a charge"),
   discounts: z
     .enum(["yes", "no"], {
       required_error: "Please specify if discounts are included",
     })
     .default("no"),
-  discountsDropdown: z
-    .string()
-    .optional()
-    .nullable()
-    .refine((data) => {
-      if (data.discounts === "yes" && !value) {
-        return false;
-      }
-      return true;
-    }, "Please select a discount"),
+  // discountsDropdown: z
+  //   .string()
+  //   .optional()
+  //   .nullable()
+  //   .refine((data) => {
+  //     if (data.discounts === "yes" && !value) {
+  //       return false;
+  //     }
+  //     return true;
+  //   }, "Please select a discount"),
   commissions: z
     .enum(["yes", "no"], {
       required_error: "Please specify if commissions are included",
     })
     .default("no"),
-  commissionsDropdown: z
-    .string()
-    .optional()
-    .nullable()
-    .refine((data) => {
-      if (data.commissions === "yes" && !value) {
-        return false;
-      }
-      return true;
-    }, "Please select a commission"),
+  // commissionsDropdown: z
+  //   .string()
+  //   .optional()
+  //   .nullable()
+  //   .refine((data) => {
+  //     if (data.commissions === "yes" && !value) {
+  //       return false;
+  //     }
+  //     return true;
+  //   }, "Please select a commission"),
 });

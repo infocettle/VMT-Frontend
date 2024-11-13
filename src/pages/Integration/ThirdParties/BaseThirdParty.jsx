@@ -94,7 +94,7 @@ const BaseThirdParty = ({thirdPartyUrl, queryKey, title, buttonTitle, dialogTitl
             {/* Table */}
             <ReusableTableVariant
                 columns={thirdPartyColumns(thirdPartyUrl, editDialogTitle)}
-                tableData={data}
+                tableData={[]}  //data.data
             />
          </div>
 

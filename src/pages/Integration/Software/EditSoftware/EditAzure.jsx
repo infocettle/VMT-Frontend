@@ -52,13 +52,15 @@ const EditAzure = ({editMutation, deleteMutation, title, open, setIsOpen}) => {
         long={false}
         onSubmit={onSubmit}
       >
-        <FormInput name="tenantId" label="Tenant ID" />
-        <FormInput name="clientId" label="Client ID" />
-        <FormInput name="clientSecret" label="Client Secret"/>
-        <FormInput name="containerName" label="Container Name"/>
-        <FormInput name="subscriptionId" label="Subscription ID" />
-        <FormInput name="storageAccountName" label="Storage Account Name" />
-        <FormInput textArea={true} name="description" label="Description" />
+        <div className="overflow-y-auto max-h-[500px]">
+          <FormInput name="tenantId" label="Tenant ID" />
+          <FormInput name="clientId" label="Client ID" />
+          <FormInput name="clientSecret" label="Client Secret"/>
+          <FormInput name="containerName" label="Container Name"/>
+          <FormInput name="subscriptionId" label="Subscription ID" />
+          <FormInput name="storageAccountName" label="Storage Account Name" />
+          <FormInput textArea={true} name="description" label="Description" />
+        </div>
       </ReuseDialog>
 
       <ConfirmDelete

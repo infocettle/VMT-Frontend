@@ -78,11 +78,13 @@ const AWS = () => {
                 firstButton={"Cancel"}
                 secondButton={"Submit"}
             >
-                <FormInput name="awsRegion" label="AWS Region" />
-                <FormInput name="awsAccessKeyId" label="AWS Access Key Id" />
-                <FormInput name="awsAccessKeySecret" label="AWS Access Key Secret"/>
-                <FormInput name="bucketName" label="Bucket Name" />
-                <FormInput name="description" textArea={true} label="Description" />
+                <div className="overflow-y-auto max-h-[500px]">
+                  <FormInput name="awsRegion" label="AWS Region" />
+                  <FormInput name="awsAccessKeyId" label="AWS Access Key Id" />
+                  <FormInput name="awsAccessKeySecret" label="AWS Access Key Secret"/>
+                  <FormInput name="bucketName" label="Bucket Name" />
+                  <FormInput name="description" textArea={true} label="Description" />
+                </div>
             </GenericForm>
         </DialogContent>
       </Dialog>

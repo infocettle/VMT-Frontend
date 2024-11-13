@@ -150,7 +150,7 @@ const Hardware = () => {
             {/* Table */}
             <ReusableTableVariant
                 columns={hardwareColumns}
-                tableData={data}
+                tableData={data.data}
                 // tableName={"Activation"}
             />
          </div>

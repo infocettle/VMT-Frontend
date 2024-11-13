@@ -26,7 +26,7 @@ const Software = () => {
 
                 <div className="flex items-center w-auto px-2 space-x-4">
 
-                    <div className='grid grid-cols-6 gap-2'>
+                    <div className='grid grid-cols-3 gap-2'>
                       <Azure/>
                       <AWS/>
                       <Dropbox />
@@ -40,7 +40,7 @@ const Software = () => {
             {/* Table */}
             <ReusableTableVariant
                 columns={softwareColumns}
-                tableData={data}
+                tableData={data.data}
                 // tableName={"Activation"}
             />
          </div>

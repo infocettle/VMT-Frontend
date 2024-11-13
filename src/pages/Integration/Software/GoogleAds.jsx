@@ -82,12 +82,14 @@ const GoogleAds = () => {
                 firstButton={"Cancel"}
                 secondButton={"Submit"}
             >
-                <FormInput name="clientId" label="Client ID" />
-                <FormInput name="clientSecret" label="Client Secret"/>
-                <AuthenticateGoogleAds token={setRefreshToken} />
-                <FormInput name="customerId" label="Customer ID" />
-                <FormInput name="developerToken" label="Developer Token"/>
-                <FormInput name="description" textArea={true} label="Description" />
+                <div className="overflow-y-auto max-h-[500px]">
+                  <FormInput name="clientId" label="Client ID" />
+                  <FormInput name="clientSecret" label="Client Secret"/>
+                  <AuthenticateGoogleAds token={setRefreshToken} />
+                  <FormInput name="customerId" label="Customer ID" />
+                  <FormInput name="developerToken" label="Developer Token"/>
+                  <FormInput name="description" textArea={true} label="Description" />
+                </div>
             </GenericForm>
         </DialogContent>
       </Dialog>

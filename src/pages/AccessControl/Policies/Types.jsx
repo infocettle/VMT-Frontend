@@ -24,63 +24,58 @@ import { z } from "zod";
 
 const requiredForm = z.object({
   policy_name: z.string().min(1, "Name is required"),
-description: z.string().min(1, "Description is required"),
+  description: z.string().min(1, "Description is required"),
   fileUrl: z.string().min(1, "fileUrl is required"),
   version: z.string().min(1, "version is required"),
 });
 
-
 const defaultValues = {
   policy_name: "",
-description: "",
-  fileUrl:"",
+  description: "",
+  fileUrl: "",
   version: "",
 };
 
-const Types= () => {
+const Types = () => {
   const [open, setIsOpen] = useState(false);
 
   const getPolicyUrl = `${baseUrlTrial}/api/v1/ac/policy/getPolicies`;
-  
-    const { data, isLoading, error } = useFetchData(getPolicyUrl, "policy");
 
-    // Debugging output
-    console.log("Data fetched:", data?.data);
-    const policyUrl = `${baseUrlTrial}/api/v1/ac/policy/addPolicy`;
+  const { data, isLoading, error } = useFetchData(getPolicyUrl, "policy");
 
-   
-  
-    const postMutation = usePostData({
-      queryKey: ["policy"],
-      url: policyUrl,
-      policy: "policy",
-    });
-  
-    async function onSubmit(values) {
-      const body = {
-        policyName: values.policy_name,
-        fileUrl: values.fileUrl,
-        description: values.description,
-        version: values.version,
-      };
-  
-      postMutation.mutateAsync(body);
-      setIsOpen(false);
-    }
-  
-    if (isLoading) {
-      return <p>Loading...</p>;
-    }
-  
-    if (error) {
-      return <p>Error loading policy</p>;
-    }
-  
- 
-  
-    // if (isPending) {
-    //   return <span>Loading...</span>;
-    // }
+  // Debugging output
+  console.log("Data fetched:", data?.data);
+  const policyUrl = `${baseUrlTrial}/api/v1/ac/policy/addPolicy`;
+
+  const postMutation = usePostData({
+    queryKey: ["policy"],
+    url: policyUrl,
+    policy: "policy",
+  });
+
+  async function onSubmit(values) {
+    const body = {
+      policyName: values.policy_name,
+      fileUrl: values.fileUrl,
+      description: values.description,
+      version: values.version,
+    };
+
+    postMutation.mutateAsync(body);
+    setIsOpen(false);
+  }
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error loading policy</p>;
+  }
+
+  // if (isPending) {
+  //   return <span>Loading...</span>;
+  // }
 
   return (
     <div className="w-full">
@@ -101,19 +96,23 @@ const Types= () => {
               defaultValues={defaultValues}
               validationSchema={requiredForm}
               onSubmit={onSubmit}
-              long={false}
-            >
+              long={false}>
               <FormInput name="policy_name" label="Policy name" />
               <FormInput name="fileUrl" label="Policy document" />
               <FormDescription name="description" label="Description" />
               <FormInput name="version" label="Version" />
             </ReuseDialog>
-
           </div>
         </div>
 
         {/* Table */}
-        <ReusableTablePolicy columns={accessControlTypeColumns} data={data?.data} tableParent={"policies"}  tableName={"types"} tableChild={"detail_types"}  />
+        <ReusableTablePolicy
+          columns={accessControlTypeColumns}
+          data={data?.data}
+          tableParent={"policies"}
+          tableName={"types"}
+          tableChild={"detail_types"}
+        />
       </div>
     </div>
   );

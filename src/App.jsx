@@ -71,7 +71,7 @@ import {
   Restore,
   Recover,
   LockDomain,
-  CancelDomain
+  CancelDomain,
 } from "./pages/Maintenance";
 import KYCVerification from "./pages/Services/KYC/KYCVerification";
 import EditDocument from "./pages/Services/KYC/EditDocument";
@@ -116,7 +116,7 @@ import {
   ThirdParties,
   Regulators,
   TaxAuthorities,
-  Others
+  Others,
 } from "./pages/Integration";
 import { UserProfilesLinks } from "./texts/accessControlLinks";
 import UserGroups from "./pages/AccessControl/UserProfiles/UserGroups";
@@ -138,6 +138,9 @@ import DetailAccessSettings from "./pages/AccessControl/components/DetailAccessS
 import DetailAccessAuth from "./pages/AccessControl/components/DetailAccessAuth";
 import DetailAccessPasswordChange from "./pages/AccessControl/components/DetailAccessPasswordChange";
 
+import Settings from "./pages/admin/settings/Settings";
+import SettingsRoute from "./pages/settings/SettingsRoutes";
+import GeneralSettings from "./pages/settings/general-settings/GeneralSettings";
 
 const queryClient = new QueryClient();
 
@@ -160,19 +163,26 @@ const router = createBrowserRouter([
 
   {
     path: "/subscription",
-    element:(<Subscription />) ,
+    element: <Subscription />,
   },
 
   {
     path: "/",
-      element:<ProtectedRoute>
-      <MainDashboard />
-    </ProtectedRoute>,
+    element: (
+      <ProtectedRoute>
+        <MainDashboard />
+      </ProtectedRoute>
+    ),
     children: [
       // All children routes here
       {
         path: "",
         element: <Overview />,
+      },
+      {
+        path: "settings/*",
+        element: <SettingsRoute />,
+        children: [],
       },
       {
         path: "dashboard/*",
@@ -215,7 +225,6 @@ const router = createBrowserRouter([
         path: "access_control/*",
         element: <AccessControlRoute />,
         children: [
-    
           {
             path: "policies/*",
             element: <PoliciesDetails />,
@@ -223,27 +232,22 @@ const router = createBrowserRouter([
               {
                 path: "",
                 element: <Types />,
-
               },
               {
                 path: "types",
                 element: <Types />,
-                
               },
               {
                 path: "update",
                 element: <Update />,
-                
               },
               {
                 path: "restrictions",
                 element: <Restrictions />,
-                
               },
               {
                 path: "agreement",
                 element: <Agreement />,
-                
               },
               {
                 path: "detail_types",
@@ -261,10 +265,9 @@ const router = createBrowserRouter([
                 path: "detail_agreement",
                 element: <DetailAgreement />,
               },
-              { path: "update", element: <Types/> },
+              { path: "update", element: <Types /> },
               { path: "restrictions", element: <Types /> },
               { path: "agreement", element: <Types /> },
-             
             ],
           },
           {
@@ -274,27 +277,22 @@ const router = createBrowserRouter([
               {
                 path: "",
                 element: <Groups />,
-
               },
               {
                 path: "groups",
                 element: <Groups />,
-                
               },
               {
                 path: "modules",
                 element: <Modules />,
-                
               },
               {
                 path: "functions",
                 element: <Functions />,
-                
               },
               {
                 path: "processes",
                 element: <Processes />,
-                
               },
               {
                 path: "detail_groups",
@@ -312,8 +310,6 @@ const router = createBrowserRouter([
                 path: "detail_processes",
                 element: <DetailProcesses />,
               },
-         
-             
             ],
           },
           {
@@ -323,40 +319,35 @@ const router = createBrowserRouter([
               {
                 path: "",
                 element: <UserGroups />,
-
               },
               {
                 path: "groups",
                 element: <UserGroups />,
-                
               },
               {
                 path: "types",
                 element: <UserTypes />,
-                
               },
               {
                 path: "roles",
                 element: <UserRoles />,
-                
               },
               {
                 path: "privilege",
                 element: <UserPrivilege />,
-                
               },
               {
                 path: "users",
                 element: <UserUsers />,
-                
               },
-              { path: "groups/detail_groups", element: <DetailUserGroups/> },
+              { path: "groups/detail_groups", element: <DetailUserGroups /> },
               { path: "types/detail_types", element: <DetailUserTypes /> },
-              { path: "privilege/detail_privilege", element: <DetailUserPrivilege /> },
+              {
+                path: "privilege/detail_privilege",
+                element: <DetailUserPrivilege />,
+              },
               { path: "users/detail_users", element: <DetailUserUsers /> },
               { path: "roles/detail_roles", element: <DetailUserRoles /> },
-         
-             
             ],
           },
           {
@@ -366,21 +357,25 @@ const router = createBrowserRouter([
               {
                 path: "",
                 element: <AccessSettings />,
-
               },
               { path: "settings", element: <AccessSettings /> },
               { path: "login_logout", element: <AccessAuth /> },
               { path: "password_change", element: <AccessPasswordChange /> },
-          
-              { path: "settings/detail_settings", element: <DetailAccessSettings /> },
-              { path: "login_logout/detail_login_logout", element: <DetailAccessAuth /> },
-              { path: "password_change/detail_password_change", element: <DetailAccessPasswordChange /> },
-             
-         
-             
+
+              {
+                path: "settings/detail_settings",
+                element: <DetailAccessSettings />,
+              },
+              {
+                path: "login_logout/detail_login_logout",
+                element: <DetailAccessAuth />,
+              },
+              {
+                path: "password_change/detail_password_change",
+                element: <DetailAccessPasswordChange />,
+              },
             ],
           },
-         
         ],
       },
       {
@@ -634,47 +629,47 @@ const router = createBrowserRouter([
             element: <Recover />,
           },
           {
-            path: 'lock_domain',
-            element: <LockDomain/>
+            path: "lock_domain",
+            element: <LockDomain />,
           },
           {
             path: "cancel_domain",
-            element: <CancelDomain/>
-          }
-        ]
+            element: <CancelDomain />,
+          },
+        ],
       },
       {
-        path: 'integration/*',
-        element: <IntegrationRoute/>,
+        path: "integration/*",
+        element: <IntegrationRoute />,
         children: [
           {
             path: "software",
-            element: <Software/>,
+            element: <Software />,
           },
           {
             path: "hardware",
-            element: <Hardware/>,
+            element: <Hardware />,
           },
           {
             path: "third-parties/*",
-            element: <ThirdParties/>,
+            element: <ThirdParties />,
             children: [
               {
                 path: "regulators",
-                element: <Regulators/>,
+                element: <Regulators />,
               },
               {
                 path: "tax-authorities",
-                element: <TaxAuthorities/>,
+                element: <TaxAuthorities />,
               },
               {
                 path: "others",
-                element: <Others/>
-              }
-            ]
-          }
-        ]
-      }
+                element: <Others />,
+              },
+            ],
+          },
+        ],
+      },
       // Add your children routes here
     ],
   },

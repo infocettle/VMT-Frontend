@@ -16,9 +16,6 @@ import DetailModules from "./components/DetailModules";
 import DetailFunction from "./components/DetailFunction";
 import DetailProcesses from "./components/DetailProcesses";
 
-
-
-
 const PoliciesDetails = () => {
   const routes = useRoutes([
     { path: "types", element: <Types /> },
@@ -27,7 +24,10 @@ const PoliciesDetails = () => {
     { path: "agreement", element: <Agreement /> },
     { path: "types/detail_types", element: <DetailTypes /> },
     { path: "update/detail_update", element: <DetailUpdate /> },
-    { path: "restrictions/detail_restrictions", element: <DetailRestrictions /> },
+    {
+      path: "restrictions/detail_restrictions",
+      element: <DetailRestrictions />,
+    },
     { path: "agreement/detail_agreement", element: <DetailAgreement /> },
     { path: "groups", element: <Groups /> },
     { path: "modules", element: <Modules /> },
@@ -37,8 +37,6 @@ const PoliciesDetails = () => {
     { path: "modules/detail_modules", element: <DetailModules /> },
     { path: "functions/detail_functions", element: <DetailFunction /> },
     { path: "processes/detail_processes", element: <DetailProcesses /> },
-  
-  
   ]);
 
   return routes || <Outlet />;

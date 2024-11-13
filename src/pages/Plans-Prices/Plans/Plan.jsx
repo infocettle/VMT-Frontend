@@ -20,7 +20,6 @@ import { usePostData } from '@/hooks/usePostData';
 import { IoFilter } from 'react-icons/io5';
 import { baseUrl } from '@/App';
 import { FormSelect } from '@/components/FormSelect';
-import { FormCheckbox } from '@/components/FormCheckBox';
 import { toast } from 'react-toastify';
 
 const sampleData = [
@@ -50,7 +49,7 @@ const sampleData = [
     charges: "yes",
     discounts: "no",
     commissions: "yes",
-    status: "inactive",
+    status: "Inactive",
   },
   {
     group: "Consulting",
@@ -92,7 +91,7 @@ const sampleData = [
     charges: "yes",
     discounts: "yes",
     commissions: "no",
-    status: "inactive",
+    status: "Inactive",
   },
   {
     group: "Logistics",
@@ -120,7 +119,7 @@ const sampleData = [
     charges: "yes",
     discounts: "yes",
     commissions: "no",
-    status: "inactive",
+    status: "Inactive",
   },
   {
     group: "Security",
@@ -148,7 +147,7 @@ const sampleData = [
     charges: "yes",
     discounts: "no",
     commissions: "yes",
-    status: "inactive",
+    status: "Inactive",
   },
   {
     group: "Finance",
@@ -178,55 +177,41 @@ const planDefaultValues = {
   halfCurrency: "",
   rateAnnual: null,
   annumCurrency: "",
-  controlGL: "",
   taxes: "",
   charges: "",
-  chargesDropdown: "",
+  // chargesDropdown: "",
   discounts: "",
-  discountsDropdown: "",
+  // discountsDropdown: "",
   commissions: "",
-  commissionsDropdown: "",
-  differentiators: "",
-  differentiatorsDropdown: [],
-  serviceListing: "",
-  serviceListingDropdown: []
+  // commissionsDropdown: "",
 }
 
 const Plan = () => {
     const [open, setIsOpen] = useState(false);
     const [groupOptions, setGroupOptions] = useState([])
-    const [chargeOptions, setChargeOptions] = useState([]);
-    const [discountOptions, setDiscountOptions] = useState([]);
-    const [commissionOptions, setCommissionOptions] = useState([]);
-    const [ serviceListingOptions, setServiceListingOptions ] = useState([]);
-    const [ differentiatorsOptions, setDifferentiatorsOptions ] = useState([]);
-    const [controlGLOptions, setControlGLOptions] = useState([])
-    const [showChargeDropdown, setShowChargeDropdown] = useState(false);
-    const [showDiscountDropdown, setShowDiscountDropdown] = useState(false);
-    const [showCommissionDropdown, setShowCommissionDropdown] = useState(false);
-    const [showServiceListingDropdown, setShowServiceListingDropdown] = useState(false);
-    const [showDifferentiatorDropdown, setShowDiffentiatorDropdown] = useState(false);
+    // const [chargeOptions, setChargeOptions] = useState([]);
+    // const [discountOptions, setDiscountOptions] = useState([]);
+    // const [commissionOptions, setCommissionOptions] = useState([]);
+    // const [showChargeDropdown, setShowChargeDropdown] = useState(false);
+    // const [showDiscountDropdown, setShowDiscountDropdown] = useState(false);
+    // const [showCommissionDropdown, setShowCommissionDropdown] = useState(false);
 
 
     const planUrl = `${baseUrl}plans-prices/plans/plan`;
 
     const groupUrl = `${baseUrl}plans-prices/plans/group`;
-    const chargeUrl = `${baseUrl}plans-prices/charges/charge`;
-    const discountUrl = `${baseUrl}plans-prices/discount/discounts`;
-    const commissionUrl = `${baseUrl}plans-prices/commissions/commission`;
-    const controlUrl = `${baseUrl}settings/controlGL`;
-    const serviceListingUrl = `${baseUrl}plans-prices/service-listing`;
-    const differentiatorsUrl = `${baseUrl}plans-prices/differentiators`;
+    // const chargeUrl = `${baseUrl}plans-prices/charges/charge`;
+    // const discountUrl = `${baseUrl}plans-prices/discount/discounts`;
+    // const commissionUrl = `${baseUrl}plans-prices/commissions/commission`;
 
     const { data: groupData, isPending: isGroupPending } = useFetchData(groupUrl, "group");
-    const { data: chargeData, isPending: isChargePending } = useFetchData(chargeUrl, "charge");
-    const { data: discountData, isPending: isDiscountPending } = useFetchData(discountUrl, "discounts");
-    const { data: commissionData, isPending: isCommissionPending } = useFetchData(commissionUrl, "commission");
-    const { data: controlGLData, isPending: isControlGLPending } = useFetchData(controlUrl, "control-gl-accounts");
-    const { data: serviceListingData, isPending: isServiceListingPending } = useFetchData(serviceListingUrl, "service-listing");
-    const { data: differentiatorsData, isPending: isDifferentiatorsPending } = useFetchData(differentiatorsUrl, "differentiator");
+    // const { data: chargeData, isPending: isChargePending } = useFetchData(chargeUrl, "charge");
+    // const { data: discountData, isPending: isDiscountPending } = useFetchData(discountUrl, "discounts");
+    // const { data: commissionData, isPending: isCommissionPending } = useFetchData(commissionUrl, "commission");
 
     const { data, isPending } = useFetchData(planUrl, "plan");
+
+    console.log(data)
 
     useEffect(() => {
       const formatData = (response, name) => {
@@ -247,20 +232,14 @@ const Plan = () => {
 
 
       setGroupOptions(formatData(groupData, "Groups"));
-      setChargeOptions(formatData(chargeData, "Charges"));
-      setDiscountOptions(formatData(discountData, "Discounts"));
-      setCommissionOptions(formatData(commissionData, "Commissions"));
-      setControlGLOptions(formatData(controlGLData, "Control GL Accounts"));
-      setServiceListingOptions(formatData(serviceListingData, "Service Listing"));
-      setDifferentiatorsOptions(formatData(differentiatorsData, "Differentiators"));
+      // setChargeOptions(formatData(chargeData, "Charges"));
+      // setDiscountOptions(formatData(discountData, "Discounts"));
+      // setCommissionOptions(formatData(commissionData, "Commissions"));
     }, [
       groupData,
-      chargeData,
-      discountData,
-      commissionData,
-      controlGLData,
-      serviceListingData,
-      differentiatorsData,
+      // chargeData,
+      // discountData,
+      // commissionData,
     ]);
 
 
@@ -282,19 +261,16 @@ const Plan = () => {
             halfCurrency: values.halfCurrency,
             rateAnnual: values.rateAnnual,
             annumCurrency: values.annumCurrency,
-            controlGL: values.controlGL,
             taxes: values.taxes,
             charges: values.charges,
-            chargesDropdown: values.chargesDropdown,
+            // chargesDropdown: values.chargesDropdown,
             discounts: values.discounts,
-            discountsDropdown: values.discountsDropdown,
+            // discountsDropdown: values.discountsDropdown,
             commissions: values.commissions,
-            commissionsDropdown: values.commissionsDropdown,
-            serviceListing: values.serviceListing,
-            serviceListingDropdown: values.serviceListingDropdown,
-            differentiators: values.differentiators,
-            differentiatorsDropdown: values.differentiatorsDropdown
+            // commissionsDropdown: values.commissionsDropdown,
         };
+
+        console.log(body)
 
         postMutation.mutateAsync(body);
         setIsOpen(false);
@@ -306,7 +282,7 @@ const Plan = () => {
   return (
     <div className='w-full'>
          <SecondDiv parentModule={"Plans & Prices"} module={"Plan"} />
-         <div className="bg-gray-100 py-3 px-2 w-full flex-col items-center">
+         <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
             <div className="flex justify-between w-full items-center pt-5">
                 <SecondHeader title={"Plan"} />
 
@@ -424,7 +400,7 @@ const Plan = () => {
                                           </div>
                                           <div className="w-4/5">
                                             <FormInput
-                                              name="rateAnnum"
+                                              name="rateAnnual"
                                               label="Rate/annum"
                                               type="number"
                                               placeholder="0"
@@ -432,11 +408,6 @@ const Plan = () => {
                                           </div>
                                       </div>
                                     </div>
-                                    <FormSelect
-                                        name="controlGL"
-                                        label="Control GL"
-                                        options={controlGLOptions}
-                                    />
                                       {/* Taxes Field */}
                                       <div className="mb-4">
                                         <FormRadio
@@ -458,15 +429,15 @@ const Plan = () => {
                                             { value: "yes", label: "Yes" },
                                             { value: "no", label: "No" }
                                           ]}
-                                          onChange={(value) => setShowChargeDropdown(value === "yes")}
+                                          // onChange={(value) => setShowChargeDropdown(value === "yes")}
                                         />
-                                        {showChargeDropdown && (
+                                        {/* {showChargeDropdown && (
                                           <FormSelect
                                             name="chargesDropdown"
                                             label="Select Charges"
                                             options={chargeOptions}
                                           />
-                                        )}
+                                        )} */}
                                       </div>
 
                                       {/* Discounts Field */}
@@ -478,15 +449,15 @@ const Plan = () => {
                                             { value: "yes", label: "Yes" },
                                             { value: "no", label: "No" }
                                           ]}
-                                          onChange={(value) => setShowDiscountDropdown(value === "yes")}
+                                          // onChange={(value) => setShowDiscountDropdown(value === "yes")}
                                         />
-                                        {showDiscountDropdown && (
+                                        {/* {showDiscountDropdown && (
                                           <FormSelect
                                             name="discountsDropdown"
                                             label="Select Discount"
                                             options={discountOptions}
                                           />
-                                        )}
+                                        )} */}
                                       </div>
 
                                       {/* Commissions Field */}
@@ -498,55 +469,15 @@ const Plan = () => {
                                             { value: "yes", label: "Yes" },
                                             { value: "no", label: "No" }
                                           ]}
-                                          onChange={(value) => setShowCommissionDropdown(value === "yes")}
+                                          // onChange={(value) => setShowCommissionDropdown(value === "yes")}
                                         />
-                                        {showCommissionDropdown && (
+                                        {/* {showCommissionDropdown && (
                                           <FormSelect
                                             name="commissionsDropdown"
-                                            label="Select Commission"
+                                            label="Commission"
                                             options={commissionOptions}
                                           />
-                                        )}
-                                      </div>
-
-                                      {/* Service Listing Field */}
-                                      <div className="mb-4">
-                                        <FormRadio
-                                          name="serviceListing"
-                                          label="Service Listing"
-                                          options={[
-                                            { value: "yes", label: "Yes" },
-                                            { value: "no", label: "No" }
-                                          ]}
-                                          onChange={(value) => setShowServiceListingDropdown(value === "yes")}
-                                        />
-                                        {showServiceListingDropdown && (
-                                          <FormCheckbox
-                                            name="serviceListingDropdown"
-                                            label="Select Service Listing"
-                                            options={serviceListingOptions}
-                                          />
-                                        )}
-                                      </div>
-
-                                      {/* Differentiator Field */}
-                                      <div className="mb-4">
-                                        <FormRadio
-                                          name="differentiators"
-                                          label="Differentiators"
-                                          options={[
-                                            { value: "yes", label: "Yes" },
-                                            { value: "no", label: "No" }
-                                          ]}
-                                          onChange={(value) => setShowDiffentiatorDropdown(value === "yes")}
-                                        />
-                                        {showDifferentiatorDropdown && (
-                                          <FormCheckbox
-                                            name="differentiatorsDropdown"
-                                            label="Select Differentiator"
-                                            options={differentiatorsOptions}
-                                          />
-                                        )}
+                                        )} */}
                                       </div>
                                 </div>
                               </GenericForm>
@@ -566,17 +497,14 @@ const Plan = () => {
             {/* Table */}
             <ReusableTable
                 columns={planColumns}
-                data={sampleData}
+                data={data.data}
                 tableName={"Plan"}
                 width={"w-[755px]"}
                 options={{
                   groupOptions,
-                  controlGLOptions,
-                  chargeOptions,
-                  discountOptions,
-                  commissionOptions,
-                  differentiatorsOptions,
-                  serviceListingOptions
+                  // chargeOptions,
+                  // discountOptions,
+                  // commissionOptions,
                 }}
             />
         </div>

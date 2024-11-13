@@ -70,31 +70,14 @@ export const chargesTypesRequiredForm = chargesTypesSchema.required();
 const chargesTypesDefaultValues = {
     name: "",
     description: "",
-    controlGL: ""
 }
 
 const ChargesTypes = () => {
     const [open, setIsOpen] = useState(false);
-    const [controlAccounts, setControlAccounts] = useState([])
 
     const chargesTypesUrl = `${baseUrl}plans-prices/charges/types`;
-    const controlGLUrl = `${baseUrl}settings/controlGL`;
 
     const { data, isPending } = useFetchData(chargesTypesUrl, "charges-types");
-
-    const { data: controlGLData, isPending: isControlGLPending } = useFetchData(controlGLUrl, "control-gl-accounts");
-
-    useEffect(() => {
-      if (Array.isArray(controlGLData) && controlGLData.length > 0) {
-          const formattedControlGL = controlGLData.map(item => ({
-              value: item._id,
-              label: item.controlGL.toUpperCase(),
-          }));
-          setControlAccounts(formattedControlGL);
-      } else {
-          setControlAccounts([]);
-      }
-  }, [controlGLData]);
 
 
     const postMutation = usePostData({
@@ -107,7 +90,6 @@ const ChargesTypes = () => {
         const body = {
             name: values.name,
             description: values.description,
-            controlGL: values.controlGL
         };
 
         postMutation.mutateAsync(body);
@@ -137,7 +119,7 @@ const ChargesTypes = () => {
                           </DialogTrigger>
                           <DialogContent className="sm:max-w-[755px] gap-6">
                               <DialogHeader>
-                                  <DialogTitle>Add New Charge</DialogTitle>
+                                  <DialogTitle>Add New Charge Type</DialogTitle>
                               </DialogHeader>
                               <hr className="border border-gray-100 w-full h-[1px]" />
                               <GenericForm
@@ -149,11 +131,6 @@ const ChargesTypes = () => {
                               >
                                     <FormInput name="name" label="Name" />
                                     <FormTextArea name="description" label="Description" />
-                                    <FormSelect
-                                        name="controlGL"
-                                        label="Select Control Account"
-                                        options={controlAccounts}
-                                    />
                               </GenericForm>
                           </DialogContent>
                   </Dialog>
@@ -171,10 +148,9 @@ const ChargesTypes = () => {
             {/* Table */}
             <ReusableTable
                 columns={chargesTypesColumns}
-                data={sampleData}
+                data={data.data}
                 tableName={"Charges Types"}
                 width={"w-[755px]"}
-                options={{controlAccounts}}
             />
         </div>
     </div>

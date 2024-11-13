@@ -23,117 +23,13 @@ import { IoFilter } from 'react-icons/io5';
 import { baseUrl } from '@/App';
 
 
-const sampleData = [
-  {
-    name: "Seasonal Discount",
-    alias: "Summer Sale",
-    basis: "percentages",
-    currency: "usd",
-    rate: 10,
-    startTime: "2024-06-01",
-    endTime: "2024-06-30",
-    status: "Pending"
-  },
-  {
-    name: "Holiday Special",
-    alias: "Xmas Discount",
-    basis: "fixed amount",
-    currency: "eur",
-    rate: 10,
-    startTime: "2024-12-20",
-    endTime: "2024-12-31",
-    status: "Pending"
-  },
-  {
-    name: "New Customer",
-    alias: "First Purchase",
-    basis: "percentages",
-    currency: "ngn",
-    rate: 10,
-    startTime: "2024-01-01",
-    endTime: "2024-01-31",
-    status: "Pending"
-  },
-  {
-    name: "Flash Sale",
-    alias: "Limited Offer",
-    basis: "fixed amount",
-    currency: "gbp",
-    rate: 15,
-    startTime: "2024-03-15",
-    endTime: "2024-03-17",
-    status: "Pending"
-  },
-  {
-    name: "Loyalty Discount",
-    alias: "Gold Members",
-    basis: "percentages",
-    currency: "usd",
-    rate: 20,
-    startTime: "2024-07-01",
-    endTime: "2024-07-31",
-    status: "Active"
-  },
-  {
-    name: "Clearance Sale",
-    alias: "End of Season",
-    basis: "fixed amount",
-    currency: "eur",
-    rate: 30,
-    startTime: "2024-11-01",
-    endTime: "2024-11-15",
-    status: "Pending"
-  },
-  {
-    name: "Bulk Purchase",
-    alias: "Wholesale",
-    basis: "percentages",
-    currency: "ngn",
-    rate: 8,
-    startTime: "2024-04-01",
-    endTime: "2024-04-30",
-    status: "Pending"
-  },
-  {
-    name: "Referral Discount",
-    alias: "Friend Referral",
-    basis: "fixed amount",
-    currency: "usd",
-    rate: 25,
-    startTime: "2024-02-01",
-    endTime: "2024-02-28",
-    status: "Pending"
-  },
-  {
-    name: "Black Friday",
-    alias: "BF2024",
-    basis: "percentages",
-    currency: "gbp",
-    rate: 50,
-    startTime: "2024-11-29",
-    endTime: "2024-11-29",
-    status: "Pending"
-  },
-  {
-    name: "Cyber Monday",
-    alias: "CM2024",
-    basis: "fixed amount",
-    currency: "usd",
-    rate: 40,
-    startTime: "2024-12-02",
-    endTime: "2024-12-02",
-    status: "Pending"
-  }
-];
-
-
 export const discountsRequiredForm = discountsSchema.required();
 const discountsDefaultValues = {
   name: "",
   alias: "",
   basis: "",
   type: "",
-  currency: "NGN",
+  currency: "",
   rate: null,
   startTime: null,
   endTime: null
@@ -143,24 +39,19 @@ const Discounts = () => {
     const [open, setIsOpen] = useState(false);
     const [discountTypes, setDiscountTypes] = useState([])
 
-    const discountUrl = `${baseUrl}plans-prices/discounts/types`;
+    const discountUrl = `${baseUrl}plans-prices/discount/types`;
     const discountsUrl = `${baseUrl}plans-prices/discount/discounts`;
 
     const { data: discountData, isPending: isDiscountPending } = useFetchData(discountUrl, "discount");
-    console.log(discountTypes)
 
     useEffect(() => {
-      if (Array.isArray(discountData) && discountData.length > 0) {
-          const discountTypesData = discountData
+          const discountTypesData = discountData?.data
               .filter(item => item.status === 'Active')
               .map(item => ({
                   value: item._id,
                   label: item.name.toUpperCase(),
               }));
           setDiscountTypes(discountTypesData);
-      } else {
-          setDiscountTypes([]);
-      }
   }, [discountData]);
 
 
@@ -222,7 +113,7 @@ const Discounts = () => {
                                   secondButton={"Submit"}
                               >
                                     <FormInput name="name" label="Name" />
-                                    <FormTextArea name="alias" label="Alias" />
+                                    <FormInput name="alias" label="Alias" />
                                     <FormSelect
                                         name="type"
                                         label="Type"
@@ -283,7 +174,7 @@ const Discounts = () => {
             {/* Table */}
             <ReusableTable
                 columns={discountsColumns}
-                data={sampleData}
+                data={data.data}
                 tableName={"Discounts"}
                 width={"w-[755px]"}
                 options={{discountTypes}}

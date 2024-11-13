@@ -22,98 +22,13 @@ import { usePostData } from '@/hooks/usePostData';
 import { IoFilter } from 'react-icons/io5';
 import { baseUrl } from '@/App';
 
-
-const sampleData = [
-  {
-    name: "Service Charge",
-    alias: "SC",
-    group: "SERVICES",
-    basis: "fixed amount",
-    currency: "ngn",
-    rate: "5000"
-  },
-  {
-    name: "Consultation Fee",
-    alias: "CF",
-    group: "CONSULTING",
-    basis: "fixed amount",
-    currency: "ngn",
-    rate: "10000"
-  },
-  {
-    name: "VAT",
-    alias: "Value Added Tax",
-    group: "TAXES",
-    basis: "percentages",
-    currency: "ngn",
-    rate: "7.5"
-  },
-  {
-    name: "Shipping Fee",
-    alias: "SF",
-    group: "DELIVERY",
-    basis: "fixed amount",
-    currency: "ngn",
-    rate: "2000"
-  },
-  {
-    name: "Discount",
-    alias: "DS",
-    group: "PROMOTIONS",
-    basis: "percentages",
-    currency: "ngn",
-    rate: "15"
-  },
-  {
-    name: "Maintenance Fee",
-    alias: "MF",
-    group: "SERVICES",
-    basis: "fixed amount",
-    currency: "ngn",
-    rate: "8000"
-  },
-  {
-    name: "Processing Fee",
-    alias: "PF",
-    group: "TRANSACTIONS",
-    basis: "percentages",
-    currency: "ngn",
-    rate: "2"
-  },
-  {
-    name: "Legal Fee",
-    alias: "LF",
-    group: "LEGAL",
-    basis: "fixed amount",
-    currency: "ngn",
-    rate: "15000"
-  },
-  {
-    name: "Commission",
-    alias: "COM",
-    group: "SALES",
-    basis: "percentages",
-    currency: "ngn",
-    rate: "5"
-  },
-  {
-    name: "Installation Fee",
-    alias: "IF",
-    group: "SERVICES",
-    basis: "fixed amount",
-    currency: "ngn",
-    rate: "12000"
-  }
-];
-
-
 export const chargesRequiredForm = chargesSchema.required();
 const chargesDefaultValues = {
     name: "",
     alias: "",
     type: "",
     basis: "",
-    currency: "NGN",
+    currency: "",
     rate: null
 }
 
@@ -126,32 +41,24 @@ const Charges = () => {
     const chargeUrl = `${baseUrl}plans-prices/charges/types`;
 
     const { data: groupData, isPending: isGroupPending } = useFetchData(groupUrl, "group");
-    const { data: chargeData, isPending: isChargePending } = useFetchData(chargeUrl, "charge");
+    const { data: chargeData, isPending: isChargePending } = useFetchData(chargeUrl, "charges-types");
 
     useEffect(() => {
-      if (Array.isArray(groupData) && groupData.length > 0) {
-          const activeGroups = groupData
+          const activeGroups = groupData?.data
               .filter(item => item.status === 'Active')
               .map(item => ({
                   value: item._id,
                   label: item.groupName.toUpperCase(),
               }));
           setGroupOptions(activeGroups);
-      } else {
-          setGroupOptions([]);
-      }
-  
-      if (Array.isArray(chargeData) && chargeData.length > 0) {
-          const chargeTypesData = chargeData
+
+          const chargeTypesData = chargeData?.data
               .filter(item => item.status === 'Active')
               .map(item => ({
                   value: item._id,
                   label: item.name.toUpperCase(),
               }));
           setChargeTypes(chargeTypesData);
-      } else {
-          setChargeTypes([]);
-      }
   }, [groupData, chargeData]);
 
 
@@ -214,7 +121,7 @@ const Charges = () => {
                                   secondButton={"Submit"}
                               >
                                     <FormInput name="name" label="Name" />
-                                    <FormTextArea name="alias" label="Alias" />
+                                    <FormInput name="alias" label="Alias" />
                                     <FormSelect
                                         name="type"
                                         label="Type"
@@ -271,7 +178,7 @@ const Charges = () => {
             {/* Table */}
             <ReusableTable
                 columns={chargesColumns}
-                data={sampleData}
+                data={data.data}
                 tableName={"Charges"}
                 width={"w-[755px]"}
                 options={{groupOptions, chargeTypes}}

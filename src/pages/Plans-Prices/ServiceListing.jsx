@@ -21,55 +21,10 @@ import { usePostData } from '@/hooks/usePostData';
 import { IoFilter } from 'react-icons/io5';
 import { baseUrl } from '@/App';
 
-
-const sampleData = [
-    {
-      name: "Basic Plan",
-      description: "A starter subscription plan with limited access to features."
-    },
-    {
-      name: "Premium Plan",
-      description: "A premium subscription plan offering full access to all features."
-    },
-    {
-      name: "Annual Discount",
-      description: "A 10% discount for customers who opt for an annual subscription."
-    },
-    {
-      name: "Service Charge",
-      description: "A flat fee applied to all transactions for processing and handling."
-    },
-    {
-      name: "VAT Tax",
-      description: "Value-added tax applied to all eligible purchases."
-    },
-    {
-      name: "Sales Commission",
-      description: "A commission paid out to partners for sales generated through referrals."
-    },
-    {
-      name: "Monthly Charge",
-      description: "A recurring monthly charge for access to subscription services."
-    },
-    {
-      name: "Transaction Fee",
-      description: "A small fee deducted per transaction for payment gateway processing."
-    },
-    {
-      name: "Referral Bonus",
-      description: "A bonus offered to users for referring new subscribers to the service."
-    },
-    {
-      name: "Quarterly Plan",
-      description: "A subscription plan billed every three months."
-    }
-  ];
-
 export const serviceListingRequiredForm = serviceListingSchema.required();
 const serviceListingDefaultValues = {
     name: "",
     description: "",
-    rate: null
 }
 
 const ServiceListing = () => {
@@ -90,7 +45,6 @@ const ServiceListing = () => {
         const body = {
             name: values.name,
             description: values.description,
-            rate: values.rate
         };
 
         postMutation.mutateAsync(body);
@@ -118,7 +72,7 @@ const ServiceListing = () => {
                                   Create New
                               </Button>
                           </DialogTrigger>
-                          <DialogContent className="sm:max-w-[425px] gap-6">
+                          <DialogContent className="sm:max-w-[755px] gap-6">
                               <DialogHeader>
                                   <DialogTitle>Add New Service Listing</DialogTitle>
                               </DialogHeader>
@@ -130,16 +84,8 @@ const ServiceListing = () => {
                                   firstButton={"Cancel"}
                                   secondButton={"Submit"}
                               >
-                                    <FormInput name="name" label="Name" />
-                                    <FormTextArea name="description" label="description" />
-                                    <div className="w-5/6">
-                                            <FormInput
-                                              name="rate"
-                                              label="Rate"
-                                              type="number"
-                                              placeholder="0"
-                                            />
-                                          </div>
+                                  <FormInput name="name" label="Name" />
+                                  <FormTextArea name="description" label="description" />
                               </GenericForm>
                           </DialogContent>
                   </Dialog>
@@ -159,7 +105,7 @@ const ServiceListing = () => {
                 columns={serviceListingColumns}
                 data={data.data}
                 tableName={"Service Listing"}
-                width={"w-[425px]"}
+                width={"w-[755px]"}
             />
         </div>
     </div>

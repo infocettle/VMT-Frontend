@@ -22,58 +22,6 @@ import { baseUrl } from '@/App';
 import { FormSelect } from '@/components/FormSelect';
 
 
-const sampleData = [
-    {
-      name: "Enterprise Plan",
-      group: "commercial",
-      maxProcessUsers: 100,
-      maxSelfServiceUsers: 500,
-      storageMaxAnalytics: 200,
-      storageGB: 1000,
-    },
-    {
-      name: "Small Business Plan",
-      group: "retail",
-      maxProcessUsers: 50,
-      maxSelfServiceUsers: 200,
-      storageMaxAnalytics: 100,
-      storageGB: 500,
-    },
-    {
-      name: "Startup Plan",
-      group: "investment",
-      maxProcessUsers: 10,
-      maxSelfServiceUsers: 50,
-      storageMaxAnalytics: 25,
-      storageGB: 100,
-    },
-    {
-      name: "Corporate Plan",
-      group: "central",
-      maxProcessUsers: 300,
-      maxSelfServiceUsers: 1000,
-      storageMaxAnalytics: 500,
-      storageGB: 2000,
-    },
-    {
-      name: "Freelancer Plan",
-      group: "shadow",
-      maxProcessUsers: 5,
-      maxSelfServiceUsers: 10,
-      storageMaxAnalytics: 10,
-      storageGB: 50,
-    },
-    {
-      name: "Non-Profit Plan",
-      group: "cooperative",
-      maxProcessUsers: 20,
-      maxSelfServiceUsers: 100,
-      storageMaxAnalytics: 50,
-      storageGB: 200,
-    }
-  ];
-
-
 export const differentiatorsRequiredForm = differentiatorsSchema.required();
 const differentiatorsDefaultValues = {
     name: "",
@@ -82,8 +30,6 @@ const differentiatorsDefaultValues = {
     maxSelfServiceUsers: null,
     storageMaxAnalytics: null,
     storageGB: null,
-    rate: null
-
 }
 
 const Differentiators = () => {
@@ -98,17 +44,13 @@ const Differentiators = () => {
     const { data: groupData, isPending: isGroupPending } = useFetchData(groupUrl, "group");
 
     useEffect(() => {
-      if (Array.isArray(groupData) && groupData.length > 0) {
-          const activeGroups = groupData
+          const activeGroups = groupData?.data
               .filter(item => item.status === 'Active')
               .map(item => ({
                   value: item._id,
                   label: item.groupName.toUpperCase(),
               }));
           setGroupOptions(activeGroups);
-      } else {
-          setGroupOptions([]);
-      }
   }, [groupData]);
 
 
@@ -122,7 +64,6 @@ const Differentiators = () => {
         const body = {
             name: values.name,
             group: values.group,
-            rate: values.rate,
             maxProcessUsers: values.maxProcessUsers,
             maxSelfServiceUsers: values.maxSelfServiceUsers,
             storageMaxAnalytics: values.storageMaxAnalytics,
@@ -156,7 +97,7 @@ const Differentiators = () => {
                           </DialogTrigger>
                           <DialogContent className="sm:max-w-[755px] gap-6">
                               <DialogHeader>
-                                  <DialogTitle>Add New Plan</DialogTitle>
+                                  <DialogTitle>Add New Differentiator</DialogTitle>
                               </DialogHeader>
                               <hr className="border border-gray-100 w-full h-[1px]" />
                               <GenericForm
@@ -172,14 +113,6 @@ const Differentiators = () => {
                                         label="Group"
                                         options={groupOptions}
                                     />
-                                    <div className="w-5/6">
-                                            <FormInput
-                                              name="rate"
-                                              label="Rate"
-                                              type="number"
-                                              placeholder="0"
-                                            />
-                                          </div>
                                     <div className="flex gap-4">
                                         <FormInput name="maxProcessUsers" label="Max Process Users" type="number" />
                                         <FormInput name="maxSelfServiceUsers" label="Max Self-Service Users" type="number" />
@@ -205,7 +138,7 @@ const Differentiators = () => {
             {/* Table */}
             <ReusableTable
                 columns={differentiatorsColumns}
-                data={sampleData}
+                data={data.data}
                 tableName={"Differentiators"}
                 width={"w-[755px]"}
                 options={{groupOptions}}

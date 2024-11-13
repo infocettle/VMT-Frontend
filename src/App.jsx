@@ -69,7 +69,7 @@ import {
   Activation,
   Backup,
   Restore,
-  Recover,
+  // Recover,
   LockDomain,
   CancelDomain
 } from "./pages/Maintenance";
@@ -634,10 +634,10 @@ const router = createBrowserRouter([
             path: "restore",
             element: <Restore />,
           },
-          {
-            path: "recover",
-            element: <Recover />,
-          },
+          // {
+          //   path: "recover",
+          //   element: <Recover />,
+          // },
           {
             path: 'lock_domain',
             element: <LockDomain/>

@@ -1,12 +1,10 @@
-import React from "react";
-
 export default function GeneralLedgerBranchTitle() {
   return (
     <div className="w-full flex items-center pt-4 pb-2 border-b">
-      <Title title="BRANCH CODE" width="w-[25%]" />
+      <Title title="BRANCH CODE" width="w-[30%] lg:w-[25%]" />
       <Title title="BRANCH NAME" width="flex-1" />
-      <Title title="DATE CREATED" width="w-[25%]" />
-      <Title title="ACTION" width="w-[25%] text-end" />
+      <Title title="DATE CREATED" width="w-[25%] hidden lg:block" />
+      <Title title="ACTION" width="w-[30%] lg:w-[25%] text-end" />
     </div>
   );
 }

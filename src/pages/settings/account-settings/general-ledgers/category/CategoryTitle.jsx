@@ -3,11 +3,11 @@ import React from "react";
 export default function GeneralLedgerCategoryTitle() {
   return (
     <div className="w-full flex items-center pt-4 pb-2 border-b">
-      <Title title="CODE" width="w-[10%]" />
-      <Title title="NAME" width="w-[20%]" />
+      <Title title="CODE" width="w-[10%] hidden lg:block" />
+      <Title title="NAME" width="w-[30%] lg:w-[20%]" />
       <Title title="DESCRIPTION" width="flex-1" />
-      <Title title="STATUS" width="w-[15%] text-center" />
-      <Title title="ACTION" width="w-[10%] text-end" />
+      <Title title="STATUS" width="w-[15%] text-center hidden lg:block" />
+      <Title title="ACTION" width="w-[30%] lg:w-[10%] text-end" />
     </div>
   );
 }

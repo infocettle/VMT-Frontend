@@ -1,6 +1,6 @@
 export default function Toggle({ setActive, active }) {
   return (
-    <div className="w-full py-4 flex items-center gap-4">
+    <div className="w-full py-4 flex items-center gap-4 overflow-x-scroll">
       <button
         onClick={() => setActive("category")}
         className={`w-auto p-4 flex items-center justify-center h-[37px] rounded-[24px] ${

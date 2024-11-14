@@ -3,17 +3,17 @@ import React from "react";
 export default function GeneralLedgerNumberTitle() {
   return (
     <div className="w-full flex items-center pt-4 pb-2 border-b">
-      <Title title="NUMBER" width="w-[10%]" />
+      <Title title="NUMBER" width="w-[10%]  hidden lg:block" />
       <Title title="NAME" width="flex-1" />
-      <Title title="INPUT" width="w-[5%]" />
-      <Title title="RESERVED" width="w-[10%]" />
-      <Title title="TYPE" width="w-[10%]" />
-      <Title title="CLASS" width="w-[10%]" />
-      <Title title="CURRENCY" width="w-[10%]" />
-      <Title title="BRANCH" width="w-[5%]" />
-      <Title title="USAGE" width="w-[10%]" />
-      <Title title="STATUS" width="w-[10%] text-center" />
-      <Title title="ACTION" width="w-[10%] text-end" />
+      <Title title="INPUT" width="w-[5%]  hidden lg:block" />
+      <Title title="RESERVED" width="w-[10%]  hidden lg:block" />
+      <Title title="TYPE" width="w-[10%]  hidden lg:block" />
+      <Title title="CLASS" width="w-[30%] lg:w-[10%]" />
+      <Title title="CURRENCY" width="w-[10%]  hidden lg:block" />
+      <Title title="BRANCH" width="w-[5%]  hidden lg:block" />
+      <Title title="USAGE" width="w-[10%]  hidden lg:block" />
+      <Title title="STATUS" width="w-[10%] text-center  hidden lg:block" />
+      <Title title="ACTION" width="w-[30%] lg:w-[10%] text-end" />
     </div>
   );
 }

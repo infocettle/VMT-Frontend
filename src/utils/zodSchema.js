@@ -1185,10 +1185,11 @@ export const segmentFormSchema = z.object({
     .trim(),
   description: z
     .string({
-      required_error: "This field is required",
+      // required_error: "This field is required",
     })
-    .min(250, "Description must be at least 250 characters long")
-    .trim(),
+    .optional(),
+  // .min(250, "Description must be at least 250 characters long")
+  // .trim(),
 });
 
 export const contactFormSchema = z.object({

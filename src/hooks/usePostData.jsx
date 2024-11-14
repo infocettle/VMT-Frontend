@@ -42,7 +42,7 @@ export const sendData = async ({ url, body, title, setLoading }) => {
   try {
     const { data } = await axios.post(url, body, { headers });
     console.log(data);
-    toast.success(`${title} successfully`, {
+    toast.success(`${title} successful`, {
       autoClose: 2000,
       theme: "light",
     });

@@ -55,7 +55,6 @@ export const handleDropboxAuth = async (): Promise<{
             dbx
               .getAccessTokenFromCode(REDIRECT_URI, code)
               .then((response: DropboxResponse<any>) => {
-                console.log(response);
                 const accessToken: string = response.result.access_token;
                 const refreshToken: string = response.result.refresh_token;
                 const expiresIn: number = response.result.expires_in;

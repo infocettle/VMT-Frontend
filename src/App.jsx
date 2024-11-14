@@ -69,7 +69,7 @@ import {
   Activation,
   Backup,
   Restore,
-  Recover,
+  // Recover,
   LockDomain,
   CancelDomain,
 } from "./pages/Maintenance";
@@ -144,7 +144,7 @@ import GeneralSettings from "./pages/settings/general-settings/GeneralSettings";
 
 const queryClient = new QueryClient();
 
-export const baseUrl = "https://vmt-server.onrender.com/api/v1/";
+export const baseUrl = "https://vmt-server.onrender.com/api/v1/"; //for local development: "http://localhost:3000/api/v1/";
 export const baseUrlTrial = "https://vnt-domie.onrender.com";
 
 const router = createBrowserRouter([
@@ -624,10 +624,10 @@ const router = createBrowserRouter([
             path: "restore",
             element: <Restore />,
           },
-          {
-            path: "recover",
-            element: <Recover />,
-          },
+          // {
+          //   path: "recover",
+          //   element: <Recover />,
+          // },
           {
             path: "lock_domain",
             element: <LockDomain />,

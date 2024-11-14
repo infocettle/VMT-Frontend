@@ -62,6 +62,8 @@ const Dropbox = () => {
       expiresIn: authData.expiresIn,
     };
 
+    console.log(body)
+
     await postMutation.mutateAsync(body);
     setIsOpen(false);
   }

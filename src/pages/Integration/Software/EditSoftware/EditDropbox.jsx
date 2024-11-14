@@ -26,8 +26,8 @@ const EditDropbox = ({editMutation, deleteMutation, title, open, setIsOpen}) => 
       };
 
       const dropboxDefaultValues = {
-        type: title.type,
-        description: title.description,
+        type: title?.type,
+        description: title?.description,
     }
 
       async function onSubmit(values) {

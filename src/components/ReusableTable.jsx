@@ -22,10 +22,13 @@ import { baseUrl } from "@/App";
 import usePatchData from "@/hooks/usePatchData";
 import { X } from "lucide-react";
 
-export function ReusableTable({ columns, data, tableName }) {
+export function ReusableTable({ columns, data, tableName, width, options }) {
   const [sorting, setSorting] = useState([]);
   const [tableValue, setTableValueData] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [showChargeDropdown, setShowChargeDropdown] = useState(false);
+  // const [showDiscountDropdown, setShowDiscountDropdown] = useState(false);
+  // const [showCommissionDropdown, setShowCommissionDropdown] = useState(false);
 
   const patchMutation = usePatchData({
     queryKey: [
@@ -85,6 +88,29 @@ export function ReusableTable({ columns, data, tableName }) {
         ? "pfc"
         : tableName === "pfa account"
         ? "pfaAcct"
+        /**
+         * Note: The tableName below are for Plan and Prices
+         */
+        : tableName === "Group"
+        ? "group"
+        : tableName === "Plan"
+        ? "plan"
+        : tableName === "Commission Types"
+        ? "commissionTypes"
+        : tableName === "Commission"
+        ? "commission"
+        : tableName === "Charges"
+        ? "charges"
+        : tableName === "Charges Types"
+        ? "chargesTypes"
+        : tableName === "Discounts"
+        ? "discounts"
+        : tableName === "Discount Types"
+        ? "discountTypes"
+        : tableName === "Differentiators"
+        ? "differentiators"
+        : tableName === "Service Listing"
+        ? "serviceListing"
         : "",
     ],
     url:
@@ -144,6 +170,29 @@ export function ReusableTable({ columns, data, tableName }) {
         ? `${baseUrl}public-registry-admin/financial-institutions/pension-fund/pfa/${tableValue._id}`
         : tableName === "pfa account"
         ? `${baseUrl}public-registry-admin/financial-institutions/pension-fund/pfa-account/${tableValue._id}`
+        /**
+         * Note: The URLs below are for Plan and Prices
+         */
+        : tableName === "Group"
+        ? `${baseUrl}plans-prices/plans/group/${tableValue._id}`
+        : tableName === "Plan"
+        ? `${baseUrl}plans-prices/plans/plan/${tableValue._id}`
+        : tableName === "Commission Types"
+        ? `${baseUrl}plans-prices/commissions/types/${tableValue._id}`
+        : tableName === "Commission"
+        ? `${baseUrl}plans-prices/commissions/commission/${tableValue._id}`
+        : tableName === "Charges"
+        ? `${baseUrl}plans-prices/charges/charge/${tableValue._id}`
+        : tableName === "Charges Types"
+        ? `${baseUrl}plans-prices/charges/types/${tableValue._id}`
+        : tableName === "Discount Types"
+        ? `${baseUrl}plans-prices/discount/types/${tableValue._id}`
+        : tableName === "Discounts"
+        ? `${baseUrl}plans-prices/discount/discounts/${tableValue._id}`
+        : tableName === "Differentiators"
+        ? `${baseUrl}plans-prices/differentiators/${tableValue._id}`
+        : tableName === "Service Listing"
+        ? `${baseUrl}plans-prices/service-listing/${tableValue._id}`
         : "",
 
     title:
@@ -203,6 +252,29 @@ export function ReusableTable({ columns, data, tableName }) {
         ? "PFC"
         : tableName === "pfa account"
         ? "pFA Acct"
+        /**
+         * Note: The title below are for Plan and Prices
+         */
+        : tableName === "Group"
+        ? "group"
+        : tableName === "Plan"
+        ? "plan"
+        : tableName === "Commission Types"
+        ? "commission types"
+        : tableName === "Commission"
+        ? "commission"
+        : tableName === "Charges"
+        ? "charges"
+        : tableName === "Charges Types"
+        ? "charges types"
+        : tableName === "Discount Types"
+        ? "discount types"
+        : tableName === "Discounts"
+        ? "discounts"
+        : tableName === "Differentiators"
+        ? "differentiators"
+        : tableName === "Service Listing"
+        ? "service listing"
         : "",
   });
 
@@ -256,7 +328,7 @@ export function ReusableTable({ columns, data, tableName }) {
                   return (
                     <TableHead
                       key={header.id}
-                      className="font-medium text-vmtgray"
+                      className="text-xs font-medium text-vmtgray px-6 py-1"
                     >
                       {header.isPlaceholder
                         ? null
@@ -280,6 +352,7 @@ export function ReusableTable({ columns, data, tableName }) {
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
+                      className= {`w-1/${columns.length} pl-4`}
                       onClick={
                         // console.log(cell.column.id)
                         cell.column.id != "actions"
@@ -339,7 +412,7 @@ export function ReusableTable({ columns, data, tableName }) {
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-50">
           <div className="">
-            <div className="bg-white px-6 py-3 rounded-lg w-full flex flex-col">
+            <div className={`bg-white px-6 py-3 rounded-lg flex flex-col ${width ? `${width}` : "w-full"}`}>
               <X
                 size={20}
                 className="self-end text-red-500"
@@ -1786,6 +1859,841 @@ export function ReusableTable({ columns, data, tableName }) {
                         />
                       </div>
                     </div>
+                  </div>
+                  <ApproveButtons handleCloseModal={handleCloseModal} />
+                </form>
+              )}
+
+              {/* The Listings below are for Plans and Prices */}
+
+              {tableName === "Group" && (
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 font-bold mb-2"
+                      htmlFor="groupName"
+                    >
+                      Group Name
+                    </label>
+                    <input
+                      className="uppercase shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="name"
+                      type="text"
+                      defaultValue={tableValue.groupName}
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 font-bold mb-2"
+                      htmlFor="description"
+                    >
+                      Description
+                    </label>
+                    <input
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="name"
+                      type="text"
+                      defaultValue={tableValue.description}
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 font-bold mb-2"
+                      htmlFor="planCondition"
+                    >
+                      Plan Conditions
+                    </label>
+                    <input
+                      className=" shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="name"
+                      type="text"
+                      defaultValue={tableValue.planCondition}
+                    />
+                  </div>
+                  <ApproveButtons handleCloseModal={handleCloseModal} />
+                </form>
+              )}
+
+              {tableName === "Commission Types" && (
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 font-bold mb-2"
+                      htmlFor="name"
+                    >
+                      Name
+                    </label>
+                    <input
+                      className="uppercase shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="name"
+                      type="text"
+                      defaultValue={tableValue.name}
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 font-bold mb-2"
+                      htmlFor="description"
+                    >
+                      Description
+                    </label>
+                    <textarea
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="description"
+                      type="text"
+                      defaultValue={tableValue.description}
+                    />
+                  </div>
+                  <ApproveButtons handleCloseModal={handleCloseModal} />
+                </form>
+              )}
+              {tableName === "Commission" && (
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 font-bold mb-2"
+                      htmlFor="name"
+                    >
+                      Name
+                    </label>
+                    <input
+                      className="uppercase shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="name"
+                      type="text"
+                      defaultValue={tableValue.name}
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 font-bold mb-2"
+                      htmlFor="type"
+                    >
+                      Type
+                    </label>
+                    <select
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="type"
+                      defaultValue={tableValue.type}
+                    >
+                      {options.commissionTypes.map((option, index) => (
+                        <option key={index} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="flex gap-2">
+                      <div className="w-1/12">
+                        <label
+                          className="block text-gray-700 font-bold mb-2"
+                          htmlFor="percent"
+                        >
+                          Percent
+                        </label>
+                        <select
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          id="percent"
+                          defaultValue={tableValue.percent}
+                        >
+                          <option value="percentages">%</option>
+                        </select>
+                      </div>
+                      <div className="w-11/12 mb-4">
+                        <label
+                          className="block text-gray-700 font-bold mb-2"
+                          htmlFor="rate"
+                        >
+                          Rate
+                        </label>
+                        <input
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          id="rate"
+                          type="number"
+                          placeholder="0"
+                          defaultValue={tableValue.rate}
+                        />
+                      </div>
+                    </div>
+                    <div className="mb-4">
+                      <label
+                        className="block text-gray-700 font-bold mb-2"
+                        htmlFor="description"
+                      >
+                        Description
+                      </label>
+                      <textarea
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="description"
+                        type="text"
+                        defaultValue={tableValue.description}
+                      />
+                  </div>
+                  <div class="mb-4 flex gap-4">
+                    <div class="w-1/2">
+                      <label class="block text-gray-700 font-bold mb-2" for="startTime">Start Time</label>
+                      <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="startTime"
+                        type="date"
+                        defaultValue={tableValue.startTime}
+                      />
+                    </div>
+                    <div class="w-1/2">
+                      <label class="block text-gray-700 font-bold mb-2" for="endTime">End Time</label>
+                      <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="endTime"
+                        type="date"
+                        defaultValue={tableValue.endTime}
+                      />
+                    </div>
+                  </div>
+                  <ApproveButtons handleCloseModal={handleCloseModal} />
+                </form>
+              )}
+              {tableName === "Charges" && (
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 font-bold mb-2"
+                      htmlFor="name"
+                    >
+                      Name
+                    </label>
+                    <input
+                      className="uppercase shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="name"
+                      type="text"
+                      defaultValue={tableValue.name}
+                    />
+                  </div>
+
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 font-bold mb-2"
+                      htmlFor="alias"
+                    >
+                      Alias
+                    </label>
+                    <input
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="alias"
+                      defaultValue={tableValue.alias}
+                    />
+                  </div>
+
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 font-bold mb-2"
+                      htmlFor="group"
+                    >
+                      Group
+                    </label>
+                    <select
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="group"
+                      defaultValue={tableValue.group}
+                    >
+                      {options.groupOptions.map((option, index) => (
+                        <option key={index} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 font-bold mb-2"
+                      htmlFor="type"
+                    >
+                      Type
+                    </label>
+                    <select
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="type"
+                      defaultValue={tableValue.type}
+                    >
+                      {options.chargeTypes.map((option, index) => (
+                        <option key={index} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="flex gap-4 mb-4">
+                    <div className="w-1/2">
+                      <label
+                        className="block text-gray-700 font-bold mb-2"
+                        htmlFor="basis"
+                      >
+                        Basis
+                      </label>
+                      <select
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="basis"
+                        defaultValue={tableValue.basis}
+                      >
+                        <option value="fixed amount">Fixed amount</option>
+                        <option value="percentages">Percentages</option>
+                      </select>
+                    </div>
+
+                    <div className="flex gap-2 w-1/2">
+                      <div className="w-1/5">
+                        <label
+                          className="block text-gray-700 font-bold mb-2"
+                          htmlFor="currency"
+                        >
+                          Currency
+                        </label>
+                        <select
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          id="currency"
+                          defaultValue={tableValue.currency}
+                        >
+                          <option value="NGN">₦</option>
+                          <option value="USD">$</option>
+                        </select>
+                      </div>
+                      <div className="w-4/5 mb-4">
+                        <label
+                          className="block text-gray-700 font-bold mb-2"
+                          htmlFor="rate"
+                        >
+                          Rate
+                        </label>
+                        <input
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          id="rate"
+                          type="number"
+                          placeholder="0"
+                          step="0.01"
+                          defaultValue={tableValue.rate}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <ApproveButtons handleCloseModal={handleCloseModal} />
+                </form>
+              )}
+              {tableName === "Plan" && (
+                <form onSubmit={handleSubmit}>
+                  <div className="max-h-[500px] overflow-y-auto p-4">
+                    {/* Group Selection */}
+                    <label className="block font-medium">Group</label>
+                    <select name="group" className="w-full p-2 border border-gray-300 rounded mb-4"
+                    defaultValue={tableValue.group}>
+                      {options.groupOptions.map((option, index) => (
+                        <option key={index} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+
+                    {/* Name Field */}
+                    <label className="block font-medium">Name</label>
+                    <input type="text" name="name" className="w-full p-2 border border-gray-300 rounded mb-4"
+                    defaultValue={tableValue.name} />
+
+                    <div className="flex gap-4">
+                      {/* Monthly Rate and Currency */}
+                      <div className="flex flex-col w-1/2">
+                      <label className="block font-medium mb-1">Rate/Month</label>
+                      <div className="flex gap-2 items-center">
+                      <select name="monthCurrency" className="p-2 border border-gray-300 rounded"
+                        defaultValue={tableValue.monthCurrency}>
+                          <option value="NGN">₦</option>
+                          <option value="USD">$</option>
+                        </select>
+                        <input type="number" name="rateMonth" placeholder="0" className="w-full p-2 border border-gray-300 rounded"
+                        defaultValue={tableValue.rateMonth} />
+                      </div>
+                      </div>
+
+                      {/* Bi-Annual Rate and Currency */}
+                      <div className="flex flex-col w-1/2">
+                       <label className="block font-medium mb-1">Rate/Half</label>
+                       <div className="flex items-center gap-2">
+                       <select name="halfCurrency" className="p-2 border border-gray-300 rounded"
+                        defaultValue={tableValue.halfCurrency}>
+                          <option value="NGN">₦</option>
+                          <option value="USD">$</option>
+                        </select>
+                        <input type="number" name="rateBiAnnual" placeholder="0" className="w-full p-2 border border-gray-300 rounded"
+                        defaultValue={tableValue.rateBiAnnual}/>
+                       </div>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4 mt-4">
+                      {/* Quarterly Rate and Currency */}
+                      <div className="flex flex-col w-1/2">
+                      <label className="block font-medium mb-1">Rate/Quarter</label>
+                        <div className="flex gap-2 items-center">
+                          <select name="quarterCurrency" className="p-2 border border-gray-300 rounded"
+                          defaultValue={tableValue.quarterCurrency}>
+                            <option value="NGN">₦</option>
+                            <option value="USD">$</option>
+                          </select>
+                          <input type="number" name="rateQuarter" placeholder="0" className="w-full p-2 border border-gray-300 rounded"
+                          defaultValue={tableValue.rateQuarter}/>
+                        </div>
+                      </div>
+
+                      {/* Annual Rate and Currency */}
+                      <div className="flex  flex-col w-1/2">
+                      <label className="block font-medium mb-1">Rate/Annum</label>
+                        <div className="flex gap-2 items-center">
+                          <select name="annumCurrency" className="p-2 border border-gray-300 rounded"
+                          defaultValue={tableValue.annumCurrency}>
+                            <option value="NGN">₦</option>
+                            <option value="USD">$</option>
+                          </select>
+                          <input type="number" name="rateAnnual" placeholder="0" className="w-full p-2 border border-gray-300 rounded"
+                          defaultValue={tableValue.rateAnnual}/>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-4">
+                       {/* Taxes */}
+                    <div className="flex gap-4">
+                      <label className="block font-medium">Taxes</label>
+                      <div className="flex items-center gap-4 mb-4">
+                        <label className="flex items-center">
+                          <input type="radio" name="taxes" value="yes" className="mr-2"
+                          defaultChecked={tableValue.taxes === "yes"}/>
+                          Yes
+                        </label>
+                        <label className="flex items-center">
+                          <input type="radio" name="taxes" value="no" className="mr-2"
+                          defaultChecked={tableValue.taxes === "no"}/>
+                          No
+                        </label>
+                      </div>
+                    </div>
+
+                    {/* Charges */}
+                    <div className="flex gap-4">
+                      <label className="block font-medium">Charges</label>
+                      <div className="flex items-center gap-4 mb-4">
+                        <label className="flex items-center">
+                          <input
+                            type="radio"
+                            name="charges"
+                            value="yes"
+                            className="mr-2"
+                            defaultChecked={tableValue.taxes === "yes"}
+                            // onChange={() => setShowChargeDropdown(true)}
+                          />
+                          Yes
+                        </label>
+                        <label className="flex items-center">
+                          <input
+                            type="radio"
+                            name="charges"
+                            value="no"
+                            className="mr-2"
+                            // onChange={() => setShowChargeDropdown(false)}
+                            defaultChecked={tableValue.charges === "no"}
+                          />
+                          No
+                        </label>
+                      </div>
+                    </div>
+                    {/* {showChargeDropdown && (
+                      <select name="chargesDropdown" className="w-full p-2 border border-gray-300 rounded mb-4"
+                      defaultValue={tableValue.chargesDropdown}>
+                        {options.chargeOptions.map((option, index) => (
+                          <option key={index} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    )} */}
+
+                    {/* Discounts */}
+                    <div className="flex gap-4">
+                      <label className="block font-medium">Discounts</label>
+                      <div className="flex items-center gap-4 mb-4">
+                        <label className="flex items-center">
+                          <input
+                            type="radio"
+                            name="discounts"
+                            value="yes"
+                            className="mr-2"
+                            defaultChecked={tableValue.taxes === "yes"}
+                            // onChange={() => setShowDiscountDropdown(true)}
+                          />
+                          Yes
+                        </label>
+                        <label className="flex items-center">
+                          <input
+                            type="radio"
+                            name="discounts"
+                            value="no"
+                            className="mr-2"
+                            // onChange={() => setShowDiscountDropdown(false)}
+                            defaultChecked={tableValue.discounts === "no"}
+                          />
+                          No
+                        </label>
+                      </div>
+                    </div>
+                    {/* {showDiscountDropdown && (
+                      <select name="discountsDropdown" className="w-full p-2 border border-gray-300 rounded mb-4"
+                      defaultValue={tableValue.discountsDropdown}>
+                        {options.discountOptions.map((option, index) => (
+                          <option key={index} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    )} */}
+
+                    {/* Commissions */}
+                    <div className="flex gap-4">
+                      <label className="block font-medium">Commissions</label>
+                      <div className="flex items-center gap-4 mb-4">
+                        <label className="flex items-center">
+                          <input
+                            type="radio"
+                            name="commissions"
+                            value="yes"
+                            className="mr-2"
+                            defaultChecked={tableValue.taxes === "yes"}
+                            // onChange={() => setShowCommissionDropdown(true)}
+                          />
+                          Yes
+                        </label>
+                        <label className="flex items-center">
+                          <input
+                            type="radio"
+                            name="commissions"
+                            value="no"
+                            className="mr-2"
+                            // onChange={() => setShowCommissionDropdown(false)}
+                            defaultChecked={tableValue.commissions === "no"}
+                          />
+                          No
+                        </label>
+                      </div>
+                    </div>
+                    {/* {showCommissionDropdown && (
+                      <select
+                      name="commissionsDropdown"
+                      className="w-full p-2 border border-gray-300 rounded mb-4"
+                      defaultValue={tableValue.commissionsDropdown}
+                      >
+                        {options.commissionOptions.map((option, index) => (
+                          <option key={index} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    )} */}
+                    </div>
+                  </div>
+                  <ApproveButtons handleCloseModal={handleCloseModal} />
+                </form>
+              )}
+              {tableName === "Charges Types" && (
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 font-bold mb-2"
+                      htmlFor="name"
+                    >
+                      Name
+                    </label>
+                    <input
+                      className="uppercase shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="name"
+                      type="text"
+                      defaultValue={tableValue.name}
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 font-bold mb-2"
+                      htmlFor="description"
+                    >
+                      Description
+                    </label>
+                    <textarea
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="description"
+                      type="text"
+                      defaultValue={tableValue.description}
+                    />
+                  </div>
+                  <ApproveButtons handleCloseModal={handleCloseModal} />
+                </form>
+              )}
+              {tableName === "Discount Types" && (
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 font-bold mb-2"
+                      htmlFor="name"
+                    >
+                      Name
+                    </label>
+                    <input
+                      className="uppercase shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="name"
+                      type="text"
+                      defaultValue={tableValue.name}
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 font-bold mb-2"
+                      htmlFor="description"
+                    >
+                      Description
+                    </label>
+                    <textarea
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="description"
+                      type="text"
+                      defaultValue={tableValue.description}
+                    />
+                  </div>
+                  <ApproveButtons handleCloseModal={handleCloseModal} />
+                </form>
+              )}
+              {tableName === "Discounts" && (
+                <form onSubmit={handleSubmit}>
+                  <div class="mb-4">
+                    <label class="block text-gray-700 font-bold mb-2" for="name">Name</label>
+                    <input
+                      class="uppercase shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="name"
+                      type="text"
+                      defaultValue={tableValue.name}
+                    />
+                  </div>
+
+                  <div class="mb-4">
+                    <label class="block text-gray-700 font-bold mb-2" for="alias">Alias</label>
+                    <input
+                      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="alias"
+                      placeholder="Alias"
+                      defaultValue={tableValue.alias}
+                    />
+                  </div>
+
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 font-bold mb-2"
+                      htmlFor="type"
+                    >
+                      Type
+                    </label>
+                    <select
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="type"
+                      defaultValue={tableValue.type}
+                    >
+                      {options.discountTypes.map((option, index) => (
+                        <option key={index} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div class="mb-4 flex gap-4">
+                    <div class="w-1/2">
+                      <label class="block text-gray-700 font-bold mb-2" for="basis">Basis</label>
+                      <select
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="basis"
+                        defaultValue={tableValue.basis}
+                      >
+                        <option value="fixed amount">Fixed amount</option>
+                        <option value="percentages">Percentages</option>
+                      </select>
+                    </div>
+                
+                    <div class="mb-4 flex gap-2 w-1/2">
+                      <div class="w-1/5">
+                        <label class="block text-gray-700 font-bold mb-2" for="currency">Currency</label>
+                        <select
+                          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          id="currency"
+                          defaultValue={tableValue.currency}
+                        >
+                          <option value="NGN">₦</option>
+                          <option value="USD">$</option>
+                        </select>
+                      </div>
+                      <div class="w-4/5">
+                        <label class="block text-gray-700 font-bold mb-2" for="rate">Rate</label>
+                        <input
+                          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          id="rate"
+                          type="number"
+                          defaultValue={tableValue.rate}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-4 flex gap-4">
+                    <div class="w-1/2">
+                      <label class="block text-gray-700 font-bold mb-2" for="startTime">Start Time</label>
+                      <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="startTime"
+                        type="date"
+                        defaultValue={tableValue.startTime}
+                      />
+                    </div>
+                    <div class="w-1/2">
+                      <label class="block text-gray-700 font-bold mb-2" for="endTime">End Time</label>
+                      <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="endTime"
+                        type="date"
+                        defaultValue={tableValue.endTime}
+                      />
+                    </div>
+                  </div>
+                  <ApproveButtons handleCloseModal={handleCloseModal} />
+                </form>
+              )}
+              {tableName === "Differentiators" && (
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 font-bold mb-2"
+                      htmlFor="name"
+                    >
+                      Name
+                    </label>
+                    <input
+                      className="uppercase shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="name"
+                      type="text"
+                      defaultValue={tableValue.name}
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 font-bold mb-2"
+                      htmlFor="group"
+                    >
+                      Group
+                    </label>
+                    <select
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="group"
+                        defaultValue={tableValue.group}
+                      >
+                        {options.groupOptions.map((option, index) => (
+                          <option key={index} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="mb-4 w-full">
+                      <label
+                        className="block text-gray-700 font-bold mb-2"
+                        htmlFor="maxProcessUsers"
+                      >
+                        Max Process Users
+                      </label>
+                      <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="maxProcessUsers"
+                        type="number"
+                        defaultValue={tableValue.maxProcessUsers}
+                      />
+                    </div>
+                    <div className="mb-4 w-full">
+                      <label
+                        className="block text-gray-700 font-bold mb-2"
+                        htmlFor="maxSelfServiceUsers"
+                      >
+                        Max Self-Service Users
+                      </label>
+                      <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="maxSelfServiceUsers"
+                        type="number"
+                        defaultValue={tableValue.maxSelfServiceUsers}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="mb-4 w-full">
+                      <label
+                        className="block text-gray-700 font-bold mb-2"
+                        htmlFor="storageMaxAnalytics"
+                      >
+                        Storage Max Analytics
+                      </label>
+                      <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="storageMaxAnalytics"
+                        type="number"
+                        defaultValue={tableValue.storageMaxAnalytics}
+                      />
+                    </div>
+                    <div className="mb-4 w-full">
+                      <label
+                        className="block text-gray-700 font-bold mb-2"
+                        htmlFor="storageGB"
+                      >
+                        Storage GB
+                      </label>
+                      <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="storageGB"
+                        type="number"
+                        defaultValue={tableValue.storageGB}
+                      />
+                    </div>
+                  </div>
+                  <ApproveButtons handleCloseModal={handleCloseModal} />
+                </form>
+              )}
+              {tableName === "Service Listing" && (
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 font-bold mb-2"
+                      htmlFor="name"
+                    >
+                      Name
+                    </label>
+                    <input
+                      className="uppercase shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="name"
+                      type="text"
+                      defaultValue={tableValue.name}
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 font-bold mb-2"
+                      htmlFor="description"
+                    >
+                      Description
+                    </label>
+                    <textarea
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="description"
+                      type="text"
+                      defaultValue={tableValue.description}
+                    />
                   </div>
                   <ApproveButtons handleCloseModal={handleCloseModal} />
                 </form>

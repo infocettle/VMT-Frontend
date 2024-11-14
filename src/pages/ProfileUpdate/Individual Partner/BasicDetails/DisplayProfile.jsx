@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 const DisplayProfile = ({ setUpdateNow }) => {
   const userData = useSelector((state) => state.auth.user);
 
-  const indiPatBasicUrl = `${baseUrl}v1/partner/individual/profile/basic-details/${userData._id}`;
+  const indiPatBasicUrl = `${baseUrl}partner/individual/profile/basic-details/${userData._id}`;
 
   const { data, isFetching } = useFetchData(
     indiPatBasicUrl,

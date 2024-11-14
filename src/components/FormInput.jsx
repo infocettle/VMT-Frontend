@@ -38,6 +38,7 @@ export const FormInput = ({
                 className="access-control-modal-input mb-2 capitalize"
                 {...field}
                 type={type}
+                {...(type === "number" ? { step: "0.01" } : {})}
                 placeholder={`Enter ${label}`}
                 disabled={disabled}
               />

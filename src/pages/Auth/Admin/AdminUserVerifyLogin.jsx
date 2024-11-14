@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { sendData } from "@/hooks/usePostData";
 import { setTokenSubscriber, setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
 function AdminUserVerifyLogin({ setFormType,userEmail }) {
-  const url = `${baseUrl}v1/auth/verify-login`;
+  const url = `${baseUrl}auth/verify-login`;
   const [otp, setOTP] = useState("");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch()

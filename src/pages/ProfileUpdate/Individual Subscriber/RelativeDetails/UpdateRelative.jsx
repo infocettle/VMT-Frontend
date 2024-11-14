@@ -22,7 +22,7 @@ const UpdateRelative = ({ setUpdateNow }) => {
 
   const userData = useSelector((state) => state.auth.user);
 
-  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/relative-information/${userData._id}`;
+  const indiSubBasicUrl = `${baseUrl}subscriber/individual/profile/relative-information/${userData._id}`;
 
   const { data } = useFetchData(
     indiSubBasicUrl,

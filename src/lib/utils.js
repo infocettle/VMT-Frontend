@@ -7,13 +7,18 @@ export function cn(...inputs) {
 
 
 export function formatBytes(bytes) {
+  const KB = 1024;
   const MB = 1024 * 1024;
   const GB = 1024 * 1024 * 1024;
 
   if (bytes >= GB) {
     return (bytes / GB).toFixed(1) + ' GB';
-  } else {
+  } else if (bytes >= MB) {
     return (bytes / MB).toFixed(1) + ' MB';
+  } else if (bytes >= KB) {
+    return (bytes / KB).toFixed(1) + ' KB';
+  } else {
+    return bytes + ' B';
   }
 };
 

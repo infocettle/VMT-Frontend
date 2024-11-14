@@ -7,7 +7,7 @@ import { baseUrl } from "@/App";
 import { sendData } from "@/hooks/usePostData";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
+import { setSubscriber, setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
 import { Loader } from 'lucide-react';
 import axios from "axios";
 function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
@@ -162,6 +162,7 @@ function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
         setLoading: setLoading 
       });
       dispatch(setUserSubscriber(returnedData.newUser));
+      dispatch(setSubscriber(returnedData.newIndividualSubscriber));
       setFormType("individual-create-password");
     } catch (error) {
       console.error("There was an error submitting the form!", error);

@@ -1251,3 +1251,343 @@ export const serviceStandardFormSchema = z.object({
     .min(2, "Name must be minimum 2 characters")
     .trim(),
 });
+
+export const planSchema = z.object({
+  group: z
+    .string({
+      invalid_type_error: "Group must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "Group cannot be empty")
+    .trim(),
+  name: z
+    .string({
+      invalid_type_error: "Name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "Name cannot be empty")
+    .max(100, "Name must be maximum 100 characters")
+    .trim(),
+  monthCurrency: z
+    .string({
+      invalid_type_error: "Currency must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "Currency must be selected"),
+  rateMonth: z.string({
+    invalid_type_error: "Rate/month must be a number",
+    required_error: "This field is required",
+  }),
+  halfCurrency: z
+    .string({
+      invalid_type_error: "Currency must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "Currency must be selected"),
+  rateBiAnnual: z.string({
+    invalid_type_error: "Rate/half must be a number",
+    required_error: "This field is required",
+  }),
+  quarterCurrency: z
+    .string({
+      invalid_type_error: "Currency must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "Currency must be selected"),
+  rateQuarter: z.string({
+    invalid_type_error: "Rate/quarter must be a number",
+    required_error: "This field is required",
+  }),
+  annumCurrency: z
+    .string({
+      invalid_type_error: "Currency must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "Currency must be selected"),
+  rateAnnual: z.string({
+    invalid_type_error: "Rate/annum must be a number",
+    required_error: "This field is required",
+  }),
+  taxes: z
+    .enum(["yes", "no"], {
+      required_error: "Please specify if taxes are included",
+    })
+    .default("no"),
+  charges: z
+    .enum(["yes", "no"], {
+      required_error: "Please specify if charges are included",
+    })
+    .default("no"),
+  // chargesDropdown: z
+  //   .string()
+  //   .optional()
+  //   .nullable()
+  //   .refine((data) => {
+  //     if (data.charges === "yes" && !value) {
+  //       return false;
+  //     }
+  //     return true;
+  //   }, "Please select a charge"),
+  discounts: z
+    .enum(["yes", "no"], {
+      required_error: "Please specify if discounts are included",
+    })
+    .default("no"),
+  // discountsDropdown: z
+  //   .string()
+  //   .optional()
+  //   .nullable()
+  //   .refine((data) => {
+  //     if (data.discounts === "yes" && !value) {
+  //       return false;
+  //     }
+  //     return true;
+  //   }, "Please select a discount"),
+  commissions: z
+    .enum(["yes", "no"], {
+      required_error: "Please specify if commissions are included",
+    })
+    .default("no"),
+  // commissionsDropdown: z
+  //   .string()
+  //   .optional()
+  //   .nullable()
+  //   .refine((data) => {
+  //     if (data.commissions === "yes" && !value) {
+  //       return false;
+  //     }
+  //     return true;
+  //   }, "Please select a commission"),
+});
+
+export const serviceListingSchema = z.object({
+  name: z
+    .string({
+      invalid_type_error: "name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "Name cannot be empty")
+    .max(100, "Name must be maximum 100 characters")
+    .trim(),
+  description: z
+    .string({
+      invalid_type_error: "Description must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "Description cannot be empty")
+    .max(3000, "Description must be maximum 3000 character")
+    .trim(),
+});
+
+export const commissionSchema = z.object({
+  name: z
+    .string({
+      invalid_type_error: "name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "Name cannot be empty")
+    .max(100, "Name must be maximum 100 characters")
+    .trim(),
+  type: z
+    .string({
+      invalid_type_error: "Type must be a string",
+      required_error: "Type is required",
+    })
+    .min(1, "Type must be selected"),
+  percent: z.enum(["percentages"], {
+    invalid_type_error: "Basis must be 'percentages'",
+  }),
+  rate: z.string({
+    invalid_type_error: "Rate must be a number",
+    required_error: "Rate is required",
+  }),
+  description: z
+    .string({
+      invalid_type_error: "Description must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "Description cannot be empty")
+    .max(3000, "Description must be maximum 3000 character")
+    .trim(),
+});
+
+export const commissionTypesSchema = z.object({
+  name: z
+    .string({
+      invalid_type_error: "name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "Name cannot be empty")
+    .max(100, "Name must be maximum 100 characters")
+    .trim(),
+  description: z
+    .string({
+      invalid_type_error: "Description must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "Description cannot be empty")
+    .max(3000, "Description must be maximum 3000 character")
+    .trim(),
+});
+
+export const chargesSchema = z.object({
+  name: z
+    .string({
+      invalid_type_error: "Name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "Name cannot be empty")
+    .max(100, "Name must be a maximum of 100 characters")
+    .trim(),
+  alias: z
+    .string({
+      invalid_type_error: "Alias must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "Alias cannot be empty")
+    .max(100, "Alias must be a maximum of 100 characters")
+    .trim(),
+  type: z
+    .string({
+      invalid_type_error: "Group must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "Group cannot be empty"),
+  basis: z.enum(["fixed amount", "percentages"], {
+    invalid_type_error: "Basis must be either 'fixed amount' or 'percentages'",
+  }),
+  currency: z.enum(["NGN", "USD", ""], {
+    invalid_type_error: "Currency must be either 'NGN' or 'USD'",
+  }),
+  rate: z
+    .string({
+      invalid_type_error: "Rate must be a number",
+      required_error: "This field is required",
+    })
+    .min(0, "Rate must be a positive number"),
+});
+
+export const chargesTypesSchema = z.object({
+  name: z
+    .string({
+      invalid_type_error: "name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "Name cannot be empty")
+    .max(100, "Name must be maximum 100 characters")
+    .trim(),
+  description: z
+    .string({
+      invalid_type_error: "Description must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "Description cannot be empty")
+    .max(3000, "Description must be maximum 3000 character")
+    .trim(),
+});
+
+export const discountTypesSchema = z.object({
+  name: z
+    .string({
+      invalid_type_error: "name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "Name cannot be empty")
+    .max(100, "Name must be maximum 100 characters")
+    .trim(),
+  description: z
+    .string({
+      invalid_type_error: "Description must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "Description cannot be empty")
+    .max(3000, "Description must be maximum 3000 character")
+    .trim(),
+});
+
+export const discountsSchema = z.object({
+  name: z
+    .string({
+      invalid_type_error: "Name must be a string",
+      required_error: "Name is required",
+    })
+    .min(1, "Name cannot be empty")
+    .max(100, "Name must be a maximum of 100 characters")
+    .trim(),
+
+  alias: z
+    .string({
+      invalid_type_error: "Alias must be a string",
+      required_error: "Alias is required",
+    })
+    .min(1, "Alias cannot be empty")
+    .max(100, "Alias must be a maximum of 100 characters")
+    .trim(),
+
+  type: z
+    .string({
+      invalid_type_error: "Type must be a string",
+      required_error: "Type is required",
+    })
+    .min(1, "Type must be selected"),
+
+  basis: z.enum(["fixed amount", "percentages"], {
+    invalid_type_error: "Basis must be either 'Fixed amount' or 'Percentages'",
+    required_error: "Basis is required",
+  }),
+
+  currency: z.enum(["NGN", "USD", ""], {
+    invalid_type_error: "Currency must be either '₦' or '$'",
+    required_error: "Currency is required",
+  }),
+
+  rate: z.string({
+    invalid_type_error: "Rate must be a number",
+    required_error: "Rate is required",
+  }),
+
+  startTime: z
+    .string({
+      invalid_type_error: "Start time must be a date string",
+      required_error: "Start time is required",
+    })
+    .refine((value) => !isNaN(Date.parse(value)), {
+      message: "Start time must be a valid date",
+    }),
+
+  endTime: z
+    .string({
+      invalid_type_error: "End time must be a date string",
+      required_error: "End time is required",
+    })
+    .refine((value) => !isNaN(Date.parse(value)), {
+      message: "End time must be a valid date",
+    }),
+});
+
+export const groupSchema = z.object({
+  groupName: z
+    .string({
+      invalid_type_error: "Group name must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "Group name cannot be empty")
+    .max(100, "Group name must be a maximum of 100 characters")
+    .trim(),
+  description: z
+    .string({
+      invalid_type_error: "Description must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "Description cannot be empty")
+    .max(3000, "Description must be a maximum of 3000 characters")
+    .trim(),
+  planCondition: z
+    .string({
+      invalid_type_error: "Plan condition must be a string",
+      required_error: "This field is required",
+    })
+    .min(1, "Plan condition cannot be empty")
+    .max(3000, "Plan condition must be a maximum of 3000 characters")
+    .trim(),
+});

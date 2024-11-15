@@ -12,6 +12,7 @@ import FixedAssets from "./account-settings/fixed-assets/FixedAssets";
 import Inventory from "./account-settings/inventory/Inventory";
 import Expense from "./account-settings/expenses/Expenses";
 import GeneralLedgers from "./account-settings/general-ledgers/GeneralLedger";
+import SubsidiaryLedger from "./account-settings/subsidiary-ledger/SubsidiaryLedger";
 
 const SettingsRoute = () => {
   const routes = useRoutes([
@@ -28,6 +29,7 @@ const SettingsRoute = () => {
     { path: "inventory", element: <Inventory /> },
     { path: "expense", element: <Expense /> },
     { path: "general-ledgers", element: <GeneralLedgers /> },
+    { path: "subsidiary-ledgers", element: <SubsidiaryLedger /> },
   ]);
 
   return routes || <Outlet />;

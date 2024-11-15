@@ -7,7 +7,7 @@ import { baseUrl } from "@/utils/https";
 import DeleteButton from "@/components/DeleteButton";
 import { segmentRequiredForm } from "../GeneralLedger";
 
-export default function GeneralLedgersCategoryItem({ item }) {
+export default function GeneralLedgersCategoryItem({ item, type }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const url = baseUrl;
@@ -19,14 +19,18 @@ export default function GeneralLedgersCategoryItem({ item }) {
 
   const updateLedger = usePatchData({
     queryKey: "update general-ledger",
-    url: `${url}/settings/account/general-ledger/${item?.id}/update`,
-    title: "General-ledger",
+    url: `${url}/settings/account/${type ? type : "general"}-ledger/${
+      item?.id
+    }/update`,
+    title: `${type ? type : "general"}-ledger`,
   });
 
   const deleteSegment = useDeleteData({
     queryKey: "delete general-ledger",
-    url: `${url}/settings/account/general-ledger/${item?.id}`,
-    title: "General-ledger",
+    url: `${url}/settings/account/${type ? type : "general"}-ledger/${
+      item?.id
+    }`,
+    title: `${type ? type : "general"}-ledger`,
   });
 
   function deleteHandler() {
@@ -68,7 +72,7 @@ export default function GeneralLedgersCategoryItem({ item }) {
           open={isOpen}
           onOpenChange={setIsOpen}
           onClick={() => setIsOpen(true)}
-          dialogTitle={"General Ledger"}
+          dialogTitle={type ? "Subsidiary Ledger" : "General Ledger"}
           defaultValues={defaultValues}
           validationSchema={segmentRequiredForm}
           thirdButton="Return"

@@ -15,7 +15,7 @@ const groupOptions = [
   { name: "liability", value: "liability" },
 ];
 
-export default function GeneralLedgersClassItem({ item }) {
+export default function GeneralLedgersClassItem({ item, type }) {
   const [isOpen, setIsOpen] = useState(false);
   const [group, setGroup] = useState("");
 
@@ -31,14 +31,18 @@ export default function GeneralLedgersClassItem({ item }) {
 
   const updateLedger = usePatchData({
     queryKey: "update general-ledger",
-    url: `${url}/settings/account/general-ledger/${item?.id}/update`,
-    title: "General-ledger",
+    url: `${url}/settings/account/${type ? type : "general"}-ledger/${
+      item?.id
+    }/update`,
+    title: `${type ? type : "general"}-ledger`,
   });
 
   const deleteSegment = useDeleteData({
     queryKey: "delete general-ledger",
-    url: `${url}/settings/account/general-ledger/${item?.id}`,
-    title: "General-ledger",
+    url: `${url}/settings/account/${type ? type : "general"}-ledger/${
+      item?.id
+    }`,
+    title: `${type ? type : "general"}-ledger`,
   });
 
   function deleteHandler() {
@@ -80,7 +84,7 @@ export default function GeneralLedgersClassItem({ item }) {
           open={isOpen}
           onOpenChange={setIsOpen}
           onClick={() => setIsOpen(true)}
-          dialogTitle={"General Ledger"}
+          dialogTitle={type ? "Subsidiary Ledger" : "General Ledger"}
           defaultValues={defaultValues}
           validationSchema={segmentRequiredForm}
           thirdButton="Return"

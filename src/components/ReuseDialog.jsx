@@ -20,7 +20,12 @@ const ReuseDialog = ({
   onSubmit,
   long,
   children,
-  buttonText="Create new"
+  buttonText = "Create new",
+  thirdButton,
+  secondButton,
+  onThirdButtonClick,
+  firstButton,
+  onFirstButtonClick,
 }) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -38,9 +43,11 @@ const ReuseDialog = ({
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="mx-auto w-[95%] max-w-none  lg:w-[50%]">
+      <DialogContent className="mx-auto w-[95%] max-w-none max-h-[95vh] overflow-scroll  lg:w-[50%]">
         <DialogHeader>
-          <DialogTitle className='access-control-modal-header'>{dialogTitle}</DialogTitle>
+          <DialogTitle className="access-control-modal-header">
+            {dialogTitle}
+          </DialogTitle>
         </DialogHeader>
         <hr className="border border-gray-100 w-full h-[1px]" />
         <GenericForm
@@ -48,9 +55,11 @@ const ReuseDialog = ({
           validationSchema={validationSchema}
           onSubmit={onSubmit}
           long={long}
-          firstButton={"Cancel"}
-          secondButton={"Submit"}
-        >
+          firstButton={firstButton || "Cancel"}
+          secondButton={secondButton || "Submit"}
+          thirdButton={thirdButton}
+          onFirstButtonClick={onFirstButtonClick}
+          onThirdButtonClick={onThirdButtonClick}>
           {children}
         </GenericForm>
       </DialogContent>

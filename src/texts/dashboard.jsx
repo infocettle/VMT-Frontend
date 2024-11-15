@@ -1,12 +1,10 @@
-
-
 import Dashboard from "@/pages/Dashboard/Dashboard";
 import { PublicReg } from "@/pages/PublicRegistry";
 import { Maintenance } from "@/pages/Maintenance";
 import { Integration } from "@/pages/Integration";
 import { ServiceItems } from "@/pages/Services";
 import AccessControl from "@/pages/AccessControl/AccessControl";
-import PlansPrices from "@/pages/Plans-Prices/PlansPrices";
+import SettingsComponent from "@/pages/settings/Settings";
 
 export const DashboardLinks = [
   {
@@ -15,9 +13,9 @@ export const DashboardLinks = [
     component: <Dashboard />,
   },
   {
-    id: 3,
-    name: "Plans & Prices",
-    component: <PlansPrices/>
+    id: 2,
+    name: "Settings",
+    component: <SettingsComponent />,
   },
   {
     id: 4,
@@ -44,10 +42,10 @@ export const DashboardLinks = [
     name: "Integration",
     component: <Integration />,
   },
+
   // {
   //   id: 6,
   //   name: "Services",
   //   component: <PublicReg />,
   // },
-  
 ];

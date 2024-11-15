@@ -12,7 +12,10 @@ export const GenericForm = ({
   long,
   firstButton,
   secondButton,
-  className
+  className,
+  thirdButton,
+  onThirdButtonClick,
+  onFirstButtonClick,
 }) => {
   const methods = useForm({
     defaultValues,
@@ -27,23 +30,35 @@ export const GenericForm = ({
   return (
     <ScrollArea className={cn(`${long ? "h-[90vh]" : "h-auto"}`)}>
       <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(handleSubmit)}>
+        <form
+          className="flex items-start flex-col gap-4"
+          onSubmit={methods.handleSubmit(handleSubmit)}>
           {children}
           <div className="w-full flex justify-between items-center my-4">
             <div
               className="w-auto border border-gray-300 rounded-md h-10 flex items-center p-2 cursor-pointer"
-              onClick={() => methods.reset()}
-            >
-              
+              onClick={() => {
+                if (onFirstButtonClick) return onFirstButtonClick();
+                methods.reset();
+              }}>
               {firstButton}
             </div>
-            <Button
-              className={cn("bg-vmtblue w-auto", className)}
-              variant="default"
-              type="submit"
-            >
-              {secondButton}
-            </Button>
+            <div className="flex items-center gap-4">
+              {thirdButton && (
+                <button
+                  type="button"
+                  onClick={onThirdButtonClick}
+                  className="w-[81px] h-[40px] rounded-[4px] flex items-center justify-center border border-[#7CBAF8] bg-[#DDEDFD] font-bold text-[14px] leading-[16px] text-[#0B6ED0]">
+                  {thirdButton}
+                </button>
+              )}
+              <Button
+                className={cn("bg-vmtblue w-auto", className)}
+                variant="default"
+                type="submit">
+                {secondButton}
+              </Button>
+            </div>
           </div>
         </form>
       </FormProvider>

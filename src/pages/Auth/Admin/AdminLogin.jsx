@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 
 import { useDispatch } from "react-redux";
 function AdminLogin({ setFormType }) {
-  const url = `http://localhost:3000/api/v1/admin/auth/login`;
+  const url = `https://vmt-server.onrender.com/api/v1/admin/auth/login`;
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");

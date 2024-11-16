@@ -11,6 +11,7 @@ import UpdateSubscription from "./UpdateSubscription";
 import { MoveLeft } from "lucide-react";
 import useFetchData from "@/hooks/useFetchData";
 import usePatchData from "@/hooks/usePatchData";
+import { baseUrl } from "@/utils/https";
 
 export default function GeneralSettings() {
   const [isEdit, setIsEdit] = useState(false);
@@ -35,7 +36,7 @@ export default function GeneralSettings() {
 
   // const { loading, data } = useGeneralSettings();
 
-  const url = "http://localhost:3000/api/v1";
+  const url = baseUrl;
 
   const { data, isPending, isError } = useFetchData(
     `${url}/settings/general`,

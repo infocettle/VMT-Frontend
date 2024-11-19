@@ -13,7 +13,7 @@ function UserCreatePassword({userType}) {
   const profileData = useSelector((state) => state.auth);
   console.log(profileData)
   const newUserId = profileData?.user?._id;
-  const url = `${baseUrl}v1/${userType}/individual/auth/set-password/${newUserId}`;
+  const url = `${baseUrl}${userType}/individual/auth/set-password/${newUserId}`;
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);

@@ -31,7 +31,7 @@ function DashboardDivTwo() {
       {pageData.map((modules) => (
         <div
           key={modules.id}
-          className="flex items-center bg-blue-600 justify-between w-full">
+          className="flex items-center justify-between w-full">
           {modules.children && modules.children.length > 0 ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

@@ -942,13 +942,6 @@ export const subscriberIDSchema = z.object({
     .trim(),
 });
 
-export const backupSchema = z.object({
-  backupID: z.string({
-    invalid_type_error: "backupID must be a string",
-    required_error: "This field is required",
-  }),
-});
-
 export const dropboxSchema = z.object({
   type: z
     .string({

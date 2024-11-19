@@ -16,7 +16,7 @@ const DisplayReferee = ({
   };
 
   const userData = useSelector((state) => state.auth.user);
-  const indiSubBasicUrl = `${baseUrl}subscriber/individual/profile/referee-information/${userData._id}`;
+  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/referee-information/${userData._id}`;
 
   const { data, isFetching } = useFetchData(
     indiSubBasicUrl,
@@ -93,8 +93,7 @@ const DisplayReferee = ({
         <h3 className="text-black text-sm leading-relaxed">Referee Detail</h3>
         <Button
           onClick={() => setUpdateNow(true)}
-          className="bg-blue-200 border border-blue-500 text-blue-900 capitalize w-20 rounded-lg h-10 flex items-center justify-center"
-        >
+          className="bg-blue-200 border border-blue-500 text-blue-900 capitalize w-20 rounded-lg h-10 flex items-center justify-center">
           <h3>Update</h3>
         </Button>
       </div>
@@ -119,8 +118,7 @@ const DisplayReferee = ({
             {REFEREE_DETAILS.map((detail) => (
               <div
                 key={detail.id}
-                className="w-auto flex items-center space-x-4"
-              >
+                className="w-auto flex items-center space-x-4">
                 <h3 className="w-40 text-black text-sm">{detail.name}</h3>
                 <h3 className="text-black text-sm">:</h3>
                 <h3 className="self-start">
@@ -152,8 +150,7 @@ const DisplayReferee = ({
             {REFEREE_DETAILS_2.map((detail) => (
               <div
                 key={detail.id}
-                className="w-auto flex items-center space-x-4"
-              >
+                className="w-auto flex items-center space-x-4">
                 <h3 className="w-40 text-black text-sm">{detail.name}</h3>
                 <h3 className="text-black text-sm">:</h3>
                 <h3 className="self-start">

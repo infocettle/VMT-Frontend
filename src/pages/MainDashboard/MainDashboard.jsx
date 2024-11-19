@@ -113,7 +113,7 @@ const MainDashboard = () => {
                 className="mr-1 lg:mr-3"
               />
               <h2 className="main-dashbaord-header">
-                {pageHeader?.toUpperCase()}
+                {pageHeader.toUpperCase()}
               </h2>
             </div>
             <div className="w-auto flex items-center space-x-2 large_screen">
@@ -136,8 +136,8 @@ const MainDashboard = () => {
                 onClick={handleProfileOpen}>
                 <img src={Avatar} alt="image" />
                 <p style={{ fontSize: "14px", color: "#666687" }}>
-                  {userData?.surname?.toUpperCase()}{" "}
-                  {userData?.firstName?.toUpperCase()}{" "}
+                  {userData?.surname.toUpperCase()}{" "}
+                  {userData?.firstName.toUpperCase()}{" "}
                 </p>
               </div>
               <div
@@ -156,8 +156,8 @@ const MainDashboard = () => {
                         textOverflow: "ellipsis",
                       }}>
                       <div className="profile-info-name">
-                        {userData?.surname?.toUpperCase()}{" "}
-                        {userData?.firstName?.toUpperCase()}
+                        {userData?.surname.toUpperCase()}{" "}
+                        {userData?.firstName.toUpperCase()}
                       </div>
                       <div className="profile-info-email flex  flex-wrap ">
                         {userData?.email}

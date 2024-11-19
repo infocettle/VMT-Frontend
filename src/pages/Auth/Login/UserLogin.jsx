@@ -4,9 +4,13 @@ import React, { useEffect, useState } from "react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { Loader } from 'lucide-react';
-import { setSubscriber, setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
-function UserLogin({ setFormType ,setUserEmail}) {
+import { Loader } from "lucide-react";
+import {
+  setSubscriber,
+  setUserSubscriber,
+} from "@/pages/Redux/authSubscriber.slice";
+
+function UserLogin({ setFormType, setUserEmail }) {
   const url = `${baseUrl}auth/login`;
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
@@ -49,17 +53,16 @@ function UserLogin({ setFormType ,setUserEmail}) {
       password: password,
     };
 
-    
-      try {
-        const returnedUser = await sendData({
-          url: url,
-          body: body,
-          title: "OTP sent to your mail",
-          setLoading: setLoading 
-        });
-        console.log(returnedUser);
-        dispatch(setUserSubscriber(returnedUser.user));
-        dispatch(setSubscriber(returnedUser.subscriber));
+    try {
+      const returnedUser = await sendData({
+        url: url,
+        body: body,
+        title: "OTP sent to your mail",
+        setLoading: setLoading,
+      });
+      console.log(returnedUser);
+      dispatch(setUserSubscriber(returnedUser.user));
+      dispatch(setSubscriber(returnedUser.subscriber));
       setFormType("otp");
     } catch (error) {
       console.error("error", error);
@@ -99,8 +102,7 @@ function UserLogin({ setFormType ,setUserEmail}) {
           <div className="auth-label mt-1">Password</div>
           <div
             className="password-input-container"
-            style={{ marginTop: "0px" }}
-          >
+            style={{ marginTop: "0px" }}>
             <input
               type={showPassword ? "text" : "password"}
               placeholder="6+ Characters"
@@ -110,8 +112,7 @@ function UserLogin({ setFormType ,setUserEmail}) {
             />
             <button
               onClick={togglePasswordVisibility}
-              className="toggle-password-button"
-            >
+              className="toggle-password-button">
               {showPassword ? <HiEyeOff /> : <HiEye />}
             </button>
           </div>
@@ -125,15 +126,14 @@ function UserLogin({ setFormType ,setUserEmail}) {
         </div>
         <div
           className="subscription-terms-text cursor-pointer"
-          onClick={handleReset}
-        >
+          onClick={handleReset}>
           <span>Forgot your password?</span>
         </div>
       </div>
 
       <div className="auth-button mt-10" onClick={handleContinue}>
-      <div className="auth-button-text">
-          {loading ? <Loader className="animate-spin" /> : 'Login'}
+        <div className="auth-button-text">
+          {loading ? <Loader className="animate-spin" /> : "Login"}
         </div>
       </div>
       <div className="auth-already mt-5">New to ValueMine</div>

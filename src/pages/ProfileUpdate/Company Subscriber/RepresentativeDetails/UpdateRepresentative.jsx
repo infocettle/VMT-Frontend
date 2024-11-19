@@ -20,8 +20,8 @@ const UpdateRepresentative = ({ setUpdateNow, type }) => {
 
   const userData = useSelector((state) => state.auth.user);
 
-  const companySubscriberUrl = `${baseUrl}subscriber/company/profile/${userData._id}/representative-details`;
-  const companyPartnerUrl = `${baseUrl}partner/company/profile/${userData._id}/representative-details`;
+  const companySubscriberUrl = `${baseUrl}v1/subscriber/company/profile/${userData._id}/representative-details`;
+  const companyPartnerUrl = `${baseUrl}v1/partner/company/profile/${userData._id}/representative-details`;
 
   const titleUrl = `${baseUrl}public-registry/personal-details/title`;
   const { data: titleData } = useFetchData(titleUrl, "title");
@@ -103,8 +103,7 @@ const UpdateRepresentative = ({ setUpdateNow, type }) => {
       {/* Update Details Form */}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-6 py-5 w-full px-5"
-      >
+        className="space-y-6 py-5 w-full px-5">
         <div className="w-full grid grid-cols-1 md:grid-cols-6 gap-6">
           <div className="col-span-5">
             <div className="col-span-4 md:col-span-1 my-3">
@@ -113,11 +112,10 @@ const UpdateRepresentative = ({ setUpdateNow, type }) => {
               </label>
               <select
                 {...register("title")}
-                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-              >
+                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm">
                 <option value="">Select Title</option>
-                {activeTitles?.map((item) => (
-                  <option value={item.title.toLowerCase()}>
+                {activeTitles?.map((item, i) => (
+                  <option key={i} value={item.title.toLowerCase()}>
                     {item.title.toUpperCase()}
                   </option>
                 ))}
@@ -269,11 +267,10 @@ const UpdateRepresentative = ({ setUpdateNow, type }) => {
               </label>
               <select
                 {...register("country")}
-                className="mt-1 px-3 w-full h-9 bg-slate-x100 border border-gray-300 rounded-md shadow-sm"
-              >
+                className="mt-1 px-3 w-full h-9 bg-slate-x100 border border-gray-300 rounded-md shadow-sm">
                 <option value="">Select country</option>
-                {activeCountry?.map((item) => (
-                  <option value={item?.name?.toLowerCase()}>
+                {activeCountry?.map((item, i) => (
+                  <option key={i} value={item?.name?.toLowerCase()}>
                     {item?.name?.toUpperCase()}
                   </option>
                 ))}
@@ -291,11 +288,10 @@ const UpdateRepresentative = ({ setUpdateNow, type }) => {
               </label>
               <select
                 {...register("gender")}
-                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-              >
+                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm">
                 <option value="">Select Gender</option>
-                {activeGenders?.map((item) => (
-                  <option value={item?.gender?.toLowerCase()}>
+                {activeGenders?.map((item, i) => (
+                  <option key={i} value={item?.gender?.toLowerCase()}>
                     {item?.gender?.toUpperCase()}
                   </option>
                 ))}
@@ -326,11 +322,10 @@ const UpdateRepresentative = ({ setUpdateNow, type }) => {
               </label>
               <select
                 {...register("maritalStatus")}
-                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-              >
+                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm">
                 <option value="">Select marital status</option>
-                {activeMarital?.map((item) => (
-                  <option value={item?.maritalStatus?.toLowerCase()}>
+                {activeMarital?.map((item, i) => (
+                  <option key={i} value={item?.maritalStatus?.toLowerCase()}>
                     {item?.maritalStatus?.toUpperCase()}
                   </option>
                 ))}
@@ -348,8 +343,7 @@ const UpdateRepresentative = ({ setUpdateNow, type }) => {
               </label>
               <select
                 {...register("state")}
-                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-              >
+                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm">
                 <option value="">Select State</option>
                 {activeState?.map((item) => (
                   <option value={item?.name?.toLowerCase()}>
@@ -368,8 +362,7 @@ const UpdateRepresentative = ({ setUpdateNow, type }) => {
               </label>
               <select
                 {...register("lga")}
-                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-              >
+                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm">
                 <option value="">Select LGA</option>
                 {activeLga?.map((item) => (
                   <option value={item?.name?.toLowerCase()}>
@@ -387,8 +380,7 @@ const UpdateRepresentative = ({ setUpdateNow, type }) => {
               </label>
               <select
                 {...register("relationship")}
-                className="mt-1 px-3 w-full h-9 bg-slate-x100 border border-gray-300 rounded-md shadow-sm"
-              >
+                className="mt-1 px-3 w-full h-9 bg-slate-x100 border border-gray-300 rounded-md shadow-sm">
                 <option value="">Select Relationship</option>
                 {activeRelation?.map((item) => (
                   <option value={item?.relationship?.toLowerCase()}>
@@ -408,8 +400,7 @@ const UpdateRepresentative = ({ setUpdateNow, type }) => {
               </label>
               <select
                 {...register("ward")}
-                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-              >
+                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm">
                 <option value="">Select Ward</option>
                 {activeWard?.map((item) => (
                   <option value={item?.name?.toLowerCase()}>
@@ -427,15 +418,13 @@ const UpdateRepresentative = ({ setUpdateNow, type }) => {
         <div className="w-full flex items-center justify-between">
           <div
             onClick={() => setUpdateNow(false)}
-            className="mt-4 inline-flex justify-center py-2 px-4 border border-red-300 shadow-sm text-sm font-medium rounded-md text-white bg-red-600 cursor-pointer"
-          >
+            className="mt-4 inline-flex justify-center py-2 px-4 border border-red-300 shadow-sm text-sm font-medium rounded-md text-white bg-red-600 cursor-pointer">
             Cancel
           </div>
 
           <Button
             type="submit"
-            className="mt-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-vmtblue"
-          >
+            className="mt-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-vmtblue">
             Save
           </Button>
         </div>

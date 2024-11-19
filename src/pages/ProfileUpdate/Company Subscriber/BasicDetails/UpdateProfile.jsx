@@ -20,8 +20,8 @@ const UpdateProfile = ({ setUpdateNow, type }) => {
 
   const userData = useSelector((state) => state.auth.user);
 
-  const companySubscriberUrl = `${baseUrl}subscriber/company/profile/${userData._id}/basic-details`;
-  const companyPartnerUrl = `${baseUrl}partner/company/profile/${userData._id}/basic-details`;
+  const companySubscriberUrl = `${baseUrl}v1/subscriber/company/profile/${userData._id}/basic-details`;
+  const companyPartnerUrl = `${baseUrl}v1/partner/company/profile/${userData._id}/basic-details`;
 
   const { data, isFetching } = useFetchData(
     type === "company subscriber" ? companySubscriberUrl : companyPartnerUrl,
@@ -69,8 +69,7 @@ const UpdateProfile = ({ setUpdateNow, type }) => {
       {/* Update Details Form */}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-6 py-5 w-full px-5"
-      >
+        className="space-y-6 py-5 w-full px-5">
         <div className="grid grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -235,15 +234,13 @@ const UpdateProfile = ({ setUpdateNow, type }) => {
         <div className="w-full flex items-center justify-between">
           <div
             onClick={() => setUpdateNow(false)}
-            className="mt-4 inline-flex justify-center py-2 px-4 border border-red-300 shadow-sm text-sm font-medium rounded-md text-white bg-red-600 cursor-pointer"
-          >
+            className="mt-4 inline-flex justify-center py-2 px-4 border border-red-300 shadow-sm text-sm font-medium rounded-md text-white bg-red-600 cursor-pointer">
             Cancel
           </div>
 
           <Button
             type="submit"
-            className="mt-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-vmtblue"
-          >
+            className="mt-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-vmtblue">
             Save
           </Button>
         </div>

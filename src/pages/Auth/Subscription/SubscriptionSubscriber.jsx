@@ -3,13 +3,13 @@ import "./subscription.css";
 import Table from "./FirstSubTable";
 import Select from "react-select";
 import { useSelector } from "react-redux";
-function SubscriptionSubscriber({ setSubscriptionType, userData }) {
-  const subscriber = useSelector((state) => state.auth.subscriber);
+
+function SubscriptionSubscriber({ setSubscriptionType }) {
+  const userData = useSelector((state) => state.auth.user);
   const [selectedDateType, setSelectedDateType] = useState("1-month");
   const [endDate, setEndDate] = useState(null);
   const [selectedRole, setSelectedRole] = useState("");
   const [totalAmountPayable, setTotalAmountPayable] = useState(0);
-
 
   useEffect(() => {
     calculateEndDate(selectedDateType);
@@ -66,7 +66,6 @@ function SubscriptionSubscriber({ setSubscriptionType, userData }) {
     },
   ];
   let filteredData = data;
-  console.log(filteredData)
 
   if (!userData.administrator) {
     filteredData = filteredData.filter(
@@ -102,7 +101,7 @@ function SubscriptionSubscriber({ setSubscriptionType, userData }) {
                         ? "Subscriber"
                         : "Partner"}
                     </td>
-                    <td className="lg:py-2">{subscriber.subscriberId}</td>
+                    <td className="lg:py-2">{item._id.slice(0, 10)}</td>
 
                     <td>
                       {item.firstName} {item.surname}{" "}
@@ -227,8 +226,7 @@ function SubscriptionSubscriber({ setSubscriptionType, userData }) {
           <div className="auth-form-flex mt-2 mb-6 justify-between">
             <div
               className="flex items-center w-full  mt-5 cursor-pointer "
-              onClick={{}}
-            >
+              onClick={{}}>
               <div className="secondary-button">Cancel</div>
             </div>
 

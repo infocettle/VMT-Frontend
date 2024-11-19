@@ -142,8 +142,7 @@ const UpdateAddress = ({ setUpdateNow, type }) => {
       {/* Update Details Form */}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-6 py-5 w-full px-5"
-      >
+        className="space-y-6 py-5 w-full px-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -321,8 +320,7 @@ const UpdateAddress = ({ setUpdateNow, type }) => {
             </label>
             <select
               {...register("zone")}
-              className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-            >
+              className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm">
               <option value="">Select Zone</option>
               {activeZone?.map((item) => (
                 <option value={item?.zone?.toLowerCase()}>
@@ -340,8 +338,7 @@ const UpdateAddress = ({ setUpdateNow, type }) => {
             </label>
             <select
               {...register("lga")}
-              className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-            >
+              className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm">
               <option value="">Select LGA</option>
               {activeLga?.map((item) => (
                 <option value={item?.name?.toLowerCase()}>
@@ -359,8 +356,7 @@ const UpdateAddress = ({ setUpdateNow, type }) => {
             </label>
             <select
               {...register("country")}
-              className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-            >
+              className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm">
               <option value="">Select country</option>
               {activeCountry?.map((item) => (
                 <option value={item?.name?.toLowerCase()}>
@@ -379,8 +375,7 @@ const UpdateAddress = ({ setUpdateNow, type }) => {
             </label>
             <select
               {...register("state")}
-              className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-            >
+              className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm">
               <option value="">Select State</option>
               {activeState?.map((item) => (
                 <option value={item?.name?.toLowerCase()}>
@@ -398,8 +393,7 @@ const UpdateAddress = ({ setUpdateNow, type }) => {
             </label>
             <select
               {...register("ward")}
-              className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-            >
+              className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm">
               <option value="">Select Ward</option>
               {activeWard?.map((item) => (
                 <option value={item?.name?.toLowerCase()}>
@@ -417,15 +411,13 @@ const UpdateAddress = ({ setUpdateNow, type }) => {
         <div className="w-full flex items-center justify-between">
           <div
             onClick={() => setUpdateNow(false)}
-            className="mt-4 inline-flex justify-center py-2 px-4 border border-red-300 shadow-sm text-sm font-medium rounded-md text-white bg-red-600 cursor-pointer"
-          >
+            className="mt-4 inline-flex justify-center py-2 px-4 border border-red-300 shadow-sm text-sm font-medium rounded-md text-white bg-red-600 cursor-pointer">
             Cancel
           </div>
 
           <Button
             type="submit"
-            className="mt-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-vmtblue"
-          >
+            className="mt-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-vmtblue">
             Save
           </Button>
         </div>

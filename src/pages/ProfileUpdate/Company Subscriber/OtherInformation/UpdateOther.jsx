@@ -26,10 +26,10 @@ const UpdateOther = ({ setUpdateNow, type }) => {
   const certRef = register("certOfIncorp");
   const meansID = register("meansOfID");
 
-  const indiSubBasicUrl = `${baseUrl}subscriber/individual/profile/other-details/${userData._id}`;
-  const companySubscriberUrl = `${baseUrl}subscriber/company/profile/${userData._id}/other-details`;
-  const companyPartnerUrl = `${baseUrl}partner/company/profile/${userData._id}/other-details`;
-  const individualPartnerUrl = `${baseUrl}partner/individual/profile/other-details/${userData._id}`;
+  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/other-details/${userData._id}`;
+  const companySubscriberUrl = `${baseUrl}v1/subscriber/company/profile/${userData._id}/other-details`;
+  const companyPartnerUrl = `${baseUrl}v1/partner/company/profile/${userData._id}/other-details`;
+  const individualPartnerUrl = `${baseUrl}v1/partner/individual/profile/other-details/${userData._id}`;
 
   const bankUrl = `${baseUrl}public-registry/financial-institutions/bank`;
   const { data: bankData } = useFetchData(bankUrl, "bank");
@@ -113,8 +113,7 @@ const UpdateOther = ({ setUpdateNow, type }) => {
         {/* Update Details Form */}
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="space-y-6 py-5 w-full px-5"
-        >
+          className="space-y-6 py-5 w-full px-5">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700">
@@ -122,8 +121,7 @@ const UpdateOther = ({ setUpdateNow, type }) => {
               </label>
               <select
                 {...register("bankCode")}
-                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-              >
+                className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm">
                 <option value="">Select Bank Code</option>
                 {activeBank?.map((item) => (
                   <option value={item?.code}>{item?.code}</option>
@@ -396,15 +394,13 @@ const UpdateOther = ({ setUpdateNow, type }) => {
           <div className="w-full flex items-center justify-between">
             <div
               onClick={() => setUpdateNow(false)}
-              className="mt-4 inline-flex justify-center py-2 px-4 border border-red-300 shadow-sm text-sm font-medium rounded-md text-white bg-red-600 cursor-pointer"
-            >
+              className="mt-4 inline-flex justify-center py-2 px-4 border border-red-300 shadow-sm text-sm font-medium rounded-md text-white bg-red-600 cursor-pointer">
               Cancel
             </div>
 
             <Button
               type="submit"
-              className="mt-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-vmtblue"
-            >
+              className="mt-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-vmtblue">
               Save
             </Button>
           </div>

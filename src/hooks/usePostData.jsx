@@ -3,7 +3,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-const postData = async ({ url, body, title, token }) => {
+const postData = async ({ url, body, title }) => {
   const headers = {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -67,7 +67,7 @@ export const usePostData = ({ queryKey, url, title }) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (body) => postData({ url, body, title, token }),
+    mutationFn: (body) => postData({ url, body, title }),
     onSuccess: () => {
       queryClient.invalidateQueries(queryKey);
     },

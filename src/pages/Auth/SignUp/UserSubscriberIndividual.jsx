@@ -7,10 +7,11 @@ import { baseUrl } from "@/App";
 import { sendData } from "@/hooks/usePostData";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { setSubscriber, setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
-import { Loader } from 'lucide-react';
+import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
+import { Loader } from "lucide-react";
 import axios from "axios";
-function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
+
+function UserSubscriberIndividual({ setFormType, userType, partnerType }) {
   const url = `${baseUrl}${userType}/individual/auth/register`;
   const [loading, setLoading] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState("NG");
@@ -32,20 +33,23 @@ function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
 
   useEffect(() => {
     const fetchTitles = async () => {
-        try {
-            const url = `${baseUrl}public-registry/personal-details/title?status=Active`;
-            const response = await axios.get(url);
-            const activeTitles = response.data
-                .filter(item => item.status === 'Active')
-                .map(item => ({ value: item.title.toUpperCase(), label: item.title.toUpperCase() }));
-            setTitleOptions(activeTitles);
-        } catch (error) {
-            toast.error('Error fetching titles');
-        }
+      try {
+        const url = `${baseUrl}public-registry/personal-details/title?status=Active`;
+        const response = await axios.get(url);
+        const activeTitles = response.data
+          .filter((item) => item.status === "Active")
+          .map((item) => ({
+            value: item.title.toUpperCase(),
+            label: item.title.toUpperCase(),
+          }));
+        setTitleOptions(activeTitles);
+      } catch (error) {
+        toast.error("Error fetching titles");
+      }
     };
 
     fetchTitles();
-}, [baseUrl]);
+  }, [baseUrl]);
   const handleCountryChange = (selectedCountry) => {
     setSelectedCountry(selectedCountry);
     // Here you can implement a mapping of country to country code
@@ -78,7 +82,7 @@ function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
   };
   const handleRadioChange = (e) => {
     setAdministrator(e.target.value);
-};
+  };
   const validateForm = () => {
     if (!selectedTitle) {
       toast.error("Title is required");
@@ -136,7 +140,7 @@ function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
     if (!validateForm()) {
       return;
     }
-  
+
     const requestBody = {
       title: selectedTitle.value,
       heardAboutUs: selectedFind.value,
@@ -146,45 +150,41 @@ function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
       email: email,
       nin: parseInt(nin),
       referalCode: referalCode,
-      administratorType:administrator,
-      
+      administratorType: administrator,
     };
-  
+
     if (partnerType) {
       requestBody.partnerType = partnerType;
     }
-  
+
     try {
       const returnedData = await sendData({
         url: url,
         body: requestBody,
         title: "Subscriber individual created",
-        setLoading: setLoading 
+        setLoading: setLoading,
       });
       dispatch(setUserSubscriber(returnedData.newUser));
-      dispatch(setSubscriber(returnedData.newIndividualSubscriber));
       setFormType("individual-create-password");
     } catch (error) {
       console.error("There was an error submitting the form!", error);
     }
   };
-  
 
   const handleGoback = () => {
     setFormType("user-subscriber");
   };
   const customStyles = {
-  
     container: (provided) => ({
       ...provided,
-      
-      width:"100%",
+
+      width: "100%",
     }),
     control: (provided) => ({
       ...provided,
       minHeight: "48px",
       height: "48px",
-      width:"100%",
+      width: "100%",
     }),
   };
 
@@ -208,13 +208,12 @@ function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
               Title <span className="auth-mandatory">*</span>
             </div>
             <Select
-                    value={selectedTitle}
-                    placeholder="Select Title"
-                    onChange={(selectedOption) => setSelectedTitle(selectedOption)}
-                    options={titleOptions}
-                    styles={customStyles}
-                />
-   
+              value={selectedTitle}
+              placeholder="Select Title"
+              onChange={(selectedOption) => setSelectedTitle(selectedOption)}
+              options={titleOptions}
+              styles={customStyles}
+            />
           </div>
           <div className="flex flex-col gap-2 w-full">
             <div className="auth-label">
@@ -290,7 +289,6 @@ function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
               value={email}
               onChange={handleEmailChange}
             />
-            
           </div>
 
           <div className="flex flex-col gap-2 w-full">
@@ -303,14 +301,13 @@ function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
               placeholder="Enter national identity number"
               value={nin}
               onChange={handleNinChange}
-            /> 
+            />
           </div>
-         
         </div>
         <div className="flex items-center justify-between w-100 gap-6">
-      {error && <p className="text-red-500 w-1/2">{error}</p>}
-         {errorNin && <p className="text-red-500 w-1/2">{errorNin}</p>}
-      </div>
+          {error && <p className="text-red-500 w-1/2">{error}</p>}
+          {errorNin && <p className="text-red-500 w-1/2">{errorNin}</p>}
+        </div>
         <div className="auth-form-flex">
           <div className="flex flex-col gap-2 w-full">
             <div className="auth-label">Select applicable custom feature</div>
@@ -341,7 +338,7 @@ function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
             />
           </div>
         </div>
-      
+
         <div className="auth-form-flex">
           <div className="flex flex-col gap-2 w-full">
             <div className="auth-label">How did you hear about us?</div>
@@ -362,39 +359,38 @@ function UserSubscriberIndividual({ setFormType,userType,partnerType }) {
           <div className="flex flex-col gap-2 w-full">
             <div className="auth-label">Are you the administrator?</div>
             <div className="flex gap-4">
-                    <label className="flex items-center">
-                        <input
-                            type="radio"
-                            name="administrator"
-                            value="yes"
-                            checked={administrator === 'yes'}
-                            onChange={handleRadioChange}
-                        />
-                        <span className="ml-2">Yes</span>
-                    </label>
-                    <label className="flex items-center">
-                        <input
-                            type="radio"
-                            name="administrator"
-                            value="no"
-                            checked={administrator === 'no'}
-                            onChange={handleRadioChange}
-                        />
-                        <span className="ml-2">No</span>
-                    </label>
-              </div>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="administrator"
+                  value="yes"
+                  checked={administrator === "yes"}
+                  onChange={handleRadioChange}
+                />
+                <span className="ml-2">Yes</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="administrator"
+                  value="no"
+                  checked={administrator === "no"}
+                  onChange={handleRadioChange}
+                />
+                <span className="ml-2">No</span>
+              </label>
+            </div>
           </div>
         </div>
         <div className="auth-button mt-10" onClick={handleContinue}>
-        <div className="auth-button-text">
-          {loading ? <Loader className="animate-spin" /> : 'Save & Continue'}
-        </div>
+          <div className="auth-button-text">
+            {loading ? <Loader className="animate-spin" /> : "Save & Continue"}
+          </div>
         </div>
 
         <div
           className="flex items-center w-full justify-center mt-5 cursor-pointer"
-          onClick={handleGoback}
-        >
+          onClick={handleGoback}>
           <IoIosArrowRoundBack
             style={{ fontSize: "1.3rem", color: "#0B6ED0" }}
           />

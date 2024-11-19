@@ -66,6 +66,14 @@ import RegistrationDetails from "./pages/Services/Contacts/RegistrationDetails";
 
 import IntegrationRoute from "./pages/Integration/IntegrationRoute";
 import {
+import ContactType from "./pages/Services/Contacts/Type";
+import NewType from "./pages/Services/Contacts/NewType";
+import ContactRegistration from "./pages/Services/Contacts/Registration";
+import ServicesRoute from "./pages/Services/ServicesRoute";
+import RegistrationDetails from "./pages/Services/Contacts/RegistrationDetails";
+
+import IntegrationRoute from "./pages/Integration/IntegrationRoute";
+import {
   Activation,
   Backup,
   Restore,
@@ -635,6 +643,38 @@ const router = createBrowserRouter([
           {
             path: "cancel_domain",
             element: <CancelDomain />,
+          },
+        ],
+      },
+      {
+        path: "integration/*",
+        element: <IntegrationRoute />,
+        children: [
+          {
+            path: "software",
+            element: <Software />,
+          },
+          {
+            path: "hardware",
+            element: <Hardware />,
+          },
+          {
+            path: "third-parties/*",
+            element: <ThirdParties />,
+            children: [
+              {
+                path: "regulators",
+                element: <Regulators />,
+              },
+              {
+                path: "tax-authorities",
+                element: <TaxAuthorities />,
+              },
+              {
+                path: "others",
+                element: <Others />,
+              },
+            ],
           },
         ],
       },

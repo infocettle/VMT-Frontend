@@ -11,6 +11,7 @@ const Restore = () => {
 
   const { data, isPending } = useFetchData(restoreUrl, "restore");
 
+  // console.log(data)
   if (isPending) {
     return <span>Loading...</span>;
   }
@@ -26,7 +27,7 @@ const Restore = () => {
             {/* Table */}
             <ReusableTableVariant
                 columns={restoreColumns}
-                tableData={data}
+                tableData={data.data}
             />
         </div>
     </div>

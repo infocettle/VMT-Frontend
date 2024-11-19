@@ -3,12 +3,13 @@ import "./subscription.css";
 import Table from "./FirstSubTable";
 import Select from "react-select";
 import { useSelector } from "react-redux";
-function SubscriptionSubscriber({ setSubscriptionType }) {
-  const userData = useSelector((state) => state.auth.user);
+function SubscriptionSubscriber({ setSubscriptionType, userData }) {
+  const subscriber = useSelector((state) => state.auth.subscriber);
   const [selectedDateType, setSelectedDateType] = useState("1-month");
   const [endDate, setEndDate] = useState(null);
   const [selectedRole, setSelectedRole] = useState("");
   const [totalAmountPayable, setTotalAmountPayable] = useState(0);
+
 
   useEffect(() => {
     calculateEndDate(selectedDateType);
@@ -65,6 +66,7 @@ function SubscriptionSubscriber({ setSubscriptionType }) {
     },
   ];
   let filteredData = data;
+  console.log(filteredData)
 
   if (!userData.administrator) {
     filteredData = filteredData.filter(
@@ -100,7 +102,7 @@ function SubscriptionSubscriber({ setSubscriptionType }) {
                         ? "Subscriber"
                         : "Partner"}
                     </td>
-                    <td className="lg:py-2">{item._id.slice(0, 10)}</td>
+                    <td className="lg:py-2">{subscriber.subscriberId}</td>
 
                     <td>
                       {item.firstName} {item.surname}{" "}

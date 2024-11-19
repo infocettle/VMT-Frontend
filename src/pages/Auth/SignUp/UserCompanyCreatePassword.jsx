@@ -12,7 +12,7 @@ import { Loader } from 'lucide-react';
 function UserCompanyCreatePassword({userType}) {
   const profileData = useSelector((state) => state.auth);
   const newUserId = profileData?.user?._id;
-  const url = `${baseUrl}v1/${userType}/company/auth/set-password/${newUserId}`;
+  const url = `${baseUrl}${userType}/company/auth/set-password/${newUserId}`;
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);

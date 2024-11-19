@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { Loader } from 'lucide-react';
 import { sendData } from "@/hooks/usePostData";
 function NewPassword({setFormType,userEmail}) {
-  const url = `${baseUrl}v1/auth/reset-password`;
+  const url = `${baseUrl}auth/reset-password`;
   const token = useSelector((state) => state.auth.token);
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");

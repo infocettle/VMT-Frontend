@@ -12,7 +12,7 @@ const MaintenanceRoute = () => {
         {path: 'activation', element: <Activation/>},
         {path: 'backup', element: <Backup/>},
         {path: 'restore', element: <Restore/>},
-        {path: 'recover', element: <Recover/>},
+        // {path: 'recover', element: <Recover/>},
         {path: 'lock-domain', element: <LockDomain/>},
         {path: 'cancel-domain', element: <CancelDomain/>}
     ])

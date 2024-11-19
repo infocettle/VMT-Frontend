@@ -10,6 +10,7 @@ import Avatar from "../../../assets/img/Avatar.svg";
 import { useSelector } from "react-redux";
 function Subscription() {
   const userData = useSelector((state) => state.auth.user);
+  console.log(userData)
   const [subscriptionType, setSubscriptionType] =
     useState("first-subscription");
   const handleSubmit = () => {

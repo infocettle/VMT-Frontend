@@ -12,7 +12,7 @@ import { titleFormSchema } from "@/utils/zodSchema";
 import { ReportLinks, handleExport } from "@/components/ReportLinks";
 import SecondHeader from "@/components/SecondHeader";
 import useFetchData from "@/hooks/useFetchData";
-import { baseUrl } from "@/App";
+import { baseUrl, baseUrlTrial } from "@/App";
 import { usePostData } from "@/hooks/usePostData";
 import { useState } from "react";
 import ReuseDialog from "@/components/ReuseDialog";
@@ -20,34 +20,57 @@ import SecondDiv from "../../../components/SecondDiv";
 import { sampleData } from "@/texts/sampleData";
 import { FormDescription } from "@/components/FormDescription";
 import { ReusableTablePolicy } from "../components/ResusableTablePolicy";
+import { z } from "zod";
 
-export const requiredForm = titleFormSchema.required();
+const requiredForm = z.object({
+  policy_name: z.string().min(1, "Name is required"),
+  description: z.string().min(1, "Description is required"),
+  fileUrl: z.string().min(1, "fileUrl is required"),
+  version: z.string().min(1, "version is required"),
+});
 
 const defaultValues = {
-  title: "",
+  policy_name: "",
+  description: "",
+  fileUrl: "",
+  version: "",
 };
 
-const Types= () => {
+const Types = () => {
   const [open, setIsOpen] = useState(false);
 
-  const titleUrl = `${baseUrl}public-registry/personal-details/title`;
+  const getPolicyUrl = `${baseUrlTrial}/api/v1/ac/policy/getPolicies`;
 
-  const { data, isPending } = useFetchData(titleUrl, "title");
-  console.log(data);
+  const { data, isLoading, error } = useFetchData(getPolicyUrl, "policy");
+
+  // Debugging output
+  console.log("Data fetched:", data?.data);
+  const policyUrl = `${baseUrlTrial}/api/v1/ac/policy/addPolicy`;
 
   const postMutation = usePostData({
-    queryKey: ["title"],
-    url: titleUrl,
-    title: "title",
+    queryKey: ["policy"],
+    url: policyUrl,
+    policy: "policy",
   });
 
   async function onSubmit(values) {
     const body = {
-      title: values.title,
+      policyName: values.policy_name,
+      fileUrl: values.fileUrl,
+      description: values.description,
+      version: values.version,
     };
 
     postMutation.mutateAsync(body);
     setIsOpen(false);
+  }
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error loading policy</p>;
   }
 
   // if (isPending) {
@@ -61,7 +84,7 @@ const Types= () => {
         {/* Second header */}
 
         <div className="flex justify-between w-full items-center">
-          <SecondHeader title={"Types"} />
+          <SecondHeader title={""} />
 
           <div className="flex items-center w-auto px-2 space-x-4 mt-5">
             <ReuseDialog
@@ -73,19 +96,23 @@ const Types= () => {
               defaultValues={defaultValues}
               validationSchema={requiredForm}
               onSubmit={onSubmit}
-              long={false}
-            >
+              long={false}>
               <FormInput name="policy_name" label="Policy name" />
-              <FormInput name="policy_name" label="Policy document" />
+              <FormInput name="fileUrl" label="Policy document" />
               <FormDescription name="description" label="Description" />
               <FormInput name="version" label="Version" />
             </ReuseDialog>
-
           </div>
         </div>
 
         {/* Table */}
-        <ReusableTablePolicy columns={accessControlTypeColumns} data={sampleData} tableParent={"policies"}  tableName={"types"} tableChild={"detail_types"}  />
+        <ReusableTablePolicy
+          columns={accessControlTypeColumns}
+          data={data?.data}
+          tableParent={"policies"}
+          tableName={"types"}
+          tableChild={"detail_types"}
+        />
       </div>
     </div>
   );

@@ -69,10 +69,27 @@ import {
   Activation,
   Backup,
   Restore,
-  Recover,
+  // Recover,
   LockDomain,
-  CancelDomain
+  CancelDomain,
 } from "./pages/Maintenance";
+import KYCVerification from "./pages/Services/KYC/KYCVerification";
+import EditDocument from "./pages/Services/KYC/EditDocument";
+import ViewContactKYC from "./pages/Services/KYC/ViewContactKYC";
+import ServicesPayment from "./pages/Services/Payment";
+import ViewContactPayment from "./pages/Services/Payment/ViewContactPayment";
+import UpdateSubscription from "./pages/Services/Payment/UpgradeSubscription";
+import RenewSubscription from "./pages/Services/Payment/RenewSubscription";
+import Prospect from "./pages/Services/Prospect/index";
+import NewProspect from "./pages/Services/Prospect/NewProspect";
+import ServicesUpdate from "./pages/Services/Contacts/Update";
+import UpdateDetails from "./pages/Services/Contacts/Update/UpdateDetails";
+import ServicesMessage from "./pages/Services/Contacts/Message";
+import ServicesDashboard from "./pages/Services/Contacts/Dashboard";
+import ContactRequestTypes from "./pages/Services/Support";
+import ServiceLevelAgreement from "./pages/Services/Support/Service-Level-Agreement";
+import ServiceKPI from "./pages/Services/Support/kpi";
+import ServiceRequests from "./pages/Services/Support/Request";
 import AccessControlRoute from "./pages/AccessControl/AccessControlRoute";
 import PoliciesDetails from "./pages/AccessControl/PoliciesDetails";
 import Types from "./pages/AccessControl/Policies/Types";
@@ -99,7 +116,7 @@ import {
   ThirdParties,
   Regulators,
   TaxAuthorities,
-  Others
+  Others,
 } from "./pages/Integration";
 import { UserProfilesLinks } from "./texts/accessControlLinks";
 import UserGroups from "./pages/AccessControl/UserProfiles/UserGroups";
@@ -121,10 +138,13 @@ import DetailAccessSettings from "./pages/AccessControl/components/DetailAccessS
 import DetailAccessAuth from "./pages/AccessControl/components/DetailAccessAuth";
 import DetailAccessPasswordChange from "./pages/AccessControl/components/DetailAccessPasswordChange";
 
+import Settings from "./pages/admin/settings/Settings";
+import SettingsRoute from "./pages/settings/SettingsRoutes";
+import GeneralSettings from "./pages/settings/general-settings/GeneralSettings";
 
 const queryClient = new QueryClient();
 
-export const baseUrl = "https://vmt-server.onrender.com/api/v1/";
+export const baseUrl = "https://vmt-server.onrender.com/api/v1/"; //for local development: "http://localhost:3000/api/v1/";
 export const baseUrlTrial = "https://vnt-domie.onrender.com";
 
 const router = createBrowserRouter([
@@ -143,19 +163,26 @@ const router = createBrowserRouter([
 
   {
     path: "/subscription",
-    element:(<Subscription />) ,
+    element: <Subscription />,
   },
 
   {
     path: "/",
-    element:<ProtectedRoute>
-    <MainDashboard />
-  </ProtectedRoute>,
+    element: (
+      <ProtectedRoute>
+        <MainDashboard />
+      </ProtectedRoute>
+    ),
     children: [
       // All children routes here
       {
         path: "",
         element: <Overview />,
+      },
+      {
+        path: "settings/*",
+        element: <SettingsRoute />,
+        children: [],
       },
       {
         path: "dashboard/*",
@@ -177,7 +204,7 @@ const router = createBrowserRouter([
                 path: "general",
                 element: <GeneralPerfomance />,
               },
-              { path: "business-kpi", element: <BusinessKpiPerformance/> },
+              { path: "business-kpi", element: <BusinessKpiPerformance /> },
               { path: "sales", element: <SalesPerformance /> },
               { path: "commission", element: <CommissionPerformance /> },
               { path: "company", element: <CompanyPerformance /> },
@@ -198,7 +225,6 @@ const router = createBrowserRouter([
         path: "access_control/*",
         element: <AccessControlRoute />,
         children: [
-    
           {
             path: "policies/*",
             element: <PoliciesDetails />,
@@ -206,27 +232,22 @@ const router = createBrowserRouter([
               {
                 path: "",
                 element: <Types />,
-
               },
               {
                 path: "types",
                 element: <Types />,
-                
               },
               {
                 path: "update",
                 element: <Update />,
-                
               },
               {
                 path: "restrictions",
                 element: <Restrictions />,
-                
               },
               {
                 path: "agreement",
                 element: <Agreement />,
-                
               },
               {
                 path: "detail_types",
@@ -244,10 +265,9 @@ const router = createBrowserRouter([
                 path: "detail_agreement",
                 element: <DetailAgreement />,
               },
-              { path: "update", element: <Types/> },
+              { path: "update", element: <Types /> },
               { path: "restrictions", element: <Types /> },
               { path: "agreement", element: <Types /> },
-             
             ],
           },
           {
@@ -257,27 +277,22 @@ const router = createBrowserRouter([
               {
                 path: "",
                 element: <Groups />,
-
               },
               {
                 path: "groups",
                 element: <Groups />,
-                
               },
               {
                 path: "modules",
                 element: <Modules />,
-                
               },
               {
                 path: "functions",
                 element: <Functions />,
-                
               },
               {
                 path: "processes",
                 element: <Processes />,
-                
               },
               {
                 path: "detail_groups",
@@ -295,8 +310,6 @@ const router = createBrowserRouter([
                 path: "detail_processes",
                 element: <DetailProcesses />,
               },
-         
-             
             ],
           },
           {
@@ -306,40 +319,35 @@ const router = createBrowserRouter([
               {
                 path: "",
                 element: <UserGroups />,
-
               },
               {
                 path: "groups",
                 element: <UserGroups />,
-                
               },
               {
                 path: "types",
                 element: <UserTypes />,
-                
               },
               {
                 path: "roles",
                 element: <UserRoles />,
-                
               },
               {
                 path: "privilege",
                 element: <UserPrivilege />,
-                
               },
               {
                 path: "users",
                 element: <UserUsers />,
-                
               },
-              { path: "groups/detail_groups", element: <DetailUserGroups/> },
+              { path: "groups/detail_groups", element: <DetailUserGroups /> },
               { path: "types/detail_types", element: <DetailUserTypes /> },
-              { path: "privilege/detail_privilege", element: <DetailUserPrivilege /> },
+              {
+                path: "privilege/detail_privilege",
+                element: <DetailUserPrivilege />,
+              },
               { path: "users/detail_users", element: <DetailUserUsers /> },
               { path: "roles/detail_roles", element: <DetailUserRoles /> },
-         
-             
             ],
           },
           {
@@ -349,21 +357,25 @@ const router = createBrowserRouter([
               {
                 path: "",
                 element: <AccessSettings />,
-
               },
               { path: "settings", element: <AccessSettings /> },
               { path: "login_logout", element: <AccessAuth /> },
               { path: "password_change", element: <AccessPasswordChange /> },
-          
-              { path: "settings/detail_settings", element: <DetailAccessSettings /> },
-              { path: "login_logout/detail_login_logout", element: <DetailAccessAuth /> },
-              { path: "password_change/detail_password_change", element: <DetailAccessPasswordChange /> },
-             
-         
-             
+
+              {
+                path: "settings/detail_settings",
+                element: <DetailAccessSettings />,
+              },
+              {
+                path: "login_logout/detail_login_logout",
+                element: <DetailAccessAuth />,
+              },
+              {
+                path: "password_change/detail_password_change",
+                element: <DetailAccessPasswordChange />,
+              },
             ],
           },
-         
         ],
       },
       {
@@ -512,89 +524,163 @@ const router = createBrowserRouter([
                 element: <NewType />,
               },
               {
+                path: "documentinformation",
+                element: <EditDocument />,
+              },
+              {
+                path: "viewcontactkyc",
+                element: <ViewContactKYC />,
+              },
+              {
                 path: "registration",
                 element: <ContactRegistration />,
               },
               {
                 path: "registrationdetails",
                 element: <RegistrationDetails />,
-              }
-
+              },
+              {
+                path: "kycverification",
+                element: <KYCVerification />,
+              },
+              {
+                path: "payments",
+                element: <ServicesPayment />,
+              },
+              {
+                path: "viewcontactpayments",
+                element: <ViewContactPayment />,
+              },
+              {
+                path: "updatesubscription",
+                element: <UpdateSubscription />,
+              },
+              {
+                path: "renewsubscription",
+                element: <RenewSubscription />,
+              },
+              {
+                path: "update",
+                element: <ServicesUpdate />,
+              },
+              {
+                path: "updatedetails",
+                element: <UpdateDetails />,
+              },
+              {
+                path: "message",
+                element: <ServicesMessage />,
+              },
+              {
+                path: "dashboard",
+                element: <ServicesDashboard />,
+              },
+            ],
+          },
+          {
+            path: "prospects",
+            element: <Prospect />,
+          },
+          {
+            path: "newprospect",
+            element: <NewProspect />,
+          },
+          {
+            path: "support/*",
+            children: [
+              {
+                path: "requesttypes",
+                element: <ContactRequestTypes />,
+              },
+              {
+                path: "service-level-agreement",
+                element: <ServiceLevelAgreement />,
+              },
+              {
+                path: "kpi",
+                element: <ServiceKPI />,
+              },
+              {
+                path: "requests",
+                element: <ServiceRequests />,
+              },
             ],
           },
         ],
       },
       {
-        path: 'maintenance/*',
-        element: <MaintenanceRoute/>,
+        path: "maintenance/*",
+        element: <MaintenanceRoute />,
         children: [
           {
-            path: 'activation',
-            element: <Activation/>
+            path: "activation",
+            element: <Activation />,
           },
           {
             path: "backup",
-            element: <Backup/>,
+            element: <Backup />,
           },
           {
             path: "restore",
-            element: <Restore/>,
+            element: <Restore />,
           },
+          // {
+          //   path: "recover",
+          //   element: <Recover />,
+          // },
           {
-            path: "recover",
-            element: <Recover/>
-          },
-          {
-            path: 'lock_domain',
-            element: <LockDomain/>
+            path: "lock_domain",
+            element: <LockDomain />,
           },
           {
             path: "cancel_domain",
-            element: <CancelDomain/>
-          }
-        ]
+            element: <CancelDomain />,
+          },
+        ],
       },
       {
-        path: 'integration/*',
-        element: <IntegrationRoute/>,
+        path: "integration/*",
+        element: <IntegrationRoute />,
         children: [
           {
             path: "software",
-            element: <Software/>,
+            element: <Software />,
           },
           {
             path: "hardware",
-            element: <Hardware/>,
+            element: <Hardware />,
           },
           {
             path: "third-parties/*",
-            element: <ThirdParties/>,
+            element: <ThirdParties />,
             children: [
               {
                 path: "regulators",
-                element: <Regulators/>,
+                element: <Regulators />,
               },
               {
                 path: "tax-authorities",
-                element: <TaxAuthorities/>,
+                element: <TaxAuthorities />,
               },
               {
                 path: "others",
-                element: <Others/>
-              }
-            ]
-          }
-        ]
-      }
+                element: <Others />,
+              },
+            ],
+          },
+        ],
+      },
       // Add your children routes here
     ],
   },
 
   {
     path: "/profile/*",
-    element:  <ProtectedRoute>
-    <ProfilePath />
-  </ProtectedRoute>,
+    element: (
+      <ProtectedRoute>
+        <ProfilePath />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "company-subscriber",

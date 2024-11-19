@@ -6,14 +6,14 @@ import MobileLogo from "../../../assets/img/MobileLogo.svg";
 import { baseUrl } from "@/App";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
+import { setSubscriber, setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
 import { useDispatch } from "react-redux";
 import { sendData } from "@/hooks/usePostData";
 import { Loader } from 'lucide-react';
 import axios from "axios";
 function UserSubscriberCompany({ setFormType,userType,partnerType }) {
   const navigate = useNavigate();
-  const url = `${baseUrl}v1/${userType}/company/auth/register`;
+  const url = `${baseUrl}${userType}/company/auth/register`;
   const dispatch = useDispatch()
   const [selectedCountry, setSelectedCountry] = useState("NG");
   const [selectedCountryTwo, setSelectedCountryTwo] = useState("NG");
@@ -245,6 +245,7 @@ function UserSubscriberCompany({ setFormType,userType,partnerType }) {
         setLoading: setLoading 
       });
       dispatch(setUserSubscriber(returnedData.newUser));
+      dispatch(setSubscriber(returnedUser.newCompanySubscriber));
       setFormType("company-create-password");
     } catch (error) {
       toast.error(`Error: ${error.message}`);

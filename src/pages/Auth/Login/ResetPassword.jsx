@@ -5,7 +5,7 @@ import { IoIosArrowRoundBack } from "react-icons/io";
 import { toast } from "react-toastify";
 import { Loader } from 'lucide-react';
 function ResetPassword({ setFormType,setUserEmail }) {
-  const url = `${baseUrl}v1/auth/forgot-password`;
+  const url = `${baseUrl}auth/forgot-password`;
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const handleEmailChange = (e) => {

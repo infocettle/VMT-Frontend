@@ -18,15 +18,15 @@ function Tables({ headBg, headTextColor, headerText, headerArr, rowArr }) {
                 </div>
             )}
             <div className='overflow-x-auto'>
-                <Table className="min-w-full">
-                    <TableHeader>
+                <Table className="min-w-full services-table">
+                    <TableHeader style={{fontSize:"13px"}}>
                         <TableRow className={"text-white " + headBg}>
                             {headerArr && headerArr.map((header, index) => (
                                 <TableHead className={"text-left " + headTextColor} key={index}>{header}</TableHead>
                             ))}
                         </TableRow>
                     </TableHeader>
-                    <TableBody>
+                    <TableBody style={{ fontSize: "13px" }}>
                         {rowArr && rowArr.map((row, rowIndex) => (
                             <TableRow className="border-0" key={rowIndex}>
                                 {headerArr && headerArr.map((header, colIndex) => (
@@ -43,23 +43,23 @@ function Tables({ headBg, headTextColor, headerText, headerArr, rowArr }) {
     );
 }
 
-const tableHeader = [
-    "CODE",
-    "NAME",
-    "DESCRIPTION",
-    "DATE CREATED",
-];
+// const tableHeader = [
+//     "CODE",
+//     "NAME",
+//     "DESCRIPTION",
+//     "DATE CREATED",
+// ];
 
-const tableRows = [
-    {
-        code: "123",
-        name: "AGENT",
-        description: "Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on",
-        datecreated: "15-JUN-2023",
-    },
-];
+// const tableRows = [
+//     {
+//         code: "123",
+//         name: "AGENT",
+//         description: "Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on",
+//         datecreated: "15-JUN-2023",
+//     },
+// ];
 
-<Tables headerArr={tableHeader} rowArr={tableRows} />
+// <Tables headerArr={tableHeader} rowArr={tableRows} />
 
 
 export default Tables

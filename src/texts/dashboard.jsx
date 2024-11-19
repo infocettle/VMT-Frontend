@@ -4,12 +4,18 @@ import { Maintenance } from "@/pages/Maintenance";
 import { Integration } from "@/pages/Integration";
 import { ServiceItems } from "@/pages/Services";
 import AccessControl from "@/pages/AccessControl/AccessControl";
+import SettingsComponent from "@/pages/settings/Settings";
 
 export const DashboardLinks = [
   {
     id: 1,
     name: "Dashboard",
     component: <Dashboard />,
+  },
+  {
+    id: 2,
+    name: "Settings",
+    component: <SettingsComponent />,
   },
   {
     id: 4,

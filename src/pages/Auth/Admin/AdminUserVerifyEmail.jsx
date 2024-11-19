@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { sendData } from "@/hooks/usePostData";
 import {
-  setSubscriber,
+  // setSubscriber,
   setUserSubscriber,
 } from "@/pages/Redux/authSubscriber.slice";
 
@@ -43,7 +43,7 @@ function AdminUserVerifyEmail({ setFormType, userEmail }) {
       });
       console.log(returnedUser);
       dispatch(setUserSubscriber(returnedUser.newUser));
-      dispatch(setSubscriber(returnedUser.subscriber));
+      // dispatch(setSubscriber(returnedUser.subscriber));
       setFormType("admin-user-new-password");
     } catch (error) {
       console.error("error", error);

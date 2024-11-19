@@ -65,14 +65,7 @@ import ServicesRoute from "./pages/Services/ServicesRoute";
 import RegistrationDetails from "./pages/Services/Contacts/RegistrationDetails";
 
 import IntegrationRoute from "./pages/Integration/IntegrationRoute";
-import {
-import ContactType from "./pages/Services/Contacts/Type";
-import NewType from "./pages/Services/Contacts/NewType";
-import ContactRegistration from "./pages/Services/Contacts/Registration";
-import ServicesRoute from "./pages/Services/ServicesRoute";
-import RegistrationDetails from "./pages/Services/Contacts/RegistrationDetails";
 
-import IntegrationRoute from "./pages/Integration/IntegrationRoute";
 import {
   Activation,
   Backup,

@@ -1584,3 +1584,10 @@ export const groupSchema = z.object({
     .max(3000, "Plan condition must be a maximum of 3000 characters")
     .trim(),
 });
+
+export const backupSchema = z.object({
+  backupID: z.string({
+    invalid_type_error: "backupID must be a string",
+    required_error: "This field is required",
+  }),
+});

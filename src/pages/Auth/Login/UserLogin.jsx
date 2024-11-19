@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { Loader } from "lucide-react";
 import {
-  setSubscriber,
+  // setSubscriber,
   setUserSubscriber,
 } from "@/pages/Redux/authSubscriber.slice";
 
@@ -62,7 +62,7 @@ function UserLogin({ setFormType, setUserEmail }) {
       });
       console.log(returnedUser);
       dispatch(setUserSubscriber(returnedUser.user));
-      dispatch(setSubscriber(returnedUser.subscriber));
+      // dispatch(setSubscriber(returnedUser.subscriber));
       setFormType("otp");
     } catch (error) {
       console.error("error", error);

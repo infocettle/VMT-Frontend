@@ -58,7 +58,7 @@ const SubSectors = () => {
 
   return (
     <div className="w-full">
-      <SecondDiv module={"Business"} />
+      <SecondDiv parentModule={"Public Registry"} module={"Business"} />
       <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
         {/* Second header */}
 

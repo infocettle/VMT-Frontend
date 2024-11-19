@@ -24,18 +24,34 @@ const MainDashboard = () => {
   const [isOpenNotification, setIsOpenNotification] = useState(false);
   const [isOpenProfile, setIsOpenProfile] = useState(false);
   const [pageHeader, setPageHeader] = useState("");
+  const [showFooter, setShowFooter] = useState(true);
+
   const location = useLocation();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const url = location.pathname; // Or location.href if needed
+    const url = location.pathname;
     console.log(url, "url");
     if (url.includes("dashboard")) {
       setPageHeader("Dashboard");
     } else if (url.includes("public_reg")) {
       setPageHeader("Public Registry");
+    } else if (url.includes("access_control")) {
+      setPageHeader("Access Control");
+    } else if (url?.includes("services")) {
+      setPageHeader("Services");
+      if (
+        url?.includes("newtype") ||
+        url?.includes("documentinformation") ||
+        url?.includes("newprospect")
+      ) {
+        setShowFooter(false);
+      } else {
+        setShowFooter(true);
+      }
     } else {
-      setPageHeader("Dashboard"); // Default or other cases
+      setPageHeader("Dashboard");
+      setShowFooter(true);
     }
   }, [location]);
   const handleHideSubSide = () => {
@@ -58,7 +74,7 @@ const MainDashboard = () => {
   };
 
   return (
-    <div className="w-full flex items-start overflow-hidden pb-2 h-screen ">
+    <div className="relative w-full flex items-start overflow-hidden pb-2 h-screen ">
       <div className="border-r h-screen flex flex-col  items-center large_screen">
         <img src={MobileLogo} alt="image" className="p-2" />
         <div className="dasboard-side-image-container h-screen flex flex-col space-y-5 items-center">
@@ -97,7 +113,7 @@ const MainDashboard = () => {
                 className="mr-1 lg:mr-3"
               />
               <h2 className="main-dashbaord-header">
-                {pageHeader.toUpperCase()}
+                {pageHeader?.toUpperCase()}
               </h2>
             </div>
             <div className="w-auto flex items-center space-x-2 large_screen">
@@ -117,17 +133,15 @@ const MainDashboard = () => {
 
               <div
                 className=" w-full flex items-center gap-2 pl-3 border-l-2 cursor-pointer large_screen"
-                onClick={handleProfileOpen}
-              >
+                onClick={handleProfileOpen}>
                 <img src={Avatar} alt="image" />
                 <p style={{ fontSize: "14px", color: "#666687" }}>
-                  {userData?.surname.toUpperCase()}{" "}
-                  {userData?.firstName.toUpperCase()}{" "}
+                  {userData?.surname?.toUpperCase()}{" "}
+                  {userData?.firstName?.toUpperCase()}{" "}
                 </p>
               </div>
               <div
-                className={`slide-in-box ${isOpenNotification ? "open" : ""}`}
-              >
+                className={`slide-in-box ${isOpenNotification ? "open" : ""}`}>
                 <Notification onClose={handleClose} />
               </div>
               {isOpenProfile ? (
@@ -140,11 +154,10 @@ const MainDashboard = () => {
                         whiteSpace: "nowrap",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
-                      }}
-                    >
+                      }}>
                       <div className="profile-info-name">
-                        {userData?.surname.toUpperCase()}{" "}
-                        {userData?.firstName.toUpperCase()}
+                        {userData?.surname?.toUpperCase()}{" "}
+                        {userData?.firstName?.toUpperCase()}
                       </div>
                       <div className="profile-info-email flex  flex-wrap ">
                         {userData?.email}
@@ -158,8 +171,7 @@ const MainDashboard = () => {
                     </div>
                     <div
                       className="flex gap-2 items-center cursor-pointer"
-                      onClick={handleLogOut}
-                    >
+                      onClick={handleLogOut}>
                       <LuLogOut />
                       <div className="help-container-text">Log out</div>
                     </div>
@@ -178,28 +190,29 @@ const MainDashboard = () => {
                 {DashboardLinks.map((eachLink) => (
                   <div
                     className="w-auto flex items-start justify-between"
-                    key={eachLink.id}
-                  >
+                    key={eachLink.id}>
                     {eachLink.component}
                   </div>
                 ))}
               </div>
             ) : null}
 
-            <div className="xl:w-full overflow-x-scroll box-container-overall">
+            <div className="relative w-full overflow-x-scroll box-container-overall">
               <Outlet />
-              <div className="w-full border-b py-5 px-4 flex items-center justify-between box-container-footer large_screen">
-                <div className="footer-copyright">
-                  Copyright ©2023 <span>Valuemine.</span> All rights reserved
+              {/* {showFooter &&
+                <div className="w-full border-b py-5 px-4 flex items-center justify-between box-container-footer large_screen">
+                  <div className="footer-copyright">
+                    Copyright ©2023 <span>Valuemine.</span> All rights reserved
+                  </div>
+                  <div className="footer-links mr-5">
+                    <a href="#">Privacy</a>
+                    <a href="#" className="border-r-2 pl-2 border-l-2 pr-2">
+                      Security
+                    </a>
+                    <a href="#">Service Terms</a>
+                  </div>
                 </div>
-                <div className="footer-links mr-5">
-                  <a href="#">Privacy</a>
-                  <a href="#" className="border-r-2 pl-2 border-l-2 pr-2">
-                    Security
-                  </a>
-                  <a href="#">Service Terms</a>
-                </div>
-              </div>
+              } */}
             </div>
           </div>
         </div>

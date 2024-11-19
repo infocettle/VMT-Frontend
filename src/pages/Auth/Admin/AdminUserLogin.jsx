@@ -7,9 +7,9 @@ import { Loader } from 'lucide-react';
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { sendData } from "@/hooks/usePostData";
-import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
+import { setSubscriber, setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
 function AdminUserLogin({ setFormType,setUserEmail }) {
-  const url = `${baseUrl}v1/user/admin/auth/login`;
+  const url = `${baseUrl}user/admin/auth/login`;
   const dispatch = useDispatch()
   const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -61,6 +61,7 @@ function AdminUserLogin({ setFormType,setUserEmail }) {
         setLoading: setLoading 
       });
       dispatch(setUserSubscriber(returnedUser.user));
+      dispatch(setSubscriber(returnedUser.subscriber));
     setFormType('admin-user-verify-login')
   } catch (error) {
     console.error("error", error);

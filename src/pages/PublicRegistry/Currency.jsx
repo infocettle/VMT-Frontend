@@ -69,7 +69,7 @@ const Currency = () => {
 
   return (
     <div className="w-full">
-      <SecondDiv module={"Currency"} />
+      <SecondDiv parentModule={"Public Registry"} module={"Currency"} />
       <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
         {/* Second header */}
 
@@ -96,6 +96,8 @@ const Currency = () => {
                   defaultValues={currencyDefaultValues}
                   validationSchema={currencyRequiredForm}
                   onSubmit={onSubmit}
+                  firstButton={"Cancel"}
+                  secondButton={"Submit"}
                 >
                   <FormInput name="alphabet_code" label="Alphabet Code" />
                   <FormInput name="number_code" label="Number Code" />

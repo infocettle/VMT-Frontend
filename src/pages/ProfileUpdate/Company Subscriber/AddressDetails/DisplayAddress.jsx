@@ -7,10 +7,10 @@ import { useSelector } from "react-redux";
 const DisplayAddress = ({ setUpdateNow, type }) => {
   const userData = useSelector((state) => state.auth.user);
 
-  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/address/${userData._id}`;
-  const companySubscriberUrl = `${baseUrl}v1/subscriber/company/profile/${userData._id}/address`;
-  const companyPartnerUrl = `${baseUrl}v1/partner/company/profile/${userData._id}/address`;
-  const individualPartnerUrl = `${baseUrl}v1/partner/individual/profile/address/${userData._id}`;
+  const indiSubBasicUrl = `${baseUrl}subscriber/individual/profile/address/${userData._id}`;
+  const companySubscriberUrl = `${baseUrl}subscriber/company/profile/${userData._id}/address`;
+  const companyPartnerUrl = `${baseUrl}partner/company/profile/${userData._id}/address`;
+  const individualPartnerUrl = `${baseUrl}partner/individual/profile/address/${userData._id}`;
 
   const { data, isFetching } = useFetchData(
     type === "individual subscriber"

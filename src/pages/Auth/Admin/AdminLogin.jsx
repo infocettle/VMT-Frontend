@@ -4,85 +4,89 @@ import Logo from "../../../assets/img/Logo.svg";
 import { useNavigate } from "react-router-dom";
 import { baseUrl } from "@/App";
 import { sendData } from "@/hooks/usePostData";
-import { Loader } from 'lucide-react';
-import { setUserSubscriber } from "@/pages/Redux/authSubscriber.slice";
+import { Loader } from "lucide-react";
+import {
+  setTokenSubscriber,
+  setUserSubscriber,
+} from "@/pages/Redux/authSubscriber.slice";
+import { toast } from "react-toastify";
+
 import { useDispatch } from "react-redux";
 function AdminLogin({ setFormType }) {
-  const url = `${baseUrl}v1/admin/auth/login`;
+  const url = `https://vmt-server.onrender.com/api/v1/admin/auth/login`;
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-    const [password, setPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
-const navigate = useNavigate()
-const dispatch = useDispatch()
-  
-    const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword);
-      };
-    
-      const handleEmailChange = (e) => {
-        setEmail(e.target.value);
-      };
-    
-    
-      const handlePasswordChange = (e) => {
-        const newPassword = e.target.value;
-        setPassword(newPassword);
-    
-    
-      };
-      const validateForm = () => {
-        if (!email.trim()) {
-          toast.error("Email is required");
-          return false;
-        }
-        if (!password.trim()) {
-          toast.error("Password is required");
-          return false;
-        }
-        return true;
-      };
-    
-      const handleContinue = async () => {
-        if (!validateForm()) return;
-    
-        const body = {
-          email: email,
-          password: password,
-        };
-    
-        
-          try {
-            const returnedUser = await sendData({
-              url: url,
-              body: body,
-              title:"Admin User Logged in",
-              setLoading: setLoading 
-            });
-            dispatch(setUserSubscriber(returnedUser.admin));
-            navigate('/')
-        } catch (error) {
-          console.error("error", error);
-        }
-      };
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
 
-      const handleReset = () => {
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+  };
+  const validateForm = () => {
+    if (!email.trim()) {
+      toast.error("Email is required");
+      return false;
+    }
+    if (!password.trim()) {
+      toast.error("Password is required");
+      return false;
+    }
+    return true;
+  };
+
+  const handleContinue = async () => {
+    if (!validateForm()) return;
+
+    const body = {
+      email: email,
+      password: password,
+    };
+
+    try {
+      const returnedUser = await sendData({
+        url: url,
+        body: body,
+        title: "Admin User Logged in",
+        setLoading: setLoading,
+      });
+      console.log(returnedUser);
+      dispatch(setUserSubscriber(returnedUser.admin));
+      dispatch(
+        setTokenSubscriber({
+          user: returnedUser.admin,
+          token: returnedUser.token,
+        })
+      );
+      navigate("/");
+    } catch (error) {
+      console.error("error", error);
+    }
+  };
+
+  const handleReset = () => {
     setFormType("admin-forgot-password");
-       };
- 
+  };
 
   return (
     <div className="auth-form-container">
-        <div className="flex justify-center items-center w-full mb-10">
-      
-<img src={Logo} alt="image" className="" />      
-        </div>
+      <div className="flex justify-center items-center w-full mb-10">
+        <img src={Logo} alt="image" className="" />
+      </div>
 
-      <div className="auth-header-text text-center w-full mb-4">Admin Login</div>
-    
-     
+      <div className="auth-header-text text-center w-full mb-4">
+        Admin Login
+      </div>
 
       <div className="auth-form-flex">
         <div className="flex flex-col gap-2 w-full">
@@ -95,15 +99,15 @@ const dispatch = useDispatch()
             onChange={handleEmailChange}
           />
         </div>
-      
       </div>
 
       <div className="auth-form-flex">
-        
         <div className="flex flex-col gap-2 w-full">
           <div className="auth-label mt-1">Password</div>
 
-          <div className="password-input-container" style={{marginTop:"0px"}}>
+          <div
+            className="password-input-container"
+            style={{ marginTop: "0px" }}>
             <input
               type={showPassword ? "text" : "password"}
               placeholder="6+ Characters"
@@ -113,8 +117,7 @@ const dispatch = useDispatch()
             />
             <button
               onClick={togglePasswordVisibility}
-              className="toggle-password-button"
-            >
+              className="toggle-password-button">
               {showPassword ? <HiEyeOff /> : <HiEye />}
             </button>
           </div>
@@ -122,18 +125,22 @@ const dispatch = useDispatch()
       </div>
       <div className="subscription-terms justify-between w-full">
         <div className="flex gap-2">
-        <input type="checkbox"/>
+          <input type="checkbox" />
           <div className="subscription-terms-text">Remember me</div>
         </div>
 
-          <div className="subscription-terms-text cursor-pointer" onClick={handleReset}> <span>Forgot your password?</span></div>
-          </div>
-      <div className="auth-button mt-10" onClick={handleContinue}>
-      <div className="auth-button-text">
-          {loading ? <Loader className="animate-spin" /> : 'Login'}
+        <div
+          className="subscription-terms-text cursor-pointer"
+          onClick={handleReset}>
+          {" "}
+          <span>Forgot your password?</span>
         </div>
       </div>
-     
+      <div className="auth-button mt-10" onClick={handleContinue}>
+        <div className="auth-button-text">
+          {loading ? <Loader className="animate-spin" /> : "Login"}
+        </div>
+      </div>
     </div>
   );
 }

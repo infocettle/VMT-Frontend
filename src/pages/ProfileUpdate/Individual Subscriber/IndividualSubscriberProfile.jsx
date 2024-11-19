@@ -42,7 +42,7 @@ const IndividualSubscriberProfile = () => {
   const [type, setType] = useState("individual subscriber");
   const [progress, setProgress] = useState(0);
 
-  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/basic-details/${userData._id}`;
+  const indiSubBasicUrl = `${baseUrl}subscriber/individual/profile/basic-details/${userData._id}`;
 
   const { data, isFetching } = useFetchData(
     indiSubBasicUrl,

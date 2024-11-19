@@ -67,7 +67,7 @@ const TaxAuthority = () => {
 
   return (
     <div className="w-full">
-      <SecondDiv module={"Tax Authority"} />
+      <SecondDiv parentModule={"Public Registry"} module={"Tax Authority"} />
       <div className="bg-gray-100 py-3 px-10 w-auto flex-col items-center">
         {/* Second header */}
 

@@ -30,6 +30,7 @@ const Title = () => {
   const titleUrl = `${baseUrl}public-registry/personal-details/title`;
 
   const { data, isPending } = useFetchData(titleUrl, "title");
+  console.log(data);
 
   const postMutation = usePostData({
     queryKey: ["title"],
@@ -52,7 +53,7 @@ const Title = () => {
 
   return (
     <div className="w-full">
-      <SecondDiv module={"Personal Details"} />
+      <SecondDiv parentModule={"Public Registry"} module={"Personal Details"} />
       <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
         {/* Second header */}
 

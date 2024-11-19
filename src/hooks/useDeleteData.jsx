@@ -1,11 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-const deleteData = async ({ url, title }) => {
+const deleteData = async ({ url, title, token }) => {
   const headers = {
     Accept: "application/json",
     "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
   };
 
   try {
@@ -16,7 +18,9 @@ const deleteData = async ({ url, title }) => {
     });
     return data;
   } catch (error) {
-    const errorBody = error.response?.data || { detail: error.message };
+    const errorBody = error.response?.data?.message || {
+      detail: error.message,
+    };
     console.error(errorBody);
     toast.error(`${errorBody}`, {
       autoClose: 2000,
@@ -27,10 +31,11 @@ const deleteData = async ({ url, title }) => {
 };
 
 const useDeleteData = ({ queryKey, url, title }) => {
+  const token = useSelector((state) => state.auth.token);
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => deleteData({ url, title }),
+    mutationFn: () => deleteData({ url, title, token }),
     onSuccess: () => {
       queryClient.invalidateQueries(queryKey);
     },

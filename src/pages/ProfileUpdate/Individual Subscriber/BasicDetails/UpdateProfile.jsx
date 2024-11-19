@@ -12,7 +12,7 @@ import { useState } from "react";
 const UpdateProfile = ({ setUpdateNow }) => {
   const userData = useSelector((state) => state.auth.user);
 
-  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/basic-details/${userData._id}`;
+  const indiSubBasicUrl = `${baseUrl}subscriber/individual/profile/basic-details/${userData._id}`;
 
   const { data } = useFetchData(
     indiSubBasicUrl,

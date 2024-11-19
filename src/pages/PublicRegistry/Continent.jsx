@@ -58,7 +58,7 @@ const Continent = () => {
 
   return (
     <div className="w-full">
-      <SecondDiv module={"Address / Nationality"} />
+      <SecondDiv parentModule={"Public Registry"} module={"Address / Nationality"} />
       <div className="bg-gray-100 py-3 px-10 w-full flex-col items-center">
         {/* Second header */}
 
@@ -85,6 +85,8 @@ const Continent = () => {
                   defaultValues={continentDefaultValues}
                   validationSchema={continentRequiredForm}
                   onSubmit={onSubmit}
+                  firstButton={"Cancel"}
+                  secondButton={"Submit"}
                 >
                   <FormInput name="name" label="Name" />
                 </GenericForm>

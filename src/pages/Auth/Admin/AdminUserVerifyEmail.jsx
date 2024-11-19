@@ -9,7 +9,8 @@ import {
   setSubscriber,
   setUserSubscriber,
 } from "@/pages/Redux/authSubscriber.slice";
-function AdminUserVerifyEmail({ setFormType }) {
+
+function AdminUserVerifyEmail({ setFormType, userEmail }) {
   const url = `${baseUrl}user/admin/auth/verify-otp`;
   const [loading, setLoading] = useState(false);
   const [otp, setOTP] = useState("");
@@ -42,6 +43,7 @@ function AdminUserVerifyEmail({ setFormType }) {
       });
       console.log(returnedUser);
       dispatch(setUserSubscriber(returnedUser.newUser));
+      dispatch(setSubscriber(returnedUser.subscriber));
       setFormType("admin-user-new-password");
     } catch (error) {
       console.error("error", error);

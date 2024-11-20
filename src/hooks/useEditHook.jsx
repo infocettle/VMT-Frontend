@@ -3,8 +3,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-const editData = async ({ url, body, title, image,token }) => {
-
+const editData = async ({ url, body, title, image, token }) => {
   const headers = {
     Accept: "application/json",
     "Content-Type": image ? "multipart/form-data" : "application/json",
@@ -19,7 +18,9 @@ const editData = async ({ url, body, title, image,token }) => {
     });
     return data;
   } catch (error) {
-    const errorBody = error.response?.data || { detail: error.message };
+    const errorBody = error.response?.data?.message || {
+      detail: error.message,
+    };
     console.error(errorBody);
     toast.error(`${errorBody}`, {
       autoClose: 2000,
@@ -34,7 +35,7 @@ const useEditData = ({ queryKey, url, title, image }) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (body) => editData({ url, body, title, image,token }),
+    mutationFn: (body) => editData({ url, body, title, image, token }),
     onSuccess: () => {
       queryClient.invalidateQueries(queryKey);
     },

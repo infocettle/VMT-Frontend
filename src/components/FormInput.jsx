@@ -1,7 +1,13 @@
 import React from "react";
 import { useFormContext, Controller } from "react-hook-form";
 
-export const FormInput = ({ name, label, defaultValue, textArea, type = "text" }) => {
+export const FormInput = ({
+  name,
+  label,
+  defaultValue,
+  textArea,
+  type = "text",
+}) => {
   const {
     control,
     formState: { errors },
@@ -24,14 +30,15 @@ export const FormInput = ({ name, label, defaultValue, textArea, type = "text" }
                 {...field}
                 type={type}
                 placeholder={`Enter ${label}`}
-            />
-            ): (
+              />
+            ) : (
               <input
                 className="access-control-modal-input mb-2 capitalize"
                 {...field}
                 type={type}
+                {...(type === "number" ? { step: "0.01" } : {})}
                 placeholder={`Enter ${label}`}
-            />
+              />
             )}
             {errors[name] && (
               <p className="text-red-500 text-sm">{errors[name]?.message}</p>

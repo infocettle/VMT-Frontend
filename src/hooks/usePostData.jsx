@@ -3,7 +3,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-const postData = async ({ url, body, title, token }) => {
+const postData = async ({ url, body, title }) => {
   const headers = {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -18,7 +18,8 @@ const postData = async ({ url, body, title, token }) => {
     });
     return data;
   } catch (error) {
-    const errorBody = error.response?.data || { detail: error.message };
+    console.log(error);
+    const errorBody = error.response?.data.message || { detail: error.message };
     console.error(errorBody);
     toast.error(`${errorBody}`, {
       autoClose: 2000,
@@ -40,7 +41,7 @@ export const sendData = async ({ url, body, title, setLoading }) => {
   try {
     const { data } = await axios.post(url, body, { headers });
     console.log(data);
-    toast.success(`${title} successfully`, {
+    toast.success(`${title} successful`, {
       autoClose: 2000,
       theme: "light",
     });
@@ -65,7 +66,7 @@ export const usePostData = ({ queryKey, url, title }) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (body) => postData({ url, body, title, token }),
+    mutationFn: (body) => postData({ url, body, title }),
     onSuccess: () => {
       queryClient.invalidateQueries(queryKey);
     },

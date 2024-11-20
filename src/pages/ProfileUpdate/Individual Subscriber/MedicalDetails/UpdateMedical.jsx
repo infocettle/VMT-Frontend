@@ -18,7 +18,7 @@ const UpdateMedical = ({ setUpdateNow }) => {
   });
 
   const userData = useSelector((state) => state.auth.user);
-  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/medical-information/${userData._id}`;
+  const indiSubBasicUrl = `${baseUrl}subscriber/individual/profile/medical-information/${userData._id}`;
 
   const bloodUrl = `${baseUrl}public-registry/personal-details/blood-group/`;
   const genotypeUrl = `${baseUrl}public-registry/personal-details/genotype/`;
@@ -66,16 +66,14 @@ const UpdateMedical = ({ setUpdateNow }) => {
       {/* Update Details Form */}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-6 py-5 w-full px-5"
-      >
+        className="space-y-6 py-5 w-full px-5">
         <div className="col-span-4 md:col-span-1 my-3">
           <label className="text-sm font-light text-gray-700">
             Genotype<span className="text-red-600">*</span>
           </label>
           <select
             {...register("genotype")}
-            className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-          >
+            className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm">
             <option value="">Select Genotype</option>
             {activeGe?.map((item) => (
               <option value={item.name.toLowerCase()}>
@@ -94,8 +92,7 @@ const UpdateMedical = ({ setUpdateNow }) => {
           </label>
           <select
             {...register("bloodGroup")}
-            className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-          >
+            className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm">
             <option value="">Select Blood Group</option>
             {activeBG?.map((item) => (
               <option value={item.name.toLowerCase()}>
@@ -196,8 +193,7 @@ const UpdateMedical = ({ setUpdateNow }) => {
           </label>
           <select
             {...register("ailments")}
-            className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm"
-          >
+            className="mt-1 px-3 w-full h-9 bg-slate-100 border border-gray-300 rounded-md shadow-sm">
             <option value="">Select Ailments</option>
             {activeAil?.map((item) => (
               <option value={item.name.toLowerCase()}>
@@ -214,15 +210,13 @@ const UpdateMedical = ({ setUpdateNow }) => {
         <div className="w-full flex items-center justify-between">
           <div
             onClick={() => setUpdateNow(false)}
-            className="mt-4 inline-flex justify-center py-2 px-4 border border-red-300 shadow-sm text-sm font-medium rounded-md text-white bg-red-600 cursor-pointer"
-          >
+            className="mt-4 inline-flex justify-center py-2 px-4 border border-red-300 shadow-sm text-sm font-medium rounded-md text-white bg-red-600 cursor-pointer">
             Cancel
           </div>
 
           <Button
             type="submit"
-            className="mt-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-vmtblue"
-          >
+            className="mt-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-vmtblue">
             Save
           </Button>
         </div>

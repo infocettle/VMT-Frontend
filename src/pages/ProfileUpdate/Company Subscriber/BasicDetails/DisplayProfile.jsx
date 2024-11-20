@@ -7,8 +7,8 @@ import { useSelector } from "react-redux";
 const DisplayProfile = ({ setUpdateNow, type }) => {
   const userData = useSelector((state) => state.auth.user);
 
-  const companySubscriberUrl = `${baseUrl}v1/subscriber/company/profile/${userData._id}/basic-details`;
-  const companyPartnerUrl = `${baseUrl}v1/partner/company/profile/${userData._id}/basic-details`;
+  const companySubscriberUrl = `${baseUrl}subscriber/company/profile/${userData._id}/basic-details`;
+  const companyPartnerUrl = `${baseUrl}partner/company/profile/${userData._id}/basic-details`;
 
   const { data, isFetching } = useFetchData(
     type === "company subscriber" ? companySubscriberUrl : companyPartnerUrl,
@@ -38,8 +38,7 @@ const DisplayProfile = ({ setUpdateNow, type }) => {
         <h3 className="text-black text-sm leading-relaxed">Basic Detail</h3>
         <Button
           onClick={() => setUpdateNow(true)}
-          className="bg-blue-200 border border-blue-500 text-blue-900 capitalize w-20 rounded-lg h-10 flex items-center justify-center"
-        >
+          className="bg-blue-200 border border-blue-500 text-blue-900 capitalize w-20 rounded-lg h-10 flex items-center justify-center">
           <h3>Update</h3>
         </Button>
       </div>

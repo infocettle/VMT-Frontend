@@ -5,10 +5,11 @@ import Select from "react-select";
 import { toast } from "react-toastify";
 import { baseUrl } from "@/App";
 import { useSelector } from "react-redux";
-import { Loader } from 'lucide-react';
+import { Loader } from "lucide-react";
 import { sendData } from "@/hooks/usePostData";
-function NewPassword({setFormType,userEmail}) {
-  const url = `${baseUrl}v1/auth/reset-password`;
+
+function NewPassword({ setFormType, userEmail }) {
+  const url = `${baseUrl}auth/reset-password`;
   const token = useSelector((state) => state.auth.token);
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
@@ -55,30 +56,29 @@ function NewPassword({setFormType,userEmail}) {
       toast.error("Passwords do not match!");
       return false;
     }
-   
+
     return true;
   };
   const handleSuccessful = () => {
     setFormType("login-user");
   };
-  const handleContinue = async() => {
+  const handleContinue = async () => {
     if (!validateForm()) {
       return;
     }
     setLoading(true);
     const body = {
       email: userEmail,
-     password : password,
-     confirmPassword : confirmPassword
-
+      password: password,
+      confirmPassword: confirmPassword,
     };
- 
+
     try {
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(body),
       });
@@ -87,15 +87,14 @@ function NewPassword({setFormType,userEmail}) {
         throw new Error("Network response was not ok");
       }
       const result = await response.json();
-      setLoading(false)
-    console.log(result)
-   
+      setLoading(false);
+      console.log(result);
+
       setSucessState(true);
     } catch (error) {
       console.error("error", error);
     }
   };
-  
 
   const handleGoback = () => {
     setFormType("verify-email");
@@ -119,8 +118,7 @@ function NewPassword({setFormType,userEmail}) {
             />
             <button
               onClick={togglePasswordVisibility}
-              className="toggle-password-button"
-            >
+              className="toggle-password-button">
               {showPassword ? <HiEyeOff /> : <HiEye />}
             </button>
           </div>
@@ -135,21 +133,19 @@ function NewPassword({setFormType,userEmail}) {
             />
             <button
               onClick={toggleConfirmPasswordVisibility}
-              className="toggle-password-button"
-            >
+              className="toggle-password-button">
               {showConfirmPassword ? <HiEyeOff /> : <HiEye />}
             </button>
             {/* {passwordMatchError && <p className="error-message">Passwords do not match</p>} */}
           </div>
-          <div className="auth-button mt-10" onClick={handleContinue }>
-      <div className="auth-button-text">
-          {loading ? <Loader className="animate-spin" /> : 'Submit'}
-        </div>
+          <div className="auth-button mt-10" onClick={handleContinue}>
+            <div className="auth-button-text">
+              {loading ? <Loader className="animate-spin" /> : "Submit"}
+            </div>
           </div>
           <div
             className="flex items-center w-full justify-center mt-5 cursor-pointer "
-            onClick={handleGoback}
-          >
+            onClick={handleGoback}>
             {/* <IoIosArrowRoundBack style={{fontSize:"1.3rem",color:"#0B6ED0"}} /> */}
             <div className="auth-button-go-back">Go back</div>
           </div>
@@ -158,14 +154,13 @@ function NewPassword({setFormType,userEmail}) {
         <div className="flex flex-col justify-center items-center ">
           <div className="auth-header-text">Password Reset Successfully</div>
           <div className="auth-subheader-text mt-4 text-center">
-          Your password reset was successful. Please contact our support team if you need any clarification
+            Your password reset was successful. Please contact our support team
+            if you need any clarification
           </div>
           <div className="auth-button mt-5" onClick={handleSuccessful}>
-      <div className="auth-button-text">
-         Go to login
-        </div>
+            <div className="auth-button-text">Go to login</div>
           </div>
-      </div>
+        </div>
       )}
     </div>
   );

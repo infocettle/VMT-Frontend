@@ -10,6 +10,7 @@ import Avatar from "../../../assets/img/Avatar.svg";
 import { useSelector } from "react-redux";
 function Subscription() {
   const userData = useSelector((state) => state.auth.user);
+  console.log(userData);
   const [subscriptionType, setSubscriptionType] =
     useState("first-subscription");
   const handleSubmit = () => {
@@ -21,7 +22,7 @@ function Subscription() {
       <div className="sub-form-overall-container">
         <div className="w-full flex items-center bg-white justify-between pt-2 pl-10 pb-2">
           <div className=" flex items-center ">
-            <img src={Logo} alt="image"  style={{width:"200px"}}/>
+            <img src={Logo} alt="image" style={{ width: "200px" }} />
           </div>
 
           <div className=" flex flex-col items-start">
@@ -34,17 +35,20 @@ function Subscription() {
                     marginRight: "0.5rem",
                   }}
                 />
-<MdOutlineSettings  style={{
+                <MdOutlineSettings
+                  style={{
                     fontSize: "2rem",
                     color: "#666687",
                     marginRight: "0.5rem",
-                    className:"d-none"
-                  }}/>
+                    className: "d-none",
+                  }}
+                />
                 <div className=" w-full flex items-center gap-2  ">
                   <img src={Avatar} alt="image" />
-                 
+
                   <p style={{ fontSize: "14px", color: "#666687" }}>
-                 {userData.firstName.toUpperCase()} {userData.surname.toUpperCase()}
+                    {userData.firstName.toUpperCase()}{" "}
+                    {userData.surname.toUpperCase()}
                   </p>
                 </div>
               </div>

@@ -5,6 +5,7 @@ import { Integration } from "@/pages/Integration";
 import { ServiceItems } from "@/pages/Services";
 import AccessControl from "@/pages/AccessControl/AccessControl";
 import SettingsComponent from "@/pages/settings/Settings";
+import PlansPrices from "@/pages/Plans-Prices/PlansPrices";
 
 export const DashboardLinks = [
   {
@@ -16,6 +17,11 @@ export const DashboardLinks = [
     id: 2,
     name: "Settings",
     component: <SettingsComponent />,
+  },
+  {
+    id: 3,
+    name: "Plans & Prices",
+    component: <PlansPrices />,
   },
   {
     id: 4,

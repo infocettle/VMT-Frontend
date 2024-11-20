@@ -18,9 +18,7 @@ const editData = async ({ url, body, title, image, token }) => {
     });
     return data;
   } catch (error) {
-    const errorBody = error.response?.data?.message || {
-      detail: error.message,
-    };
+    const errorBody = error.response?.data || { detail: error.message };
     console.error(errorBody);
     toast.error(`${errorBody}`, {
       autoClose: 2000,

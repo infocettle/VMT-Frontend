@@ -3,9 +3,10 @@ import { sendData } from "@/hooks/usePostData";
 import React, { useEffect, useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { toast } from "react-toastify";
-import { Loader } from 'lucide-react';
-function ResetPassword({ setFormType,setUserEmail }) {
-  const url = `${baseUrl}v1/auth/forgot-password`;
+import { Loader } from "lucide-react";
+
+function ResetPassword({ setFormType, setUserEmail }) {
+  const url = `${baseUrl}auth/forgot-password`;
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const handleEmailChange = (e) => {
@@ -13,9 +14,9 @@ function ResetPassword({ setFormType,setUserEmail }) {
   };
 
   useEffect(() => {
-   setUserEmail(email);
-  }, [email])
-  
+    setUserEmail(email);
+  }, [email]);
+
   const validateForm = () => {
     if (!email.trim()) {
       toast.error("Email is required");
@@ -36,7 +37,7 @@ function ResetPassword({ setFormType,setUserEmail }) {
         url: url,
         body: body,
         title: "Verication code sent",
-        setLoading: setLoading 
+        setLoading: setLoading,
       });
       setFormType("verify-email");
     } catch (error) {
@@ -65,15 +66,14 @@ function ResetPassword({ setFormType,setUserEmail }) {
       </div>
 
       <div className="auth-button mt-10" onClick={handleContinue}>
-      <div className="auth-button-text">
-          {loading ? <Loader className="animate-spin" /> : 'Submit'}
+        <div className="auth-button-text">
+          {loading ? <Loader className="animate-spin" /> : "Submit"}
         </div>
       </div>
 
       <div
         className="flex items-center w-full justify-center mt-5 cursor-pointer "
-        onClick={handleBack}
-      >
+        onClick={handleBack}>
         <IoIosArrowRoundBack style={{ fontSize: "1.3rem", color: "#0B6ED0" }} />
         <div className="auth-button-go-back">Go back to login</div>
       </div>

@@ -8,11 +8,12 @@ import { baseUrl } from "@/App";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { sendData } from "@/hooks/usePostData";
-import { Loader } from 'lucide-react';
-function UserCompanyCreatePassword({userType}) {
+import { Loader } from "lucide-react";
+
+function UserCompanyCreatePassword({ userType }) {
   const profileData = useSelector((state) => state.auth);
   const newUserId = profileData?.user?._id;
-  const url = `${baseUrl}v1/${userType}/company/auth/set-password/${newUserId}`;
+  const url = `${baseUrl}${userType}/company/auth/set-password/${newUserId}`;
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -148,9 +149,9 @@ function UserCompanyCreatePassword({userType}) {
         url: url,
         body: requestBody,
         title: "Password and security questions set",
-        setLoading: setLoading 
+        setLoading: setLoading,
       });
-     
+
       navigate("/subscription");
     } catch (error) {
       const errorBody = error.response?.data || { detail: error.message };
@@ -185,8 +186,7 @@ function UserCompanyCreatePassword({userType}) {
         />
         <button
           onClick={togglePasswordVisibility}
-          className="toggle-password-button"
-        >
+          className="toggle-password-button">
           {showPassword ? <HiEyeOff /> : <HiEye />}
         </button>
       </div>
@@ -202,51 +202,50 @@ function UserCompanyCreatePassword({userType}) {
         />
         <button
           onClick={toggleConfirmPasswordVisibility}
-          className="toggle-password-button"
-        >
+          className="toggle-password-button">
           {showConfirmPassword ? <HiEyeOff /> : <HiEye />}
         </button>
       </div>
 
       <div className="auth-label my-4">Security Questions</div>
       <div className="password-height">
-      <div className="w-full">
-        {[0, 1, 2].map((index) => (
-          <div key={index} className="w-full">
-            <div className="auth-label">{`Question ${index + 1}`}
-              <span className="auth-mandatory">*</span>
+        <div className="w-full">
+          {[0, 1, 2].map((index) => (
+            <div key={index} className="w-full">
+              <div className="auth-label">
+                {`Question ${index + 1}`}
+                <span className="auth-mandatory">*</span>
+              </div>
+              <Select
+                options={filteredOptions(index)}
+                value={selectedQuestions[index]}
+                styles={customStyles}
+                onChange={(selectedOption) =>
+                  handleQuestionSelect(selectedOption, index)
+                }
+                placeholder={`Select Question ${index + 1}`}
+              />
+              <input
+                type="text"
+                className="auth-input my-4 w-full"
+                placeholder="Answer"
+                value={answers[index]}
+                onChange={(e) => handleAnswerChange(e, index)}
+              />
             </div>
-            <Select
-              options={filteredOptions(index)}
-              value={selectedQuestions[index]}
-              styles={customStyles}
-              onChange={(selectedOption) =>
-                handleQuestionSelect(selectedOption, index)
-              }
-              placeholder={`Select Question ${index + 1}`}
-            />
-            <input
-              type="text"
-              className="auth-input my-4 w-full"
-              placeholder="Answer"
-              value={answers[index]}
-              onChange={(e) => handleAnswerChange(e, index)}
-            />
-          </div>
-        ))}
-      </div>
-
-      <div className="auth-button mt-10" onClick={handleContinue}>
-      <div className="auth-button-text">
-          {loading ? <Loader className="animate-spin" /> : 'Submit'}
+          ))}
         </div>
-      </div>
 
-      <div
-        className="flex items-center w-full justify-center mt-5 cursor-pointer"
-        onClick={handleGoback}
-      >
-        <div className="auth-button-go-back">Go back</div>
+        <div className="auth-button mt-10" onClick={handleContinue}>
+          <div className="auth-button-text">
+            {loading ? <Loader className="animate-spin" /> : "Submit"}
+          </div>
+        </div>
+
+        <div
+          className="flex items-center w-full justify-center mt-5 cursor-pointer"
+          onClick={handleGoback}>
+          <div className="auth-button-go-back">Go back</div>
         </div>
       </div>
     </div>

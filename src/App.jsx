@@ -69,7 +69,7 @@ import {
   Activation,
   Backup,
   Restore,
-  Recover,
+  // Recover,
   LockDomain,
   CancelDomain,
 } from "./pages/Maintenance";
@@ -137,12 +137,28 @@ import AccessAuth from "./pages/AccessControl/Access/AccessAuth";
 import DetailAccessSettings from "./pages/AccessControl/components/DetailAccessSettings";
 import DetailAccessAuth from "./pages/AccessControl/components/DetailAccessAuth";
 import DetailAccessPasswordChange from "./pages/AccessControl/components/DetailAccessPasswordChange";
-
+import PlansPricesRoute from "./pages/Plans-Prices/PlansPricesRoute";
+import Plans from "./pages/Plans-Prices/PlansRoute";
+import {
+  Charges,
+  ChargesTypes,
+  Commission,
+  CommissionTypes,
+  Differentiators,
+  Discounts,
+  DiscountTypes,
+  Group,
+  Plan,
+  ServiceListing,
+} from "./pages/Plans-Prices";
+import Discount from "./pages/Plans-Prices/DiscountRoute";
+import Charge from "./pages/Plans-Prices/ChargesRoute";
+import Commissions from "./pages/Plans-Prices/CommissionsRoute";
 import SettingsRoute from "./pages/settings/SettingsRoutes";
 
 const queryClient = new QueryClient();
 
-export const baseUrl = "https://vmt-server.onrender.com/api/v1/";
+export const baseUrl = "https://vmt-server.onrender.com/api/v1/"; //for local development: "http://localhost:3000/api/v1/";
 export const baseUrlTrial = "https://vnt-domie.onrender.com";
 
 const router = createBrowserRouter([
@@ -622,10 +638,10 @@ const router = createBrowserRouter([
             path: "restore",
             element: <Restore />,
           },
-          {
-            path: "recover",
-            element: <Recover />,
-          },
+          // {
+          //   path: "recover",
+          //   element: <Recover />,
+          // },
           {
             path: "lock_domain",
             element: <LockDomain />,
@@ -665,6 +681,76 @@ const router = createBrowserRouter([
                 element: <Others />,
               },
             ],
+          },
+        ],
+      },
+      {
+        path: "plans_prices/*",
+        element: <PlansPricesRoute />,
+        children: [
+          {
+            path: "plans/*",
+            element: <Plans />,
+            children: [
+              {
+                path: "group",
+                element: <Group />,
+              },
+              {
+                path: "plan",
+                element: <Plan />,
+              },
+            ],
+          },
+          {
+            path: "discount/*",
+            element: <Discount />,
+            children: [
+              {
+                path: "types",
+                element: <DiscountTypes />,
+              },
+              {
+                path: "discounts",
+                element: <Discounts />,
+              },
+            ],
+          },
+          {
+            path: "charges/*",
+            element: <Charge />,
+            children: [
+              {
+                path: "types",
+                element: <ChargesTypes />,
+              },
+              {
+                path: "charge",
+                element: <Charges />,
+              },
+            ],
+          },
+          {
+            path: "commissions/*",
+            element: <Commissions />,
+            children: [
+              {
+                path: "types",
+                element: <CommissionTypes />,
+              },
+              {
+                path: "commission",
+                element: <Commission />,
+              },
+            ],
+          },
+          {
+            path: "differentiators",
+            element: <Differentiators />,
+          },
+          {
+            path: "service_listing",
+            element: <ServiceListing />,
           },
         ],
       },

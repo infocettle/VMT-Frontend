@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 const DisplayRelative = ({ setUpdateNow }) => {
   const userData = useSelector((state) => state.auth.user);
-  const indiSubBasicUrl = `${baseUrl}v1/subscriber/individual/profile/relative-information/${userData._id}`;
+  const indiSubBasicUrl = `${baseUrl}subscriber/individual/profile/relative-information/${userData._id}`;
 
   const { data, isFetching } = useFetchData(
     indiSubBasicUrl,
@@ -55,8 +55,7 @@ const DisplayRelative = ({ setUpdateNow }) => {
         <h3 className="text-black text-sm leading-relaxed">Relative Details</h3>
         <Button
           onClick={() => setUpdateNow(true)}
-          className="bg-blue-200 border border-blue-500 text-blue-900 capitalize w-20 rounded-lg h-10 flex items-center justify-center"
-        >
+          className="bg-blue-200 border border-blue-500 text-blue-900 capitalize w-20 rounded-lg h-10 flex items-center justify-center">
           <h3>Update</h3>
         </Button>
       </div>

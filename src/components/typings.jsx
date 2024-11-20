@@ -1,9 +1,10 @@
+import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import useDeleteData from "@/hooks/useDeleteData";
 import useEditData from "@/hooks/useEditHook";
 import { usePostData } from "@/hooks/usePostData";
-import { baseUrl, baseUrlTrial } from "@/App";
-import { PencilIcon, Trash2Icon, ChevronsUpDown, Trash2 } from "lucide-react";
+import { baseUrl } from "@/App";
+import { PencilIcon, Trash2Icon, ChevronsUpDown } from "lucide-react";
 import { TbRestore } from "react-icons/tb";
 import { LuArchiveRestore } from "react-icons/lu";
 import { Button } from "@/components/ui/button";
@@ -23,6 +24,7 @@ import { GenericForm } from "@/components/GenericForm";
 import { FormInput } from "@/components/FormInput";
 import { FormSelect } from "@/components/FormSelect";
 import { FormTextArea } from "./FormTextArea";
+import { FormRadio } from "./FormRadio";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { requiredForm } from "@/pages/PublicRegistry/Title";
 import { genderRequiredForm } from "@/pages/PublicRegistry/Gender";
@@ -59,10 +61,6 @@ import {
   pfcRequiredForm,
 } from "@/pages/PublicRegistry/PensionFund";
 import { formatISODate, formatBytes } from "@/lib/utils";
-// import { softwareRequiredForm } from "@/pages/Integration/Software";
-import { thirdPartyRequiredForm } from "@/pages/Integration/ThirdParties/BaseThirdParty";
-import { Link } from "react-router-dom";
-import { EditAWS, EditAzure, EditDropbox, EditGoogleAds, EditGoogleCloud } from "@/pages/Integration";
 
 export const titleColumns = [
   {
@@ -80,8 +78,7 @@ export const titleColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -101,8 +98,7 @@ export const titleColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -122,8 +118,7 @@ export const titleColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -140,12 +135,13 @@ export const titleColumns = [
         <div
           className={cn(
             `${
-              formatted == "Pending"
+              formatted === "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -191,8 +187,7 @@ export const titleColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <ReuseDialog
             isEdit={true}
             open={open}
@@ -202,8 +197,7 @@ export const titleColumns = [
             defaultValues={defaultValues}
             validationSchema={requiredForm}
             onSubmit={onSubmit}
-            long={false}
-          >
+            long={false}>
             <FormInput name="title" label="Title" />
           </ReuseDialog>
 
@@ -243,8 +237,7 @@ export const genderColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -264,8 +257,7 @@ export const genderColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -285,8 +277,7 @@ export const genderColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -303,12 +294,13 @@ export const genderColumns = [
         <div
           className={cn(
             `${
-              formatted == "Pending"
+              formatted === "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -356,8 +348,7 @@ export const genderColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <ReuseDialog
             isEdit={true}
             open={open}
@@ -367,8 +358,7 @@ export const genderColumns = [
             defaultValues={genderDefaultValues}
             validationSchema={genderRequiredForm}
             onSubmit={onSubmit}
-            long={false}
-          >
+            long={false}>
             <FormInput name="title" label="Title" />
             <FormInput name="alias" label="Alias" />
           </ReuseDialog>
@@ -409,8 +399,7 @@ export const maritalStatusColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -430,8 +419,7 @@ export const maritalStatusColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -451,8 +439,7 @@ export const maritalStatusColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -469,12 +456,13 @@ export const maritalStatusColumns = [
         <div
           className={cn(
             `${
-              formatted == "Pending"
+              formatted === "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -522,8 +510,7 @@ export const maritalStatusColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <ReuseDialog
             isEdit={true}
             open={open}
@@ -533,8 +520,7 @@ export const maritalStatusColumns = [
             defaultValues={maritalDefaultValues}
             validationSchema={maritalRequiredForm}
             onSubmit={onSubmit}
-            long={false}
-          >
+            long={false}>
             <FormInput name="code" label="Code" />
             <FormInput name="title" label="Title" />
           </ReuseDialog>
@@ -567,8 +553,7 @@ export const relationshipColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase font-medium text-vmtgray"}
-        >
+          className={"uppercase font-medium text-vmtgray"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -588,8 +573,7 @@ export const relationshipColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase font-medium text-vmtgray"}
-        >
+          className={"uppercase font-medium text-vmtgray"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -609,8 +593,7 @@ export const relationshipColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase font-medium text-vmtgray"}
-        >
+          className={"uppercase font-medium text-vmtgray"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -627,12 +610,13 @@ export const relationshipColumns = [
         <div
           className={cn(
             `${
-              formatted == "Pending"
+              formatted === "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -680,8 +664,7 @@ export const relationshipColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <ReuseDialog
             isEdit={true}
             open={open}
@@ -691,8 +674,7 @@ export const relationshipColumns = [
             defaultValues={relationshipDefaultValues}
             validationSchema={relationshipRequiredForm}
             onSubmit={onSubmit}
-            long={false}
-          >
+            long={false}>
             <FormInput name="title" label="Title" />
           </ReuseDialog>
 
@@ -739,8 +721,7 @@ export const bloodGroupGenotypeColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -768,8 +749,7 @@ export const bloodGroupGenotypeColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-4 h-4 w-4" />
         </Button>
@@ -789,8 +769,7 @@ export const bloodGroupGenotypeColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -807,12 +786,13 @@ export const bloodGroupGenotypeColumns = [
         <div
           className={cn(
             `${
-              formatted == "Pending"
+              formatted === "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -863,8 +843,7 @@ export const bloodGroupGenotypeColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <Dialog open={open} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
               <PencilIcon
@@ -887,8 +866,7 @@ export const bloodGroupGenotypeColumns = [
                 validationSchema={bGRequiredForm}
                 onSubmit={onSubmit}
                 firstButton={"Cancel"}
-                secondButton={"Submit"}
-              >
+                secondButton={"Submit"}>
                 <FormInput name="name" label="Name" />
                 <FormInput name="code" label="Code" />
               </GenericForm>
@@ -917,8 +895,7 @@ export const bloodGroupGenotypeColumns = [
                   onClick={async () => {
                     await deleteMutation.mutateAsync();
                     setIsOpen(false);
-                  }}
-                >
+                  }}>
                   Delete
                 </Button>
               </div>
@@ -948,8 +925,7 @@ export const ailmentColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -979,8 +955,7 @@ export const ailmentColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -1000,8 +975,7 @@ export const ailmentColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -1018,12 +992,13 @@ export const ailmentColumns = [
         <div
           className={cn(
             `${
-              formatted == "Pending"
+              formatted === "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -1069,8 +1044,7 @@ export const ailmentColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <Dialog open={open} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
               <PencilIcon
@@ -1091,8 +1065,7 @@ export const ailmentColumns = [
                 validationSchema={ailRequiredForm}
                 onSubmit={onSubmit}
                 firstButton={"Cancel"}
-                secondButton={"Submit"}
-              >
+                secondButton={"Submit"}>
                 <FormInput name="name" label="Name" />
               </GenericForm>
             </DialogContent>
@@ -1120,8 +1093,7 @@ export const ailmentColumns = [
                   onClick={async () => {
                     await deleteMutation.mutateAsync();
                     setIsOpen(false);
-                  }}
-                >
+                  }}>
                   Delete
                 </Button>
               </div>
@@ -1151,8 +1123,7 @@ export const bodyDataColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -1173,8 +1144,7 @@ export const bodyDataColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -1194,8 +1164,7 @@ export const bodyDataColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -1212,12 +1181,13 @@ export const bodyDataColumns = [
         <div
           className={cn(
             `${
-              formatted == "Pending"
+              formatted === "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -1312,8 +1282,7 @@ export const bodyDataColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <Dialog open={open} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
               <PencilIcon
@@ -1342,8 +1311,7 @@ export const bodyDataColumns = [
                 validationSchema={bodyDataRequiredForm}
                 onSubmit={onSubmit}
                 firstButton={"Cancel"}
-                secondButton={"Submit"}
-              >
+                secondButton={"Submit"}>
                 <FormInput name="name" label="Name" />
               </GenericForm>
             </DialogContent>
@@ -1371,8 +1339,7 @@ export const bodyDataColumns = [
                   onClick={async () => {
                     await deleteMutation.mutateAsync();
                     setIsOpen(false);
-                  }}
-                >
+                  }}>
                   Delete
                 </Button>
               </div>
@@ -1412,8 +1379,7 @@ export const qualificationColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -1433,8 +1399,7 @@ export const qualificationColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -1454,8 +1419,7 @@ export const qualificationColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -1472,12 +1436,13 @@ export const qualificationColumns = [
         <div
           className={cn(
             `${
-              formatted == "Pending"
+              formatted === "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -1525,8 +1490,7 @@ export const qualificationColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <Dialog open={open} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
               <PencilIcon
@@ -1547,8 +1511,7 @@ export const qualificationColumns = [
                 validationSchema={qualificationRequiredForm}
                 onSubmit={onSubmit}
                 firstButton={"Cancel"}
-                secondButton={"Submit"}
-              >
+                secondButton={"Submit"}>
                 <FormInput name="name" label="Name" />
                 <FormInput name="code" label="Code" />
               </GenericForm>
@@ -1577,8 +1540,7 @@ export const qualificationColumns = [
                   onClick={async () => {
                     await deleteMutation.mutateAsync();
                     setIsOpen(false);
-                  }}
-                >
+                  }}>
                   Delete
                 </Button>
               </div>
@@ -1638,8 +1600,7 @@ export const currencyColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -1659,8 +1620,7 @@ export const currencyColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -1680,8 +1640,7 @@ export const currencyColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -1698,12 +1657,13 @@ export const currencyColumns = [
         <div
           className={cn(
             `${
-              formatted == "Pending"
+              formatted === "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -1755,8 +1715,7 @@ export const currencyColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <Dialog open={open} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
               <PencilIcon
@@ -1777,8 +1736,7 @@ export const currencyColumns = [
                 validationSchema={currencyRequiredForm}
                 onSubmit={onSubmit}
                 firstButton={"Cancel"}
-                secondButton={"Submit"}
-              >
+                secondButton={"Submit"}>
                 <FormInput name="alphabet_code" label="Alphabet Code" />
                 <FormInput name="number_code" label="Number Code" />
                 <FormInput name="currency_name" label="Currency Name" />
@@ -1809,8 +1767,7 @@ export const currencyColumns = [
                   onClick={async () => {
                     await deleteMutation.mutateAsync();
                     setIsOpen(false);
-                  }}
-                >
+                  }}>
                   Delete
                 </Button>
               </div>
@@ -1838,8 +1795,7 @@ export const continentColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -1879,8 +1835,7 @@ export const continentColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -1900,8 +1855,7 @@ export const continentColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -1918,14 +1872,13 @@ export const continentColumns = [
         <div
           className={cn(
             `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
+              formatted === "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -1970,8 +1923,7 @@ export const continentColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <Dialog open={open} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
               <PencilIcon
@@ -1992,8 +1944,7 @@ export const continentColumns = [
                 validationSchema={continentRequiredForm}
                 onSubmit={onSubmit}
                 firstButton={"Cancel"}
-                secondButton={"Submit"}
-              >
+                secondButton={"Submit"}>
                 <FormInput name="name" label="Name" />
               </GenericForm>
             </DialogContent>
@@ -2021,8 +1972,7 @@ export const continentColumns = [
                   onClick={async () => {
                     await deleteMutation.mutateAsync();
                     setIsOpen(false);
-                  }}
-                >
+                  }}>
                   Delete
                 </Button>
               </div>
@@ -2122,8 +2072,7 @@ export const countryColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -2163,8 +2112,7 @@ export const countryColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -2184,8 +2132,7 @@ export const countryColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -2202,14 +2149,13 @@ export const countryColumns = [
         <div
           className={cn(
             `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
+              formatted === "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -2272,8 +2218,7 @@ export const countryColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <Dialog open={open} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
               <PencilIcon
@@ -2294,8 +2239,7 @@ export const countryColumns = [
                 validationSchema={countryRequiredForm}
                 onSubmit={onSubmit}
                 firstButton={"Cancel"}
-                secondButton={"Submit"}
-              >
+                secondButton={"Submit"}>
                 <FormInput name="country_code" label="Country Code" />
                 <FormInput name="country_name" label="Country Name" />
                 <FormInput name="capital_city" label="Capital City" />
@@ -2332,8 +2276,7 @@ export const countryColumns = [
                   onClick={async () => {
                     await deleteMutation.mutateAsync();
                     setIsOpen(false);
-                  }}
-                >
+                  }}>
                   Delete
                 </Button>
               </div>
@@ -2377,8 +2320,7 @@ export const zoneColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -2418,8 +2360,7 @@ export const zoneColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -2439,8 +2380,7 @@ export const zoneColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -2457,14 +2397,13 @@ export const zoneColumns = [
         <div
           className={cn(
             `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
+              formatted === "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -2514,8 +2453,7 @@ export const zoneColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <Dialog open={open} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
               <PencilIcon
@@ -2537,8 +2475,7 @@ export const zoneColumns = [
                 onSubmit={onSubmit}
                 long={false}
                 firstButton={"Cancel"}
-                secondButton={"Submit"}
-              >
+                secondButton={"Submit"}>
                 <FormInput name="code" label="Code" />
                 <FormInput name="zone_name" label="Zone Name" />
                 <FormInput name="country" label="Country" />
@@ -2568,8 +2505,7 @@ export const zoneColumns = [
                   onClick={async () => {
                     await deleteMutation.mutateAsync();
                     setIsOpen(false);
-                  }}
-                >
+                  }}>
                   Delete
                 </Button>
               </div>
@@ -2629,8 +2565,7 @@ export const stateColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -2670,8 +2605,7 @@ export const stateColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -2691,8 +2625,7 @@ export const stateColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -2709,14 +2642,13 @@ export const stateColumns = [
         <div
           className={cn(
             `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
+              formatted === "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -2770,8 +2702,7 @@ export const stateColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <Dialog open={open} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
               <PencilIcon
@@ -2793,8 +2724,7 @@ export const stateColumns = [
                 long={false}
                 onSubmit={onSubmit}
                 firstButton={"Cancel"}
-                secondButton={"Submit"}
-              >
+                secondButton={"Submit"}>
                 <FormInput name="state_code" label="State Code" />
                 <FormInput name="state_name" label="State Name" />
                 <FormInput name="capital_city" label="Capital City" />
@@ -2826,8 +2756,7 @@ export const stateColumns = [
                   onClick={async () => {
                     await deleteMutation.mutateAsync();
                     setIsOpen(false);
-                  }}
-                >
+                  }}>
                   Delete
                 </Button>
               </div>
@@ -2895,8 +2824,7 @@ export const lgaColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -2936,8 +2864,7 @@ export const lgaColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -2957,8 +2884,7 @@ export const lgaColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -2975,14 +2901,13 @@ export const lgaColumns = [
         <div
           className={cn(
             `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
+              formatted === "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -3038,8 +2963,7 @@ export const lgaColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <ReuseDialog
             isEdit={true}
             open={open}
@@ -3049,8 +2973,7 @@ export const lgaColumns = [
             defaultValues={lgaDefaultValues}
             validationSchema={lgaRequiredForm}
             onSubmit={onSubmit}
-            long={false}
-          >
+            long={false}>
             <FormInput name="lga_code" label="LGA code" />
             <FormInput name="lga_name" label="LGA name" />
             <FormInput name="headquarter" label="Headquarter" />
@@ -3127,8 +3050,7 @@ export const wardColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -3168,8 +3090,7 @@ export const wardColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -3189,8 +3110,7 @@ export const wardColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -3207,14 +3127,13 @@ export const wardColumns = [
         <div
           className={cn(
             `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
+              formatted === "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -3270,8 +3189,7 @@ export const wardColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <ReuseDialog
             isEdit={true}
             open={open}
@@ -3281,8 +3199,7 @@ export const wardColumns = [
             defaultValues={wardDefaultValues}
             validationSchema={wardRequiredForm}
             long={false}
-            onSubmit={onSubmit}
-          >
+            onSubmit={onSubmit}>
             <FormInput name="ward_code" label="ward code" />
             <FormInput name="ward_name" label="ward name" />
             <FormInput name="lga" label="LGA" />
@@ -3351,8 +3268,7 @@ export const bankColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -3392,8 +3308,7 @@ export const bankColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -3413,8 +3328,7 @@ export const bankColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -3431,14 +3345,13 @@ export const bankColumns = [
         <div
           className={cn(
             `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
+              formatted === "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -3491,8 +3404,7 @@ export const bankColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <ReuseDialog
             isEdit={true}
             open={open}
@@ -3502,8 +3414,7 @@ export const bankColumns = [
             defaultValues={bankDefaultValues}
             validationSchema={bankRequiredForm}
             long={false}
-            onSubmit={onSubmit}
-          >
+            onSubmit={onSubmit}>
             <FormInput name="bank_code" label="bank code" />
             <FormInput name="bank_name" label="bank name" />
             <FormInput name="bank_alias" label="bank alias" />
@@ -3573,8 +3484,7 @@ export const typeColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -3614,8 +3524,7 @@ export const typeColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -3635,8 +3544,7 @@ export const typeColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -3653,14 +3561,13 @@ export const typeColumns = [
         <div
           className={cn(
             `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
+              formatted === "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -3710,8 +3617,7 @@ export const typeColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <ReuseDialog
             isEdit={true}
             open={open}
@@ -3721,8 +3627,7 @@ export const typeColumns = [
             defaultValues={typeDefaultValues}
             validationSchema={typeRequiredForm}
             long={false}
-            onSubmit={onSubmit}
-          >
+            onSubmit={onSubmit}>
             <FormInput name="type_code" label="type code" />
             <FormInput name="name" label="type name" />
             <FormInput name="description" label="description" />
@@ -3773,8 +3678,7 @@ export const licenseColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -3814,8 +3718,7 @@ export const licenseColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -3835,8 +3738,7 @@ export const licenseColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -3853,14 +3755,13 @@ export const licenseColumns = [
         <div
           className={cn(
             `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
+              formatted === "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -3910,8 +3811,7 @@ export const licenseColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <ReuseDialog
             isEdit={true}
             open={open}
@@ -3921,8 +3821,7 @@ export const licenseColumns = [
             defaultValues={licenseDefaultValues}
             validationSchema={licenseRequiredForm}
             long={false}
-            onSubmit={onSubmit}
-          >
+            onSubmit={onSubmit}>
             <FormInput name="license_code" label="license code" />
             <FormInput name="name" label="license name" />
             <FormInput name="description" label="description" />
@@ -4020,8 +3919,7 @@ export const taxColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -4041,8 +3939,7 @@ export const taxColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -4062,8 +3959,7 @@ export const taxColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -4080,14 +3976,13 @@ export const taxColumns = [
         <div
           className={cn(
             `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
+              formatted === "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -4149,8 +4044,7 @@ export const taxColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <ReuseDialog
             isEdit={true}
             open={open}
@@ -4160,8 +4054,7 @@ export const taxColumns = [
             defaultValues={taxDefaultValues}
             validationSchema={taxRequiredForm}
             long={true}
-            onSubmit={onSubmit}
-          >
+            onSubmit={onSubmit}>
             <FormInput name="state_code" label="state code" />
             <FormInput name="irs_name" label="IRS name" />
             <FormInput name="irs_short_name" label="IRS short-name" />
@@ -4217,8 +4110,7 @@ export const sectorColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -4238,8 +4130,7 @@ export const sectorColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -4259,8 +4150,7 @@ export const sectorColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -4277,14 +4167,13 @@ export const sectorColumns = [
         <div
           className={cn(
             `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
+              formatted === "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -4334,8 +4223,7 @@ export const sectorColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <ReuseDialog
             isEdit={true}
             open={open}
@@ -4345,8 +4233,7 @@ export const sectorColumns = [
             defaultValues={sectorDefaultValues}
             validationSchema={sectorRequiredForm}
             long={false}
-            onSubmit={onSubmit}
-          >
+            onSubmit={onSubmit}>
             <FormInput name="sector_code" label="sector code" />
             <FormInput name="name" label="sector name" />
             <FormTextArea name="description" label="description" />
@@ -4404,8 +4291,7 @@ export const subSectorColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -4425,8 +4311,7 @@ export const subSectorColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -4446,8 +4331,7 @@ export const subSectorColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -4464,14 +4348,13 @@ export const subSectorColumns = [
         <div
           className={cn(
             `${
-              formatted == undefined
-                ? "bg-red-50 border border-red-500 text-red-900"
-                : formatted == "Pending"
-                ? "bg-orange-50 text-orange-900 border border-orange-500"
+              formatted === "Pending"
+                ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -4523,8 +4406,7 @@ export const subSectorColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <ReuseDialog
             isEdit={true}
             open={open}
@@ -4534,8 +4416,7 @@ export const subSectorColumns = [
             defaultValues={subSectorDefaultValues}
             validationSchema={subSectorRequiredForm}
             long={false}
-            onSubmit={onSubmit}
-          >
+            onSubmit={onSubmit}>
             <FormInput name="sub_sector_code" label="sub-sector code" />
             <FormInput name="sub_sector_name" label="sub-sector name" />
             <FormInput name="sector_name" label="sector name" />
@@ -4602,8 +4483,7 @@ export const pfcColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -4624,8 +4504,7 @@ export const pfcColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -4645,8 +4524,7 @@ export const pfcColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -4663,12 +4541,13 @@ export const pfcColumns = [
         <div
           className={cn(
             `${
-              formatted == "Pending"
+              formatted === "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -4721,8 +4600,7 @@ export const pfcColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <ReuseDialog
             isEdit={true}
             open={open}
@@ -4732,8 +4610,7 @@ export const pfcColumns = [
             defaultValues={pfcDefaultValues}
             validationSchema={pfcRequiredForm}
             long={false}
-            onSubmit={onSubmit}
-          >
+            onSubmit={onSubmit}>
             <FormInput name="pfc_code" label="PFC code" />
             <FormInput name="pfc_name" label="PFC name" />
             <FormInput name="short_name" label="short name" />
@@ -4790,8 +4667,7 @@ export const pfaColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -4812,8 +4688,7 @@ export const pfaColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -4833,8 +4708,7 @@ export const pfaColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -4851,12 +4725,13 @@ export const pfaColumns = [
         <div
           className={cn(
             `${
-              formatted == "Pending"
+              formatted === "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -4907,8 +4782,7 @@ export const pfaColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <ReuseDialog
             isEdit={true}
             open={open}
@@ -4918,8 +4792,7 @@ export const pfaColumns = [
             defaultValues={pfaDefaultValues}
             validationSchema={pfaRequiredForm}
             long={false}
-            onSubmit={onSubmit}
-          >
+            onSubmit={onSubmit}>
             <FormInput name="pfa_code" label="PFA code" />
             <FormInput name="pfa_name" label="PFA name" />
             <FormInput name="short_name" label="short name" />
@@ -5005,8 +4878,7 @@ export const pfaAcctColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Created
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -5027,8 +4899,7 @@ export const pfaAcctColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Date Modified
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -5048,8 +4919,7 @@ export const pfaAcctColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
+          className={"uppercase"}>
           Status
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -5066,12 +4936,13 @@ export const pfaAcctColumns = [
         <div
           className={cn(
             `${
-              formatted == "Pending"
+              formatted === "Pending"
                 ? "bg-orange-50 border border-orange-500 text-orange-900"
+                : formatted === "Inactive"
+                ? "bg-red-50 text-red-900 border border-red-500"
                 : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
+            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2`
+          )}>
           {String(formatted)}
         </div>
       );
@@ -5128,8 +4999,7 @@ export const pfaAcctColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <ReuseDialog
             isEdit={true}
             open={open}
@@ -5139,8 +5009,7 @@ export const pfaAcctColumns = [
             defaultValues={pfaAcctDefaultValues}
             validationSchema={pfaAcctRequiredForm}
             long={false}
-            onSubmit={onSubmit}
-          >
+            onSubmit={onSubmit}>
             <FormInput name="pfa_code" label="PFA code" />
             <FormInput name="pfc_code" label="PFC code" />
             <FormInput name="fund_code" label="fund code" />
@@ -5161,7 +5030,6 @@ export const pfaAcctColumns = [
   },
 ];
 
-
 export const activationColumns = [
   {
     accessorKey: "subscriberId",
@@ -5170,9 +5038,7 @@ export const activationColumns = [
     },
     cell: ({ row }) => {
       const formatted = row.getValue("subscriberId");
-      return (
-        <div className="ml-6">{String(formatted)}</div>
-      );
+      return <div className="ml-6">{String(formatted)}</div>;
     },
   },
   {
@@ -5182,9 +5048,7 @@ export const activationColumns = [
     },
     cell: ({ row }) => {
       const formatted = row.getValue("entityType");
-      return (
-        <div className="ml-6 uppercase">{String(formatted)}</div>
-      );
+      return <div className="ml-6 uppercase">{String(formatted)}</div>;
     },
   },
   {
@@ -5194,7 +5058,7 @@ export const activationColumns = [
     },
     cell: ({ row }) => {
       const formatted = row.getValue("failedActivationTime");
-    
+
       return (
         <div className="ml-6 uppercase">{formatISODate(String(formatted))}</div>
       );
@@ -5208,23 +5072,23 @@ export const activationColumns = [
     cell: ({ row }) => {
       const formatted = row.getValue("date");
       return (
-        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+        <div className="ml-6 uppercase">
+          {String(formatted).split("T")[0].split("-").reverse().join("-")}
+        </div>
       );
     },
-  }
-]
+  },
+];
 
 export const backupColumns = [
   {
-    accessorKey: "backupId",
+    accessorKey: "backupID",
     header: () => {
       return <h2 className={"ml-4 uppercase"}>Backup ID</h2>;
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("backupId");
-      return (
-        <div className="ml-6">{String(formatted)}</div>
-      );
+      const formatted = row.getValue("backupID");
+      return <div className="ml-6">{String(formatted)}</div>;
     },
   },
   {
@@ -5235,9 +5099,7 @@ export const backupColumns = [
     cell: ({ row }) => {
       const sizeInBytes = row.getValue("memorySize");
       const formattedSize = formatBytes(sizeInBytes);
-      return (
-        <div className="ml-6">{formattedSize}</div>
-      );
+      return <div className="ml-6">{formattedSize}</div>;
     },
   },
   {
@@ -5247,12 +5109,12 @@ export const backupColumns = [
     },
     cell: ({ row }) => {
       const formatted = row.getValue("startTime");
-    
+
       return (
         <div className="ml-6 uppercase">{formatISODate(String(formatted))}</div>
       );
     },
-  }, 
+  },
   {
     accessorKey: "endTime",
     header: () => {
@@ -5260,7 +5122,7 @@ export const backupColumns = [
     },
     cell: ({ row }) => {
       const formatted = row.getValue("endTime");
-    
+
       return (
         <div className="ml-6 uppercase">{formatISODate(String(formatted))}</div>
       );
@@ -5274,23 +5136,23 @@ export const backupColumns = [
     cell: ({ row }) => {
       const formatted = row.getValue("date");
       return (
-        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+        <div className="ml-6 uppercase">
+          {String(formatted).split("T")[0].split("-").reverse().join("-")}
+        </div>
       );
     },
-  }
-]
+  },
+];
 
 export const restoreColumns = [
   {
-    accessorKey: "backupId",
+    accessorKey: "backupID",
     header: () => {
       return <h2 className={"ml-4 uppercase"}>Backup ID</h2>;
     },
     cell: ({ row }) => {
-      const formatted = row.getValue("backupId");
-      return (
-        <div className="ml-6">{String(formatted)}</div>
-      );
+      const formatted = row.getValue("backupID");
+      return <div className="ml-6">{String(formatted)}</div>;
     },
   },
   {
@@ -5301,23 +5163,23 @@ export const restoreColumns = [
     cell: ({ row }) => {
       const sizeInBytes = row.getValue("memorySize");
       const formattedSize = formatBytes(sizeInBytes);
-      return (
-        <div className="ml-6">{formattedSize}</div>
-      );
+      return <div className="ml-6">{formattedSize}</div>;
     },
   },
   {
-    accessorKey: "backupDate",
+    accessorKey: "date",
     header: () => {
       return <h2 className={"ml-4 uppercase"}>Backup Date</h2>;
     },
     cell: ({ row }) => {
       const formatted = row.getValue("date");
       return (
-        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+        <div className="ml-6 uppercase">
+          {String(formatted).split("T")[0].split("-").reverse().join("-")}
+        </div>
       );
     },
-  }, 
+  },
   {
     header: () => <div className="ml-5 uppercase">Actions</div>,
     id: "actions",
@@ -5352,16 +5214,15 @@ export const restoreColumns = [
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <Dialog open={open} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
               <TbRestore
-                  className="cursor-pointer"
-                  color="#0B6ED0"
-                  size={20}
-                  onClick={() => setIsOpen(true)}
-                />
+                className="cursor-pointer"
+                color="#0B6ED0"
+                size={20}
+                onClick={() => setIsOpen(true)}
+              />
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
@@ -5369,23 +5230,34 @@ export const restoreColumns = [
               </DialogHeader>
               <hr className="border border-gray-100 w-full h-[1px]" />
               <div className="leading-6 uppercase">Backup Information</div>
-              <div className="leading-6">Backup ID:</div>
-              <div className="leading-6">Backup Date:</div>
-              <div className="leading-6">Memory Size:</div>
+              <div className="leading-6 text-base">
+                Backup ID:{" "}
+                <span className="font-semibold">{title.backupID}</span>
+              </div>
+              <div className="leading-6 text-base">
+                Backup Date:{" "}
+                <span className="font-semibold">
+                  {String(title.date).split("T")[0]}
+                </span>
+              </div>
+              <div className="leading-6 text-base">
+                Memory Size:{" "}
+                <span className="font-semibold">
+                  {formatBytes(title.memorySize)}
+                </span>
+              </div>
               <ScrollArea className={cn(`${"h-auto"}`)}>
                 <div className="w-full flex justify-between items-center my-4">
                   <div
                     className="w-auto border border-gray-300 rounded-md h-10 flex items-center p-2 cursor-pointer"
-                    onClick={() => setIsOpen(false)}
-                  >
+                    onClick={() => setIsOpen(false)}>
                     Cancel
                   </div>
                   <Button
                     className="bg-vmtblue w-auto"
                     variant="default"
                     type="submit"
-                    onClick={() => onSubmit()} 
-                  >
+                    onClick={() => onSubmit()}>
                     Restore
                   </Button>
                 </div>
@@ -5404,10 +5276,9 @@ export const restoreColumns = [
       );
     },
   },
-]
+];
 
-
-export const recoverColumns =  [
+export const recoverColumns = [
   {
     accessorKey: "backupId",
     header: () => {
@@ -5415,9 +5286,7 @@ export const recoverColumns =  [
     },
     cell: ({ row }) => {
       const formatted = row.getValue("backupId");
-      return (
-        <div className="ml-6">{String(formatted)}</div>
-      );
+      return <div className="ml-6">{String(formatted)}</div>;
     },
   },
   {
@@ -5428,9 +5297,7 @@ export const recoverColumns =  [
     cell: ({ row }) => {
       const sizeInBytes = row.getValue("memorySize");
       const formattedSize = formatBytes(sizeInBytes);
-      return (
-        <div className="ml-6">{formattedSize}</div>
-      );
+      return <div className="ml-6">{formattedSize}</div>;
     },
   },
   {
@@ -5441,10 +5308,12 @@ export const recoverColumns =  [
     cell: ({ row }) => {
       const formatted = row.getValue("dateDeleted");
       return (
-        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
+        <div className="ml-6 uppercase">
+          {String(formatted).split("T")[0].split("-").reverse().join("-")}
+        </div>
       );
     },
-  }, 
+  },
   {
     header: () => <div className="ml-5 uppercase">Actions</div>,
     id: "actions",
@@ -5461,7 +5330,7 @@ export const recoverColumns =  [
         title: "restore",
       });
 
-      const postMutation = usePostData({
+      const editMutation = useEditData({
         queryKey: ["recover"],
         url: Url,
         title: "recover",
@@ -5472,23 +5341,22 @@ export const recoverColumns =  [
           recover: true,
         };
 
-        postMutation.mutateAsync(body);
+        editMutation.mutateAsync(body);
         setIsOpen(false);
       }
 
       return (
         <div
           align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
+          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10">
           <Dialog open={open} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
               <LuArchiveRestore
-                  className="cursor-pointer"
-                  color="#0B6ED0"
-                  size={20}
-                  onClick={() => setIsOpen(true)}
-                />
+                className="cursor-pointer"
+                color="#0B6ED0"
+                size={20}
+                onClick={() => setIsOpen(true)}
+              />
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
@@ -5503,16 +5371,14 @@ export const recoverColumns =  [
                 <div className="w-full flex justify-between items-center my-4">
                   <div
                     className="w-auto border border-gray-300 rounded-md h-10 flex items-center p-2 cursor-pointer"
-                    onClick={() => setIsOpen(false)}
-                  >
+                    onClick={() => setIsOpen(false)}>
                     Cancel
                   </div>
                   <Button
                     className="bg-vmtblue w-auto"
                     variant="default"
                     type="submit"
-                    onClick={() => onSubmit()} 
-                  >
+                    onClick={() => onSubmit()}>
                     Recover
                   </Button>
                 </div>
@@ -5527,759 +5393,6 @@ export const recoverColumns =  [
               setIsOpen(false);
             }}
           />
-        </div>
-      );
-    },
-  },
-]
-
-export const lockDomainColumns = [
-  {
-    accessorKey: "subscriberId",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>Subscriber ID</h2>;
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("subscriberId");
-      return (
-        <div className="ml-6">{String(formatted)}</div>
-      );
-    },
-  },
-  {
-    accessorKey: "memorySize",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>Memory Size</h2>;
-    },
-    cell: ({ row }) => {
-      const sizeInBytes = row.getValue("memorySize");
-      const formattedSize = formatBytes(sizeInBytes);
-      return (
-        <div className="ml-6">{formattedSize}</div>
-      );
-    },
-  },
-  {
-    accessorKey: "date",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>Date</h2>;
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("date");
-      return (
-        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
-      );
-    },
-  }
-]
-
-export const softwareColumns = [
-  {
-    accessorKey: "integrationId",
-    header:() => {
-      return <h2 className={"ml-4 uppercase"}>Integration ID</h2>;
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("integrationId");
-      return (
-        <div className="ml-6">{String(formatted)}</div>
-      );
-    }
-  },
-  {
-    accessorKey: "application",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>Application</h2>;
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("type");
-      return (
-        <div className="ml-6">{String(formatted)}</div>
-      );
-    }
-  },
-  {
-    accessorKey: "description",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>Description</h2>;
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("description");
-      return (
-        <div className="ml-6">{String(formatted)}</div>
-      );
-    }
-  },
-  {
-    accessorKey: "dateAdded",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>Date Added</h2>;
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("dateCreated");
-      return (
-        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
-      );
-    },
-  },
-  {
-    accessorKey: "action",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>Action</h2>;
-    },
-    cell: ({ row }) => {
-      const [open, setIsOpen] = useState(false);
-
-      const title = row.original;
-
-      const Url = `${baseUrl}integration/software/${title._id}`;
-      const deleteMutation = useDeleteData({
-        queryKey: ["software"],
-        url: Url,
-        title: "software",
-      });
-
-      const editMutation = useEditData({
-        queryKey: ["software"],
-        url: Url,
-        title: "software",
-      });
-
-      switch (title.type ) {
-        case "AWS": return EditAWS(editMutation, deleteMutation, title, open, setIsOpen);
-        break
-        case "Azure": return EditAzure(editMutation, deleteMutation, title, open, setIsOpen);
-        break
-        case "Dropbox": return EditDropbox(editMutation, deleteMutation, title, open, setIsOpen);
-        break
-        case "Google Ads": return EditGoogleAds(editMutation, deleteMutation, title, open, setIsOpen);
-        break
-        case "Google Cloud": return EditGoogleCloud(editMutation, deleteMutation, title, open, setIsOpen);
-        break
-        case "Zoom": return EditZoom(editMutation, deleteMutation, title, open, setIsOpen);
-        break
-      }
-
-    }
-  }
-]
-
-export const hardwareColumns = [
-  {
-    accessorKey: "integrationId",
-    header:() => {
-      return <h2 className={"ml-4 uppercase"}>Integration ID</h2>;
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("integrationId");
-      return (
-        <div className="ml-6">{String(formatted)}</div>
-      );
-    }
-  },
-  {
-    accessorKey: "name",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>Name</h2>;
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("hardwareName");
-      return (
-        <div className="ml-6">{String(formatted)}</div>
-      );
-    }
-  },
-  {
-    accessorKey: "dateAdded",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>Date Added</h2>;
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("dateAdded");
-      return (
-        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
-      );
-    },
-  },
-  {
-    accessorKey: "action",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>Action</h2>;
-    },
-    cell: ({ row }) => {
-      const [open, setIsOpen] = useState(false);
-
-      const title = row.original;
-
-      const Url = `${baseUrl}/integration/hardware/${title._id}`;
-
-      const deleteMutation = useDeleteData({
-        queryKey: ["hardware"],
-        url: Url,
-        title: "hardware",
-      });
-
-      return (
-        <div
-          align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
-
-          <ConfirmDelete
-            onClick={async () => {
-              await deleteMutation.mutateAsync();
-              setIsOpen(false);
-            }}
-          />
-        </div>
-      );
-    }
-
-
-
-  }
-]
-
-export const thirdPartyColumns = (pageUrl, editDialogTitle) => [
-  {
-    accessorKey: "integrationId",
-    header:() => {
-      return <h2 className={"ml-4 uppercase"}>Integration ID</h2>;
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("integrationId");
-      return (
-        <div className="ml-6">{String(formatted)}</div>
-      );
-    }
-  },
-  {
-    accessorKey: "name",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>Name</h2>;
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("software_name");
-      return (
-        <div className="ml-6">{String(formatted)}</div>
-      );
-    }
-  },
-  {
-    accessorKey: "dateAdded",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>Date Added</h2>;
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("dateAdded");
-      return (
-        <div className="ml-6 uppercase">{String(formatted).split("T")[0]}</div>
-      );
-    },
-  },
-  {
-    accessorKey: "action",
-    header: () => {
-      return <h2 className={"ml-4 uppercase"}>Action</h2>;
-    },
-    cell: ({ row }) => {
-      const [open, setIsOpen] = useState(false);
-
-      const title = row.original;
-
-      const Url = `${pageUrl}/${title._id}`;
-
-      const deleteMutation = useDeleteData({
-        queryKey: ["others"],
-        url: Url,
-        title: "others",
-      });
-
-      const editMutation = useEditData({
-        queryKey: ["others"],
-        url: Url,
-        title: "others",
-      });
-
-      const thirdPartyDefaultValues = {
-        software_name: title.software_name,
-        purpose: title.purpose,
-        api_key: title.api_key,
-      };
-
-      async function onSubmit(values) {
-        console.log(values);
-
-        const body = {
-          software_name: values.software_name,
-          purpose: values.purpose,
-          api_key: values.api_key,
-        };
-
-        editMutation.mutateAsync(body);
-        setIsOpen(false);
-      }
-
-      return (
-        <div
-          align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
-          <ReuseDialog
-            isEdit={true}
-            open={open}
-            onOpenChange={setIsOpen}
-            onClick={() => setIsOpen(true)}
-            dialogTitle={editDialogTitle}
-            defaultValues={thirdPartyDefaultValues}
-            validationSchema={thirdPartyRequiredForm}
-            long={false}
-            onSubmit={onSubmit}
-          >
-            <FormInput name="software_name" label="Software Name" />
-            <FormInput name="purpose" label="Purpose" />
-            <FormInput name="api_key" label="API Key" textArea={true}/>
-          </ReuseDialog>
-
-          <ConfirmDelete
-            onClick={async () => {
-              await deleteMutation.mutateAsync();
-              setIsOpen(false);
-            }}
-          />
-        </div>
-      );
-    }
-
-
-
-  }
-]
-
-// access control
-export const accessControlTypeColumns = [
-  {
-    accessorKey: "policyName",
-    header: "POLICY NAME",
-    cell: ({ row }) => {
-      const formatted = row.getValue("policyName");
-      return <div className="ml-2 uppercase">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "description",
-    header: "DESCRIPTION",
-    cell: ({ row }) => {
-      const formatted = row.getValue("description");
-      return <div className="ml-2">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "version",
-    header: "VERSION",
-    cell: ({ row }) => {
-      const formatted = row.getValue("version");
-      return <div className="ml-2 uppercase">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "initialDate",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
-          INITIAL DATE
-          <ChevronsUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("initialDate");
-      return <div className="ml-6 uppercase">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "revisedDate",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={"uppercase"}
-        >
-          REVISED DATE
-          <ChevronsUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const formatted = row.getValue("revisedDate");
-      return <div className="ml-6 uppercase">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "status",
-    header: "STATUS",
-    cell: ({ row }) => {
-      const formatted = row.getValue("status");
-      return (
-        <div
-          className={cn(
-            `${
-              formatted == "Pending"
-                ? "bg-orange-50 border border-orange-500 text-orange-900"
-                : "bg-green-50 text-green-900 border border-green-500"
-            } capitalize w-20 rounded-3xl h-auto flex items-center justify-center p-2 ml-2 `
-          )}
-        >
-          {String(formatted)}
-        </div>
-      );
-    },
-  },
-  {
-    header: () => <div className="ml-5 uppercase">ACTION</div>,
-    id: "actions",
-    cell: ({ row }) => {
-      return (
-        <div
-          align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
-          <button
-            className="text-red-600 hover:text-red-900"
-            onClick={() => alert(`Delete ${row.getValue("documentName")}`)}
-          >
-            <Trash2 />
-          </button>
-        </div>
-      );
-    },
-  },
-];
-export const accessControlModuleGroupColumns = [
-  {
-    accessorKey: "id",
-    header: "GROUP ID",
-    cell: ({ row }) => {
-      const formatted = row.getValue("id");
-      return <div className="ml-2 uppercase">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "name",
-    header: "GROUP NAME",
-    cell: ({ row }) => {
-      const formatted = row.getValue("name");
-      return <div className="ml-2 uppercase">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "function",
-    header: "FUNCTIONAL DESCRIPTION",
-    cell: ({ row }) => {
-      const formatted = row.getValue("function");
-      return <div className="ml-2">{String(formatted)}</div>;
-    },
-  },
-  
-  
-  {
-    header: () => <div className="ml-5 uppercase">ACTION</div>,
-    id: "actions",
-    cell: ({ row }) => {
-      const group = row.original;
-
-      const Url = `${baseUrlTrial}/api/v1/ac/modules/groups/deleteGroup`;
-
-      const postMutation = usePostData({
-        queryKey: ["group"],
-        url: Url,
-        group: "group",
-      });
-
-      async function onSubmit() {
-        const body = {
-          id: group.id,
-        };
-
-        postMutation.mutateAsync(body);
-   
-      }
-      return (
-        <div
-          align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
-          <Link to={`/access_control/modules/groups/detail_groups?mode=edit&id=${group.id}`}>
-             <button
-            className="text-vmtblue"
-           
-          >
-            <PencilIcon />
-          </button>
-          </Link>
-       
-          <button
-            className="text-red-600 hover:text-red-900"
-            onClick={() => onSubmit()}
-          >
-            <Trash2 />
-          </button>
-        </div>
-      );
-    },
-  },
-];
-export const accessControlModuleModulesColumns = [
-  {
-    accessorKey: "id",
-    header: "MODULE ID",
-    cell: ({ row }) => {
-      const formatted = row.getValue("id");
-      return <div className="ml-2 uppercase">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "name",
-    header: "MODULE",
-    cell: ({ row }) => {
-      const formatted = row.getValue("name");
-      return <div className="ml-2 uppercase">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "groupName",
-    header: "GROUP",
-    cell: ({ row }) => {
-      const formatted = row.getValue("groupName");
-      return <div className="ml-2 uppercase">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "function",
-    header: "FUNCTIONAL DESCRIPTION",
-    cell: ({ row }) => {
-      const formatted = row.getValue("function");
-      return <div className="ml-2">{String(formatted)}</div>;
-    },
-  },
-  
-  {
-    accessorKey: "permission",
-    header: "ACCESS",
-    cell: ({ row }) => {
-      const formatted = row.getValue("permission");
-      return <div className="ml-2 uppercase">{String(formatted)}</div>;
-    },
-  },
-  {
-    header: () => <div className="ml-5 uppercase">ACTION</div>,
-    id: "actions",
-    cell: ({ row }) => {
-      const module = row.original;
-
-      return (
-        <div
-          align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
-          <Link to={`/access_control/modules/groups/detail_groups?mode=edit&id=${module.id}`}>
-             <button
-            className="text-vmtblue"
-           
-          >
-            <PencilIcon />
-          </button>
-          </Link>
-       
-          <button
-            className="text-red-600 hover:text-red-900"
-            onClick={() => alert(`Delete ${row.getValue("documentName")}`)}
-          >
-            <Trash2 />
-          </button>
-        </div>
-      );
-    },
-  },
-];
-export const accessControlModuleProcessesColumns = [
-  {
-    accessorKey: "id",
-    header: "PROCESS ID",
-    cell: ({ row }) => {
-      const formatted = row.getValue("id");
-      return <div className="ml-2 uppercase">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "name",
-    header: "PROCESS NAME",
-    cell: ({ row }) => {
-      const formatted = row.getValue("name");
-      return <div className="ml-2 uppercase">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "moduleName",
-    header: "MODULE",
-    cell: ({ row }) => {
-      const formatted = row.getValue("moduleName");
-      return <div className="ml-2 uppercase">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "groupName",
-    header: "GROUP",
-    cell: ({ row }) => {
-      const formatted = row.getValue("groupName");
-      return <div className="ml-2 uppercase">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "function",
-    header: "FUNCTIONAL DESCRIPTION",
-    cell: ({ row }) => {
-      const formatted = row.getValue("function");
-      return <div className="ml-2">{String(formatted)}</div>;
-    },
-  },
-  
-  {
-    accessorKey: "permission",
-    header: "ACCESS",
-    cell: ({ row }) => {
-      const formatted = row.getValue("permission");
-      return <div className="ml-2 uppercase">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "service",
-    header: "SELF-SERVICE",
-    cell: ({ row }) => {
-      const formatted = row.getValue("service");
-      return <div className="ml-2 uppercase">{String(formatted)}</div>;
-    },
-  },
-  {
-    header: () => <div className="ml-5 uppercase">ACTION</div>,
-    id: "actions",
-    cell: ({ row }) => {
-      const process = row.original;
-
-      return (
-        <div
-          align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
-          <Link to={`/access_control/modules/processes/detail_processes?mode=edit&id=${process.id}`}>
-             <button
-            className="text-vmtblue"
-           
-          >
-            <PencilIcon />
-          </button>
-          </Link>
-       
-          <button
-            className="text-red-600 hover:text-red-900"
-            onClick={() => alert(`Delete ${row.getValue("documentName")}`)}
-          >
-            <Trash2 />
-          </button>
-        </div>
-      );
-    },
-  },
-];
-export const accessControlModuleFunctionsColumns = [
-  {
-    accessorKey: "id",
-    header: "FUNCTION CODE",
-    cell: ({ row }) => {
-      const formatted = row.getValue("id");
-      return <div className="ml-2 uppercase">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "title",
-    header: "TITLE",
-    cell: ({ row }) => {
-      const formatted = row.getValue("title");
-      return <div className="ml-2 uppercase">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "description",
-    header: "FUNCTIONAL DESCRIPTION",
-    cell: ({ row }) => {
-      const formatted = row.getValue("description");
-      return <div className="ml-2">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "access",
-    header: "ACCESS",
-    cell: ({ row }) => {
-      const formatted = row.getValue("access");
-      return <div className="ml-2 uppercase">{String(formatted)}</div>;
-    },
-  },
-  {
-    accessorKey: "write",
-    header: "WRITE",
-    cell: ({ row }) => {
-      const formatted = row.getValue("write");
-      return <div className="ml-2 uppercase">{String(formatted)}</div>;
-    },
-  },
-  
-  {
-    header: () => <div className="ml-5 uppercase">ACTION</div>,
-    id: "actions",
-    cell: ({ row }) => {
-      const functions = row.original;
-
-      const Url = `${baseUrlTrial}/api/v1/ac/modules/functions/deleteFunction`;
-
-      const postMutation = usePostData({
-        queryKey: ["function"],
-        url: Url,
-        function: "function",
-      });
-
-      async function onSubmit() {
-        const body = {
-          id: functions.id,
-        };
-
-        postMutation.mutateAsync(body);
-   
-      }
-      return (
-        <div
-          align="center"
-          className="ml-2 flex items-center justify-center space-x-2 w-20 h-10"
-        >
-          <Link to={`/access_control/modules/functions/detail_functions?mode=edit&id=${functions.id}`}>
-             <button
-            className="text-vmtblue"
-           
-          >
-            <PencilIcon />
-          </button>
-          </Link>
-       
-          <button
-            className="text-red-600 hover:text-red-900"
-            onClick={() => onSubmit()}
-          >
-            <Trash2 />
-          </button>
         </div>
       );
     },

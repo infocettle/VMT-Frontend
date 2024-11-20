@@ -17,6 +17,13 @@ module.exports = {
       },
     },
     extend: {
+      width: {
+        '1/7': '14.2857%',
+        '1/8': '12.5%',
+        '1/9': '11.1111%',
+        '1/10': '10%',
+        '1/11': '9.0909%',
+      },
       colors: {
         vmtblue: "#1B87F3",
         vmtgray: "#C0C0CF",
@@ -75,6 +82,9 @@ module.exports = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      spacing: {
+        '3.75': '0.9rem',
       },
     },
   },

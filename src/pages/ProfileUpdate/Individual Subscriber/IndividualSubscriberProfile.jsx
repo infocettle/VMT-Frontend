@@ -56,8 +56,7 @@ const IndividualSubscriberProfile = () => {
           <div className="w-full flex flex-col space-y-5">
             <div
               className="w-60 px-3 py-2 flex items-center space-x-2"
-              onClick={() => navigate(-1)}
-            >
+              onClick={() => navigate(-1)}>
               <ArrowLeft color={"#666687"} size={20} />
 
               {updateNow ? (
@@ -75,8 +74,7 @@ const IndividualSubscriberProfile = () => {
               <div
                 className={cn(
                   `bg-white w-full flex items-center p-5 justify-between`
-                )}
-              >
+                )}>
                 <div className="flex space-x-5 items-center">
                   {/* Individual Photo */}
                   {isFetching ? (
@@ -156,8 +154,7 @@ const IndividualSubscriberProfile = () => {
                           ? "border-b border-r-4 border-r-vmtblue px-3 py-2 w-full h-auto flex items-center justify-start"
                           : "border-b px-3 py-2 h-auto w-full flex items-center justify-start"
                       }cursor-pointer`
-                    )}
-                  >
+                    )}>
                     <h3
                       className={cn(
                         `${
@@ -165,8 +162,7 @@ const IndividualSubscriberProfile = () => {
                             ? "text-vmtblue text-xs leading-relaxed"
                             : "text-vmtpurple text-xs leading-relaxed"
                         }`
-                      )}
-                    >
+                      )}>
                       {detail.name}
                     </h3>
                   </button>

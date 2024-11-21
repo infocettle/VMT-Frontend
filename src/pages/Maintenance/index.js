@@ -6,13 +6,12 @@ import LockDomain from "./LockDomain";
 import CancelDomain from "./CancelDomain";
 import Maintenance from "./Maintenance";
 
-
 export {
-    Activation,
-    Backup,
-    Restore,
-    // Recover,
-    LockDomain,
-    CancelDomain,
-    Maintenance,
-}
+  Activation,
+  Backup,
+  Restore,
+  // Recover,
+  LockDomain,
+  CancelDomain,
+  Maintenance,
+};

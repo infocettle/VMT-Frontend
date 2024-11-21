@@ -10,7 +10,6 @@ function SubscriptionSubscriber({ setSubscriptionType, userData }) {
   const [selectedRole, setSelectedRole] = useState("");
   const [totalAmountPayable, setTotalAmountPayable] = useState(0);
 
-
   useEffect(() => {
     calculateEndDate(selectedDateType);
   }, []);
@@ -66,7 +65,7 @@ function SubscriptionSubscriber({ setSubscriptionType, userData }) {
     },
   ];
   let filteredData = data;
-  console.log(filteredData)
+  console.log(filteredData);
 
   if (!userData.administrator) {
     filteredData = filteredData.filter(
@@ -227,8 +226,7 @@ function SubscriptionSubscriber({ setSubscriptionType, userData }) {
           <div className="auth-form-flex mt-2 mb-6 justify-between">
             <div
               className="flex items-center w-full  mt-5 cursor-pointer "
-              onClick={{}}
-            >
+              onClick={{}}>
               <div className="secondary-button">Cancel</div>
             </div>
 

@@ -156,8 +156,8 @@ const MainDashboard = () => {
                         textOverflow: "ellipsis",
                       }}>
                       <div className="profile-info-name">
-                        {userData?.surname.toUpperCase()}{" "}
-                        {userData?.firstName.toUpperCase()}
+                        {userData?.surname?.toUpperCase()}{" "}
+                        {userData?.firstName?.toUpperCase()}
                       </div>
                       <div className="profile-info-email flex  flex-wrap ">
                         {userData?.email}

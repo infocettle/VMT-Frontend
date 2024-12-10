@@ -8,7 +8,10 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
-import { PlanPricesLinks, SinglePlanPricesLinks } from "@/texts/PlansPricesLinks";
+import {
+  PlanPricesLinks,
+  SinglePlanPricesLinks,
+} from "@/texts/PlansPricesLinks";
 import { ChevronRight } from "lucide-react";
 import {
   DropdownMenu,
@@ -28,8 +31,7 @@ const PlansPrices = () => {
         <Collapsible
           open={isOpen}
           onOpenChange={setIsOpen}
-          className={cn(`w-48`)}
-        >
+          className={cn(`w-48`)}>
           <div
             className={cn(
               ` ${
@@ -37,8 +39,7 @@ const PlansPrices = () => {
                   ? "bg-vmtgray opacity-50 font-semibold border-r-4 border-r-vmtblue"
                   : ""
               } flex items-center w-full justify-between py-2 px-3`
-            )}
-          >
+            )}>
             <CollapsibleTrigger asChild>
               <div className="w-full flex items-center justify-between">
                 <div className="w-auto flex items-center space-x-2">
@@ -54,8 +55,7 @@ const PlansPrices = () => {
                         `${
                           isOpen ? "text-vmtblue" : "text-black"
                         } cursor-pointer capitalize text-sm font-sans`
-                      )}
-                    >
+                      )}>
                       plans & prices
                     </h3>
                   </div>
@@ -84,8 +84,7 @@ const PlansPrices = () => {
               {PlanPricesLinks.map((modules) => (
                 <div
                   key={modules.id}
-                  className="flex items-center justify-between w-full"
-                >
+                  className="flex items-center justify-between w-full">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <div className="w-full flex items-center justify-between">
@@ -93,8 +92,7 @@ const PlansPrices = () => {
                           <h3
                             className={cn(
                               `text-vmtpurple focus-within:text-vmtblue text-xs leading-relaxed`
-                            )}
-                          >
+                            )}>
                             {modules.name}
                           </h3>
                         </div>
@@ -113,8 +111,7 @@ const PlansPrices = () => {
                           <Link key={child.id} to={child.href}>
                             <DropdownMenuItem
                               key={child.id}
-                              className="capitalize text-xs text-black font-light"
-                            >
+                              className="capitalize text-xs text-black font-light">
                               {child.name}
                             </DropdownMenuItem>
                           </Link>
@@ -129,13 +126,11 @@ const PlansPrices = () => {
                 <Link
                   className="self-start cursor-pointer"
                   to={modules.href}
-                  key={modules.id}
-                >
+                  key={modules.id}>
                   <h3
                     className={cn(
                       `text-vmtpurple focus-within:text-vmtblue text-xs leading-relaxed`
-                    )}
-                  >
+                    )}>
                     {modules.name}
                   </h3>
                 </Link>

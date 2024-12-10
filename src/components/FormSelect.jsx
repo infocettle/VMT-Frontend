@@ -19,8 +19,7 @@ export const FormSelect = ({ name, label, options }) => {
           <>
             <select
               {...field}
-              className="access-control-modal-input text-[#8E8EA9] rounded-md p-3.75 mb-2"
-            >
+              className="access-control-modal-input text-[#8E8EA9] rounded-md p-3.75 mb-2">
               <option value="">Select {label}</option>
               {options.map((option) => (
                 <option key={option.value} value={option.value}>

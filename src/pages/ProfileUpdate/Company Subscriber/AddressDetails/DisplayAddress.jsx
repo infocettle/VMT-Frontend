@@ -58,8 +58,7 @@ const DisplayAddress = ({ setUpdateNow, type }) => {
         </h3>
         <Button
           onClick={() => setUpdateNow(true)}
-          className="bg-blue-200 border border-blue-500 text-blue-900 capitalize w-20 rounded-lg h-10 flex items-center justify-center"
-        >
+          className="bg-blue-200 border border-blue-500 text-blue-900 capitalize w-20 rounded-lg h-10 flex items-center justify-center">
           <h3>Update</h3>
         </Button>
       </div>

@@ -6,7 +6,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-// import { SiMicrosoftazure } from "react-icons/si";
+import { SiMicrosoftazure } from "react-icons/si";
 import { FormInput } from "@/components/FormInput";
 import { azureSchema } from "@/utils/zodSchema";
 import { Button } from "@/components/ui/button";
@@ -62,7 +62,7 @@ const Azure = () => {
             size="lg"
             onClick={() => setIsOpen(true)}>
             <div className="flex items-center gap-4">
-              {false && <SiMicrosoftazure className="size-6" />}
+              <SiMicrosoftazure className="size-6" />
               <div>Microsoft Azure</div>
             </div>
           </Button>

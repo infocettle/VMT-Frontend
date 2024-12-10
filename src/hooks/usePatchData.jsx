@@ -3,8 +3,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-const patchData = async ({ url, body, title,token }) => {
- 
+const patchData = async ({ url, body, title, token }) => {
   const headers = {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -19,7 +18,9 @@ const patchData = async ({ url, body, title,token }) => {
     });
     return data;
   } catch (error) {
-    const errorBody = error.response?.data || { detail: error.message };
+    const errorBody = error.response?.data?.message || {
+      detail: error.message,
+    };
     console.error(errorBody);
     toast.error(`${errorBody}`, {
       autoClose: 2000,
@@ -34,7 +35,7 @@ const usePatchData = ({ queryKey, url, title }) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (body) => patchData({ url, body, title,token }),
+    mutationFn: (body) => patchData({ url, body, title, token }),
     onSuccess: () => {
       queryClient.invalidateQueries(queryKey);
     },

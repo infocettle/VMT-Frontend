@@ -30,28 +30,28 @@ const MainDashboard = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const url = location.pathname; 
+    const url = location.pathname;
     console.log(url, "url");
     if (url.includes("dashboard")) {
       setPageHeader("Dashboard");
     } else if (url.includes("public_reg")) {
       setPageHeader("Public Registry");
-    
     } else if (url.includes("access_control")) {
       setPageHeader("Access Control");
-    } 
-    else if (url?.includes("services")) {
+    } else if (url?.includes("services")) {
       setPageHeader("Services");
-      if (url?.includes("newtype") || url?.includes("documentinformation") || url?.includes("newprospect")) { 
-        setShowFooter(false)
+      if (
+        url?.includes("newtype") ||
+        url?.includes("documentinformation") ||
+        url?.includes("newprospect")
+      ) {
+        setShowFooter(false);
+      } else {
+        setShowFooter(true);
       }
-      else{
-        setShowFooter(true)
-      }
-    }
-    else {
-      setPageHeader("Dashboard"); 
-      setShowFooter(true)
+    } else {
+      setPageHeader("Dashboard");
+      setShowFooter(true);
     }
   }, [location]);
   const handleHideSubSide = () => {
@@ -113,7 +113,7 @@ const MainDashboard = () => {
                 className="mr-1 lg:mr-3"
               />
               <h2 className="main-dashbaord-header">
-                {pageHeader.toUpperCase()}
+                {pageHeader?.toUpperCase()}
               </h2>
             </div>
             <div className="w-auto flex items-center space-x-2 large_screen">
@@ -133,17 +133,15 @@ const MainDashboard = () => {
 
               <div
                 className=" w-full flex items-center gap-2 pl-3 border-l-2 cursor-pointer large_screen"
-                onClick={handleProfileOpen}
-              >
+                onClick={handleProfileOpen}>
                 <img src={Avatar} alt="image" />
                 <p style={{ fontSize: "14px", color: "#666687" }}>
-                  {userData?.surname.toUpperCase()}{" "}
-                  {userData?.firstName.toUpperCase()}{" "}
+                  {userData?.surname?.toUpperCase()}{" "}
+                  {userData?.firstName?.toUpperCase()}{" "}
                 </p>
               </div>
               <div
-                className={`slide-in-box ${isOpenNotification ? "open" : ""}`}
-              >
+                className={`slide-in-box ${isOpenNotification ? "open" : ""}`}>
                 <Notification onClose={handleClose} />
               </div>
               {isOpenProfile ? (
@@ -156,8 +154,7 @@ const MainDashboard = () => {
                         whiteSpace: "nowrap",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
-                      }}
-                    >
+                      }}>
                       <div className="profile-info-name">
                         {userData?.surname.toUpperCase()}{" "}
                         {userData?.firstName.toUpperCase()}
@@ -174,8 +171,7 @@ const MainDashboard = () => {
                     </div>
                     <div
                       className="flex gap-2 items-center cursor-pointer"
-                      onClick={handleLogOut}
-                    >
+                      onClick={handleLogOut}>
                       <LuLogOut />
                       <div className="help-container-text">Log out</div>
                     </div>
@@ -194,8 +190,7 @@ const MainDashboard = () => {
                 {DashboardLinks.map((eachLink) => (
                   <div
                     className="w-auto flex items-start justify-between"
-                    key={eachLink.id}
-                  >
+                    key={eachLink.id}>
                     {eachLink.component}
                   </div>
                 ))}
